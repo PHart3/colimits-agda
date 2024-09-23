@@ -5,7 +5,7 @@
   A stripped down version of [HoTT-Agda](https://github.com/HoTT/HoTT-Agda/),
   with local changes for general lemmas we proved during the development.
 
-- `Colimit/`
+- `Colimit-code/`
 
   Our formalization of our construction of an A-colimit (Theorem 12 and
   Lemmas 13 and 14). See `Colimit-code/README.md` for more details.
