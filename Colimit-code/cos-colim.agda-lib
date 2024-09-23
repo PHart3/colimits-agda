@@ -1,0 +1,8 @@
+name: cos-colim
+depend: hott-core-modified
+include:
+  L-R-L
+  Map-Nat
+  R-L-R
+  Aux
+  Main-theorem
