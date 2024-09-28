@@ -9,7 +9,7 @@ module _ {i} {A : Type i} where
   {- Concatenation of paths
 
   There are two different definitions of concatenation of paths, [_∙_] and [_∙'_],
-  with different definitionnal behaviour. Maybe we should have only one but it’s
+  with different definitionnal behaviour. Maybe we should have only one, but it’s
   sometimes useful to have both (in particular in lib.types.Paths).
   -}
 
