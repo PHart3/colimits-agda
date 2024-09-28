@@ -11,10 +11,9 @@ open import FTID-Cos
 open import Cocone
 open import AuxPaths
 open import Helper-paths
-open import CosColimitEquiv2Cont
+open import CC-Equiv-RLR-1
 
-
-module CosColimitEquiv2Cont2 where
+module CC-Equiv-RLR-2 where
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f : A → B) where
 
@@ -35,8 +34,8 @@ module _ {ℓ} {A : Type ℓ} where
     → ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ ◃∙ ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (!-! r) ◃∙ db-neg-rid-db r idp ◃∙
       ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
       =ₛ ! (∙-unit-r r) ◃∎
-  coher-rid-trip r τ = ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ ◃∙ ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (!-! r) ◃∙ db-neg-rid-db r idp ◃∙ ap (λ p → p ∙ idp) τ ◃∙
-                         ap (λ p → p ∙ idp) (!-! r) ◃∎
+  coher-rid-trip r τ = ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ ◃∙ ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (!-! r) ◃∙ db-neg-rid-db r idp ◃∙
+                       ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
                          =ₛ₁⟨ 0 & 2 & ∙-ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ (!-! r)  ⟩
                        ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (τ ∙ !-! r) ◃∙ db-neg-rid-db r idp ◃∙ ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
                          =ₛ₁⟨ 2 & 2 & ∙-ap (λ p → p ∙ idp) τ (!-! r)  ⟩ 
@@ -44,7 +43,6 @@ module _ {ℓ} {A : Type ℓ} where
                          =ₛ⟨  helper-coher-rid r (τ ∙ !-! r) ⟩
                        ! (∙-unit-r r) ◃∎ ∎ₛ
                          
-
 module ConstrE2Cont2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) (K : CosCocone A F T) where
 
   open ConstrE2Cont F T K public
@@ -228,8 +226,8 @@ module ConstrE2Cont2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type 
              ap ! (ap ! (snd (comTri K g) a)) ◃∙
              !-! (snd (comp K i) a) ◃∎)  % Ξ-rewrite2  ⟩
              ! (ap (λ p → ! p ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (↯ (FunHomEq g (fun (F # i) a)))) ◃∙
-             ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a)
-               (snd (comp LRfun j) a)) ◃∙
+             ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
+               (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
              ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
                fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙
                ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
@@ -286,8 +284,8 @@ module ConstrE2Cont2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type 
                    =ₛ-in (=ₛ-out (Ξ-RedEq0 (cglue g a) (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a)) (ψ-βr g a) (snd (comp K j) a) (λ z → idp)
                      (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))))) ⟩
              ! (ap (λ p → ! p ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (↯ (FunHomEq g (fun (F # i) a)))) ◃∙
-             ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a)
-               (snd (comp LRfun j) a)) ◃∙
+             ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
+               (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
              ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
                fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙
                ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙

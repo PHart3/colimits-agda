@@ -1,9 +1,9 @@
 {-# OPTIONS --without-K --rewriting #-}
 
+{- Coslice categories of the universe -}
+
 open import lib.Basics
 open import lib.types.Sigma
-
-{- Coslice categories of the universe -}
 
 module Coslice where
 
@@ -33,7 +33,6 @@ infixr 30 [_,_]_∼_
   < A >  X *→ Y  →  < A >  X *→ Y →  Type (lmax (lmax i k) j)    
 [ A , *[ X , f ] ] ( h₁ , p₁ )∼( h₂ , p₂ ) = Σ ((x : X) → h₁ x == h₂ x)
   (λ H → ((a : A) →  (! (H (f a)) ∙ (p₁ a) == p₂ a) ))
- 
 
 module MapsCos {j : ULevel} (A : Type j) where
 

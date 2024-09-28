@@ -9,12 +9,12 @@ open import Diagram
 open import AuxPaths-v2
 open import Colim
 open import Cocone
-open import CosColimitMap
-open import CosColimitMap2
-open import CosColimitMap3
-open import CosColimitMap4
+open import CosColimitMap00
+open import CosColimitMap01
+open import CosColimitMap02
+open import CosColimitMap03
 
-module CosColimitMap5 where
+module CosColimitMap04 where
 
 module ConstrMap5 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : CosDiag ℓF ℓ A Γ} {G : CosDiag ℓG ℓ A Γ} (δ : CosDiagMor A F G) where
 

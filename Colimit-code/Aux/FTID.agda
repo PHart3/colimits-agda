@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
--- Fundamental theorem of identity types, due to Rijke
+-- Identity system on A-maps formed by A-homotopy
 
 open import lib.Basics
 open import lib.types.Sigma
@@ -97,17 +97,19 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂
 
 module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} (f : < A >  X *→ Y) where
 
-  PtFunHomContr-aux : is-contr (Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g)) (λ (h , K) → Σ ((a : A) → h (fun X a) == fun Y a) (λ p → ((a : A) → ! (K (fun X a)) ∙ (snd f a) == p a))))
-  PtFunHomContr-aux = equiv-preserves-level ((Σ-contr-red {P = (λ (h , K) → Σ ((a : A) → h (fun X a) == fun Y a) (λ p → ((a : A) → ! (K (fun X a)) ∙ (snd f a) == p a)))}
-    (FunHomContr {f = fst f}))⁻¹) {{equiv-preserves-level ((Σ-emap-r (λ q → app=-equiv))) {{pathfrom-is-contr (snd f)}} }} 
+  PtFunHomContr-aux : is-contr (Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g)) (λ (h , K) →
+    Σ ((a : A) → h (fun X a) == fun Y a) (λ p → ((a : A) → ! (K (fun X a)) ∙ (snd f a) == p a))))
+  PtFunHomContr-aux = equiv-preserves-level
+    ((Σ-contr-red {P = (λ (h , K) → Σ ((a : A) → h (fun X a) == fun Y a) (λ p → ((a : A) → ! (K (fun X a)) ∙ (snd f a) == p a)))}
+      (FunHomContr {f = fst f}))⁻¹) {{equiv-preserves-level ((Σ-emap-r (λ q → app=-equiv))) {{pathfrom-is-contr (snd f)}} }} 
 
   open MapsCos A
 
   PtFunHomContr :  is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
   PtFunHomContr = equiv-preserves-level lemma {{PtFunHomContr-aux }}
     where
-      lemma : Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g)) (λ (h , K) → Σ ((a : A) → h (fun X a) == fun Y a) (λ p → ((a : A) → ! (K (fun X a)) ∙ (snd f a) == p a)))
-        ≃ Σ (X *→ Y) (λ g → < X > f ∼ g)
+      lemma : Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g)) (λ (h , K) → Σ ((a : A) → h (fun X a) == fun Y a) (λ p → ((a : A) →
+        ! (K (fun X a)) ∙ (snd f a) == p a))) ≃ Σ (X *→ Y) (λ g → < X > f ∼ g)
       lemma = equiv (λ ((g , K) , (p , H)) → (g , (λ a → p a)) , ((λ x → K x) , (λ a → H a)) ) (λ ((h , p) , (H , K)) → (h , H) , (p , K))
         (λ ((h , p) , (H , K)) → idp) λ ((g , K) , (p , H)) → idp 
 

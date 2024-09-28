@@ -9,7 +9,7 @@ open import Diagram
 open import Colim
 open import Cocone
 
-module CosColimitMap where
+module CosColimitMap00 where
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f g : A → B) (H : f ∼ g) where
 
@@ -116,7 +116,8 @@ module ConstrMap {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ}
           =⟪ pre-cmp-!-!-∙ δ₀ (cin j) (snd (F <#> g) a) (cglue g (fun (F # i) a)) (ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a))  ⟫
         ! (ap δ₀ (cglue g (fun (F # i) a))) ∙ ap (cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)
           =⟪ ap (λ p → ! p ∙ ap (cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)) (δ₀-βr g (fun (F # i) a)) ⟫
-        ! (! (ap (cin j) (comSq δ g (fun (F # i) a))) ∙ cglue g (fst (nat δ i) (fun (F # i) a))) ∙ ap (cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a) 
+        ! (! (ap (cin j) (comSq δ g (fun (F # i) a))) ∙ cglue g (fst (nat δ i) (fun (F # i) a))) ∙ ap (cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (cin j)
+          (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a) 
           =⟪ ap (λ p → ! p ∙ ap (cin j ∘ fst (nat δ j))
             (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)) (ap (λ p → ! (ap (cin j) p) ∙ cglue g (fst (nat δ i) (fun (F # i) a))) (comSq-coher δ g a))  ⟫
         ! (! (ap (cin j) (ap (fst (G <#> g)) (snd (nat δ i) a) ∙ snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙

@@ -7,10 +7,10 @@ open import lib.PathSeq
 open import Coslice
 open import Diagram
 open import Colim
-open import CosColimit
-open import CosColimit6
+open import CC-Equiv-LRL-0
+open import CC-Equiv-LRL-5
 
-module CosColimit7 where
+module CC-Equiv-LRL-6 where
 
 module Constr7 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) where
 

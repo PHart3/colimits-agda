@@ -11,11 +11,11 @@ open import AuxPaths
 open import AuxPaths-v2
 open import Colim
 open import Cocone
-open import CosColimitMap
-open import CosColimitMap2
-open import CosColimitMap3
+open import CosColimitMap00
+open import CosColimitMap01
+open import CosColimitMap02
 
-module CosColimitMap4 where
+module CosColimitMap03 where
 
 module _ {ℓ} {A : Type ℓ} where
 
@@ -167,7 +167,8 @@ module ConstrMap4 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       ψ₂-red-helper2 : {f : ty (G # i) → Colim ForgG} (H : cin j ∘ fst (G <#> g) ∼ f) {ρ γ : left a == right (f (fun (G # i) a))}
         (τ₁ : ρ == ! (ap left (ap [id] q)) ∙ glue (cin j a) ∙ ap right (! (ap (cin j) (snd (G <#> g) a)) ∙ H (fun (G # i) a))) (τ₂ : ρ == γ)
         → ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] q)))) (ap !  (ap (_∙_ (ap (right ∘ f) (snd (nat δ i) a))) (E₂-v2 {f = right {d = SpCos₂}} idp (! (glue (cin j a)))))))) ∙
-        ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] q)))) (ap ! (ap (_∙_ (ap (right ∘ f) (snd (nat δ i) a))) (E₁-v2 {f = right {d = SpCos₂}} {g = cin j} (snd (G <#> g) a)))))) ∙
+        ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] q)))) (ap ! (ap (_∙_ (ap (right ∘ f) (snd (nat δ i) a))) (E₁-v2 {f = right {d = SpCos₂}} {g = cin j}
+          (snd (G <#> g) a)))))) ∙
         ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] q)))) (ap ! (!-!-!-∘-∘-∘-rid (cin j) (fst (G <#> g)) f right
           (snd (nat δ i) a) (snd (G <#> g) a) idp (! (glue (cin j a))) (H (fun (G # i) a)))))) ∙
         ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] q))))
@@ -276,8 +277,10 @@ module ConstrMap4 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
 
       ψ₂-red-helper : {u : ty (G # j)} (s : u  == fun (G # j) a) (τ : transport (λ z → left ([id] z) == right {d = SpCos₂} (ψ₂ z)) q (glue (cin j a))
           == ! (ap left (ap [id] q)) ∙ glue (cin j a) ∙ ap right (! (ap (cin j) (snd (G <#> g) a)) ∙ cglue g (fun (G # i) a)))
-        → ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] q)))) (ap ! (ap (_∙_ (ap (right ∘ cin i) (snd (nat δ i) a))) (E₂-v2 {f = right {d = SpCos₂}} idp (! (glue (cin j a)))))))) ∙
-        ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] q)))) (ap ! (ap (_∙_ (ap (right ∘ cin i) (snd (nat δ i) a))) (E₁-v2 {f = right {d = SpCos₂}} {g = cin j} (snd (G <#> g) a)))))) ∙
+        → ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] q)))) (ap ! (ap (_∙_ (ap (right ∘ cin i) (snd (nat δ i) a))) (E₂-v2 {f = right {d = SpCos₂}} idp
+          (! (glue (cin j a)))))))) ∙
+        ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] q)))) (ap ! (ap (_∙_ (ap (right ∘ cin i) (snd (nat δ i) a))) (E₁-v2 {f = right {d = SpCos₂}} {g = cin j}
+          (snd (G <#> g) a)))))) ∙
         ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] q)))) (ap ! (!-!-!-∘-∘-∘-rid (cin j) (fst (G <#> g)) (cin i) (right {d = SpCos₂}) (snd (nat δ i) a) (snd (G <#> g) a) s
           (! (glue (cin j a))) (cglue g (fun (G # i) a)))))) ∙
         ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] q)))) (ap ! (ap (λ p → ! (ap right (! (ap (cin j) (ap (fst (G <#> g)) (snd (nat δ i) a) ∙
@@ -315,9 +318,9 @@ module ConstrMap4 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
           ! (ap (λ p → p ∙ idp) (ap (λ p → ! (ap left (ap [id] q)) ∙ p) (ap ! (long-red-ap-!-∙ (cin j) (fst (nat δ j))
             (fst (G <#> g)) (cin i) right (snd (nat δ i) a) (snd (G <#> g) a) s₃
               (snd (nat δ j) a) (cglue g (fun (G # i) a)) (! (glue (cin j a))))))) ◃∙
-          ! (ap (λ p → p ∙ idp) (ap (λ p → ! (ap left (ap [id] q)) ∙ p) (ap ! (ap (λ p → ! (ap (right {d = SpCos₂}) (! (ap (cin j) (ap (fst (G <#> g)) (snd (nat δ i) a) ∙ snd (G <#> g) a ∙
-            ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) s₃))) ∙ p)) ∙ ap (right ∘ cin j ∘ fst (nat δ j)) s₃ ∙
-              ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a))) (apCommSq2 (cin j ∘ fst (G <#> g)) (cin i) (cglue g) (snd (nat δ i) a)))))) ◃∙
+          ! (ap (λ p → p ∙ idp) (ap (λ p → ! (ap left (ap [id] q)) ∙ p) (ap ! (ap (λ p → ! (ap (right {d = SpCos₂}) (! (ap (cin j) (ap (fst (G <#> g)) (snd (nat δ i) a) ∙
+            snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) s₃))) ∙ p)) ∙ ap (right ∘ cin j ∘ fst (nat δ j)) s₃ ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙
+              ! (glue (cin j a))) (apCommSq2 (cin j ∘ fst (G <#> g)) (cin i) (cglue g) (snd (nat δ i) a)))))) ◃∙
           δ₀-free-helper q s₃ (snd (nat δ j) a) (𝕗 s₃) μ ◃∙
           ! (ap (λ p → p ∙ ap right (! (! (𝕗 s₃) ∙ ap (cin j ∘ fst (nat δ j)) s₃ ∙ ap (cin j) (snd (nat δ j) a) ∙ μ))) τ₁) ◃∙
           ap (λ p → p ∙ ap right (! (! (𝕗 s₃) ∙ ap (cin j ∘ fst (nat δ j)) s₃ ∙ ap (cin j) (snd (nat δ j) a) ∙ μ))) τ₂ ◃∙

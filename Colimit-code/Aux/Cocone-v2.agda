@@ -1,5 +1,10 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
+{-
+  This file contains a different yet equivalent version of the A-cocone structure on P_A(F) .
+  We use it to facilitate the path algebra required for Colimit-code/L-R-L .
+-}
+
 open import lib.Basics
 open import lib.types.Pushout
 open import lib.types.Span
@@ -34,7 +39,8 @@ module CC-v2-Constr {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
   E-eq : (q : (z : Colim (ConsDiag Γ A)) →  right {d = SpCos} (ψ z) == left ([id] z)) {x : ty (F # j)} (σ : x == fun (F # j) a) (T₁ : ap [id] (cglue g a) == idp)
     (R : cin j x == ψ (cin i a)) (T₂ : ap ψ (cglue g a) == ! (ap (cin j) σ) ∙ R)
-    → E₁ σ (q (cin j a)) ◃∙ ! (ap (λ p → ! (ap right (! (ap (cin j) σ) ∙ R)) ∙ q (cin j a) ∙ p) (ap (ap left) T₁)) ◃∙ E₃ q (cglue g a) T₂ (λ z → idp) ◃∙ ∙-unit-r (q (cin i a)) ◃∎ =ₛ
+    → E₁ σ (q (cin j a)) ◃∙ ! (ap (λ p → ! (ap right (! (ap (cin j) σ) ∙ R)) ∙ q (cin j a) ∙ p) (ap (ap left) T₁)) ◃∙ E₃ q (cglue g a) T₂ (λ z → idp) ◃∙ ∙-unit-r (q (cin i a)) ◃∎
+      =ₛ
     E₁-v2 σ ◃∙ E₂-v2 T₂ (q (cin j a)) ◃∙ E₃-v2 {f = left} q (cglue g a) T₁ ◃∎
   E-eq q idp T₁ R T₂ = =ₛ-in (lemma R T₂)
     where

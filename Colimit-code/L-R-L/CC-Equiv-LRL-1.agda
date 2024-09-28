@@ -9,10 +9,10 @@ open import Diagram
 open import Colim
 open import FTID
 open import AuxPaths-v2
-open import CosColimit
+open import CC-Equiv-LRL-0
 open import CC-v2-rewrite
 
-module CosColimit2 where
+module CC-Equiv-LRL-1 where
 
 module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) where
 
@@ -109,7 +109,8 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
             lemma = (! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ idp)) ◃∙ cmp-helper {τ = left} {h = [id]} {v = ψ} {u = right} {f = f} (cglue g a) idp
                       (λ x → ! (glue x)) (λ x → idp) ◃∙ inv-canc-cmp f right (ap ψ (cglue g a)) (! (glue (cin j a))) idp ◃∎)
                     =ₛ₁⟨ 1 & 1 & IndFunHom-β
-                      {P = λ m F → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap (f ∘ right) (ap ψ (cglue g a)) ∙ (ap f (! (glue (cin i a))) ∙ F a) ∙ idp) ∙ ! (ap f (! (glue (cin i a))) ∙ F a)
+                      {P = λ m F → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap (f ∘ right) (ap ψ (cglue g a)) ∙ (ap f (! (glue (cin i a))) ∙ F a) ∙ idp) ∙
+                      ! (ap f (! (glue (cin i a))) ∙ F a)
                          == ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ F a) ∙ ! (ap f (! (ap right (ap ψ (cglue g a))) ∙ ! (glue (cin j a)) ∙ idp) ∙ F a)}
                        (CMPH.coher1 {τ = left} {h = [id]} {v = ψ} {u = right} (cglue g a) idp (λ x → ! (glue x)) (λ x₁ → idp) idp (cglue g a) (! (glue (cin i a))) ∙
                        CMPH.coher2 {τ = left} {h = [id]} {v = ψ} {u = right} (cglue g a) idp (λ x → ! (glue x)) (λ x₁ → idp) idp (cglue g a) (! (glue (cin j a))) ) ⟩
@@ -160,7 +161,8 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         RightRW₂ : seq-! (transpEq-s idp) ∙∙ apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ◃∙ ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
                       apd-helper {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙ ↯ (V f fₚ i j g (fun (F # i) a)) ◃∎
                      =ₛ ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ◃∙
-                    ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)) (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x)) (cglue g a) (id-βr g a)) ) ◃∙
+                    ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)) (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x))
+                      (cglue g a) (id-βr g a)) ) ◃∙
                     ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f)
                       (E₃-v2 (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))) ◃∙
                     ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
@@ -182,7 +184,8 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
                       apd-helper {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙ ↯ (V f fₚ i j g (fun (F # i) a)) ◃∎
                       =ₛ⟨ 2 & 1 &  PathSeq2 F g a T f fₚ ⟩
                     ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ◃∙
-                    ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)) (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x)) (cglue g a) (id-βr g a)) ) ◃∙
+                    ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)) (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x))
+                      (cglue g a) (id-βr g a)) ) ◃∙
                     ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f)
                       (E₃-v2 (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))) ◃∙
                     ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
@@ -228,7 +231,8 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
       abstract
 
         RightRW1a : ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ◃∙
-                  ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)) (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x)) (cglue g a) (id-βr g a)) ) ◃∙
+                  ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)) (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x))
+                    (cglue g a) (id-βr g a)) ) ◃∙
                   ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f)
                     (E₃-v2 (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))) ◃∙
                   ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
@@ -247,7 +251,8 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
                   ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
                   cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a))) ◃∎
             =ₛ (! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ∙
-                  ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)) (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x)) (cglue g a) (id-βr g a)) ) ∙
+                  ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)) (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x))
+                    (cglue g a) (id-βr g a)) ) ∙
                   ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f)
                     (E₃-v2 (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))) ∙
                   ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)

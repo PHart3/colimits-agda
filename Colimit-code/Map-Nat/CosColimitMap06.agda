@@ -12,10 +12,10 @@ open import Colim
 open import Cocone
 open import Cocone-switch
 open import Cocone-v2
-open import CosColimitMap
-open import CosColimitMap2
+open import CosColimitMap00
+open import CosColimitMap01
 
-module CosColimitMap7 where
+module CosColimitMap06 where
 
 module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : CosDiag ℓF ℓ A Γ} {G : CosDiag ℓG ℓ A Γ} (δ : CosDiagMor A F G) where
 

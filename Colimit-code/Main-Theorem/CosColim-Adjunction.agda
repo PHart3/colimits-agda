@@ -6,10 +6,10 @@ open import lib.types.Span
 open import Coslice
 open import Diagram
 open import Cocone
-open import CosColimitEquiv
-open import CosColimitEquiv2Cont4
-open import CosColimitMap
-open import CosColimitMap23
+open import CC-Equiv-LRL-7
+open import CC-Equiv-RLR-4
+open import CosColimitMap00
+open import CosColimitMap22
 open import CosColimitPstCmp
 open import CosColimitPreCmp
 
@@ -17,7 +17,7 @@ module CosColim-Adjunction where
 
 {-
 
-  This file contains our final proof, which shows that our pushout
+  This module contains our final proof, which shows that our pushout
   construction satisfies the universal property of an A-colimit,
   namely that it's left adjoint to the constant diagram functor.
   We construct such an adjunction by presenting the expected

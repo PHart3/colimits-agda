@@ -10,8 +10,7 @@ open import Diagram
 open import Colim
 open import Cocone
 
-
-module CosColimit where
+module CC-Equiv-LRL-0 where
 
 module Constr {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) where
 

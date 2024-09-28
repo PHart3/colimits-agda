@@ -9,10 +9,10 @@ open import Diagram
 open import Colim
 open import FTID
 open import AuxPaths-v2
-open import CosColimit
-open import CosColimit2
+open import CC-Equiv-LRL-0
+open import CC-Equiv-LRL-1
 
-module CosColimit3 where
+module CC-Equiv-LRL-2 where
 
 module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) where
 
@@ -63,7 +63,8 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
                     (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₁-v2 (snd (F <#> g) a)))))) ◃∙
                   ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙
                     (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (ap-cp-revR f (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))))) ◃∙
-                  Δ-red (snd (F <#> g) a) (ap f (ap right (cglue g (fun (F # i) a)))) (ap f (! (glue (cin j a))) ∙ fₚ a) (cglue g (fun (F # i) a)) (ap (λ p → ! (ap (f ∘ right) p)) (ψ-βr g a)) ◃∙
+                  Δ-red (snd (F <#> g) a) (ap f (ap right (cglue g (fun (F # i) a)))) (ap f (! (glue (cin j a))) ∙ fₚ a) (cglue g (fun (F # i) a))
+                    (ap (λ p → ! (ap (f ∘ right) p)) (ψ-βr g a)) ◃∙
                   cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a)) ◃∎
                     =ₛ₁⟨ 𝕐 (snd (F <#> g) a) (cglue g (fun (F # i) a)) (! (glue (cin j a))) (ψ-βr g a) (fₚ a) ⟩
                   inv-canc-cmp f right (ap ψ (cglue g a)) (! (glue (cin j (idf A a)))) (fₚ a) ◃∎ ∎ₛ
@@ -71,7 +72,8 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
     abstract  
 
       RightRW1 :  (! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ∙
-                  ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)) (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x)) (cglue g a) (id-βr g a)) ) ∙
+                  ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)) (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x))
+                    (cglue g a) (id-βr g a)) ) ∙
                   ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f)
                     (E₃-v2 (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))) ∙
                   ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)

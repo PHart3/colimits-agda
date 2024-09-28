@@ -1,5 +1,7 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
+{- Formation of A-cocone structure on pushout -}
+
 open import lib.Basics
 open import lib.types.Sigma
 open import lib.types.Pushout
@@ -25,7 +27,7 @@ module _ {ℓ₁ ℓ₂} {B : Type ℓ₁} {D : Type ℓ₂} {u : D → B} where
 module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
 
   private
-      module M = ColimRec {D = ConsDiag Γ A} {V = A} (λ _ a → a) (λ _ _ _ a →  idp)
+    module M = ColimRec {D = ConsDiag Γ A} {V = A} (λ _ a → a) (λ _ _ _ a →  idp)
 
   [id] : Colim (ConsDiag Γ A) → A
   [id] = M.colimR

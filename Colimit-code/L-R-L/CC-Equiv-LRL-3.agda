@@ -11,10 +11,9 @@ open import Cocone-switch
 open import AuxPaths-v2
 open import FTID
 open import Colim
-open import CosColimit3
+open import CC-Equiv-LRL-2
 
-module CosColimit4 where
-
+module CC-Equiv-LRL-3 where
 
 module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) where
 
@@ -204,4 +203,3 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
                  (apd-tr (σ (comp K) (comTri K)) (cglue g a)) ◃∎
                    =ₛ⟨ 1 & 1 & =ₛ-in (ap (ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p)) (σ-β K g a)) ⟩
                  apd-concat-pres (cglue g a) ◃∙ ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) (↯ ω) ◃∎ ∎ₛ
-

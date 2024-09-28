@@ -8,10 +8,10 @@ open import Coslice
 open import Diagram
 open import Colim
 open import FTID-Cos
-open import CosColimitEquiv2
-open import CosColimitEquiv2Cont3
+open import CC-Equiv-RLR-0
+open import CC-Equiv-RLR-3
 
-module CosColimitEquiv2Cont4 where
+module CC-Equiv-RLR-4 where
 
 module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : CosDiag ℓd ℓ A Γ} {T : Coslice ℓc ℓ A} (K : CosCocone A F T) where
 

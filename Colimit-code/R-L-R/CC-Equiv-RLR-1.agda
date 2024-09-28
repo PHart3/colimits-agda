@@ -11,9 +11,9 @@ open import Cocone
 open import FTID-Cos
 open import AuxPaths
 open import Helper-paths
-open import CosColimitEquiv2
+open import CC-Equiv-RLR-0
 
-module CosColimitEquiv2Cont where
+module CC-Equiv-RLR-1 where
 
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} (e : A → B) (f : C → A) where
 

@@ -8,9 +8,9 @@ open import Coslice
 open import Diagram
 open import Colim
 open import Cocone
-open import CosColimitMap
+open import CosColimitMap00
 
-module CosColimitMap2 where
+module CosColimitMap01 where
 
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} (f : A → B) (h : A → C) (g : C → B) (H : f ∼ g ∘ h) where
 

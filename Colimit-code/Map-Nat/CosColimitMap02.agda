@@ -10,10 +10,10 @@ open import AuxPaths
 open import AuxPaths-v2
 open import Colim
 open import Cocone
-open import CosColimitMap
-open import CosColimitMap2
+open import CosColimitMap00
+open import CosColimitMap01
 
-module CosColimitMap3 where
+module CosColimitMap02 where
 
 module _ {ℓ} {A : Type ℓ} where
 

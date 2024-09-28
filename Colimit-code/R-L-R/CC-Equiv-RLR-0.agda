@@ -12,7 +12,7 @@ open import Cocone
 open import AuxPaths
 open import Helper-paths
 
-module CosColimitEquiv2 where
+module CC-Equiv-RLR-0 where
 
 module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) (K : CosCocone A F T) where
 

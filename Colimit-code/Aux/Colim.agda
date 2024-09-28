@@ -1,8 +1,9 @@
 {-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
+{- Definition of colimit HIT and its basic theory -}
+
 open import lib.Basics
 open import Diagram
-
 
 module Colim where 
 
@@ -17,13 +18,11 @@ module _ {ℓv ℓe}  where
       cin : (i : Obj Γ) → D # i → Colim D
       cglue : {i j : Obj Γ} → (g : Hom Γ i j) → (x : D # i) → cin j ((D <#> g) x) == cin i x
 
-
   module ColimElim {ℓd l} {Γ : Graph ℓv ℓe} {D : Diag ℓd Γ} {P : Colim {ℓd = ℓd} {Γ = Γ} D → Type l}
     (cin* : (i : Obj Γ) (x : D # i) → P (cin i x))
     (cglue* : (i j : Obj Γ) (g : Hom Γ i j) (x : D # i)
       → cin* j ((D <#> g) x) == cin* i x [ P ↓ cglue {i = i} {j = j} g x ])
     where
-
 
     postulate  -- HIT
       colimE : Π (Colim {Γ = Γ} D) P

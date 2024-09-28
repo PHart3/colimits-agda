@@ -7,12 +7,12 @@ open import Coslice
 open import Diagram
 open import Colim
 open import Cocone
-open import CosColimitEquiv2Cont4
-open import CosColimitMap
-open import CosColimitMap2
-open import CosColimitMap20
+open import CC-Equiv-RLR-4
+open import CosColimitMap00
+open import CosColimitMap01
+open import CosColimitMap19
+open import CosColimitMap21
 open import CosColimitMap22
-open import CosColimitMap23
 open import CosColimitPstCmp
 
 module CosColimitPreCmp where
@@ -42,14 +42,11 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
           =⟨ CosColim-NatSq1-eq F (f , fₚ) (fst (recCosCoc K)) (snd (recCosCoc K))   ⟩
         PostComp (ColCoC F) (f , fₚ ∘* recCosCoc K) =∎
 
-
---      NatSq-PreCmp2 : PostComp (ColCoC F) (f , fₚ ∘* recCosCoc K) == PostComp (ColCoC F) (f , fₚ ∘* recCosCoc 𝕂)
+--    NatSq-PreCmp2 : PostComp (ColCoC F) (f , fₚ ∘* recCosCoc K) == PostComp (ColCoC F) (f , fₚ ∘* recCosCoc 𝕂)
       NatSq-PreCmp2 = ap (λ κ → PostComp (ColCoC F) (f , fₚ ∘* recCosCoc κ)) (! 𝕂-K-eq)
-
 
       NatSq-PreCmp3 : PostComp (ColCoC F) (f , fₚ ∘* recCosCoc 𝕂) == PostComp (ColCoC F) (f , fₚ ∘* 𝕕)
       NatSq-PreCmp3 = ap (λ h → PostComp (ColCoC F) (f , fₚ ∘* h)) (𝕂₀-𝕕₀-eq δ)
-
 
     NatSq-PreCmp : (f* : (Cos P₂ left) *→ T) → Diag-to-Lim-map (PostComp (ColCoC G) f*) == PostComp (ColCoC F) (f* ∘* 𝕕)
     NatSq-PreCmp (f , fₚ) = NatSq-PreCmp1 f fₚ ∙ NatSq-PreCmp2 f fₚ ∙ NatSq-PreCmp3 f fₚ
