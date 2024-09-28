@@ -116,6 +116,8 @@ module _ {i} {A : Type i} where
     → (idp {a = p}) ∙'2 (idp {a = q}) == idp
   idp∙'2idp idp idp = idp
 
+{- Coherence -}
+
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {f : A → B} {g : B → C} where
 
   cmp-inv-l : {x y : A} (p : x == y) → ! (ap (g ∘ f) p) ∙ ap g (ap f p) == idp
@@ -131,14 +133,6 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} where
 
   fun-rid-inv2 : {x y : A} (p : x == y) → idp == (ap f p ∙ idp) ∙ ! (ap f (p ∙ idp) ∙ idp)
   fun-rid-inv2 idp = idp
-
-{-
-  inv-inter : {x : A} (σ : x == x)
-    → ! (ap (g ∘ f) σ) ∙ ap (g ∘ f) σ ∙ idp == ap (g ∘ f) σ ∙ ! (ap g (ap f σ) ∙ idp)
-  inv-inter σ = inv-rid (ap (g ∘ f) σ) ∙ cmp-inv-rid σ
--}
-
-{- Coherence -}
 
 module _ {i} {A : Type i} where
 
@@ -175,14 +169,15 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
 
 module _ {i} {A : Type i} {x y : A} where
 
-  RUnCoh : (q : x == y) →  ! (∙-unit-r (! q)) ∙ ∙-unit-r (! q) ∙ ap ! (! (∙-unit-r q)) == ap ! (! (∙-unit-r q) ∙ idp)
-  RUnCoh idp = idp
-
   left-canc : {z : A} (p : x == y) {r : x =-= z} → r =ₛ p ◃∙ ! p ◃∙ ↯ r ◃∎
   left-canc idp = =ₛ-in idp
 
-  trip-inv : {w z : A} {p : y == x} {q : y == z} {r : z == w} → ! r ∙ ! q ∙ p   == ! (! p ∙ q ∙ r)
+  trip-inv : {w z : A} {p : y == x} {q : y == z} {r : z == w} → ! r ∙ ! q ∙ p == ! (! p ∙ q ∙ r)
   trip-inv {p = idp} {q = idp} {r = idp} = idp
+
+  RUnCoh : (q : x == y) →
+    ! (∙-unit-r (! q)) ∙ ∙-unit-r (! q) ∙ ap ! (! (∙-unit-r q)) == ap ! (! (∙-unit-r q) ∙ idp)
+  RUnCoh idp = idp
 
 {-
 Sometimes we need to restart a new section in order to have everything in the

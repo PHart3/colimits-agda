@@ -75,13 +75,14 @@ module _ {i j k} {A : Type i} {B : A → Type j} {C : A → Type k}
     → ap↓ f (q ▹! r) == ap↓ f q ▹! ap↓ f r
   ap↓-▹! {p = idp} {p' = idp} idp idp = idp
 
+{- Fuse and unfuse -}
+
 module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
 
   !-ap-∙-s : {x y : A} (p : x == y) {z : A} {r : x == z} {w : B} {s : g z == w}
     → ! (ap g p) ∙ ap g r ∙ s == ap g (! p ∙ r) ∙ s
   !-ap-∙-s idp = idp
 
-{- Fuse and unfuse -}
 module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A → B) where
   ∘-ap : {x y : A} (p : x == y) → ap g (ap f p) == ap (g ∘ f) p
   ∘-ap idp = idp
@@ -108,9 +109,9 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     → ! (ap (g ∘ f) p) ∙ (ap g S ∙ gₚ) ∙ ! (ap g (! (ap f p) ∙ S ∙ idp) ∙ gₚ) == idp
   inv-canc-cmp idp idp idp = idp
 
+{- ap of idf -}
 ap-idf : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ap (idf A) p == p
 ap-idf idp = idp
-
 
 {- Functoriality of [coe] -}
 coe-∙ : ∀ {i} {A B C : Type i} (p : A == B) (q : B == C) (a : A)
@@ -304,7 +305,6 @@ module _ {i j} {A : Type i} {B : Type j} (b : B) where
   ap-cst-coh idp idp = =ₛ-in idp
 
 {- Naturality of homotopies -}
-
 module _ {i} {A : Type i} where
   homotopy-naturality : ∀ {k} {B : Type k} (f g : A → B)
     (h : (x : A) → f x == g x) {x y : A} (p : x == y)
@@ -463,7 +463,7 @@ module _ {i} {A : Type i} where
   transp-cst=idf-pentagon idp q idp =
     =ₛ-in (! (∙-unit-r (transp-cst=idf q idp)))
 
-{- Some new helper lemmas -}
+{- A bunch of new helper lemmas -}
 
 module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
 
