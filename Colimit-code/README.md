@@ -39,7 +39,7 @@ isomorphism.
     of Lemma 14 of the paper. (The second naturality square,
     arising from pre-composition with diagram maps.)
 
-- The `Main-theorem/` folder gathers all data of the desired
+- The `Main-Theorem/` folder gathers all data of the desired
   adjunction from `L-R-L/`, `R-L-R/`, and `Map-Nat/`.
 
 # Naming of Individual Files
