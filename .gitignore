@@ -1,14 +1,3 @@
-*.pdf
-*.log
-*.aux
-*.out
-*.toc
-*.gz
-*.gz(busy)
-*.nav
-*.snm
-*.vtc
-
 # Ignore Agda compiled files
 *.agdai
 .*.agda.vim
