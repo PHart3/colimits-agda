@@ -11,11 +11,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build Docker
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           load: true
 	  tags: colimit
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Check colimit-code
+      - name: Check colimit
         run: docker run colimit
