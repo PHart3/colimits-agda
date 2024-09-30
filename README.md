@@ -18,6 +18,8 @@
 
 # Type-checking with Docker
 
+NOTE: We have successfully tested the following Docker container on Linux but not on other operating systems.
+
 1. Build Docker image:
 
    ```bash
