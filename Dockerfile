@@ -19,7 +19,7 @@ RUN \
 RUN \
   mkdir -p /dist && \
   cabal update && \
-  cabal v1-install alex happy && \
+  cabal v2-install alex happy && \
   cabal v1-install --bindir=/dist --datadir=/dist --datasubdir=/dist/data --enable-executable-static
 
 ####################################################################################################
