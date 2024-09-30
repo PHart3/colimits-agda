@@ -1,7 +1,7 @@
 # Overview
 
   This Agda code accompanies our paper [Colimits in Homotopy Type Theory](https://phart3.github.io/colimits-paper.pdf).
-  (The link points to the preprint.)
+  (The link points to the preprint.) It has been checked with Agda 2.6.3.
 
 # Organization
 
@@ -16,7 +16,7 @@
   See `Colimit-code/README.md` for details and for the
   license of the work inside this directory.
 
-# Type-Checking with Docker
+# Type-checking with Docker
 
 1. Build Docker image:
 
