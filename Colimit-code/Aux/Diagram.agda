@@ -24,9 +24,9 @@ CosGr : ∀ i j (A : Type j) → Graph (lmax (lsucc i) j) (lmax i j)
 Obj (CosGr i j A) = Coslice i j A
 Hom (CosGr i j A) X Y = < A > X *→ Y
 
--- Graph functors/homomorphisms
+-- Graph homomorphisms
 
-record GraphHom (G  : Graph ℓv  ℓe ) (G' : Graph ℓv' ℓe')
+record GraphHom (G  : Graph ℓv  ℓe) (G' : Graph ℓv' ℓe')
                 : Type (lmax (lmax ℓv ℓe) (lmax ℓv' ℓe')) where
   field
     _#_ : Obj G → Obj G'
@@ -36,7 +36,7 @@ record GraphHom (G  : Graph ℓv  ℓe ) (G' : Graph ℓv' ℓe')
 
 open GraphHom public
 
--- Diagrams are (graph) functors with codomain Type
+-- Diagrams are graph homomorphisms  with codomain Type
 
 Diag : ∀ ℓd (G : Graph ℓv ℓe) → Type (lmax (lmax ℓv ℓe) (lsucc ℓd))
 Diag ℓd G = GraphHom G (TypeGr ℓd)
