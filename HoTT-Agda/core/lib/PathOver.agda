@@ -326,9 +326,9 @@ module _ {i j} {A : Type i} where
     → (u == v [ B ↓ p ])
   from-transp-g B idp h = h
 
-apd-to-tr : ∀ {i j} {A : Type i} (B : A → Type j) (f : (a : A) → B a) {x y : A} (p : x == y)
-  (s : transport B p (f x) == f y) → apd f p == from-transp-g B p s → apd-tr f p == s
-apd-to-tr B f idp s h = h
+  apd-to-tr : (B : A → Type j) (f : (a : A) → B a) {x y : A} (p : x == y)
+    (s : transport B p (f x) == f y) → apd f p == from-transp-g B p s → apd-tr f p == s
+  apd-to-tr B f idp s h = h
 
 {- Various other lemmas -}
 
