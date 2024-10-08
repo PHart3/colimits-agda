@@ -106,7 +106,9 @@ module _ {i} {A : Type i} {a a' : A} where
       → s =ₛ u
     _=ₛ⟨_&_&_⟩_ s m n {r} p p' = =ₛ-in (s =↯=⟨ m & n & r & =ₛ-out p ⟩ =ₛ-out p')
 
-
+    {- A version of =ₛ making the fifth argument explicit,
+       to aid the type checker.
+    -}
     infixr 10 _=ₑ⟨_&_&_%_⟩_
     _=ₑ⟨_&_&_%_⟩_ : (s : a =-= a') {u : a =-= a'}
       → (m n : ℕ)
@@ -114,8 +116,7 @@ module _ {i} {A : Type i} {a a' : A} where
       → take n (drop m s) =ₛ r
       → take m s ∙∙ r ∙∙ drop n (drop m s) =ₛ u 
       → s =ₛ u
-    _=ₑ⟨_&_&_%_⟩_ s {u} m n r p seq = =ₛ-in (s =↯=⟨ m & n & r & =ₛ-out p ⟩ =ₛ-out seq)
-
+    _=ₑ⟨_&_&_%_⟩_ s m n r p seq = =ₛ-in (s =↯=⟨ m & n & r & =ₛ-out p ⟩ =ₛ-out seq)
 
     {- For rewriting everything using a [_==_] path. Example:
 

@@ -36,7 +36,7 @@ record GraphHom (G  : Graph ℓv  ℓe) (G' : Graph ℓv' ℓe')
 
 open GraphHom public
 
--- Diagrams are graph homomorphisms  with codomain Type
+-- Diagrams are graph homomorphisms with codomain Type
 
 Diag : ∀ ℓd (G : Graph ℓv ℓe) → Type (lmax (lmax ℓv ℓe) (lsucc ℓd))
 Diag ℓd G = GraphHom G (TypeGr ℓd)
@@ -53,6 +53,8 @@ CosDiag i j A G = GraphHom G (CosGr i j A)
 DiagForg : ∀ {i j} (A : Type j) (G : Graph ℓv ℓe) → CosDiag i j A G → Diag i G
 (DiagForg A G D) # x = ty (D # x)
 (DiagForg A G D) <#> f = fst (D <#> f) 
+
+-- Maps of diagrams
 
 record DiagMor {G : Graph ℓv ℓe} (F : Diag ℓd G) (F' : Diag ℓd' G)
          : Type (lmax (lmax ℓv ℓe) (lmax ℓd ℓd')) where
@@ -92,6 +94,8 @@ record CosCocone {i j k} (A : Type j) {G : Graph ℓv ℓe} (F : CosDiag i j A G
     comTri : ∀ {y x : Obj G} (f : Hom G x y) → [ A , F # x ] (< A > comp y ∘ F <#> f) ∼ comp x
  
 open CosCocone public
+
+-- Some operations on coslice cocones
 
 module  _ {ℓi ℓj k} {A : Type ℓj} {Γ : Graph ℓv ℓe} {F : CosDiag ℓi ℓj A Γ} {C : Coslice k ℓj A} where
 
