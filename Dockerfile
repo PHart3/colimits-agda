@@ -1,5 +1,5 @@
 ####################################################################################################
-# Stage 1: building Agda
+# Build Agda
 ####################################################################################################
 
 ARG GHC_VERSION=9.4.7
@@ -23,24 +23,25 @@ RUN \
   cabal v1-install --bindir=/dist --datadir=/dist --datasubdir=/dist/data --enable-executable-static
 
 ####################################################################################################
-# Stage 2: Download HoTT-Agda
+# Type check Agda files
 ####################################################################################################
 
 FROM alpine AS hottagda
 
-RUN apk add --no-cache git
-
-COPY ["HoTT-Agda", "/dist/Hott-Agda"]
-RUN echo "/dist/Hott-Agda/hott-core.agda-lib" > /dist/libraries
-
-###############################################################################################################
+COPY ["HoTT-Agda", "/build/Hott-Agda"]
+COPY ["Colimit-code", "/build/Colimit-code"]
 
 FROM alpine
 
 COPY --from=agda /dist /dist
-COPY --from=hottagda /dist /dist
+COPY --from=hottagda /build /build
 
-COPY ["Colimit-code", "/build/Colimit-code"]
+COPY ["Pullback-stability", "/build/Pullback-stability"]
+COPY agdacheck.sh /
+
+RUN echo "/build/Hott-Agda/hott-core.agda-lib" >> /dist/libraries
+RUN echo "/build/Colimit-code/cos-colim.agda-lib" >> /dist/libraries
+RUN echo "/build/Pullback-stability/stab.agda-lib" >> /dist/libraries
 
 WORKDIR /build/Colimit-code
 RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-0.agda
@@ -55,6 +56,7 @@ RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-3.agda
 RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-4.agda
 RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-5.agda
 RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-6.agda
+RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-7.agda
 RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap00.agda
 RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap01.agda
 RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap02.agda
@@ -80,4 +82,14 @@ RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap21.agda
 RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap22.agda
 RUN /dist/agda --library-file=/dist/libraries ./Main-Theorem/CosColim-Adjunction.agda
 
-CMD ["/dist/agda", "--html", "--library-file=/dist/libraries", "./Main-Theorem/CosColim-Adjunction.agda"]
+WORKDIR /build/Pullback-stability
+RUN /dist/agda --library-file=/dist/libraries ./Stability.agda
+
+####################################################################################################
+# Execute shell script to create html files
+####################################################################################################
+
+WORKDIR /build
+RUN ["chmod", "+x", "/agdacheck.sh"]
+
+CMD ["sh", "/agdacheck.sh"]
