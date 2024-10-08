@@ -463,13 +463,21 @@ module _ {i} {A : Type i} where
   transp-cst=idf-pentagon idp q idp =
     =ₛ-in (! (∙-unit-r (transp-cst=idf q idp)))
 
-{- A bunch of new helper lemmas -}
+{- Various lemmas on transporting identities -}
 
 module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
+
+  transp-pth : {x y : A} {g : A → B} (p : x == y) (q : f x == g x)
+    → transport (λ x → f x == g x) p q == (! (ap f p)) ∙ q ∙ (ap g p)
+  transp-pth idp q = ! (∙-unit-r q)
 
   transp-pth-s : {x y : A} {g : A → B} (p : x == y) (q : f x == g x)
     → transport (λ x → f x == g x) p q ◃∎ =ₛ (! (ap f p)) ◃∙ q ◃∙ (ap g p) ◃∎
   transp-pth-s idp q = =ₛ-in (! (∙-unit-r q))
+
+  transp-path-cmp-idf : (g : B → A) {x y : A} (p : x == y) (q : g (f x) == x)
+    → transport (λ z → g (f z) == z) p q ◃∎ =ₛ ! (ap g (ap f p)) ◃∙ q ◃∙ p ◃∎
+  transp-path-cmp-idf g idp q = =ₛ-in (! (∙-unit-r q))
 
   transp-pth-Rcmp : ∀ {k l} {C : Type k} {D : Type l} {h : C → A} {v : C → D} {u : D → B}
     {x y : C} (p : x == y) (q : u (v x) == f (h x))
@@ -484,10 +492,6 @@ module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
   transp-pth-l-s : {x y : A} {g : A → B} (p : x == y) (q : f x == g x)
     → transport (λ x → f x == g x) p q ◃∎ =ₛ ((! (ap f p)) ∙ q) ◃∙ (ap g p) ◃∎
   transp-pth-l-s idp q = =ₛ-in (! (∙-unit-r q))
-
-  transp-pth : {x y : A} {g : A → B} (p : x == y) (q : f x == g x)
-    → transport (λ x → f x == g x) p q == (! (ap f p)) ∙ q ∙ (ap g p)
-  transp-pth idp q = ! (∙-unit-r q)
 
   transp-pth-l : {x y : A} {g : A → B} (p : x == y) (q : f x == g x)
     → transport (λ x → f x == g x) p q == ((! (ap f p)) ∙ q) ∙ (ap g p)
