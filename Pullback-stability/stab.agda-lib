@@ -1,0 +1,6 @@
+name: stab
+depend:
+  hott-core-modified
+  cos-colim
+include:
+  ./

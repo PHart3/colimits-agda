@@ -16,6 +16,13 @@
   See `Colimit-code/README.md` for details and for the
   license of the work inside this directory.
 
+- `Pullback-stability/`
+
+  Our formalization of pullback stability (or universality)
+  for all ordinary colimits. See `Pullback-stability/README.md`
+  for details and for the license of the work inside this
+  directory.
+
 # Type-checking with Docker
 
 NOTE: We have successfully tested the following Docker container on Linux but not on other operating systems.
@@ -29,17 +36,21 @@ NOTE: We have successfully tested the following Docker container on Linux but no
    The building itself type checks the whole development. The type-checking
    is partitioned into multiple stages, for otherwise the type-checking
    could take an unacceptably long time. The entire build may take over an hour.
-   The type checking of `Colimit-code/` takes about 36 minutes on our host Ubuntu.
+   The type checking of all our Agda code takes about 36 minutes on our host Ubuntu.
 
 2. Generate HTML files:
 
    ```bash
-   mkdir -p ./html
-   docker run --mount type=bind,source=./html,target=/build/Colimit-code/html colimit
+   mkdir -p ./html1 ./html2
+   docker run --mount type=bind,source=./html1,target=/build/Colimit-code/html \
+     --mount type=bind,source=./html2,target=/build/Pullback-stability/html \
+     colimit
    ```
 
-   The HTML files will be under `html/` and `html/CosColim-Adjunction.html`
-   will be the entry point.
+   The HTML files will be under `html1/` and `html2/`.
+   The entry points will be
+   - `html1/CosColim-Adjunction.html`
+   - `html2/Stability.html`
 
 # Acknowledgement
 
