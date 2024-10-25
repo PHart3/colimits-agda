@@ -6,7 +6,6 @@ open import lib.Basics
 open import lib.types.Sigma
 open import lib.types.Pushout
 open import lib.types.Span
-open import lib.PathSeq
 open import Coslice
 open import Diagram
 open import Colim
@@ -61,11 +60,11 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
       ϵ {i} {j} g a = ! (ap right  (cglue g (fun (F # i) a))) ∙ (ap (right ∘ cin j) (snd (F <#> g) a)) ∙ (! (glue (cin j a)))
                         =⟪ E₁ (snd (F <#> g) a) (! (glue (cin j a))) ⟫
                       ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ idp
-                        =⟪ ! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ p) (ap (ap left) (id-βr g a)))  ⟫
+                        =⟪ ! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ p) (ap (ap left) (id-βr g a))) ⟫
                       ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ ap left (ap [id] (cglue g a))
                         =⟪ E₃ (λ x → ! (glue x)) (cglue g a) (ψ-βr g a) (λ x → idp) ⟫
                       ! (glue (cin i a)) ∙ idp
-                        =⟪ ∙-unit-r (! (glue (cin i a)))  ⟫
+                        =⟪ ∙-unit-r (! (glue (cin i a))) ⟫
                       ! (glue (cin i a)) ∎∎
 
     module Recc {ℓc} (T : Coslice ℓc ℓ A) where

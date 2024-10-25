@@ -3,7 +3,6 @@
 open import lib.Basics
 open import lib.types.Pushout
 open import lib.types.Span
-open import lib.PathSeq
 open import Coslice
 open import Diagram
 open import Colim
@@ -80,7 +79,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
         ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (∙-unit-r (! (glue (cin i a))))) ◃∙
         ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ idp) (cglue g a)) ◃∙
         ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a)) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
-        tranp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
+        transp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
         ap ! (H₁ (cglue g a) (! (snd (comp K j) a)) (ψ-βr g a)) ◃∙
         ap ! (H₂ (snd (F <#> g) a) (snd (comp K j) a) (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙
         ap ! (ap (λ p → p ∙ ! (! (fst (comTri K g) (fun (F # i) a)) ∙ ap (recc (comp K) (comTri K) ∘ cin j) (snd (F <#> g) a) ∙
@@ -114,26 +113,25 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
                (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
              ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
                fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙      
-               ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙                                            
-             ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
-               fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙      
-               ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (!-! (snd (comp K j) a)) ◃∙                                                                                                    
-             long-path-red (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (fun (F # i) a)) idp ◃∙                                                                    
-             ap-cp-revR (fst (recCosCoc K)) (fst (comp ColCoC j)) (snd (F <#> g) a)  (fst (comTri ColCoC g) (fun (F # i) a)) ◃∙                                                                         
-             ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (E₁ (snd (F <#> g) a) (! (glue (cin j a))))) ◃∙                                                                          
-               ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K)))                                                                                                                        
-             (! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ p) (ap (ap left) (id-βr g a))))) ◃∙                                         
-             ap (λ p → p ∙ idp) (ap (ap (fst (recCosCoc K))) (E₃ {f = left} {h = [id]} {u = right} (λ z → ! (glue z)) (cglue g a) (ψ-βr g a) (λ z → idp))) ◃∙                                           
-             ∙-unit-r (ap (fst (recCosCoc K)) (! (glue (cin i a)) ∙ idp)) ◃∙                                                                                                                            
-             ap-∙-cmp2 (fst (recCosCoc K)) left (! (glue (cin i a))) idp ◃∙                                                                                                                             
-             ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ idp) (cglue g a)) ◃∙                                                                                                                
-             ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a)) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙                                  
-             tranp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙                                                                                                       
-             ap ! (H₁ (cglue g a) (! (snd (comp K j) a)) (ψ-βr g a)) ◃∙                                                                                                                                 
-             ap ! (H₂ (snd (F <#> g) a) (snd (comp K j) a) (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙                                                                                  
+               ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
+                 ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
+               fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (!-! (snd (comp K j) a)) ◃∙
+               long-path-red (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (fun (F # i) a)) idp ◃∙
+             ap-cp-revR (fst (recCosCoc K)) (fst (comp ColCoC j)) (snd (F <#> g) a)  (fst (comTri ColCoC g) (fun (F # i) a)) ◃∙
+             ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (E₁ (snd (F <#> g) a) (! (glue (cin j a))))) ◃∙
+             ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙
+               cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ p) (ap (ap left) (id-βr g a))))) ◃∙                                         
+             ap (λ p → p ∙ idp) (ap (ap (fst (recCosCoc K))) (E₃ {f = left} {h = [id]} {u = right} (λ z → ! (glue z)) (cglue g a) (ψ-βr g a) (λ z → idp))) ◃∙
+             ∙-unit-r (ap (fst (recCosCoc K)) (! (glue (cin i a)) ∙ idp)) ◃∙
+             ap-∙-cmp2 (fst (recCosCoc K)) left (! (glue (cin i a))) idp ◃∙
+             ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ idp) (cglue g a)) ◃∙
+             ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a)) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
+             transp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
+             ap ! (H₁ (cglue g a) (! (snd (comp K j) a)) (ψ-βr g a)) ◃∙
+             ap ! (H₂ (snd (F <#> g) a) (snd (comp K j) a) (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙
              ap ! (ap (λ p → p ∙ ! (! (fst (comTri K g) (fun (F # i) a)) ∙ ap (recc (comp K) (comTri K) ∘ cin j) (snd (F <#> g) a) ∙ (snd (comp K j) a)))
-               (ap (λ p → ! (ap (fun T) p)) (id-βr g a))) ◃∙ 
-             ap ! (ap ! (snd (comTri K g) a)) ◃∙                                                                                                                                                        
+               (ap (λ p → ! (ap (fun T) p)) (id-βr g a))) ◃∙
+             ap ! (ap ! (snd (comTri K g) a)) ◃∙
              !-! (snd (comp K i) a) ◃∎
       Ξ-rewrite2 = Ξ-inst
           =ₛ⟨ Ξ-rewrite ⟩
@@ -157,7 +155,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
         ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (∙-unit-r (! (glue (cin i a))))) ◃∙
         ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ idp) (cglue g a)) ◃∙
         ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a)) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
-        tranp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
+        transp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
         ap ! (H₁ (cglue g a) (! (snd (comp K j) a)) (ψ-βr g a)) ◃∙
         ap ! (H₂ (snd (F <#> g) a) (snd (comp K j) a) (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙
         ap ! (ap (λ p → p ∙ ! (! (fst (comTri K g) (fun (F # i) a)) ∙ ap (recc (comp K) (comTri K) ∘ cin j) (snd (F <#> g) a) ∙ (snd (comp K j) a)))
@@ -186,7 +184,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
         ap-∙-cmp2 (fst (recCosCoc K)) left (! (glue (cin i a))) idp ◃∙
         ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ idp) (cglue g a)) ◃∙
         ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a)) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
-        tranp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
+        transp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
         ap ! (H₁ (cglue g a) (! (snd (comp K j) a)) (ψ-βr g a)) ◃∙
         ap ! (H₂ (snd (F <#> g) a) (snd (comp K j) a) (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙
         ap ! (ap (λ p → p ∙ ! (! (fst (comTri K g) (fun (F # i) a)) ∙ ap (recc (comp K) (comTri K) ∘ cin j) (snd (F <#> g) a) ∙ (snd (comp K j) a)))
@@ -197,29 +195,28 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
               fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (ap-inv-rid (fst (recCosCoc K))
               (glue (cin j a))) (ap ! (FPrecc-βr K (cin j a))) ⟩
         ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a)       
-               (snd (comp LRfun j) a)) ◃∙                                                                                                                                                               
-             ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
+               (snd (comp LRfun j) a)) ◃∙
+               ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
                fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙      
-               ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙                                            
-             ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
-               fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙      
-               ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (!-! (snd (comp K j) a)) ◃∙                                                                                                    
-             long-path-red (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (fun (F # i) a)) idp ◃∙                                                                    
-             ap-cp-revR (fst (recCosCoc K)) (fst (comp ColCoC j)) (snd (F <#> g) a)  (fst (comTri ColCoC g) (fun (F # i) a)) ◃∙                                                                         
-             ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (E₁ (snd (F <#> g) a) (! (glue (cin j a))))) ◃∙                                                                          
-               ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K)))                                                                                                                        
-             (! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ p) (ap (ap left) (id-βr g a))))) ◃∙                                         
-             ap (λ p → p ∙ idp) (ap (ap (fst (recCosCoc K))) (E₃ {f = left} {h = [id]} {u = right} (λ z → ! (glue z)) (cglue g a) (ψ-βr g a) (λ z → idp))) ◃∙                                           
-             ∙-unit-r (ap (fst (recCosCoc K)) (! (glue (cin i a)) ∙ idp)) ◃∙                                                                                                                            
-             ap-∙-cmp2 (fst (recCosCoc K)) left (! (glue (cin i a))) idp ◃∙                                                                                                                             
-             ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ idp) (cglue g a)) ◃∙                                                                                                                
-             ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a)) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙                                  
-             tranp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙                                                                                                       
-             ap ! (H₁ (cglue g a) (! (snd (comp K j) a)) (ψ-βr g a)) ◃∙                                                                                                                                 
-             ap ! (H₂ (snd (F <#> g) a) (snd (comp K j) a) (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙                                                                                  
+               ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
+               ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
+                 fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (!-! (snd (comp K j) a)) ◃∙
+               long-path-red (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (fun (F # i) a)) idp ◃∙
+               ap-cp-revR (fst (recCosCoc K)) (fst (comp ColCoC j)) (snd (F <#> g) a)  (fst (comTri ColCoC g) (fun (F # i) a)) ◃∙
+               ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (E₁ (snd (F <#> g) a) (! (glue (cin j a))))) ◃∙
+               ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K)))
+                 (! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ p) (ap (ap left) (id-βr g a))))) ◃∙
+               ap (λ p → p ∙ idp) (ap (ap (fst (recCosCoc K))) (E₃ {f = left} {h = [id]} {u = right} (λ z → ! (glue z)) (cglue g a) (ψ-βr g a) (λ z → idp))) ◃∙
+             ∙-unit-r (ap (fst (recCosCoc K)) (! (glue (cin i a)) ∙ idp)) ◃∙
+             ap-∙-cmp2 (fst (recCosCoc K)) left (! (glue (cin i a))) idp ◃∙
+             ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ idp) (cglue g a)) ◃∙
+             ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a)) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
+             transp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
+             ap ! (H₁ (cglue g a) (! (snd (comp K j) a)) (ψ-βr g a)) ◃∙
+             ap ! (H₂ (snd (F <#> g) a) (snd (comp K j) a) (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙
              ap ! (ap (λ p → p ∙ ! (! (fst (comTri K g) (fun (F # i) a)) ∙ ap (recc (comp K) (comTri K) ∘ cin j) (snd (F <#> g) a) ∙ (snd (comp K j) a)))
-               (ap (λ p → ! (ap (fun T) p)) (id-βr g a))) ◃∙ 
-             ap ! (ap ! (snd (comTri K g) a)) ◃∙                                                                                                                                                        
+               (ap (λ p → ! (ap (fun T) p)) (id-βr g a))) ◃∙
+             ap ! (ap ! (snd (comTri K g) a)) ◃∙
              !-! (snd (comp K i) a) ◃∎ ∎ₛ
 
 
@@ -243,7 +240,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
         ap-∙-cmp2 (fst (recCosCoc K)) left (! (glue x)) (L x) ◃∙
         ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ ap (fun T) (L z)) q) ◃∙
         ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) q) t ◃∙
-        tranp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) q (! R) ◃∙
+        transp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) q (! R) ◃∙
         ap ! (H₁ q (! R) E) ◃∎
           =ₛ
         Ξ-Red0 q (ap [id] q) U R (L (cin j a)) (glue (cin j a)) t

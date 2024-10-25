@@ -11,22 +11,28 @@ open import Diagram
 
 module FTID-Cos where
 
-module _ {ℓ} {B : Type ℓ} where
+module _ {ℓ} {A : Type ℓ} where
 
-  neg-rid-trip : {a b : B} (q : a == b) → ! q == ((! q ∙ idp) ∙ idp) ∙ idp
+  neg-rid-trip : {a b : A} (q : a == b) → ! q == ((! q ∙ idp) ∙ idp) ∙ idp
   neg-rid-trip idp = idp
 
-  db-neg-rid-db : {a b c : B} (q : a == b) (p : c == b) → ! (((q ∙ ! p) ∙ idp) ∙ idp) ∙ q == p
-  db-neg-rid-db idp idp = idp
+  !-∙-!-!-rid : {a b c : A} (q₁ : a == b) (q₂ : a == c) →  ! q₂ == ((! q₂ ∙ q₁) ∙ ! q₁) ∙ idp
+  !-∙-!-!-rid idp q₂ = neg-rid-trip q₂
 
-  !-∙-!-rid-∙-rid : {x y w z : B} (p : x == y) (q : w == z) (r : x == z) 
+  neg-rid-trip-inv : {a b c : A} (q₁ : a == b) (q₂ : b == c) → ! (((q₁ ∙ q₂) ∙ ! q₂) ∙ q₂) ∙ q₁ == ! q₂
+  neg-rid-trip-inv idp idp = idp 
+
+  db-neg-rid-db : {a b c : A} (q : a == b) (p : c == b) → ! (((q ∙ ! p) ∙ idp) ∙ idp) ∙ q == p
+  db-neg-rid-db q idp = neg-rid-trip-inv q idp
+
+  !-∙-!-rid-∙-rid : {x y w z : A} (p : x == y) (q : w == z) (r : x == z) 
     → ! (((q ∙ ! r) ∙ idp) ∙ p ∙ idp) ∙ q == ! p ∙ r
   !-∙-!-rid-∙-rid idp q r = db-neg-rid-db q r
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} where
 
   hmtpy-nat-rev : (H : f ∼ g) {x y : A} (p : x == y) {z : B} (q : f y == z) → ! (H x) == ap g p ∙ ((! (H y) ∙ q) ∙ ! q) ∙ ! (ap f p)
-  hmtpy-nat-rev H {x = x} idp idp = neg-rid-trip (H x) 
+  hmtpy-nat-rev H {x = x} idp q = !-∙-!-!-rid q (H x) 
 
   long-path-red : {x y : A} (p : x == y) {z : B} (q₁ : g y == z) (q₂ : f y  == z) {w : B} (P : f x == w) {v : B} (C : w == v)
     → ! ((ap g p ∙ (q₁ ∙ ! q₂) ∙ ! (ap f p)) ∙ P ∙ C) ∙ ap g p ∙ q₁ == ! C ∙ ! P ∙ ap f p ∙ q₂
@@ -40,11 +46,13 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
     field u : (i : Obj Γ) (a : A) → ! (W i (fun (F # i) a)) ∙ snd (comp K₁ i) a == snd (comp K₂ i) a    
     Ξ : (i j : Obj Γ) (g : Hom Γ i j) (a : A) → ! (! (W j (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙
       ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a =-=  snd (comp K₂ i) a
-    Ξ i j g a = ! (! (W j (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙ ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a
+    Ξ i j g a = ! (! (W j (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙ ap (fst (comp K₂ j))
+                  (snd (F <#> g) a) ∙ snd (comp K₂ j) a
                   =⟪ ap (λ p → ! (p ∙  fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙ ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a)
                     (hmtpy-nat-rev (W j) (snd (F <#> g) a) (snd (comp K₁ j) a)) ⟫
-                ! ((ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ ((! (W j (fun (F # j) a)) ∙ snd (comp K₁ j) a) ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
-                  fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙ ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a
+                ! ((ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ ((! (W j (fun (F # j) a)) ∙ snd (comp K₁ j) a) ∙ ! (snd (comp K₁ j) a)) ∙
+                  ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙
+                    ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a
                   =⟪ ap (λ p → ! ((ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
                     fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙ ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a) (u j a)  ⟫
                 ! ((ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ (snd (comp K₂ j) a ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
@@ -57,7 +65,8 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
                 snd (comp K₂ i) a ∎∎
     field
       Λ : {i j : Obj Γ} (g : Hom Γ i j) → Σ ((x : ty (F # i)) → ! (W j (fst (F <#> g) x)) ∙ fst (comTri K₁ g) x ∙ W i x == fst (comTri K₂ g) x)
-        (λ R → ((a : A) → ! (ap (λ p → ! p ∙ ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a) (R (fun (F # i) a))) ◃∙ Ξ i j g a =ₛ snd (comTri K₂ g) a ◃∎))
+        (λ R → ((a : A) → ! (ap (λ p → ! p ∙ ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a) (R (fun (F # i) a))) ◃∙
+          Ξ i j g a =ₛ snd (comTri K₂ g) a ◃∎))
         
   open CosCocEq public
 
@@ -100,7 +109,8 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
               ! ((ap (fst (fst (H j))) (snd (F <#> g) a) ∙ ((! (fst (snd (H j)) (fun (F # j) a)) ∙ snd (comp K₁ j) a) ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j))
                 (snd (F <#> g) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a
                 =⟪ ap (λ p → ! ((ap (fst (fst (H j))) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
-                  fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a) (snd (snd (H j)) a)  ⟫
+                  fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
+                    ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a) (snd (snd (H j)) a)  ⟫
               ! ((ap (fst (fst (H j))) (snd (F <#> g) a) ∙ (snd (fst (H j)) a ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
                 fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a
                 =⟪ long-path-red (snd (F <#> g) a) (snd (fst (H j)) a) (snd (comp K₁ j) a) (fst (comTri K₁ g) (fun (F # i) a)) (fst (snd (H i)) (fun (F # i) a)) ⟫
@@ -111,14 +121,16 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
               snd (fst (H i)) a ∎∎
 
   CosCocEq-tot-contr : is-contr (CosCocEq-tot)
-  CosCocEq-tot-contr = equiv-preserves-level ((Σ-contr-red (Π-level (λ i →  PtFunHomContr (comp K₁ i))))⁻¹) {{Π-level (λ i → (Π-level (λ j → (Π-level (λ g → 
-    equiv-preserves-level ((Σ-contr-red (FunHomContr {f = λ z → (fst (comTri K₁ g) z) ∙ idp}))⁻¹)
+  CosCocEq-tot-contr = equiv-preserves-level ((Σ-contr-red (Π-level (λ i →  PtFunHomContr (comp K₁ i))))⁻¹)
+    {{Π-level (λ i → (Π-level (λ j → (Π-level (λ g →  equiv-preserves-level ((Σ-contr-red (FunHomContr {f = λ z → (fst (comTri K₁ g) z) ∙ idp}))⁻¹)
     {{FunHomContr {f = λ a → ↯ (CCEq-Σ.ϕ (λ i → (comp K₁ i , (λ x → idp) , (λ a → idp))) i j g a)}}})))))}}
 
   CosCocEq-eq : CosCocEq-tot ≃ Σ (CosCocone A F T) (λ K₂ → CosCocEq K₂)
-  CosCocEq-eq = equiv (λ x → ((λ i → fst (fst x i)) & (λ {j} {i} g → (fst (fst (snd x i j g))) , (fst (snd (snd x i j g))))) , CocEq (λ i x₁ → fst (snd (fst x i)) x₁)
-    (λ i a → snd (snd (fst x i)) a) (λ {i} {j} g → (λ x₁ → snd (fst (snd x i j g)) x₁ ) , λ a → =ₛ-in (snd (snd (snd x i j g)) a)))
-    (λ ((r & K) , e) → (λ i → r i , (CosCocEq.W e i) , (CosCocEq.u e i)) , λ i j g → (fst (K g) , fst (CosCocEq.Λ e g)) , (snd (K g)) , (λ a → =ₛ-out (snd (CosCocEq.Λ e g) a)))
+  CosCocEq-eq = equiv (λ x → ((λ i → fst (fst x i)) & (λ {j} {i} g → (fst (fst (snd x i j g))) , (fst (snd (snd x i j g))))) ,
+    CocEq (λ i x₁ → fst (snd (fst x i)) x₁)
+      (λ i a → snd (snd (fst x i)) a) (λ {i} {j} g → (λ x₁ → snd (fst (snd x i j g)) x₁ ) , λ a → =ₛ-in (snd (snd (snd x i j g)) a)))
+    (λ ((r & K) , e) → (λ i → r i , (CosCocEq.W e i) , (CosCocEq.u e i)) , λ i j g → (fst (K g) , fst (CosCocEq.Λ e g)) , (snd (K g)) ,
+      (λ a → =ₛ-out (snd (CosCocEq.Λ e g) a)))
     (λ b → idp) λ a → idp
 
   CosCocEq-IDsys : ID-sys (CosCocone A F T) (λ K → CosCocEq K) K₁ center-CCEq
@@ -126,4 +138,3 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
 
   CosCocEq-ind : {K₂ : CosCocone A F T} → CosCocEq K₂ → K₁ == K₂
   CosCocEq-ind {K₂} e = ind (ID-ind {P = λ K s → K₁ == K} CosCocEq-IDsys) idp K₂ e
-

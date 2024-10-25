@@ -3,117 +3,131 @@
 open import lib.Basics
 open import lib.types.Pushout
 open import lib.types.Span
-open import lib.PathSeq
 open import Coslice
 open import Diagram
+open import Helper-paths
+open import FTID-Cos
 open import AuxPaths
-open import AuxPaths-v2
 open import Colim
+open import Cocone
 open import CosColimitMap00
-open import CosColimitMap01
-open import CosColimitMap02
-open import CosColimitMap09
+open import CosColimitMap06
+open import CosColimitMap07
+open import CosColimitMap08
 
 module CosColimitMap13 where
 
 module ConstrMap14 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : CosDiag ℓF ℓ A Γ} {G : CosDiag ℓG ℓ A Γ} (δ : CosDiagMor A F G) where
 
-  open ConstrMap2 δ
+  open ConstrMap δ
 
-  module MapCoher11 (i j : Obj Γ) (g : Hom Γ i j) (a : A) where
+  open Id Γ A
 
-    open ConstrMap10.MapCoher7 δ i j g a
+  open Maps
 
-    open ConstrMap3.MapCoher δ i j g a
+  module MapCoher13 {i j : Obj Γ} (g : Hom Γ i j) (a : A) where
 
-    𝕪-red4 = let
-      𝕗 = λ {e : ty (F # j)} (s₃ : e == fun (F # j) a) →
-        ! (ap (cin {D = ForgG} j) (ap (fst (G <#> g)) (snd (nat δ i) a) ∙ snd (G <#> g) a ∙
-        ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) s₃))) ∙ cglue g (fst (nat δ i) (fun (F # i) a))
-      in
-      ! (ap (λ p → p ∙ idp) (↯  (id-free glue (cglue g a) (ap (right ∘ cin i) (snd (nat δ i) a))))) ◃∙
-      ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] (cglue g a)))))  (ap ! (ap (_∙_ (ap (right ∘ cin i) (snd (nat δ i) a)))
-        (E₂-v2 (ψ₂-βr g a) (! (glue (cin j a)))))))) ◃∙
-      ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] (cglue g a))))) (ap ! (ap (_∙_ (ap (right ∘ cin i) (snd (nat δ i) a)))
-        (E₁-v2 (snd (G <#> g) a)))))) ◃∙
-      ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] (cglue g a))))) (ap !
-        (long-red-ap-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i)
-        right (snd (nat δ i) a) (snd (G <#> g) a) (snd (F <#> g) a)
-        (snd (nat δ j) a) (cglue g (fun (G # i) a))
-        (! (glue (cin j a))))))) ◃∙
-      ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] (cglue g a)))))
-        (ap ! (ap (λ p → ! (ap right (! (ap (cin j) (ap (fst (G <#> g)) (snd (nat δ i) a) ∙
-        snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a)))) ∙ p)) ∙
+    open ConstrMap7.MapCoher6 δ g a
+
+    open ConstrMap8.MapCoher7 δ g a
+    
+    open ConstrMap9.MapCoher8 δ g a
+
+    fib-coher-pre4 = 
+      ! (ap (λ p → ! p ∙ ap (right ∘ cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙
+        ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a))) (
+          ∙-unit-r (ap 𝕕₀ (ap right (cglue g (fun (F # i) a)))) ∙
+          ∘-ap 𝕕₀ right (cglue g (fun (F # i) a)) ∙
+          ap-∘ right δ₀ (cglue g (fun (F # i) a)) ∙
+          ap (ap right) (δ₀-βr g (fun (F # i) a)))) ◃∙
+      ap (λ p → ! (p ∙ ap 𝕕₀ (ap right (cglue g (fun (F # i) a))) ∙ idp) ∙
+        ap (right ∘ cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙
+        ! (glue (cin j a))) (hmtpy-nat-rev (λ x → idp) (snd (F <#> g) a) (ap 𝕕₀ (! (glue (cin j a))) ∙ idp)) ◃∙
+      ap (λ p → ! ((ap (right ∘ cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙
+        (p ∙ ! (ap 𝕕₀ (! (glue (cin j a))) ∙ idp)) ∙
+        ! (ap (𝕕₀ ∘ right ∘ cin j) (snd (F <#> g) a))) ∙ ap 𝕕₀ (ap right (cglue g (fun (F # i) a))) ∙ idp) ∙
+        ap (right ∘ cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙
+        ! (glue (cin j a))) (ap-inv-rid 𝕕₀ (glue (cin j a)) ∙ ap ! (𝕕-βr (cin j a)) ∙
+        !-!-ap-∘ (cin j) right (snd (nat δ j) a) (glue (cin j a))) ◃∙
+      long-path-red (snd (F <#> g) a) (ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
+        (ap 𝕕₀ (! (glue (cin j a))) ∙ idp)
+        (ap 𝕕₀ (ap right (cglue g (fun (F # i) a)))) idp ◃∙
+      ap (λ q → q) (ap-cp-revR 𝕕₀ (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))) ◃∙
+      ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (E₁ (snd (F <#> g) a) (! (glue (cin j a)))))) ◃∙
+      idp ◃∙
+      ap2-!-!-!-rid2 𝕕₀ (snd (F <#> g) a) (cglue g (fun (F # i) a)) (glue (cin j a)) ◃∙
+      ap (λ p → ! (! (ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) ∙ ap (right ∘ δ₀) (cglue g (fun (F # i) a))) ∙ ! p)
+        (𝕕-βr (cin j a)) ◃∙
+      ap (λ p → ! (! (ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) ∙ p) ∙
+        ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a)))))
+        (ap-∘ right δ₀ (cglue g (fun (F # i) a))) ◃∙
+      ap (λ p →  ! (! (ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) ∙ ap right p) ∙
+        ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a))))) (δ₀-βr g (fun (F # i) a)) ◃∙
+      ↯ (ap2-!5-2 right (cin j) (cglue g (fst (nat δ i) (fun (F # i) a)))
+        (ap (cin j) (comSq δ g (fun (F # i) a))) (snd (nat δ j) a)
+        (ap (right {d = SpCos₂} ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) (glue (cin j a))) ◃∎
+        =ₛ⟨ 2 & 7 & 𝕕-red (snd (F <#> g) a) (snd (nat δ j) a) (glue {d = SpCos₁} (cin j a))
+          (glue {d = SpCos₂} (cin j a)) (𝕕-βr (cin j a)) ⟩
+      ! (ap (λ p → ! p ∙ ap (right ∘ cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙
+        ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a))) (
+          ∙-unit-r (ap 𝕕₀ (ap right (cglue g (fun (F # i) a)))) ∙
+          ∘-ap 𝕕₀ right (cglue g (fun (F # i) a)) ∙
+          ap-∘ right δ₀ (cglue g (fun (F # i) a)) ∙
+          ap (ap right) (δ₀-βr g (fun (F # i) a)))) ◃∙
+      ap (λ p → ! (p ∙ ap 𝕕₀ (ap right (cglue g (fun (F # i) a))) ∙ idp) ∙
+        ap (right ∘ cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙
+        ! (glue (cin j a))) (hmtpy-nat-rev (λ x → idp) (snd (F <#> g) a) (ap 𝕕₀ (! (glue (cin j a))) ∙ idp)) ◃∙
+      ap (λ p → ! ((ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙
+        ((ap 𝕕₀ (! (glue (cin j a))) ∙ idp) ∙
+        ! (ap 𝕕₀ (! (glue (cin j a))) ∙ idp)) ∙
+        ! (ap (right ∘ δ₀ ∘ cin j) (snd (F <#> g) a))) ∙ p ∙ idp) ∙
         ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙
-        ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
-        (apCommSq2 (cin j ∘ fst (G <#> g)) (cin i) (cglue g)
-        (snd (nat δ i) a)))))) ◃∙
-      ↯ (δ₀-free (cglue g a) (snd (F <#> g) a) (snd (nat δ j) a)
-        (! (ap (cin j) (ap (fst (G <#> g)) (snd (nat δ i) a) ∙
-       snd (G <#> g) a ∙
-       ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a)))) ∙
-       cglue g (fst (nat δ i) (fun (F # i) a))) idp) ◃∙
-      ap (λ p → glue (cin i a) ∙ ap right (! p))
-        (ap (λ p → !
-          (!
-           (ap (cin j)
-            (ap (fst (G <#> g)) (snd (nat δ i) a) ∙
-             snd (G <#> g) a ∙
-             ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a))))
-           ∙ cglue g (fst (nat δ i) (fun (F # i) a)))
-          ∙
-          ap (cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙
-          ap (cin j) (snd (nat δ j) a) ∙ p) (ψ₂-βr g a)) ◃∙
-      ap (λ p → glue (cin i a) ∙ ap right (! p))
-        (long-red-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g))
-        (snd (nat δ i) a) (snd (G <#> g) a) (snd (F <#> g) a)
-        (snd (nat δ j) a) (cglue g (fst (nat δ i) (fun (F # i) a)))
-        (cglue g (fun (G # i) a))) ◃∙
-      ap (λ p → glue (cin i a) ∙ ap right (! p))
-        (apCommSq (cin j ∘ fst (G <#> g)) (cin i) (cglue g)
-        (snd (nat δ i) a)) ◃∎
-        =ₛ⟨ 5 & 1 & δ₀-free-eq (cglue g a) (snd (F <#> g) a) (snd (nat δ j) a)
-          (! (ap (cin j) (ap (fst (G <#> g)) (snd (nat δ i) a) ∙ snd (G <#> g) a ∙
-          ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a)))) ∙
-          cglue g (fst (nat δ i) (fun (F # i) a))) idp  ⟩
-      ! (ap (λ p → p ∙ idp) (↯  (id-free glue (cglue g a) (ap (right ∘ cin i) (snd (nat δ i) a))))) ◃∙
-      ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] (cglue g a)))))  (ap ! (ap (_∙_ (ap (right ∘ cin i) (snd (nat δ i) a)))
-        (E₂-v2 (ψ₂-βr g a) (! (glue (cin j a)))))))) ◃∙
-      ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] (cglue g a))))) (ap ! (ap (_∙_ (ap (right ∘ cin i) (snd (nat δ i) a)))
-        (E₁-v2 (snd (G <#> g) a)))))) ◃∙
-      ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] (cglue g a))))) (ap !
-        (long-red-ap-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i)
-        right (snd (nat δ i) a) (snd (G <#> g) a) (snd (F <#> g) a)
-        (snd (nat δ j) a) (cglue g (fun (G # i) a))
-        (! (glue (cin j a))))))) ◃∙
-      ! (ap (λ p → p ∙ idp) (ap (_∙_ (! (ap left (ap [id] (cglue g a)))))
-        (ap ! (ap (λ p → ! (ap right (! (ap (cin j) (ap (fst (G <#> g)) (snd (nat δ i) a) ∙
-        snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a)))) ∙ p)) ∙
+        ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a))) (∘-ap 𝕕₀ right (cglue g (fun (F # i) a))) ◃∙
+      ↯ (long-coher3 (right {d = SpCos₂}) (cin j) (snd (nat δ j) a) (ap (right ∘ cin j ∘ fst (nat δ j))
+        (snd (F <#> g) a)) (ap 𝕕₀ (! (glue (cin j a))) ∙ idp) (glue (cin j a))
+        (ap (right ∘ δ₀) (cglue g (fun (F # i) a)))) ◃∙
+      ap (λ p → ! (! (ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) ∙ p) ∙
+        ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a)))))
+        (ap-∘ right δ₀ (cglue g (fun (F # i) a))) ◃∙
+      ap (λ p →  ! (! (ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) ∙ ap right p) ∙
+        ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a))))) (δ₀-βr g (fun (F # i) a)) ◃∙
+      ↯ (ap2-!5-2 right (cin j) (cglue g (fst (nat δ i) (fun (F # i) a)))
+        (ap (cin j) (comSq δ g (fun (F # i) a))) (snd (nat δ j) a)
+        (ap (right {d = SpCos₂} ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) (glue (cin j a))) ◃∎ ∎ₛ
+
+    fib-coher-pre5 =
+      ! (ap (λ p → ! p ∙ ap (right ∘ cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙
+        ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a))) (
+          ∙-unit-r (ap 𝕕₀ (ap right (cglue g (fun (F # i) a)))) ∙
+          ∘-ap 𝕕₀ right (cglue g (fun (F # i) a)) ∙
+          ap-∘ right δ₀ (cglue g (fun (F # i) a)) ∙
+          ap (ap right) (δ₀-βr g (fun (F # i) a)))) ◃∙
+      ap (λ p → ! (p ∙ ap 𝕕₀ (ap right (cglue g (fun (F # i) a))) ∙ idp) ∙
+        ap (right ∘ cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙
+        ! (glue (cin j a))) (hmtpy-nat-rev (λ x → idp) (snd (F <#> g) a) (ap 𝕕₀ (! (glue (cin j a))) ∙ idp)) ◃∙
+      ap (λ p → ! ((ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙
+        ((ap 𝕕₀ (! (glue (cin j a))) ∙ idp) ∙
+        ! (ap 𝕕₀ (! (glue (cin j a))) ∙ idp)) ∙
+        ! (ap (right ∘ δ₀ ∘ cin j) (snd (F <#> g) a))) ∙ p ∙ idp) ∙
         ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙
-        ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
-        (apCommSq2 (cin j ∘ fst (G <#> g)) (cin i) (cglue g)
-        (snd (nat δ i) a)))))) ◃∙
-      δ₀-free-helper (cglue g a) (snd (F <#> g) a) (snd (nat δ j) a) (𝕗 (snd (F <#> g) a)) (ap ψ₂ (cglue g a)) ◃∙
-      ! (ap (λ p → p ∙ ap right (! (! (𝕗 (snd (F <#> g) a)) ∙ ap (cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a))))
-        (transp-pth-cmp (cglue g a) (glue (cin j a)))) ◃∙
-      ap (λ p → p ∙ ap right (! (! (𝕗 (snd (F <#> g) a)) ∙ ap (cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a))))
-        (apd-tr glue (cglue g a)) ◃∙
-      ap (λ p → glue (cin i a) ∙ ap right (! p))
-        (ap (λ p → !
-          (!
-           (ap (cin j)
-            (ap (fst (G <#> g)) (snd (nat δ i) a) ∙
-             snd (G <#> g) a ∙
-             ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a))))
-           ∙ cglue g (fst (nat δ i) (fun (F # i) a)))
-          ∙
-          ap (cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙
-          ap (cin j) (snd (nat δ j) a) ∙ p) (ψ₂-βr g a)) ◃∙
-      ap (λ p → glue (cin i a) ∙ ap right (! p))
-        (long-red-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g))
-        (snd (nat δ i) a) (snd (G <#> g) a) (snd (F <#> g) a)
-        (snd (nat δ j) a) (cglue g (fst (nat δ i) (fun (F # i) a)))
-        (cglue g (fun (G # i) a))) ◃∙
-      ap (λ p → glue (cin i a) ∙ ap right (! p))
-        (apCommSq (cin j ∘ fst (G <#> g)) (cin i) (cglue g)
-        (snd (nat δ i) a)) ◃∎ ∎ₛ
+        ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a))) (∘-ap 𝕕₀ right (cglue g (fun (F # i) a))) ◃∙
+      ↯ (long-coher3 (right {d = SpCos₂}) (cin j) (snd (nat δ j) a) (ap (right ∘ cin j ∘ fst (nat δ j))
+        (snd (F <#> g) a)) (ap 𝕕₀ (! (glue (cin j a))) ∙ idp) (glue (cin j a))
+        (ap (right ∘ δ₀) (cglue g (fun (F # i) a)))) ◃∙
+      ap (λ p → ! (! (ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) ∙ p) ∙
+        ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a)))))
+        (ap-∘ right δ₀ (cglue g (fun (F # i) a))) ◃∙
+      ap (λ p →  ! (! (ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) ∙ ap right p) ∙
+        ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a))))) (δ₀-βr g (fun (F # i) a)) ◃∙
+      ↯ (ap2-!5-2 right (cin j) (cglue g (fst (nat δ i) (fun (F # i) a)))
+        (ap (cin j) (comSq δ g (fun (F # i) a))) (snd (nat δ j) a)
+        (ap (right {d = SpCos₂} ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) (glue (cin j a))) ◃∎
+        =ₛ⟨ 0 & 6 & δ₀-red (δ₀-βr g (fun (F # i) a)) ⟩
+      ↯ (δ₀-free (! (ap (cin j) (comSq δ g (fun (F # i) a))) ∙ cglue g (fst (nat δ i) (fun (F # i) a)))
+        (snd (nat δ j) a) (glue (cin j a)) (ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a))) ◃∙
+      ↯ (ap2-!5-2 right (cin j) (cglue g (fst (nat δ i) (fun (F # i) a)))
+        (ap (cin j) (comSq δ g (fun (F # i) a))) (snd (nat δ j) a)
+        (ap (right {d = SpCos₂} ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) (glue (cin j a))) ◃∎
+        =ₛ⟨ δ₀-comSq-red (cglue g (fst (nat δ i) (fun (F # i) a))) (ap (cin j) (comSq δ g (fun (F # i) a)))
+              (snd (nat δ j) a) (ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) (glue (cin j a))  ⟩
+      idp ◃∎ ∎ₛ

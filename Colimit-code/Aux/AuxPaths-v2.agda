@@ -2,14 +2,8 @@
 
 open import lib.Basics
 open import FTID
-open import AuxPaths
 
 module AuxPaths-v2 where
-
-module _  {i j k l} {A : Type i} {B : Type j} {C : Type k} {D : Type l} {f : A → B}  {h : C → A} {v : C → D} {u : D → B} where
-
-  pth-tri-∘ : (q : u ∘ v ∼ f ∘ h) {x y : C} (p : x == y) →  ! (ap u (ap v p)) ∙ q x ∙ ap f (ap h p) == q y
-  pth-tri-∘ q {x = x} idp = ∙-unit-r (q x)
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} {x : A} {z : B} where
 

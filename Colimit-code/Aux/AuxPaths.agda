@@ -16,6 +16,12 @@ module _ {ℓ₁ ℓ₂ k l} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} {
     → ! (ap u S) ∙ q x ∙ L x ∙ ap f (ap h p) == q y ∙ L y
   E₃ q {x = x} idp idp L = ap (λ p → q x ∙ p) (∙-unit-r (L x)) 
 
+module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} (h : A → C) (g : C → B) where
+
+  !-!-ap-∘ : {x y : A} (p : x == y) {b : B} (q : b == g (h y))
+    → ! (q ∙ ap g (! (ap h p))) == ap (g ∘ h) p ∙ ! q
+  !-!-ap-∘ idp q = ap ! (∙-unit-r q)
+
 module _ {i j} {A : Type i} {B : Type j} {f g h : A →  B} {F : (x : A) → f x == g x} {G : (x : A) → g x == h x} where
 
   apd-∙-r : {x y : A} (κ : x == y) → transport (λ z → f z == h z) κ (F x ∙ G x) == transport (λ z → f z == g z) κ (F x) ∙ G y
@@ -31,3 +37,6 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} {g h : A → B} {f : A �
 
   apd-ap-∙-l-coher : {x y : A} (κ : x == y) → apd-tr (λ z → F z ∙ ap ψ (! (G z))) κ ◃∎  =ₛ apd-ap-∙-l κ ◃∙ ap (λ p → F y ∙ ap ψ (! p)) (apd-tr G κ) ◃∎
   apd-ap-∙-l-coher idp = =ₛ-in idp
+
+  apd-ap-∙-l-! : {x y : A} (κ : x == y) → transport (λ z →  ψ (h z) == f z) κ (! (F x ∙ ap ψ (! (G x)))) == ! (F y ∙ ap ψ (! (transport (λ z → h z == g z) κ (G x))))
+  apd-ap-∙-l-! idp = idp

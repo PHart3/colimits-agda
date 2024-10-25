@@ -8,7 +8,6 @@
 open import lib.Basics
 open import lib.types.Pushout
 open import lib.types.Span
-open import lib.PathSeq
 open import Coslice
 open import Diagram
 open import Colim
@@ -37,18 +36,22 @@ module CC-v2-Constr {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
     →  E₁ {f = right} {g = cin j} idp q == E₂-v2 {f = right} {p = ap ψ (cglue g a)} idp q
   E-eq-helper idp = idp
 
-  E-eq : (q : (z : Colim (ConsDiag Γ A)) →  right {d = SpCos} (ψ z) == left ([id] z)) {x : ty (F # j)} (σ : x == fun (F # j) a) (T₁ : ap [id] (cglue g a) == idp)
-    (R : cin j x == ψ (cin i a)) (T₂ : ap ψ (cglue g a) == ! (ap (cin j) σ) ∙ R)
-    → E₁ σ (q (cin j a)) ◃∙ ! (ap (λ p → ! (ap right (! (ap (cin j) σ) ∙ R)) ∙ q (cin j a) ∙ p) (ap (ap left) T₁)) ◃∙ E₃ q (cglue g a) T₂ (λ z → idp) ◃∙ ∙-unit-r (q (cin i a)) ◃∎
+  E-eq : (q : (z : Colim (ConsDiag Γ A)) →  right {d = SpCos} (ψ z) == left ([id] z)) {x : ty (F # j)} (σ : x == fun (F # j) a)
+    (T₁ : ap [id] (cglue g a) == idp) (R : cin j x == ψ (cin i a)) (T₂ : ap ψ (cglue g a) == ! (ap (cin j) σ) ∙ R)
+    → E₁ σ (q (cin j a)) ◃∙ ! (ap (λ p → ! (ap right (! (ap (cin j) σ) ∙ R)) ∙ q (cin j a) ∙ p) (ap (ap left) T₁)) ◃∙
+      E₃ q (cglue g a) T₂ (λ z → idp) ◃∙
+      ∙-unit-r (q (cin i a)) ◃∎
       =ₛ
     E₁-v2 σ ◃∙ E₂-v2 T₂ (q (cin j a)) ◃∙ E₃-v2 {f = left} q (cglue g a) T₁ ◃∎
   E-eq q idp T₁ R T₂ = =ₛ-in (lemma R T₂)
     where
       lemma : (r : ψ (cin j a) == ψ (cin i a)) (τ : ap ψ (cglue g a) == r)
-        → E₁ {f = right} {g = cin j} idp (q (cin j a)) ∙ ! (ap (λ p → ! (ap right r) ∙ q (cin j a) ∙ p) (ap (ap left) T₁)) ∙ E₃ q (cglue g a) τ (λ z → idp) ∙ ∙-unit-r (q (cin i a))
+        → E₁ {f = right} {g = cin j} idp (q (cin j a)) ∙ ! (ap (λ p → ! (ap right r) ∙ q (cin j a) ∙ p) (ap (ap left) T₁)) ∙
+          E₃ q (cglue g a) τ (λ z → idp) ∙ ∙-unit-r (q (cin i a))
         == E₂-v2 τ (q (cin j a)) ∙ E₃-v2 {f = left} {u = right} q (cglue g a) T₁
-      lemma r idp = ap (λ p → p ∙ ! (ap (λ p → ! (ap right (ap ψ (cglue g a))) ∙ q (cin j a) ∙ p) (ap (ap left) T₁)) ∙ E₃ q (cglue g a) idp (λ z → idp) ∙ ∙-unit-r (q (cin i a)))
-        (E-eq-helper (q (cin j a))) ∙ ap (λ p → E₂-v2 {f = right} {p = ap ψ (cglue g a)} idp (q (cin j a)) ∙ p) (lemma2 (cglue g a) T₁)
+      lemma r idp = ap (λ p → p ∙ ! (ap (λ p → ! (ap right (ap ψ (cglue g a))) ∙ q (cin j a) ∙ p) (ap (ap left) T₁)) ∙
+        E₃ q (cglue g a) idp (λ z → idp) ∙ ∙-unit-r (q (cin i a))) (E-eq-helper (q (cin j a))) ∙
+        ap (λ p → E₂-v2 {f = right} {p = ap ψ (cglue g a)} idp (q (cin j a)) ∙ p) (lemma2 (cglue g a) T₁)
           where
             lemma2 : {y : Colim (ConsDiag Γ A)} (c : (cin j a) == y) {v : a == [id] y} (t : ap [id] c == v)
               → ! (ap (λ p → ! (ap right (ap ψ c)) ∙ q (cin j a) ∙ p) (ap (ap left) t)) ∙ E₃ q c idp (λ z → idp) ∙ ∙-unit-r (q y) == E₃-v2 q c t
