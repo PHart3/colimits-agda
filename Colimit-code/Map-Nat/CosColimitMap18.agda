@@ -4,6 +4,7 @@ open import lib.Basics
 open import lib.types.Pushout
 open import lib.types.Span
 open import AuxPaths
+open import Helper-paths
 open import FTID
 open import FTID-Cos
 open import Coslice
