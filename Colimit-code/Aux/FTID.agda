@@ -73,7 +73,8 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂
     ap k s ∙ ! (ap f (! (ap u (ap v p)) ∙ r x ∙ ap τ s) ∙ fₚ (h y)) 
   cmp-helper {x = x} {y = y} p s r {k = k} fₚ = IndFunHom
     {P = λ m F → ! (ap (f ∘ u) (ap v p)) ∙ (ap (f ∘ u) (ap v p) ∙ (ap f (r y) ∙ F (h y)) ∙ ! (ap m s)) ∙ ap m s ∙ ! (ap f (r y) ∙ F (h y))
-      == ! (ap (f ∘ u) (ap v p)) ∙ (ap f (r x) ∙ F (h x)) ∙ ap m s ∙ ! (ap f (! (ap u (ap v p)) ∙ r x ∙ ap τ s) ∙ F (h y))} (coher1 s p (r y) ∙ coher2 s p (r x)) k fₚ
+      == ! (ap (f ∘ u) (ap v p)) ∙ (ap f (r x) ∙ F (h x)) ∙ ap m s ∙ ! (ap f (! (ap u (ap v p)) ∙ r x ∙ ap τ s) ∙ F (h y))}
+        (coher1 s p (r y) ∙ coher2 s p (r x)) k fₚ
     module CMPH where
       coher1 : {a b : A} (σ : a == b) {c d : C} (P : c == d) (R : u (v d) == τ b)
         → ! (ap (f ∘ u) (ap v P)) ∙ (ap (f ∘ u) (ap v P) ∙ (ap f R ∙ idp) ∙ ! (ap (f ∘ τ) σ)) ∙ ap (f ∘ τ) σ ∙ ! (ap f R ∙ idp) == idp
@@ -101,7 +102,7 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} (f : < A >
     Σ ((a : A) → h (fun X a) == fun Y a) (λ p → ((a : A) → ! (K (fun X a)) ∙ (snd f a) == p a))))
   PtFunHomContr-aux = equiv-preserves-level
     ((Σ-contr-red {P = (λ (h , K) → Σ ((a : A) → h (fun X a) == fun Y a) (λ p → ((a : A) → ! (K (fun X a)) ∙ (snd f a) == p a)))}
-      (FunHomContr {f = fst f}))⁻¹) {{equiv-preserves-level ((Σ-emap-r (λ q → app=-equiv))) {{pathfrom-is-contr (snd f)}} }} 
+      (FunHomContr {f = fst f}))⁻¹) {{ equiv-preserves-level ((Σ-emap-r (λ q → app=-equiv))) {{pathfrom-is-contr (snd f)}} }} 
 
   open MapsCos A
 

@@ -1,7 +1,6 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
 open import lib.Basics
-open import lib.types.Sigma
 open import lib.types.Pushout
 open import lib.types.Span
 open import Coslice

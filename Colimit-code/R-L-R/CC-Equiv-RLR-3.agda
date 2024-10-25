@@ -129,7 +129,7 @@ module ConstrE2Cont3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type 
                (fst (comTri K g) (fun (F # i) a)) (recc-βr K g (fun (F # i) a)) (snd (comp K i) a) (snd (comTri K g) a) ∙∙
              !-! (snd (comp K i) a) ◃∎)
                =ₑ⟨ 0 & 13 & ((snd (comTri K g) a) ◃∙ ! (!-! (snd (comp K i) a)) ◃∎) % Ξ-Red2Eq (snd (comp K j) a)
-                 (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) (recc-βr K g (fun (F # i) a)) (snd (comTri K g) a)  ⟩
+                 (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) (recc-βr K g (fun (F # i) a)) (snd (comTri K g) a) ⟩
              (snd (comTri K g) a) ◃∙
              ! (!-! (snd (comp K i) a)) ◃∙
              !-! (snd (comp K i) a) ◃∎ ∎ₛ
@@ -140,5 +140,6 @@ module ConstrE2Cont3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type 
                =ₛ⟨ =ₛ-in (ap (λ p → (snd (comTri K g) a) ∙ p) (!-inv-l (!-! (snd (comp K i) a))) ∙ ∙-unit-r (snd (comTri K g) a)) ⟩
              snd (comTri K g) a ◃∎ ∎ₛ
 
-    Λ-eq : ! (ap (λ p → ! p ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (↯ (FunHomEq g (fun (F # i) a)))) ◃∙ Ξ-inst =ₛ snd (comTri K g) a ◃∎
+    Λ-eq : ! (ap (λ p → ! p ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (↯ (FunHomEq g (fun (F # i) a)))) ◃∙ Ξ-inst
+      =ₛ snd (comTri K g) a ◃∎
     Λ-eq = Λ-eq0 ∙ₛ (Λ-eq1 ∙ₛ (Λ-eq2-pre ∙ₛ (Λ-eq2 ∙ₛ (Λ-eq3 ∙ₛ Λ-eq4))))

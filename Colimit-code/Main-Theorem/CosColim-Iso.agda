@@ -13,6 +13,10 @@ open import CC-Equiv-RLR-4
 
 module CosColim-Iso where
 
+{-
+  This module shows that the post-composition map on our A-cocone construction is an equivalence.
+-}
+
 module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
   open MapsCos A

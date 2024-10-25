@@ -23,7 +23,7 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
     abstract
 
-      SliceRW : ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
+      SliceRW :   ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
                     (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₂-v2 (ψ-βr g a) (! (glue (cin j (idf A a))))))))) ◃∙
                   ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙
                     (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₁-v2 (snd (F <#> g) a)))))) ◃∙
@@ -40,7 +40,7 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
                   cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a)) ◃∎
                     =ₛ
                   inv-canc-cmp f right (ap ψ (cglue g a)) (! (glue (cin j (idf A a)))) (fₚ a) ◃∎
-      SliceRW = ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
+      SliceRW =   ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
                     (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₂-v2 (ψ-βr g a) (! (glue (cin j (idf A a))))))))) ◃∙
                   ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙
                     (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₁-v2 (snd (F <#> g) a)))))) ◃∙
@@ -91,34 +91,20 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
                   ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
                   cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a)))) ◃∎
                      =ₛ
-                   ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ◃∙
+                  ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ◃∙
                   ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)) (O₄ {f = f ∘ right} {h = ψ} {u = fun T}
                     (λ x → ap f (! (glue x)) ∙ fₚ ([id] x)) (cglue g a) (id-βr g a))) ◃∙
                   ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f)
                     (E₃-v2 {f = left} {v = ψ} {u = right} (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))) ◃∙
                   inv-canc-cmp f right (ap ψ (cglue g a)) (! (glue (cin j (idf A a)))) (fₚ a) ◃∎ -- apd-tr-refl {f = f ∘ right} {h = ψ} (cglue g a) ◃∎  
       RightRW1 = =ₛ-in
-                     (ap
-                      (λ r →
-                         ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ∙
-                         !
-                         (ap
-                          (λ p →
-                             ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙
-                             p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a))
-                          (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x)) (cglue g a)
-                           (id-βr g a)))
-                         ∙
-                         !
-                         (ap
-                          (λ q →
-                             ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙
-                             (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
-                          (ap !
-                           (ap (λ q → q ∙ fₚ a)
-                            (ap (ap f) (E₃-v2 (λ x → ! (glue x)) (cglue g a) (id-βr g a))))))
-                         ∙ r)
-                      (=ₛ-out SliceRW)) 
+                     (ap (λ r → ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ∙
+                       ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙
+                       p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)) (O₄ (λ x → ap f (! (glue x)) ∙
+                       fₚ ([id] x)) (cglue g a) (id-βr g a))) ∙ ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙
+                       (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f)
+                       (E₃-v2 (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))) ∙ r)
+                       (=ₛ-out SliceRW)) 
 
     module _ where
 

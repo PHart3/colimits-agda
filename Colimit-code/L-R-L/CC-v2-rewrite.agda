@@ -21,9 +21,10 @@ module _ {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag
     κ = PostComp ColCoC (f , fₚ)
 
     Ω : ! (fst (comTri κ g) (fun (F # i) a)) ∙ snd (< A > comp κ j ∘ F <#> g) a =-= snd (comp κ i) a
-    Ω = (ap-cp-revR f (right ∘ cin j ) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))) ◃∙ (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₁-v2 {g = cin j} {R = cglue g (fun (F # i) a)}
-          (snd (F <#> g) a)))) ◃∙ (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₂-v2 {p = ap ψ (cglue g a)} (ψ-βr g a) (! (glue (cin j a)))))) ◃∙
-        (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₃-v2 {f = left} {v = ψ} {u = right} (λ x → ! (glue x)) (cglue g a) (id-βr g a)))) ◃∎
+    Ω = (ap-cp-revR f (right ∘ cin j ) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))) ◃∙ (ap (λ q → q ∙ fₚ a)
+      (ap (ap f) (E₁-v2 {g = cin j} {R = cglue g (fun (F # i) a)}
+        (snd (F <#> g) a)))) ◃∙ (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₂-v2 {p = ap ψ (cglue g a)} (ψ-βr g a) (! (glue (cin j a)))))) ◃∙
+      (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₃-v2 {f = left} {v = ψ} {u = right} (λ x → ! (glue x)) (cglue g a) (id-βr g a)))) ◃∎
           
     Ω-pth4 : ! (↯ (ap-seq (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap-seq ! Ω))) ◃∎ =ₛ
          ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (ap (λ q → q ∙ fₚ a)

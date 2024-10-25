@@ -58,7 +58,7 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
       ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a))
         (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
       apd-tr (λ z → ! (σ (comp K) (comTri K) z)) (cglue g a) ◃∎
-        =ₛ⟨ 2 & 1 & apd-tr-inv-fn (fun T ∘ [id]) (reccForg K ∘ ψ) (σ (comp K) (comTri K)) (cglue g a)  ⟩
+        =ₛ⟨ 2 & 1 & apd-tr-inv-fn (fun T ∘ [id]) (reccForg K ∘ ψ) (σ (comp K) (comTri K)) (cglue g a) ⟩
       ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ idp) (cglue g a)) ◃∙
       ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a))
         (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
@@ -91,7 +91,7 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
     Ξ-RW1 =
       Ξ-inst
         =ₛ⟨ 1 & 1 & ap-seq-∙ (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
-          fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (CompEq j a)  ⟩
+          fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (CompEq j a) ⟩
       ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
         (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
       ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
@@ -122,7 +122,7 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
       long-path-red (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (fun (F # i) a)) idp ◃∙
       ap (λ p → p) (snd (comTri LRfun g) a) ◃∙
       CompEq i a
-        =ₑ⟨ 5 & 1 &  (snd (comTri LRfun g) a ◃∎)  % =ₛ-in ((ap-idf (snd (comTri LRfun g) a)))  ⟩
+        =ₑ⟨ 5 & 1 &  (snd (comTri LRfun g) a ◃∎)  % =ₛ-in ((ap-idf (snd (comTri LRfun g) a))) ⟩
       ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
         (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
       ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
@@ -157,7 +157,7 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
                       ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a))
                     (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
                     transp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
-                    ap-seq ! (η (comp K) (comTri K) i j g a)) ◃∎) % =ₛ-in (=ₛ-out (FPrecc-transf i j g a))  ⟩
+                    ap-seq ! (η (comp K) (comTri K) i j g a)) ◃∎) % =ₛ-in (=ₛ-out (FPrecc-transf i j g a)) ⟩
       ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
         (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
       ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
@@ -253,7 +253,7 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
       ap ! (ap ! (snd (comTri K g) a)) ◃∙
       !-! (snd (comp K i) a) ◃∎
         =ₑ⟨ 5 & 1 & (ap-cp-revR (fst (recCosCoc K)) (fst (comp ColCoC j)) (snd (F <#> g) a)  (fst (comTri ColCoC g) (fun (F # i) a)) ◃∙
-      ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (↯ (ϵ g g a))) ◃∎)  % =ₛ-in idp  ⟩
+      ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (↯ (ϵ g g a))) ◃∎)  % =ₛ-in idp ⟩
       ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
         (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
       ap (λ p → ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙

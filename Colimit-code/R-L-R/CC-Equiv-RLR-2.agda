@@ -33,15 +33,16 @@ module _ {ℓ} {A : Type ℓ} where
     → ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ ◃∙ ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (!-! r) ◃∙ db-neg-rid-db r idp ◃∙
       ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
       =ₛ ! (∙-unit-r r) ◃∎
-  coher-rid-trip r τ = ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ ◃∙ ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (!-! r) ◃∙ db-neg-rid-db r idp ◃∙
-                       ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
-                         =ₛ₁⟨ 0 & 2 & ∙-ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ (!-! r)  ⟩
-                       ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (τ ∙ !-! r) ◃∙ db-neg-rid-db r idp ◃∙ ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
-                         =ₛ₁⟨ 2 & 2 & ∙-ap (λ p → p ∙ idp) τ (!-! r)  ⟩ 
-                       ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (τ ∙ !-! r) ◃∙ db-neg-rid-db r idp ◃∙ ap (λ p → p ∙ idp) (τ ∙ !-! r) ◃∎
-                         =ₛ⟨  helper-coher-rid r (τ ∙ !-! r) ⟩
-                       ! (∙-unit-r r) ◃∎ ∎ₛ
-                         
+  coher-rid-trip r τ =
+    ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ ◃∙ ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (!-! r) ◃∙ db-neg-rid-db r idp ◃∙
+      ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
+      =ₛ₁⟨ 0 & 2 & ∙-ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ (!-! r) ⟩
+    ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (τ ∙ !-! r) ◃∙ db-neg-rid-db r idp ◃∙ ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
+      =ₛ₁⟨ 2 & 2 & ∙-ap (λ p → p ∙ idp) τ (!-! r) ⟩ 
+    ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (τ ∙ !-! r) ◃∙ db-neg-rid-db r idp ◃∙ ap (λ p → p ∙ idp) (τ ∙ !-! r) ◃∎
+        =ₛ⟨  helper-coher-rid r (τ ∙ !-! r) ⟩
+    ! (∙-unit-r r) ◃∎ ∎ₛ
+
 module ConstrE2Cont2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) (K : CosCocone A F T) where
 
   open ConstrE2Cont F T K public

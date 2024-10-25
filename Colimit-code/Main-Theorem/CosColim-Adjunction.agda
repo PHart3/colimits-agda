@@ -18,11 +18,9 @@ module CosColim-Adjunction where
 
 {-
 
-  This module contains our final proof, which shows that our pushout
-  construction satisfies the universal property of an A-colimit,
-  namely that it's left adjoint to the constant diagram functor.
-  We construct such an adjunction by presenting the expected
-  natural isomorphism.
+  This module shows that our pushout construction satisfies the universal property of an A-colimit,
+  namely that it's left adjoint to the constant diagram functor. We construct such an adjunction
+  by presenting the expected natural isomorphism.
 
 -}
 

@@ -376,13 +376,18 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k}
   homotopy-naturality2 {a₀ = a} {b₀ = b} idp idp =
     =ₛ-in (! (∙-unit-r (h a b)))
 
-module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f g : A → B) (H : (x : A) → f x ==  g x) where
+module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f g : A → B) (H : (x : A) → f x == g x) where
 
   apCommSq : {x y : A} (p : x == y) → ! (H x) ∙ ap f p ∙ H y == ap g p
   apCommSq {x = x} idp = !-inv-l (H x)
 
   apCommSq2 : {x y : A} (p : x == y) → H x == ap f p ∙ H y ∙ ! (ap g p)
   apCommSq2 {x = x} idp = ! (∙-unit-r (H x))
+
+module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H : (x : A) → f x == g x) where
+
+  hmtpy-nat-! : {x y : A} (p : x == y) → ! (H x) == ap g p ∙ ! (H y) ∙ ! (ap f p)
+  hmtpy-nat-! {x = x} idp = ! (∙-unit-r (! (H x)))
 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {f : A → B} {g : A → C}
   (v : B → D) (u : C → D) (H : (x : A) → v (f x) == u (g x)) where

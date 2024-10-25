@@ -13,10 +13,32 @@ module _ {ℓ₁} {A : Type ℓ₁} where
     → ap ! (∙-unit-r p) ∙ ! (ap (λ q → q) (∙-unit-r (! p))) ∙ idp == !-∙ p idp ∙ ! (∙-unit-r (! p))
   ap-idp-unit-r idp = idp
 
+  neg-rid-trip : {a b : A} (q : a == b) → ! q == ((! q ∙ idp) ∙ idp) ∙ idp
+  neg-rid-trip idp = idp
+
+  !-∙-!-!-rid : {a b c : A} (q₁ : a == b) (q₂ : a == c) →  ! q₂ == ((! q₂ ∙ q₁) ∙ ! q₁) ∙ idp
+  !-∙-!-!-rid idp q₂ = neg-rid-trip q₂
+
+  neg-rid-trip-inv : {a b c : A} (q₁ : a == b) (q₂ : b == c) → ! (((q₁ ∙ q₂) ∙ ! q₂) ∙ q₂) ∙ q₁ == ! q₂
+  neg-rid-trip-inv idp idp = idp
+
+  db-neg-rid-db : {a b c : A} (q : a == b) (p : c == b) → ! (((q ∙ ! p) ∙ idp) ∙ idp) ∙ q == p
+  db-neg-rid-db q idp = neg-rid-trip-inv q idp
+
+  !-∙-!-rid-∙-rid : {x y w z : A} (p : x == y) (q : w == z) (r : x == z)
+    → ! (((q ∙ ! r) ∙ idp) ∙ p ∙ idp) ∙ q == ! p ∙ r
+  !-∙-!-rid-∙-rid idp q r = db-neg-rid-db q r
+
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f : A → B) where
 
   ap-inv-rid : {x y : A} (p : x == y) → ap f (! p) ∙ idp == ! (ap f p)
   ap-inv-rid idp = idp
+
+module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} where
+
+  hmtpy-nat-rev : (H : f ∼ g) {x y : A} (p : x == y) {z : B} (q : f y == z) →
+    ! (H x) == ap g p ∙ ((! (H y) ∙ q) ∙ ! q) ∙ ! (ap f p)
+  hmtpy-nat-rev H {x = x} idp q = !-∙-!-!-rid q (H x)
 
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} (f : A → B) (g : B → C) where
 
@@ -33,8 +55,9 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {B : Type ℓ₁} {C : Type ℓ₂} {E : Type �
 
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} (f : A → B) (g : B → C) where
 
-  long-path-red2 : ∀ {ℓ₄ ℓ₅} {D : Type ℓ₄} {E : Type ℓ₅} (h : D → A) (k : E → B) {x y : D} (s : x == y) {a : A} (t : h x == a) {z : E} (q : k z == f (h y)) (Q : z == z)  
-    →  ap g (! (ap f (! (ap h s) ∙ t)) ∙ ! q ∙ ap k Q ∙ ap k Q) ∙ idp == (! (ap (g ∘ f) t) ∙ ap (g ∘ f ∘ h) s ∙ (ap g (! q) ∙ ap (g ∘ k) Q)) ∙ ap (g ∘ k) Q
+  long-path-red2 : ∀ {ℓ₄ ℓ₅} {D : Type ℓ₄} {E : Type ℓ₅} (h : D → A) (k : E → B) {x y : D} (s : x == y) {a : A} (t : h x == a)
+    {z : E} (q : k z == f (h y)) (Q : z == z) →
+    ap g (! (ap f (! (ap h s) ∙ t)) ∙ ! q ∙ ap k Q ∙ ap k Q) ∙ idp == (! (ap (g ∘ f) t) ∙ ap (g ∘ f ∘ h) s ∙ (ap g (! q) ∙ ap (g ∘ k) Q)) ∙ ap (g ∘ k) Q
   long-path-red2 h k idp idp q Q = ap-cmp-inv-loop g k (! q) Q 
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f g : A → B) where
