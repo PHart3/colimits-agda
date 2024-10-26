@@ -1,11 +1,11 @@
-# Summary
+## Summary
 
 This directory contains a formalization of our pushout construction
 of an A-colimit. Specifically, it shows that it's the left adjoint
 to the constant diagram functor by presenting the expected natural
 isomorphism.
 
-# Organization
+## Organization
 
 - The `Aux/` folder contains auxiliary definitions and lemmas,
   including the inductive definition of ordinary colimits and
@@ -42,19 +42,19 @@ isomorphism.
 - The `Main-Theorem/` folder gathers all data of the desired
   adjunction from `L-R-L/`, `R-L-R/`, and `Map-Nat/`.
 
-# Naming of Individual Files
+## Naming of Individual Files
 
 In `L-R-L/`, `R-L-R/`, and `Map-Nat/`, Agda files are artificially
 broken into many fragments with numeric suffixes in order to type
 check the entire development in a reasonable amount of time.
 
-# Manual Type-Checking
+## Manual Type-Checking
 
 1. Install Agda 2.6.3.
 2. Install the stripped, modified HoTT-Agda library under `../HoTT-Agda`.
 3. Type check the file `Main-Theorem/CosColim-Adjunction.agda`.
 
-# License
+## License
 
 This work is released under Mozilla Public License 2.0.
 See [LICENSE.txt](LICENSE.txt).

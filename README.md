@@ -1,13 +1,13 @@
-# Overview
+## Overview
 
   This Agda code accompanies our paper [Colimits in Homotopy Type Theory](https://phart3.github.io/colimits-paper.pdf).
   (The link points to the preprint.) It has been checked with Agda 2.6.3.
 
-# Organization
+## Organization
 
 - `HoTT-Agda/`
 
-  A stripped down version of [HoTT-Agda](https://github.com/HoTT/HoTT-Agda/),
+  A stripped down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
   with local changes for general lemmas we proved during the development.
 
 - `Colimit-code/`
@@ -23,7 +23,7 @@
   for details and for the license of the work inside this
   directory.
 
-# Type-checking with Docker
+## Type-checking with Docker
 
 NOTE: We have successfully tested the following Docker container on Linux but not on other operating systems.
 
@@ -52,7 +52,7 @@ NOTE: We have successfully tested the following Docker container on Linux but no
    - `html1/CosColim-Adjunction.html`
    - `html2/Stability.html`
 
-# Acknowledgement
+## Acknowledgement
 
   This material is based upon work supported by the Air Force Office of Scientific Research under award number FA9550-21-1-0009.
   Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not

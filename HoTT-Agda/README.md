@@ -1,9 +1,9 @@
 Homotopy Type Theory in Agda
 ============================
 
-This directory contains a heavily stripped-down version of the HoTT-Agda library. It also contains a bunch
-of additional lemmas, which arose during the development of coslice colimits. The structure of the source
-code is described below.
+This directory contains a heavily stripped-down version of Andrew Swan's [branch](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) of the
+HoTT-Agda library. It also contains a bunch of additional lemmas, which arose during our
+development of coslice colimits. The structure of the source code is described below.
 
 Setup
 -----
@@ -23,7 +23,7 @@ Structure of the source
 
 ### Core library (directory `core/lib/`)
 
-The main library is more or less divided in two parts.
+The main library is more or less divided into two parts.
 
 - The first part is exported in the module `lib.Basics` and contains everything needed to make the second
   part compile
