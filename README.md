@@ -36,7 +36,7 @@ NOTE: We have successfully tested the following Docker container on Linux but no
    The building itself type checks the whole development. The type-checking
    is partitioned into multiple stages, for otherwise the type-checking
    could take an unacceptably long time. The entire build may take over an hour.
-   The type checking of all our Agda code takes about 36 minutes on our host Ubuntu.
+   The type checking of all our Agda code takes about 31 minutes on our host Ubuntu.
 
 2. Generate HTML files:
 

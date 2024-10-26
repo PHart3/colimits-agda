@@ -3,133 +3,141 @@
 open import lib.Basics
 open import lib.types.Pushout
 open import lib.types.Span
-open import lib.PathSeq
 open import Coslice
 open import Diagram
-open import AuxPaths-v2
+open import Helper-paths
+open import AuxPaths
 open import Colim
 open import Cocone
 open import CosColimitMap00
-open import CosColimitMap01
-open import CosColimitMap02
-open import CosColimitMap03
 
 module CosColimitMap04 where
+
+module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} (h : B → C) {k : A → B} where
+
+  !-!-ap-idp-!-inv : {a₁ a₂ : A} (p₂ : a₁ == a₂) {b : B} (p₃ : k a₂ == b) {c : C} (p₁ : c == h (k a₂))
+    → ! (p₁ ∙ ap h (! (! (! (ap k (! p₂ ∙ idp)) ∙ p₃) ∙ ap k p₂ ∙ idp)))
+      =-=
+      ! (ap h p₃) ∙ ! p₁ ∙ p₁ ∙ ! p₁
+  !-!-ap-idp-!-inv idp idp p₁ = (!-∙ p₁ idp) ◃∙ ! (∙-unit-r (! p₁)) ◃∙ ap (λ p → ! p₁ ∙ p) (! (!-inv-r p₁)) ◃∎
 
 module ConstrMap5 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : CosDiag ℓF ℓ A Γ} {G : CosDiag ℓG ℓ A Γ} (δ : CosDiagMor A F G) where
 
   open ConstrMap δ
+  
+  open Id Γ A
 
-  open ConstrMap3 δ
+  open Maps
 
-  open ConstrMap4 δ
+  module MapCoher4 {i j : Obj Γ} (g : Hom Γ i j) (a : A) where
 
-  module _ (i j : Obj Γ) (g : Hom Γ i j) (a : A) where
+    ψ₂-free-aux3 : {x : P₂} (γ : x == right (cin j (fun (G # j) a)))
+      {κ : x == x} (ρ : κ == γ ∙ ! γ)
+      {z : Colim ForgG} (m₂ : cin j (fun (G # j) a) == z) {w : ty (G # j)} (σ : w == fun (G # j) a)
+      → ! (γ ∙ ap right (! (! (! (ap (cin j) (! σ ∙ idp)) ∙ m₂) ∙ ap (cin j) σ ∙ idp)))
+      =-=
+      ! (ap right m₂) ∙ ! γ ∙ κ
+    ψ₂-free-aux3 γ idp m₂ σ = !-!-ap-idp-!-inv right σ m₂ γ 
 
-    open MapCoher i j g a
+    ψ₂-free-aux2 : {x : Colim (ConsDiag Γ A)} (q : cin j a == x)
+      {κ : left a == left ([id] x)} (ρ : κ == glue (cin j a) ∙ ap right (ap ψ₂ q) ∙ ! (glue x))
+      {z : Colim ForgG} (m₂ : cin j (fun (G # j) a) == z) {w : ty (G # j)} (σ : w == fun (G # j) a) 
+      → ! (glue {d = SpCos₂} x ∙ ap right (! (! (! (ap (cin j) (! σ ∙ idp)) ∙ m₂) ∙ ap (cin j) σ ∙ ap ψ₂ q)))
+      =-= ! (ap right m₂) ∙ ! (glue (cin j a)) ∙ κ
+    ψ₂-free-aux2 idp ρ m₂ σ = ψ₂-free-aux3 (glue (cin j a)) ρ m₂ σ
 
-    open MapCoher2 i j g a
+{-
+  κ = ap left (ap [id] (cglue g a)
+  ρ = apCommSq-cmp left right glue (cglue g a) 
+-}  
 
-    MainRed-helper : (q : cin {D = ConsDiag Γ A} j a == cin i a) {u : ty (G # j)} (s : u  == fun (G # j) a)
-      → (! (ap (λ p → p ∙ idp) (↯ (id-free glue q (ap (right ∘ cin i) (snd (nat δ i) a))))) ◃∙
-      (four-!-!-!-rid-rid (! (ap left (ap (Id.[id] Γ A) q))) (glue (cin j a)) (ap right (ap ψ₂ q)) (ap (right ∘ cin i) (snd (nat δ i) a)) ∙
-      ! (ap (λ p → p ∙ ! (ap (right ∘ cin i) (snd (nat δ i) a))) (transp-pth-cmp q (glue (cin j a)))) ∙
-      ap (λ p → p ∙ ! (ap (right ∘ cin i) (snd (nat δ i) a))) (apd-tr glue q) ∙
-      ap (_∙_ (glue (cin i a))) (ψ₂-free-helper2 (snd (nat δ i) a) (cglue g (fst (nat δ i) (fun (F # i) a))) (snd (G <#> g) a)
-        s (cglue g (fun (G # i) a))) ∙
-      ap (λ p → glue (cin i a) ∙ ap right (! (! (! (p ∙ ap (cin j) (snd (G <#> g) a ∙
-        ! s ∙ idp)) ∙
-        cglue g (fst (nat δ i) (fun (F # i) a))) ∙
-        ap (cin j) s ∙
-        ! (ap (cin j) (snd (G <#> g) a)) ∙ cglue g (fun (G # i) a))))
-        (∼-nat (cglue g) (snd (nat δ i) a)) ∙
-      ap (λ p → glue (cin i a) ∙ ap right
-        (! (! (! p ∙ cglue g (fst (nat δ i) (fun (F # i) a))) ∙
-        ap (cin j) s ∙
-        ! (ap (cin j) (snd (G <#> g) a)) ∙ cglue g (fun (G # i) a))))
-        (ap-∘-∙ (cin j) (fst (G <#> g)) (snd (nat δ i) a)
-        (snd (G <#> g) a ∙ ! s ∙ idp))) ◃∙
-      ap (λ p → glue (cin i a) ∙ ap right (! p))
-        (ap-∘-!-!-rid-rid (fst (G <#> g)) (cin j)
-        (snd (nat δ i) a) s (snd (G <#> g) a)
-        (cglue g (fst (nat δ i) (fun (F # i) a)))
-        (cglue g (fun (G # i) a))) ◃∙
-      ap (λ p → glue (cin i a) ∙ ap right (! p))
-        (apCommSq (cin j ∘ fst (G <#> g)) (cin i) (cglue g)
-        (snd (nat δ i) a)) ◃∎)
+    ψ₂-free-aux : {x : Colim (ConsDiag Γ A)} (q : cin j a == x) {w₁ w₂ : ty (G # j)} (m₁ : w₁ == fun (G # j) a)
+      {z : Colim ForgG} (m₂ : cin j w₁ == z) (σ : w₂ == fun (G # j) a)
+      → ! (glue {d = SpCos₂} x ∙ ap right (! (! (! (ap (cin j) (m₁ ∙ ! σ ∙ idp)) ∙ m₂) ∙
+          ap (cin j) σ ∙ ap ψ₂ q)))
+        =-=
+        ! (ap right (! (ap (cin j) m₁) ∙ m₂)) ∙
+          ! (glue (cin j a)) ∙ ap left (ap [id] q)
+    ψ₂-free-aux q idp m₂ σ = ψ₂-free-aux2 q (apCommSq-cmp left right glue q) m₂ σ
+    
+    ψ₂-free : (q : cin j a == cin i a) {e : ty (F # j)} (s : e == fun (F # j) a) {x₁ x₂ : ty (G # i)} (d : x₁ == x₂)
+      (m : fst (G <#> g) x₂ == fun (G # j) a)
+      →  ! (glue {d = SpCos₂} (cin i a) ∙ ap right (! (! (! (ap (cin j)
+           (ap (fst (G <#> g)) d ∙ m ∙ ! (snd (nat δ j) a) ∙
+           ! (ap (fst (nat δ j)) s))) ∙ cglue g x₁) ∙
+           ap (cin j ∘ fst (nat δ j)) s ∙
+           ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ q)))
+      =-=
+        ap (right ∘ cin i) d ∙ ! (ap right (! (ap (cin j) m) ∙ cglue g x₂)) ∙
+          ! (glue (cin j a)) ∙ ap left (ap [id] q)
+    ψ₂-free q idp {x₂ = x₂} idp m = ψ₂-free-aux q m (cglue g x₂) (snd (nat δ j) a)
+
+    ψ₂-red-aux3 : {x : P₂} (p : x == right (cin j (fun (G # j) a))) →
+      ap ! (∙-unit-r p) ∙ ! (ap (λ q → q) (∙-unit-r (! p))) ∙ idp
+      ==
+      ↯ (ψ₂-free-aux3 p (! (!-inv-r p)) idp idp)
+    ψ₂-red-aux3 idp = idp
+
+    ψ₂-red-aux2 : {x : Colim (ConsDiag Γ A)} (q : cin j a == x) {w : ty (G # j)} (σ : w == fun (G # j) a)
+      {m₂ : cin j (fun (G # j) a) == ψ₂ x} (τ : ap ψ₂ q == m₂) → 
+      ap ! (ap (λ p → glue x ∙ ap right (! p))
+        (ap (λ p → ! (! (ap (cin j) (! σ ∙ idp)) ∙ m₂) ∙ ap (cin j) σ ∙ p) τ)) ◃∙
+      ap ! (ap (λ p → glue x ∙ ap right (! p)) (ap-!-!-!-!-rid (cin j) σ idp m₂ m₂)) ◃∙
+      ap ! (ap (λ p → glue x ∙ ap right (! p)) (!-inv-l m₂)) ◃∙
+      ap ! (∙-unit-r (glue x)) ◃∙
+      ! (ap (λ q → q) (∙-unit-r (! (glue x)))) ◃∙
+        ! (ap (λ q → q) (E₃ (λ x → ! (glue x)) q τ (λ x → idp))) ◃∎
       =ₛ
-      (ap-∘-!-!-rid (cin i) right (snd (nat δ i) a) (glue (cin i a)) ◃∎)
-    MainRed-helper q idp = lemma q (snd (nat δ i) a) (snd (G <#> g) a)
-      where
-        lemma : {x : Colim (ConsDiag Γ A)} (q₁ : x == cin i a) (c : fst (nat δ i) (fun (F # i) a)  == fun (G # i) a) (e : fst (G <#> g) (fun (G # i) a) == fun (G # j) a)
-          → (! (ap (λ p → p ∙ idp) (↯ (id-free glue q₁ (ap (right ∘ cin i) c)))) ◃∙
-          (four-!-!-!-rid-rid (! (ap left (ap [id] q₁))) (glue x) (ap right (ap ψ₂ q₁)) (ap (right ∘ cin i) c) ∙
-          ! (ap (λ p → p ∙ ! (ap (right ∘ cin i) c)) (transp-pth-cmp q₁ (glue x))) ∙
-          ap (λ p → p ∙ ! (ap (right ∘ cin i) c)) (apd-tr glue q₁) ∙
-          ap (_∙_ (glue (cin i a))) (ψ₂-free-helper2 c (cglue g (fst (nat δ i) (fun (F # i) a)))
-            e idp  (cglue g (fun (G # i) a))) ∙
-          ap (λ p → glue (cin i a) ∙ ap right (! (! (! (p ∙ ap (cin j) (e ∙ idp)) ∙
-            cglue g (fst (nat δ i) (fun (F # i) a))) ∙ ! (ap (cin j) e) ∙ cglue g (fun (G # i) a)))) (∼-nat (cglue g) c) ∙
-          ap (λ p → glue (cin i a) ∙ ap right (! (! (! p ∙ cglue g (fst (nat δ i) (fun (F # i) a))) ∙
-            ! (ap (cin j) e) ∙ cglue g (fun (G # i) a))))
-            (ap-∘-∙ (cin j) (fst (G <#> g)) c (e ∙ idp))) ◃∙
-          ap (λ p → glue (cin i a) ∙ ap right (! p)) (ap-∘-!-!-rid-rid (fst (G <#> g)) (cin j) c idp
-            e (cglue g (fst (nat δ i) (fun (F # i) a))) (cglue g (fun (G # i) a))) ◃∙
-          ap (λ p → glue (cin i a) ∙ ap right (! p)) (apCommSq (cin j ∘ fst (G <#> g)) (cin i) (cglue g) c) ◃∎)
-          =ₛ
-          (ap-∘-!-!-rid (cin i) right c (glue (cin i a)) ◃∎)
-        lemma idp c e = =ₛ-in (lemma2 (glue (cin i a)))
-          where
-            lemma2 : {w : P₂} (γ : w == right {d = SpCos₂} (cin i (fun (G # i) a)))
-              → ! (ap (λ p → p ∙ idp) (↯ (id-free-helper (ap (right ∘ cin i) c) γ))) ∙
-              (four-!-!-!-rid-rid idp γ idp (ap (right ∘ cin i) c) ∙
-              ! (ap (λ p → p ∙ ! (ap (right ∘ cin i) c)) (! (∙-unit-r γ))) ∙
-              ap (_∙_ γ) (ψ₂-free-helper2 c (cglue g (fst (nat δ i) (fun (F # i) a)))
-                e idp  (cglue g (fun (G # i) a))) ∙
-              ap (λ p → γ ∙ ap right (! (! (! (p ∙ ap (cin j) (e ∙ idp)) ∙
-                cglue g (fst (nat δ i) (fun (F # i) a))) ∙ ! (ap (cin j) e) ∙ cglue g (fun (G # i) a)))) (∼-nat (cglue g) c) ∙
-              ap (λ p → γ ∙ ap right (! (! (! p ∙ cglue g (fst (nat δ i) (fun (F # i) a))) ∙
-                ! (ap (cin j) e) ∙ cglue g (fun (G # i) a))))
-                (ap-∘-∙ (cin j) (fst (G <#> g)) c (e ∙ idp))) ∙
-              ap (λ p → γ ∙ ap right (! p)) (ap-∘-!-!-rid-rid (fst (G <#> g)) (cin j) c idp
-                e (cglue g (fst (nat δ i) (fun (F # i) a))) (cglue g (fun (G # i) a))) ∙
-              ap (λ p → γ ∙ ap right (! p)) (apCommSq (cin j ∘ fst (G <#> g)) (cin i) (cglue g) c) 
-              ==
-              ap-∘-!-!-rid (cin i) right c γ
-            lemma2 idp = lemma3 e c
-              where
-                lemma3 : {t : ty (G # j)} (e : fst (G <#> g) (fun (G # i) a) == t) {w : ty (G # i)} (c : w == fun (G # i) a)
-                  → ! (ap (λ p → p ∙ idp) (↯ (id-free-helper (ap (right ∘ cin i) c) idp))) ∙
-                  (four-!-!-!-rid-rid idp idp idp (ap (right ∘ cin i) c) ∙
-                  ap (_∙_ idp) (ψ₂-free-helper3 (cin i) c (cglue g w)
-                    e (cglue g (fun (G # i) a))) ∙
-                  ap (λ p → ap right (! (! (! (p ∙ ap (cin j) (e ∙ idp)) ∙
-                    cglue g w) ∙ ! (ap (cin j) e) ∙ cglue g (fun (G # i) a)))) (∼-nat (cglue g) c) ∙
-                  ap (λ p → ap right (! (! (! p ∙ cglue g w) ∙
-                    ! (ap (cin j) e) ∙ cglue g (fun (G # i) a))))
-                    (ap-∘-∙ (cin j) (fst (G <#> g)) c (e ∙ idp))) ∙
-                  ap (λ p → ap right (! p)) (ap-∘-!-!-rid-rid (fst (G <#> g)) (cin j) c idp
-                    e (cglue g w) (cglue g (fun (G # i) a))) ∙
-                  ap (λ p → ap right (! p)) (apCommSq (cin j ∘ fst (G <#> g)) (cin i) (cglue g) c) 
-                  ==
-                  ap-∘-!-!-rid (cin i) right c idp 
-                lemma3 idp idp = lemma4 (cglue g (fun (G # i) a))
-                  where
-                    lemma4 : {x y : Colim ForgG} (α : x == y)
-                      → (ap (λ q₁ → q₁) (ψ₂-free-helper-pre3 α α) ∙
-                      ap (λ p → ap right (! (! (! (p ∙ idp) ∙ α) ∙ α))) (!-inv-r α) ∙ idp) ∙
-                      ap (λ p → ap right (! p)) (!-inv-l α)
-                      == idp
-                    lemma4 idp = idp
+      ↯ (ψ₂-free-aux2 q (apCommSq-cmp left right glue q) m₂ σ) ◃∎
+    ψ₂-red-aux2 idp idp idp = =ₛ-in (ψ₂-red-aux3 (glue (cin j a)))
+
+-- q = cglue g a
+
+    ψ₂-red-aux : {w₁ w₂ : ty (G # j)} (m₁ : w₁ == fun (G # j) a) (m₂ : cin j w₁ == ψ₂ (cin i a))
+      (σ : w₂ == fun (G # j) a) (τ : ap ψ₂ (cglue g a) == ! (ap (cin j) m₁) ∙ m₂) →
+      ap ! (ap (λ p → glue (cin i a) ∙ ap right (! p))
+        (ap (λ p → ! (! (ap (cin j) (m₁ ∙ ! σ ∙ idp)) ∙
+        m₂) ∙ ap (cin j) σ ∙ p) τ)) ◃∙
+      ap ! (ap (λ p → glue (cin i a) ∙ ap right (! p))
+        (ap-!-!-!-!-rid (cin j) σ m₁ m₂ m₂)) ◃∙
+      ap ! (ap (λ p → glue (cin i a) ∙ ap right (! p))
+        (!-inv-l m₂)) ◃∙
+      ap ! (∙-unit-r (glue (cin i a))) ◃∙
+      ! (ap (λ q → q) (∙-unit-r (! (glue (cin i a))))) ◃∙
+      ! (ap (λ q → q) (E₃ (λ x → ! (glue x)) (cglue g a) τ (λ x → idp))) ◃∎
+        =ₛ
+      ↯ (ψ₂-free-aux (cglue g a) m₁ m₂ σ) ◃∎
+    ψ₂-red-aux idp m₂ σ τ = ψ₂-red-aux2 (cglue g a) σ τ
+
+{-
+  m₁ = snd (G <#> g) a
+  m₂ = cglue g (fun (G # i) a)
+  σ = snd (nat δ j) a
+  τ = ψ₂-βr g a
+-}
 
     abstract
-
-      map-MainRed0 : (q : cin {D = ConsDiag Γ A} j a == cin i a) {e : ty (F # j)} (s₃ : e == fun (F # j) a)
-        → ! (ap (λ p → p ∙ idp) (↯ (id-free glue q (ap (right ∘ cin i) (snd (nat δ i) a))))) ◃∙
-        ↯ (ψ₂-free q s₃ (ap ψ₂ q) (transp-pth-cmp q (glue (cin j a))) (apd-tr glue q)) ◃∙
-        ap (λ p → glue (cin i a) ∙ ap right (! p)) (long-red-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (snd (nat δ i) a) (snd (G <#> g) a) s₃ (snd (nat δ j) a)
-          (cglue g (fst (nat δ i) (fun (F # i) a))) (cglue g (fun (G # i) a))) ◃∙
-        ap (λ p → glue (cin i a) ∙ ap right (! p)) (apCommSq (cin j ∘ fst (G <#> g)) (cin i) (cglue g) (snd (nat δ i) a)) ◃∎
+    
+      ψ₂-red : {e : ty (F # j)} (s : e == fun (F # j) a) {x : ty (G # i)} (d : x == fun (G # i) a) →
+        ap ! (ap (λ p → glue {d = SpCos₂} (cin i a) ∙ ap right (! p)) (ap (λ p → ! (! (ap (cin j)
+          (ap (fst (G <#> g)) d ∙ snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙
+          ! (ap (fst (nat δ j)) s))) ∙ cglue g x) ∙ ap (cin j ∘ fst (nat δ j)) s ∙
+          ap (cin j) (snd (nat δ j) a) ∙ p) (ψ₂-βr g a))) ◃∙
+        ap ! (ap (λ p → glue (cin i a) ∙ ap right (! p))
+          (long-red-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g))
+          d (snd (G <#> g) a) s
+          (snd (nat δ j) a) (cglue g x) (cglue g (fun (G # i) a)))) ◃∙
+        ap ! (ap (λ p → glue (cin i a) ∙ ap right (! p))
+          (apCommSq (cin j ∘ fst (G <#> g)) (cin i) (cglue g) d)) ◃∙
+        !-!-ap-∘ (cin i) right d (glue (cin i a)) ◃∙
+        ! (ap (λ p → ap (right ∘ cin i) d ∙ p) (∙-unit-r (! (glue (cin i a))))) ◃∙
+        ! (ap (λ p → ap (right ∘ cin i) d ∙ p)
+          (E₃ {f = left} {u = right} (λ x → ! (glue x)) (cglue g a) (ψ₂-βr g a) (λ x → idp))) ◃∎
         =ₛ
-        ap-∘-!-!-rid (cin i) right (snd (nat δ i) a) (glue (cin i a)) ◃∎
-      map-MainRed0 q idp = MainRed-helper q (snd (nat δ j) a) 
+        ↯ (ψ₂-free (cglue g a) s d (snd (G <#> g) a)) ◃∎
+      ψ₂-red idp idp = ψ₂-red-aux (snd (G <#> g) a) (cglue g (fun (G # i) a)) (snd (nat δ j) a) (ψ₂-βr g a)
+
+{-
+  s = snd (F <#> g) a
+  d = snd (nat δ i) a
+-}

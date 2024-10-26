@@ -19,7 +19,7 @@ RUN \
 RUN \
   mkdir -p /dist && \
   cabal update && \
-  cabal v2-install alex happy && \
+  cabal v2-install alex happy-2.0.2 && \
   cabal v1-install --bindir=/dist --datadir=/dist --datasubdir=/dist/data --enable-executable-static
 
 ####################################################################################################
@@ -76,10 +76,6 @@ RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap15.agda
 RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap16.agda
 RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap17.agda
 RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap18.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap19.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap20.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap21.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap22.agda
 RUN /dist/agda --library-file=/dist/libraries ./Main-Theorem/CosColim-Adjunction.agda
 
 WORKDIR /build/Pullback-stability

@@ -3,7 +3,6 @@
 {- Coslice categories of the universe -}
 
 open import lib.Basics
-open import lib.types.Sigma
 
 module Coslice where
 

@@ -3,10 +3,8 @@
 {- Formation of A-cocone structure on pushout -}
 
 open import lib.Basics
-open import lib.types.Sigma
 open import lib.types.Pushout
 open import lib.types.Span
-open import lib.PathSeq
 open import Coslice
 open import Diagram
 open import Colim
@@ -16,12 +14,14 @@ module Cocone where
 
 module _ {ℓ₁ ℓ₂} {B : Type ℓ₁} {D : Type ℓ₂} {u : D → B} where
 
-  H₁ : ∀ {k l} {C : Type k} {A : Type l} {h : C → A} {f : A → B} {v : C → D} {c d : C} (Q : c == d) (s : f (h c) == u (v c)) {q : v c == v d} (R : ap v Q == q)
-    → transport (λ x → f (h x) == u (v x)) Q s == ! (ap f (ap h Q)) ∙ s ∙ ap u q
+  H₁ : ∀ {k l} {C : Type k} {A : Type l} {h : C → A} {f : A → B} {v : C → D} {c d : C} (Q : c == d) (s : f (h c) == u (v c))
+    {q : v c == v d} (R : ap v Q == q) →
+    transport (λ x → f (h x) == u (v x)) Q s == ! (ap f (ap h Q)) ∙ s ∙ ap u q
   H₁ idp s idp = ! (∙-unit-r s)
 
-  H₂ : ∀ {ℓ₃} {E : Type ℓ₃} {x y : B} {g : E → D} {d e : E} (t : d == e) (q : u (g e) == y) {p : x == y} {z : D} (s : g d == z) {R : u (g d) == u z} (T : ap u s == R)
-    → p ∙ ! q ∙ ap u (! (ap g t) ∙ s) == p ∙ ! (! R ∙ ap (u ∘ g) t ∙ q)
+  H₂ : ∀ {ℓ₃} {E : Type ℓ₃} {x y : B} {g : E → D} {d e : E} (t : d == e) (q : u (g e) == y) {p : x == y} {z : D} (s : g d == z)
+    {R : u (g d) == u z} (T : ap u s == R) →
+    p ∙ ! q ∙ ap u (! (ap g t) ∙ s) == p ∙ ! (! R ∙ ap (u ∘ g) t ∙ q)
   H₂ idp q {p = p} idp idp = ap (λ r → p ∙ r) (∙-unit-r (! q))
 
 module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
@@ -58,15 +58,17 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
       module _ where
       ϵ : ∀ {i j} (g : Hom Γ i j) (a : A) →
         ! (ap right (cglue g (fun (F # i) a))) ∙ ap (right ∘ cin j) (snd (F <#> g) a) ∙ ! (glue (cin j a)) =-= ! (glue (cin i a))
-      ϵ {i} {j} g a = ! (ap right  (cglue g (fun (F # i) a))) ∙ (ap (right ∘ cin j) (snd (F <#> g) a)) ∙ (! (glue (cin j a)))
-                        =⟪ E₁ (snd (F <#> g) a) (! (glue (cin j a))) ⟫
-                      ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ idp
-                        =⟪ ! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ p) (ap (ap left) (id-βr g a)))  ⟫
-                      ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ ap left (ap [id] (cglue g a))
-                        =⟪ E₃ (λ x → ! (glue x)) (cglue g a) (ψ-βr g a) (λ x → idp) ⟫
-                      ! (glue (cin i a)) ∙ idp
-                        =⟪ ∙-unit-r (! (glue (cin i a)))  ⟫
-                      ! (glue (cin i a)) ∎∎
+      ϵ {i} {j} g a =
+        ! (ap right  (cglue g (fun (F # i) a))) ∙ (ap (right ∘ cin j) (snd (F <#> g) a)) ∙ (! (glue (cin j a)))
+          =⟪ E₁ (snd (F <#> g) a) (! (glue (cin j a))) ⟫
+        ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ idp
+          =⟪ ! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ p)
+            (ap (ap left) (id-βr g a))) ⟫
+        ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ ap left (ap [id] (cglue g a))
+          =⟪ E₃ (λ x → ! (glue x)) (cglue g a) (ψ-βr g a) (λ x → idp) ⟫
+        ! (glue (cin i a)) ∙ idp
+          =⟪ ∙-unit-r (! (glue (cin i a))) ⟫
+        ! (glue (cin i a)) ∎∎
 
     module Recc {ℓc} (T : Coslice ℓc ℓ A) where
 
@@ -86,18 +88,19 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
           σ = colimE (λ i → (λ a → ! (snd (r i) a)))
             (λ i → (λ j → (λ g → (λ a →   from-transp-g (λ z → fun T ([id] z) == recc (ψ z)) (cglue g a) (↯ (η i j g a))))))
               module _ where
-                η : (i j : Obj Γ) (g : Hom Γ i j) (a : A) → transport (λ z → fun T ([id] z) ==  recc (ψ z)) (cglue g a) (! (snd (r j) a)) =-= ! (snd (r i) a)
+                η : (i j : Obj Γ) (g : Hom Γ i j) (a : A) →
+                  transport (λ z → fun T ([id] z) == recc (ψ z)) (cglue g a) (! (snd (r j) a)) =-= ! (snd (r i) a)
                 η i j g a =
-                            transport (λ z →  fun T ([id] z) == recc (ψ z)) (cglue g a) (! (snd (r j) a))
-                              =⟪ H₁ (cglue g a) (! (snd (r j) a)) (ψ-βr g a) ⟫
-                            ! (ap (fun T) (ap [id] (cglue g a))) ∙ (! (snd (r j) a)) ∙ ap recc (! (ap (cin j) (snd (F <#> g) a)) ∙ (cglue g (fun (F # i) a)))
-                              =⟪ H₂ (snd (F <#> g) a) (snd (r j) a) (cglue g (fun (F # i) a)) (recc-βr (r & K) g (fun (F # i) a)) ⟫
-                            ! (ap (fun T) (ap [id] (cglue g a))) ∙ ! (! (fst (K g) (fun (F # i) a)) ∙ ap (recc ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a))
-                              =⟪ ap (λ p → p ∙ ! (! (fst (K g) (fun (F # i) a)) ∙ ap (recc ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a)))
-                                (ap (λ p → ! (ap (fun T) p)) (id-βr g a)) ⟫
-                            ! (! (fst (K g) (fun (F # i) a)) ∙ ap (recc ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a))
-                              =⟪ ap ! (snd (K g) a) ⟫
-                            ! (snd (r i) a) ∎∎
+                  transport (λ z →  fun T ([id] z) == recc (ψ z)) (cglue g a) (! (snd (r j) a))
+                    =⟪ H₁ (cglue g a) (! (snd (r j) a)) (ψ-βr g a) ⟫
+                  ! (ap (fun T) (ap [id] (cglue g a))) ∙ (! (snd (r j) a)) ∙ ap recc (! (ap (cin j) (snd (F <#> g) a)) ∙ (cglue g (fun (F # i) a)))
+                    =⟪ H₂ (snd (F <#> g) a) (snd (r j) a) (cglue g (fun (F # i) a)) (recc-βr (r & K) g (fun (F # i) a)) ⟫
+                  ! (ap (fun T) (ap [id] (cglue g a))) ∙ ! (! (fst (K g) (fun (F # i) a)) ∙ ap (recc ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a))
+                    =⟪ ap (λ p → p ∙ ! (! (fst (K g) (fun (F # i) a)) ∙ ap (recc ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a)))
+                      (ap (λ p → ! (ap (fun T) p)) (id-βr g a)) ⟫
+                  ! (! (fst (K g) (fun (F # i) a)) ∙ ap (recc ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a))
+                    =⟪ ap ! (snd (K g) a) ⟫
+                  ! (snd (r i) a) ∎∎
       snd (recCosCoc x) a = idp
 
       FPrecc-βr = λ (C : CosCocone A F T) → PushoutRec.glue-β {d = SpCos} (fun T) (recc (comp C) (comTri C)) (σ (comp C) (comTri C))
@@ -110,5 +113,5 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
           σ-β {i} {j} g a = apd-to-tr (λ x → fun T ([id] x) == recc (comp C) (comTri C) (ψ x)) (σ (comp C) (comTri C)) (cglue g a)
             (↯ (η (comp C) (comTri C) i j g a))
             (cglue-β (λ i → (λ a → ! (snd (comp C i) a)))
-            (λ i → (λ j → ( λ g → (λ a →   from-transp-g (λ z → fun T ([id] z) == recc (comp C) (comTri C) (ψ z))
+            (λ i → (λ j → ( λ g → (λ a →  from-transp-g (λ z → fun T ([id] z) == recc (comp C) (comTri C) (ψ z))
             (cglue g a) (↯ (η (comp C) (comTri C) i j g a)))))) g a)

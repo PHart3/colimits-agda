@@ -3,7 +3,6 @@
 open import lib.Basics
 open import lib.types.Pushout
 open import lib.types.Span
-open import lib.PathSeq
 open import Coslice
 open import Diagram
 open import Colim
@@ -34,15 +33,16 @@ module _ {ℓ} {A : Type ℓ} where
     → ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ ◃∙ ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (!-! r) ◃∙ db-neg-rid-db r idp ◃∙
       ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
       =ₛ ! (∙-unit-r r) ◃∎
-  coher-rid-trip r τ = ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ ◃∙ ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (!-! r) ◃∙ db-neg-rid-db r idp ◃∙
-                       ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
-                         =ₛ₁⟨ 0 & 2 & ∙-ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ (!-! r)  ⟩
-                       ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (τ ∙ !-! r) ◃∙ db-neg-rid-db r idp ◃∙ ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
-                         =ₛ₁⟨ 2 & 2 & ∙-ap (λ p → p ∙ idp) τ (!-! r)  ⟩ 
-                       ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (τ ∙ !-! r) ◃∙ db-neg-rid-db r idp ◃∙ ap (λ p → p ∙ idp) (τ ∙ !-! r) ◃∎
-                         =ₛ⟨  helper-coher-rid r (τ ∙ !-! r) ⟩
-                       ! (∙-unit-r r) ◃∎ ∎ₛ
-                         
+  coher-rid-trip r τ =
+    ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ ◃∙ ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (!-! r) ◃∙ db-neg-rid-db r idp ◃∙
+      ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
+      =ₛ₁⟨ 0 & 2 & ∙-ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) τ (!-! r) ⟩
+    ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (τ ∙ !-! r) ◃∙ db-neg-rid-db r idp ◃∙ ap (λ p → p ∙ idp) τ ◃∙ ap (λ p → p ∙ idp) (!-! r) ◃∎
+      =ₛ₁⟨ 2 & 2 & ∙-ap (λ p → p ∙ idp) τ (!-! r) ⟩ 
+    ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ r) (τ ∙ !-! r) ◃∙ db-neg-rid-db r idp ◃∙ ap (λ p → p ∙ idp) (τ ∙ !-! r) ◃∎
+        =ₛ⟨  helper-coher-rid r (τ ∙ !-! r) ⟩
+    ! (∙-unit-r r) ◃∎ ∎ₛ
+
 module ConstrE2Cont2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) (K : CosCocone A F T) where
 
   open ConstrE2Cont F T K public
@@ -218,7 +218,7 @@ module ConstrE2Cont2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type 
              ap-∙-cmp2 (fst (recCosCoc K)) left (! (glue (cin i a))) idp ◃∙
              ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ idp) (cglue g a)) ◃∙
              ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a)) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
-             tranp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
+             transp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
              ap ! (H₁ (cglue g a) (! (snd (comp K j) a)) (ψ-βr g a)) ◃∙
              ap ! (H₂ (snd (F <#> g) a) (snd (comp K j) a) (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙
              ap ! (ap (λ p → p ∙ ! (! (fst (comTri K g) (fun (F # i) a)) ∙ ap (recc (comp K) (comTri K) ∘ cin j) (snd (F <#> g) a) ∙ (snd (comp K j) a)))
@@ -244,7 +244,7 @@ module ConstrE2Cont2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type 
              ap-∙-cmp2 (fst (recCosCoc K)) left (! (glue (cin i a))) idp ◃∙
              ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ idp) (cglue g a)) ◃∙
              ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a)) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
-             tranp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
+             transp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
              ap ! (H₁ (cglue g a) (! (snd (comp K j) a)) (ψ-βr g a)) ◃∙
              ap ! (H₂ (snd (F <#> g) a) (snd (comp K j) a) (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙
              ap ! (ap (λ p → p ∙ ! (! (fst (comTri K g) (fun (F # i) a)) ∙ ap (recc (comp K) (comTri K) ∘ cin j) (snd (F <#> g) a) ∙ (snd (comp K j) a)))
@@ -272,7 +272,7 @@ module ConstrE2Cont2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type 
              ap-∙-cmp2 (fst (recCosCoc K)) left (! (glue (cin i a))) idp ◃∙
              ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ idp) (cglue g a)) ◃∙
              ap (transport (λ z → reccForg K (ψ z) == fun T ([id] z)) (cglue g a)) (ap-inv-rid (fst (recCosCoc K)) (glue (cin j a)) ∙ ap ! (FPrecc-βr K (cin j a))) ◃∙
-             tranp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
+             transp-inv-comm (fun T ∘ [id]) (reccForg K ∘ ψ) (cglue g a) (! (snd (comp K j) a)) ◃∙
              ap ! (H₁ (cglue g a) (! (snd (comp K j) a)) (ψ-βr g a)) ◃∙
              ap ! (H₂ (snd (F <#> g) a) (snd (comp K j) a) (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙
              ap ! (ap (λ p → p ∙ ! (! (fst (comTri K g) (fun (F # i) a)) ∙ ap (recc (comp K) (comTri K) ∘ cin j) (snd (F <#> g) a) ∙ (snd (comp K j) a)))
