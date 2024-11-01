@@ -1,5 +1,5 @@
 ####################################################################################################
-# Build Agda
+# Build Agda 2.6.3
 ####################################################################################################
 
 ARG GHC_VERSION=9.4.7
@@ -23,7 +23,7 @@ RUN \
   cabal v1-install --bindir=/dist --datadir=/dist --datasubdir=/dist/data --enable-executable-static
 
 ####################################################################################################
-# Type check Agda files
+# Type-check Agda files
 ####################################################################################################
 
 FROM alpine AS hottagda
@@ -37,7 +37,7 @@ COPY --from=agda /dist /dist
 COPY --from=hottagda /build /build
 
 COPY ["Pullback-stability", "/build/Pullback-stability"]
-COPY agdacheck.sh /
+COPY agda-html.sh /
 
 RUN echo "/build/Hott-Agda/hott-core.agda-lib" >> /dist/libraries
 RUN echo "/build/Colimit-code/cos-colim.agda-lib" >> /dist/libraries
@@ -86,6 +86,6 @@ RUN /dist/agda --library-file=/dist/libraries ./Stability.agda
 ####################################################################################################
 
 WORKDIR /build
-RUN ["chmod", "+x", "/agdacheck.sh"]
+RUN ["chmod", "+x", "/agda-html.sh"]
 
-CMD ["sh", "/agdacheck.sh"]
+CMD ["sh", "/agda-html.sh"]
