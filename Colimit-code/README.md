@@ -52,7 +52,7 @@ check the entire development in a reasonable amount of time.
 
 1. Install Agda 2.6.3.
 2. Install the stripped, modified HoTT-Agda library under `../HoTT-Agda`.
-3. Type check the file `Main-Theorem/CosColim-Adjunction.agda`.
+3. Type-check the file `Main-Theorem/CosColim-Adjunction.agda`.
 
 ## License
 

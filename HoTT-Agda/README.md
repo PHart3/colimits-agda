@@ -26,7 +26,7 @@ Structure of the source
 The main library is more or less divided into two parts.
 
 - The first part is exported in the module `lib.Basics` and contains everything needed to make the second
-  part compile
+  part compile.
 - The second part is found in `lib.types` and develops type formers.
 
 Note that our work on colimits makes extensive use of the `path-seq/` directory.
