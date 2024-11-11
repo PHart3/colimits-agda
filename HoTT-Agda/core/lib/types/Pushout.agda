@@ -1,7 +1,6 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
-open import lib.types.Pi
 open import lib.types.Pointed
 open import lib.types.Sigma
 open import lib.types.Span
@@ -64,9 +63,10 @@ PushoutMapEq : ∀ {i j k} {d : Span {i} {j} {k}} {l} {D : Type l} (h₁ h₂ : 
   → (p₁ : h₁ ∘ left ∼ h₂ ∘ left) (p₂ : h₁ ∘ right ∼ h₂ ∘ right)
   → ((c : Span.C d) → (! (ap h₁ (glue c)) ∙ p₁ (Span.f d c)) ∙ ap h₂ (glue c) == p₂ (Span.g d c))
   → h₁ ∼ h₂
-PushoutMapEq {d = d} h₁ h₂ p₁ p₂ = λ S → Pushout-elim p₁ p₂ λ c →
-                                                              from-transp (λ x → h₁ x == h₂ x) (glue c)
-                                                              (transp-pth-l (glue c) (p₁ (Span.f d c)) ∙ S c)
+PushoutMapEq {d = d} h₁ h₂ p₁ p₂ =
+  λ S → Pushout-elim p₁ p₂ λ c →
+    from-transp (λ x → h₁ x == h₂ x) (glue c)
+    (transp-pth-l (glue c) (p₁ (Span.f d c)) ∙ S c)
 
 module _ {ℓ} {A : Type ℓ} where
 
@@ -83,18 +83,16 @@ PushoutMapEq-v2 : ∀ {i j k} {d : Span {i} {j} {k}} {l} {D : Type l} (h₁ h₂
   → (p₁ : h₁ ∘ left ∼ h₂ ∘ left) (p₂ : h₁ ∘ right ∼ h₂ ∘ right)
   → ((c : Span.C d) → ! (p₁ (Span.f d c)) ∙ ap h₁ (glue c) ∙ p₂ (Span.g d c) == ap h₂ (glue c))
   → h₁ ∼ h₂
-PushoutMapEq-v2 {d = d} h₁ h₂ p₁ p₂ = λ S → Pushout-elim p₁ p₂ λ c →
-                                                              from-transp (λ x → h₁ x == h₂ x) (glue c)
-                                                              (transp-pth-reord h₁ h₂ (glue c) (p₁ (Span.f d c)) (p₂ (Span.g d c)) (S c))
-
+PushoutMapEq-v2 {d = d} h₁ h₂ p₁ p₂ =
+  λ S → Pushout-elim p₁ p₂ λ c →
+    from-transp (λ x → h₁ x == h₂ x) (glue c)
+    (transp-pth-reord h₁ h₂ (glue c) (p₁ (Span.f d c)) (p₂ (Span.g d c)) (S c))
 
 module PushoutMap {i₀ j₀ k₀ i₁ j₁ k₁} {span₀ : Span {i₀} {j₀} {k₀}} {span₁ : Span {i₁} {j₁} {k₁}} (span-map : SpanMap-Rev span₀ span₁)
   = PushoutRec {d = span₀} {D = Pushout span₁}
     (left ∘ SpanMap-Rev.hA span-map) (right ∘ SpanMap-Rev.hB span-map)
-    (λ x → ! (ap left (SpanMap-Rev.f-commutes span-map □$ x)) ∙ glue (SpanMap-Rev.hC span-map x) ∙ ap right (SpanMap-Rev.g-commutes span-map □$  x))
-
-
-
+    (λ x → ! (ap left (SpanMap-Rev.f-commutes span-map □$ x)) ∙ glue (SpanMap-Rev.hC span-map x) ∙
+      ap right (SpanMap-Rev.g-commutes span-map □$  x))
 
 module PushoutGeneric {i j k} {d : Span {i} {j} {k}} where
 
