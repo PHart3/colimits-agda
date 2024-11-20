@@ -61,7 +61,8 @@ module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
     → ap f q == p x ∙ ap g q ∙ ! (p y)
   apeq-rev {g = g} p {x = x} idp = IndFunHom {P = λ g → (λ p → idp == p x ∙ ! (p x))} idp g p
 
-module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {E : Type ℓ₅} {τ : A → B} {h : C → A} {v : C → D} {u : D → B} {f : B → E} where
+module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {E : Type ℓ₅} {τ : A → B}
+  {h : C → A} {v : C → D} {u : D → B} {f : B → E} where
 
   cmp-helper : {x y : C} (p : x == y) (s : h x == h y) (r : (z : C) →  u (v z) == τ (h z)) {k : A → E} (fₚ : f ∘ τ ∼ k)
     → ! (ap (f ∘ u) (ap v p)) ∙
