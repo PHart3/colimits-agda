@@ -14,9 +14,9 @@ isomorphism.
   - The file `Aux/Cocone.agda` contains the definition of
     the colimiting pushout together with its A-cocone structure.
   - This pushout and its A-cocone structure are described
-    in Section 5.3 of the paper.
+    in **Section 5.3** of the (CSL) paper.
 
-- The two homotopies making up the equivalence in Theorem 12
+- The two homotopies making up the equivalence in **Theorem 15**
   of the paper are in `L-R-L/` and `R-L-R/`.
 
   - The file `L-R-L/CC-Equiv-LRL-7.agda` contains the witness
@@ -25,18 +25,18 @@ isomorphism.
     witness of the right inverse of `postcomp`.
 
 - The `Map-Nat/` folder contains a proof that the equivalence of
-  Theorem 12 is natural both in diagrams and in coslice objects.
+  Theorem 15 is natural both in diagrams and in coslice objects.
 
   - The file `Map-Nat/CosColimitMap00.agda` contains the definition
     of the action of our pushout construction on maps of diagrams.
-    This action is defined in Section 5.4 of our paper.
+    This action is defined in **Section 5.4** of the paper.
 
   - The file `Map-Nat/CosColimitPstCmp.agda` contains the proof
-    of Lemma 13 of the paper. (The first naturality square, arising
+    of **Lemma 16** of the paper. (The first naturality square, arising
     from post-composition with coslice maps.)
 
   - The file `Map-Nat/CosColimitPreCmp.agda` contains the proof
-    of Lemma 14 of the paper. (The second naturality square,
+    of **Lemma 17** of the paper. (The second naturality square,
     arising from pre-composition with diagram maps.)
 
 - The `Main-Theorem/` folder gathers all data of the desired
