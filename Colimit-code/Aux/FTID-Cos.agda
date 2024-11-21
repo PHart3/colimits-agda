@@ -55,7 +55,8 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
   center-CCEq : CosCocEq K₁
   W center-CCEq = λ i x → idp
   u center-CCEq = λ i a → idp
-  Λ center-CCEq {i} {j} g = (λ x → ∙-unit-r (fst (comTri K₁ g) x)) , (λ a → =ₛ-in (lemma a (snd (F <#> g) a) (snd (comp K₁ j) a) (snd (comTri K₁ g) a)))
+  Λ center-CCEq {i} {j} g =
+    (λ x → ∙-unit-r (fst (comTri K₁ g) x)) , (λ a → =ₛ-in (lemma a (snd (F <#> g) a) (snd (comp K₁ j) a) (snd (comTri K₁ g) a)))
     where
       lemma : (a : A) → {w : ty (F # j)} (σ₁ : fst (F <#> g) (fun (F # i) a) == w) {z : ty T} (σ₂ : fst (comp K₁ j) w == z)
         {v : fst (comp K₁ i) (fun (F # i) a) == z} (τ : ! (fst (comTri K₁ g) (fun (F # i) a)) ∙ ap (fst (comp K₁ j)) σ₁ ∙ σ₂ == v) →
@@ -79,7 +80,8 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
       Σ (Σ (fst (fst (H j)) ∘ fst (F <#> g) ∼ fst (fst (H i)))
         (λ K → (x : ty (F # i)) → ! (fst (snd (H j)) (fst (F <#> g) x)) ∙ fst (comTri K₁ g) x ∙ fst (snd (H i)) x == K x))
         (λ (K , R) → Σ ((a : A) → ! (K (fun (F # i) a)) ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a  == snd (fst (H i)) a)
-        (λ J → ((a : A) →  ! (ap (λ p → ! p ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a) (R (fun (F # i) a))) ∙ ↯ (ϕ H i j g a) == J a)))))
+        (λ J → ((a : A) →  ! (ap (λ p → ! p ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a) (R (fun (F # i) a))) ∙
+          ↯ (ϕ H i j g a) == J a)))))
     module CCEq-Σ where
       ϕ : (H : _) (i j : Obj Γ) (g : Hom Γ i j) (a : A) →
         ! (! (fst (snd (H j)) (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
@@ -88,16 +90,18 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
       ϕ H i j g a =
         ! (! (fst (snd (H j)) (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
           ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a
-          =⟪ ap (λ p → ! (p ∙  fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a)
-            (hmtpy-nat-rev (fst (snd (H j))) (snd (F <#> g) a) (snd (comp K₁ j) a)) ⟫
-        ! ((ap (fst (fst (H j))) (snd (F <#> g) a) ∙ ((! (fst (snd (H j)) (fun (F # j) a)) ∙ snd (comp K₁ j) a) ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j))
-          (snd (F <#> g) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a
+          =⟪ ap (λ p → ! (p ∙  fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙
+            snd (fst (H j)) a) (hmtpy-nat-rev (fst (snd (H j))) (snd (F <#> g) a) (snd (comp K₁ j) a)) ⟫
+        ! ((ap (fst (fst (H j))) (snd (F <#> g) a) ∙ ((! (fst (snd (H j)) (fun (F # j) a)) ∙ snd (comp K₁ j) a) ∙ ! (snd (comp K₁ j) a)) ∙
+          ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
+          ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a
           =⟪ ap (λ p → ! ((ap (fst (fst (H j))) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
             fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
               ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a) (snd (snd (H j)) a) ⟫
         ! ((ap (fst (fst (H j))) (snd (F <#> g) a) ∙ (snd (fst (H j)) a ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
           fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a
-          =⟪ long-path-red (snd (F <#> g) a) (snd (fst (H j)) a) (snd (comp K₁ j) a) (fst (comTri K₁ g) (fun (F # i) a)) (fst (snd (H i)) (fun (F # i) a)) ⟫
+          =⟪ long-path-red (snd (F <#> g) a) (snd (fst (H j)) a) (snd (comp K₁ j) a) (fst (comTri K₁ g) (fun (F # i) a))
+            (fst (snd (H i)) (fun (F # i) a)) ⟫
         ! (fst (snd (H i)) (fun (F # i) a)) ∙ ! (fst (comTri K₁ g) (fun (F # i) a)) ∙ ap (fst (comp K₁ j)) (snd (F <#> g) a) ∙ snd (comp K₁ j) a
           =⟪ ap (λ p → ! (fst (snd (H i)) (fun (F # i) a)) ∙ p) (snd (comTri K₁ g) a) ⟫
         ! (fst (snd (H i)) (fun (F # i) a)) ∙ snd (comp K₁ i) a
