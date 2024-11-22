@@ -54,6 +54,52 @@ module lib.types.Pointed where
   → (f : Y ⊙→ Z) → f ⊙∘ (⊙cst :> (X ⊙→ Y)) ⊙∼ ⊙cst
 ⊙∘-cst-r {X = X} f = (λ _ → snd f) , ↓-idf=cst-in' idp
 
+module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where 
+
+  ⊙∘-assoc-comp : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
+    → ((h ⊙∘ g) ⊙∘ f) ⊙-comp (h ⊙∘ (g ⊙∘ f))
+  fst (⊙∘-assoc-comp (h , hpt) (g , gpt) (f , fpt)) = λ x → idp
+  snd (⊙∘-assoc-comp (h , hpt) (g , gpt) (f , fpt)) =
+    ! (∙-assoc (ap (h ∘ g) fpt) (ap h gpt) hpt) ◃∙
+    ap (λ p → p ∙ hpt) (ap (λ p → p ∙ ap h gpt) (ap-∘ h g fpt)) ◃∙
+    ap (λ p → p ∙ hpt) (∙-ap h (ap g fpt) gpt) ◃∎
+
+-- pre- and post-comp on (unfolded) homotopies of pointed maps
+
+  ⊙∘-pre : {f₁ f₂ : X ⊙→ Y} (g : Y ⊙→ Z) (H : f₁ ⊙-comp f₂) → g ⊙∘ f₁ ⊙-comp g ⊙∘ f₂
+  fst (⊙∘-pre g H) = λ x → ap (fst g) (fst H x)
+  snd (⊙∘-pre {f₁} g H) =
+    ! (∙-assoc (! (ap (fst g) (fst H (pt X)))) (ap (fst g) (snd f₁)) (snd g)) ◃∙
+    ap (λ p → p ∙ snd g) (!-ap-· (fst g) (fst H (pt X)) (snd f₁)) ◃∙
+    ap (λ p → p ∙ snd g) (ap (ap (fst g)) (↯ (snd H))) ◃∎
+
+  ⊙∘post : {f₁ f₂ : X ⊙→ Y} (g : Z ⊙→ X) (H : f₁ ⊙-comp f₂) → f₁ ⊙∘ g ⊙-comp f₂ ⊙∘ g
+  fst (⊙∘post g H) = λ x → fst H (fst g x)
+  snd (⊙∘post {f₁} {f₂} g H) =
+    ! (∙-assoc (! (fst H (fst g (pt Z)))) (ap (fst f₁) (snd g)) (snd f₁)) ◃∙
+    ap (λ p → p ∙ snd f₁) (hmtpy-nat-!-sq (fst H) (snd g)) ◃∙
+    ∙-assoc (ap (fst f₂) (snd g)) (! (fst H (pt X))) (snd f₁) ◃∙
+    ap (λ p → ap (fst f₂) (snd g) ∙ p) (↯ (snd H)) ◃∎
+
+-- concatenation of homotopies of pointed maps
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ f₃ : X ⊙→ Y} where 
+
+  infixr 30 _·⊙∼_
+  _·⊙∼_ : f₁ ⊙-comp f₂ → f₂ ⊙-comp f₃ → f₁ ⊙-comp f₃
+  fst (H₁ ·⊙∼ H₂) = λ x → fst H₁ x ∙ fst H₂ x 
+  snd (H₁ ·⊙∼ H₂) =
+    ap (λ p → ! (p ∙ fst H₂ (pt X)) ∙ snd f₁) (tri-exch (↯ (snd H₁))) ◃∙ 
+    ap (λ p → ! ((snd f₁ ∙ ! (snd f₂)) ∙ p) ∙ snd f₁) (tri-exch (↯ (snd H₂))) ◃∙
+    !3-·3 (snd f₁) (snd f₂) (snd f₃) ◃∎
+
+-- homotopies of homotopies of pointed maps
+
+infixr 30 _⊙→∼_
+_⊙→∼_ : ∀ {i j} {X : Ptd i} {Y : Ptd j} {f g : X ⊙→ Y} (H₁ H₂ : f ⊙-comp g) → Type (lmax i j)
+_⊙→∼_ {X = X} {f = f} H₁ H₂ =
+  Σ (fst H₁ ∼ fst H₂) (λ K → ap (λ p →  ! p ∙ snd f) (K (pt X)) ◃∙ snd H₂ =ₛ snd H₁)
+
 {- Pointed equivalences -}
 
 -- Extracting data from an pointed equivalence

@@ -23,34 +23,10 @@ _∼_ : ∀ {i j} {A : Type i} {B : A → Type j}
   (f g : (a : A) → B a) → Type (lmax i j)
 f ∼ g = ∀ x → f x == g x
 
-{-
-infixr 80 _∼-∙_
-
-_∼-∙_ : ∀ {i j} {A : Type i} {B : Type j} {f g h : A → B}
-  → f ∼ g → g ∼ h → f ∼ h
-_∼-∙_ f∼g g∼h x = f∼g x ∙ g∼h x
-
-∼-! : ∀ {i j} {A : Type i} {B : Type j} {f g : A → B}
-  → f ∼ g → g ∼ f
-∼-! f∼g = ! ∘ f∼g
--}
-
 _⊙∼_ : ∀ {i j} {X : Ptd i} {Y : Ptd j}
   (f g : X ⊙→ Y) → Type (lmax i j)
 _⊙∼_ {X = X} {Y = Y} (f , f-pt) (g , g-pt) =
   Σ (f ∼ g) λ p → f-pt == g-pt [ (_== pt Y) ↓ p (pt X) ]
-
-{-
-infixr 80 _⊙∼-∙_
-
-_⊙∼-∙_ : ∀ {i j} {X : Ptd i} {Y : Ptd j} {f g h : X ⊙→ Y}
-  → f ⊙∼ g → g ⊙∼ h → f ⊙∼ h
-_⊙∼-∙_ f∼g g∼h = fst f∼g ∼-∙ fst g∼h , snd f∼g ∙ᵈ snd g∼h
-
-⊙∼-! : ∀ {i j} {X : Ptd i} {Y : Ptd j} {f g : X ⊙→ Y}
-  → f ⊙∼ g → g ⊙∼ f
-⊙∼-! f∼g = ∼-! (fst f∼g) , !ᵈ (snd f∼g)
--}
 
 infixr 80 _⊙∘_
 _⊙∘_ : ∀ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k}

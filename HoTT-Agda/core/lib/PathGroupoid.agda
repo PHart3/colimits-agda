@@ -96,6 +96,14 @@ module _ {i} {A : Type i} where
   inv-rid : {x y : A} (p : x == y) → ! p ∙ p ∙ idp == idp
   inv-rid idp = idp
 
+  tri-exch : {x y z : A} {p : y == x} {q : y == z} {r : x == z}
+    → ! p ∙ q == r → p == q ∙ ! r
+  tri-exch {p = idp} {q = idp} {r} e = ap ! e
+
+  !3-·3 : {x y z w : A} (p : x == y) (q : z == y) (r : w == y)
+    → ! ((p ∙ ! q) ∙ q ∙ ! r) ∙ p == r
+  !3-·3 idp idp r = ∙-unit-r (! (! r)) ∙ !-! r
+
   {- Horizontal compositions -}
 
   infixr 80 _∙2_ _∙'2_

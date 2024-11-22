@@ -4,6 +4,7 @@ open import lib.Base
 open import lib.PathFunctor
 open import lib.PathGroupoid
 open import lib.Equivalence
+open import lib.Function
 
 {- Structural lemmas about paths over paths
 
@@ -285,7 +286,6 @@ module _ {i j} {A : Type i} where
   to-transp-equiv B p =
     equiv to-transp (from-transp B p) (to-transp-β B p) (to-transp-η)
 
-
   from-transp! : (B : A → Type j)
     {a a' : A} (p : a == a')
     {u : B a} {v : B a'}
@@ -329,6 +329,27 @@ module _ {i j} {A : Type i} where
   apd-to-tr : (B : A → Type j) (f : (a : A) → B a) {x y : A} (p : x == y)
     (s : transport B p (f x) == f y) → apd f p == from-transp-g B p s → apd-tr f p == s
   apd-to-tr B f idp s h = h
+
+{-
+  A coordinate definition of homotopy of pointed functions.
+  We also call such a homotopy "unfolded." 
+-}
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} where 
+
+  infixr 30 _⊙-comp_
+  _⊙-comp_ : (f g : X ⊙→ Y) → Type (lmax i j)
+  _⊙-comp_ f g = Σ (fst f ∼ fst g) λ H → ! (H (pt X)) ∙ snd f =-= snd g
+
+  comp-⊙∼ : {f g : X ⊙→ Y} (H : f ⊙∼ g) → ! (fst H (pt X)) ∙ snd f =-= snd g
+  comp-⊙∼ {f = f} H = ! (transp-cst=idf-l (fst H (pt X)) (snd f)) ◃∙ to-transp (snd H) ◃∎
+
+  ⊙-to-comp : {f g : X ⊙→ Y} → f ⊙∼ g → f ⊙-comp g
+  ⊙-to-comp H = fst H , comp-⊙∼ H  
+
+  ⊙id-to-comp : {f g : X ⊙→ Y} (p : f == g) → f ⊙-comp g
+  fst (⊙id-to-comp idp) = λ x → idp
+  snd (⊙id-to-comp idp) = idp ◃∎
 
 {- Various other lemmas -}
 

@@ -79,6 +79,9 @@ module _ {i j k} {A : Type i} {B : A → Type j} {C : A → Type k}
 
 module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
 
+  !-ap-· : {x y : A} (p : x == y) {z : A} (r : x == z) → ! (ap g p) ∙ ap g r == ap g (! p ∙ r)
+  !-ap-· idp r = idp
+
   !-ap-∙-s : {x y : A} (p : x == y) {z : A} {r : x == z} {w : B} {s : g z == w}
     → ! (ap g p) ∙ ap g r ∙ s == ap g (! p ∙ r) ∙ s
   !-ap-∙-s idp = idp
@@ -389,6 +392,9 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H 
   hmtpy-nat-! : {x y : A} (p : x == y) → ! (H x) == ap g p ∙ ! (H y) ∙ ! (ap f p)
   hmtpy-nat-! {x = x} idp = ! (∙-unit-r (! (H x)))
 
+  hmtpy-nat-!-sq : {x y : A} (p : x == y) → ! (H x) ∙ ap f p == ap g p ∙ ! (H y)
+  hmtpy-nat-!-sq {x = x} idp = ∙-unit-r (! (H x))
+
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {f : A → B} {g : A → C}
   (v : B → D) (u : C → D) (H : (x : A) → v (f x) == u (g x)) where
 
@@ -469,10 +475,13 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} where
 
 module _ {i} {A : Type i} where
 
-  -- unsure where this belongs
   transp-cst=idf : {a x y : A} (p : x == y) (q : a == x)
     → transport (λ x → a == x) p q == q ∙ p
   transp-cst=idf idp q = ! (∙-unit-r q)
+
+  transp-cst=idf-l : {a x y : A} (p : x == y) (q : x == a)
+    → transport (λ x → x == a) p q == ! p ∙ q
+  transp-cst=idf-l idp q = idp
 
   transp-cst=idf-pentagon : {a x y z : A}
     (p : x == y) (q : y == z) (r : a == x)
