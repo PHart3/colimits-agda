@@ -97,16 +97,22 @@ module _ {i} {A : Type i} where
   !-! : {x y : A} (p : x == y) → ! (! p) == p
   !-! idp = idp
 
+  {- additional algebraic lemmas -}
+
   inv-rid : {x y : A} (p : x == y) → ! p ∙ p ∙ idp == idp
   inv-rid idp = idp
-
-  tri-exch : {x y z : A} {p : y == x} {q : y == z} {r : x == z}
-    → ! p ∙ q == r → p == q ∙ ! r
-  tri-exch {p = idp} {q = idp} {r} e = ap ! e
 
   !3-∙3 : {x y z w : A} (p : x == y) (q : z == y) (r : w == y)
     → ! ((p ∙ ! q) ∙ q ∙ ! r) ∙ p == r
   !3-∙3 idp idp r = ∙-unit-r (! (! r)) ∙ !-! r
+
+  ∙-∙'-= : {x y : A} {p r : x == y} (q : x == x)
+    → p == r → ! p ∙ q ∙' p == ! r ∙ q ∙' r
+  ∙-∙'-= q idp = idp
+
+  tri-exch : {x y z : A} {p : y == x} {q : y == z} {r : x == z}
+    → ! p ∙ q == r → p == q ∙ ! r
+  tri-exch {p = idp} {q = idp} {r} e = ap ! e
 
   {- Horizontal compositions -}
 

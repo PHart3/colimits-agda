@@ -42,6 +42,19 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
   into : ⊙Susp X ⊙→ U → X ⊙→ ⊙Ω U
   into r = ⊙Ω-fmap r ⊙∘ ⊙η X
 
+  ap-comp-into : {f₁ f₂ : ⊙Susp X ⊙→ U} (H : f₁ ⊙-comp f₂) → into f₁ ⊙-comp into f₂
+  fst (ap-comp-into {f₁ = (f , idp)} {f₂} H) x =
+    (hmpty-nat-∙'-r (fst H) (glue x ∙ ! (glue (pt X))) ∙
+      ap (λ p → p ∙ ap (λ z → fst f₂ z) (glue x ∙ ! (glue (pt X))) ∙' ! (fst H (left unit)))
+        (! (!-! (fst H (left unit))) ∙ ! (!-∙ (! (fst H (left unit))) idp)) ∙
+      ap (λ p → (! (! (fst H (left unit)) ∙ idp)) ∙ ap (fst f₂) (glue x ∙ ! (glue (pt X))) ∙' p)
+        (! (∙-unit-r (! (fst H (left unit))))) ∙
+      ∙-∙'-= (ap (fst f₂) (glue x ∙ ! (glue (pt X)))) (↯ (snd H))) ∙
+    ! (Ω-fmap-β f₂ (glue x ∙ ! (glue (pt X)))) 
+  snd (ap-comp-into {f₁ = (f , idp)} {f₂} H) = {!!}
+
+-- ! (fst H (left unit)) ∙ idp =-= snd f₂
+
 {-
   an explicit component-based homotopy witnessing the
   naturality of into in its first argument
