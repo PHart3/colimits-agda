@@ -93,6 +93,24 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ f₃ : X ⊙→ Y} where
     ap (λ p → ! ((snd f₁ ∙ ! (snd f₂)) ∙ p) ∙ snd f₁) (tri-exch (↯ (snd H₂))) ◃∙
     !3-∙3 (snd f₁) (snd f₂) (snd f₃) ◃∎
 
+-- inverse of homotopy of pointed maps
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} where
+
+  !-⊙∼ : {f₁ f₂ : X ⊙→ Y} (H : f₁ ⊙-comp f₂) → f₂ ⊙-comp f₁
+  fst (!-⊙∼ (H₀ , H₁)) x = ! (H₀ x)
+  snd (!-⊙∼ {f₁} {f₂} (H₀ , H₁)) =
+    ap (λ p → p ∙ snd f₂) (!-! (H₀ (pt (X)))) ◃∙
+    ap (λ p → H₀ (pt X) ∙ p) (! (↯ H₁)) ◃∙
+    ! (∙-assoc (H₀ (pt X)) (! (H₀ (pt X))) (snd f₁)) ◃∙
+    ap (λ p → p ∙ snd f₁) (!-inv-r (H₀ (pt X))) ◃∎
+
+-- identity homotopy of pointed maps
+
+  ⊙∼-id : (f : X ⊙→ Y) → f ⊙-comp f
+  fst (⊙∼-id (f , fₚ)) x = idp
+  snd (⊙∼-id (f , fₚ)) = idp ◃∎
+
 -- homotopies of homotopies of pointed maps
 
 infixr 30 _⊙→∼_
