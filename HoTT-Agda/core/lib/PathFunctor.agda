@@ -16,6 +16,10 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f (! p) == ! (ap f p)
   ap-! idp = idp
 
+  ap-!-inv : {x y : A} (p : x == y)
+    → ap f p ∙ ap f (! p) == idp
+  ap-!-inv idp = idp
+
   ∙-ap : {x y z : A} (p : x == y) (q : y == z)
     → ap f p ∙ ap f q == ap f (p ∙ q)
   ∙-ap idp q = idp
@@ -79,8 +83,8 @@ module _ {i j k} {A : Type i} {B : A → Type j} {C : A → Type k}
 
 module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
 
-  !-ap-· : {x y : A} (p : x == y) {z : A} (r : x == z) → ! (ap g p) ∙ ap g r == ap g (! p ∙ r)
-  !-ap-· idp r = idp
+  !-ap-∙ : {x y : A} (p : x == y) {z : A} (r : x == z) → ! (ap g p) ∙ ap g r == ap g (! p ∙ r)
+  !-ap-∙ idp r = idp
 
   !-ap-∙-s : {x y : A} (p : x == y) {z : A} {r : x == z} {w : B} {s : g z == w}
     → ! (ap g p) ∙ ap g r ∙ s == ap g (! p ∙ r) ∙ s
@@ -113,6 +117,18 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     → ! (ap (g ∘ f) p) ∙ (ap g S ∙ gₚ) ∙ ! (ap g (! (ap f p) ∙ S ∙ idp) ∙ gₚ) == idp
   inv-canc-cmp idp idp idp = idp
 
+  ap-!-∘-rid-coher : {x y : A} (p : x == y)
+    → ! (ap (λ q →  (ap g (ap f p)) ∙ q) (ap-∘ (! p) ∙ ap (ap g) (ap-! f p))) ∙ idp
+      ==
+      ap-!-inv g (ap f p) ∙ ! (cmp-inv-r p)
+  ap-!-∘-rid-coher idp = idp
+
+  ap-!-∘-∙-rid-coher : {x y : A} (p : x == y)
+    → ! (! (cmp-inv-r p) ∙ ! (ap (λ q → q ∙ ap (g ∘ f) (! p)) (ap-∘ p)) ∙ ! (ap-∙ (g ∘ f) p (! p))) ∙ idp
+      ==
+      ap (ap (g ∘ f)) (!-inv-r p) ∙ idp
+  ap-!-∘-∙-rid-coher idp = idp
+  
 {- ap of idf -}
 ap-idf : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ap (idf A) p == p
 ap-idf idp = idp

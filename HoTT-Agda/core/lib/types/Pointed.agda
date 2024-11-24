@@ -70,7 +70,7 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
   fst (⊙∘-pre g H) = λ x → ap (fst g) (fst H x)
   snd (⊙∘-pre {f₁} g H) =
     ! (∙-assoc (! (ap (fst g) (fst H (pt X)))) (ap (fst g) (snd f₁)) (snd g)) ◃∙
-    ap (λ p → p ∙ snd g) (!-ap-· (fst g) (fst H (pt X)) (snd f₁)) ◃∙
+    ap (λ p → p ∙ snd g) (!-ap-∙ (fst g) (fst H (pt X)) (snd f₁)) ◃∙
     ap (λ p → p ∙ snd g) (ap (ap (fst g)) (↯ (snd H))) ◃∎
 
   ⊙∘post : {f₁ f₂ : X ⊙→ Y} (g : Z ⊙→ X) (H : f₁ ⊙-comp f₂) → f₁ ⊙∘ g ⊙-comp f₂ ⊙∘ g
@@ -85,13 +85,13 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ f₃ : X ⊙→ Y} where 
 
-  infixr 30 _·⊙∼_
-  _·⊙∼_ : f₁ ⊙-comp f₂ → f₂ ⊙-comp f₃ → f₁ ⊙-comp f₃
-  fst (H₁ ·⊙∼ H₂) = λ x → fst H₁ x ∙ fst H₂ x 
-  snd (H₁ ·⊙∼ H₂) =
+  infixr 30 _∙⊙∼_
+  _∙⊙∼_ : f₁ ⊙-comp f₂ → f₂ ⊙-comp f₃ → f₁ ⊙-comp f₃
+  fst (H₁ ∙⊙∼ H₂) = λ x → fst H₁ x ∙ fst H₂ x 
+  snd (H₁ ∙⊙∼ H₂) =
     ap (λ p → ! (p ∙ fst H₂ (pt X)) ∙ snd f₁) (tri-exch (↯ (snd H₁))) ◃∙ 
     ap (λ p → ! ((snd f₁ ∙ ! (snd f₂)) ∙ p) ∙ snd f₁) (tri-exch (↯ (snd H₂))) ◃∙
-    !3-·3 (snd f₁) (snd f₂) (snd f₃) ◃∎
+    !3-∙3 (snd f₁) (snd f₂) (snd f₃) ◃∎
 
 -- homotopies of homotopies of pointed maps
 

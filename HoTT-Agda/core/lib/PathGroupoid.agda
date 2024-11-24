@@ -47,6 +47,10 @@ module _ {i} {A : Type i} where
     → (p ∙' q) ∙ r == p ∙ (q ∙ r)
   ∙'∙-∙∙-assoc p idp r = idp
 
+  assoc-4-∙ : {x₁ x₂ x₃ x₄ x₅ x₆ : A} (p₁ : x₁ == x₂) (p₂ : x₂ == x₃) (p₃ : x₃ == x₄) (p₄ : x₄ == x₅) (p₅ : x₅ == x₆)
+    → p₁ ∙ p₂ ∙ p₃ ∙ p₄ ∙ p₅ == (p₁ ∙ p₂ ∙ p₃) ∙ p₄ ∙ p₅
+  assoc-4-∙ idp idp p₃ p₄ p₅ = idp 
+
   -- [∙-unit-l] and [∙'-unit-r] are definitional
 
   ∙-unit-r : {x y : A} (q : x == y) → q ∙ idp == q
@@ -100,9 +104,9 @@ module _ {i} {A : Type i} where
     → ! p ∙ q == r → p == q ∙ ! r
   tri-exch {p = idp} {q = idp} {r} e = ap ! e
 
-  !3-·3 : {x y z w : A} (p : x == y) (q : z == y) (r : w == y)
+  !3-∙3 : {x y z w : A} (p : x == y) (q : z == y) (r : w == y)
     → ! ((p ∙ ! q) ∙ q ∙ ! r) ∙ p == r
-  !3-·3 idp idp r = ∙-unit-r (! (! r)) ∙ !-! r
+  !3-∙3 idp idp r = ∙-unit-r (! (! r)) ∙ !-! r
 
   {- Horizontal compositions -}
 
@@ -130,6 +134,9 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type �
 
   cmp-inv-l : {x y : A} (p : x == y) → ! (ap (g ∘ f) p) ∙ ap g (ap f p) == idp
   cmp-inv-l idp = idp
+
+  cmp-inv-r : {x y : A} (p : x == y) → ap g (ap f p) ∙ (ap (g ∘ f) (! p)) == idp
+  cmp-inv-r idp = idp
 
   cmp-inv-rid : {x y : A} (p : x == y) → idp == ap (g ∘ f) p ∙ ! (ap g (ap f p) ∙ idp)
   cmp-inv-rid idp = idp
