@@ -42,6 +42,49 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
   into : ⊙Susp X ⊙→ U → X ⊙→ ⊙Ω U
   into r = ⊙Ω-fmap r ⊙∘ ⊙η X
 
+  ap-comp-into-coher-aux : {f g : Susp (de⊙ X) → de⊙ U} (H₀ : f ∼ g)
+    {x : Susp (de⊙ X)} (v : x == right unit)
+    → ! (
+        (hmpty-nat-∙'-r H₀ (v ∙ ! v) ∙
+          ap (λ p → p ∙ ap g (v ∙ ! v) ∙' ! (H₀ x))
+            (! (!-! (H₀ x)) ∙ ! (!-∙ (! (H₀ x)) idp)) ∙
+          ap (λ p → ! (! (H₀ x) ∙ idp) ∙ ap g (v ∙ ! v) ∙' p)
+            (! (∙-unit-r (! (H₀ x)))) ∙ idp) ∙
+        ! (Ω-fmap-β (g , ! (H₀ x) ∙ idp)  (v ∙ ! v))) ∙
+      ap (ap f) (!-inv-r v) ∙ idp
+      =-=
+      ap (fst (⊙Ω-fmap (g , ! (H₀ x) ∙ idp))) (!-inv-r v) ∙
+      snd (⊙Ω-fmap (g , ! (H₀ x) ∙ idp))
+  ap-comp-into-coher-aux {g = g} H₀ idp = lemma (H₀ (right unit))
+    where
+      lemma : {x : de⊙ U} (u : x == g (right unit))
+        → ! (
+          ((! (!-inv-r u) ∙
+          ap (_∙_ u) (! (∙'-unit-l (! u)))) ∙
+          ap (λ p → p ∙ idp ∙' ! u)
+            (! (!-! u) ∙ ! (!-∙ (! u) idp)) ∙
+          ap (λ p → ! (! u ∙ idp) ∙ idp ∙' p)
+            (! (∙-unit-r (! u))) ∙ idp) ∙
+          ! (Ω-fmap-β (g , ! u ∙ idp) idp)) ∙ idp
+          =-=
+          snd (⊙Ω-fmap (g , ! u ∙ idp))
+      lemma idp = idp ◃∎
+
+  ap-comp-into-coher : {f g : Susp (de⊙ X) → de⊙ U} (H₀ : f ∼ g)
+    {gₚ : g (left unit) == f (left unit)} (H₁ : ! (H₀ (left unit)) ∙ idp == gₚ)
+    → ! (
+        (hmpty-nat-∙'-r H₀ (glue (pt X) ∙ ! (glue (pt X))) ∙
+        ap (λ p → p ∙ ap g (glue (pt X) ∙ ! (glue (pt X))) ∙' ! (H₀ (left unit)))
+          (! (!-! (H₀ (left unit))) ∙ ! (!-∙ (! (H₀ (left unit))) idp)) ∙
+        ap (λ p → ! (! (H₀ (left unit)) ∙ idp) ∙ ap g (glue (pt X) ∙ ! (glue (pt X))) ∙' p)
+          (! (∙-unit-r (! (H₀ (left unit))))) ∙
+        ∙-∙'-= (ap g (glue (pt X) ∙ ! (glue (pt X)))) H₁) ∙
+        ! (Ω-fmap-β (g , gₚ) (glue (pt X) ∙ ! (glue (pt X))))) ∙
+      ap (ap f) (!-inv-r (glue (pt X))) ∙ idp
+      =-=
+      ap (Ω-fmap (g , gₚ)) (!-inv-r (glue (pt X))) ∙ snd (⊙Ω-fmap (g , gₚ))
+  ap-comp-into-coher H₀ idp = ap-comp-into-coher-aux H₀ (glue (pt X))
+
   ap-comp-into : {f₁ f₂ : ⊙Susp X ⊙→ U} (H : f₁ ⊙-comp f₂) → into f₁ ⊙-comp into f₂
   fst (ap-comp-into {f₁ = (f , idp)} {f₂} H) x =
     (hmpty-nat-∙'-r (fst H) (glue x ∙ ! (glue (pt X))) ∙
@@ -51,9 +94,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
         (! (∙-unit-r (! (fst H (left unit))))) ∙
       ∙-∙'-= (ap (fst f₂) (glue x ∙ ! (glue (pt X)))) (↯ (snd H))) ∙
     ! (Ω-fmap-β f₂ (glue x ∙ ! (glue (pt X)))) 
-  snd (ap-comp-into {f₁ = (f , idp)} {f₂} H) = {!!}
-
--- ! (fst H (left unit)) ∙ idp =-= snd f₂
+  snd (ap-comp-into {f₁ = (f , idp)} {f₂} H) = ap-comp-into-coher (fst H) (↯ (snd H))
 
 {-
   an explicit component-based homotopy witnessing the

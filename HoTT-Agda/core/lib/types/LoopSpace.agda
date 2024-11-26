@@ -41,6 +41,11 @@ module _ {i} {X : Ptd i} where
   → Ω-fmap F p == ! (snd F) ∙ ap (fst F) p ∙' snd F
 Ω-fmap-β (_ , idp) _ = idp
 
+Ω-fmap-pt-β : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y)
+  → snd (⊙Ω-fmap F) ==
+    Ω-fmap-β F idp ∙ ap (λ p → ! (snd F) ∙ p) (∙'-unit-l (snd F)) ∙ !-inv-l (snd F) 
+Ω-fmap-pt-β (_ , idp) = idp
+
 Ω-isemap : ∀ {i j} {X : Ptd i} {Y : Ptd j}
   (F : X ⊙→ Y) → is-equiv (fst F) → is-equiv (Ω-fmap F)
 Ω-isemap (f , idp) e = ap-is-equiv e _ _
@@ -124,7 +129,6 @@ module _ {i} {X : Ptd i} where
   → ⊙Ω-fmap2 F ⊙∘ ⊙diag == ⊙Ω-fmap (F ⊙∘ ⊙diag)
 ⊙Ω-fmap2-diag (f , idp) = ⊙λ=' (ap2-diag (curry f)) idp
 
-module _ where
-  Ω-fmap-∙ : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y) (p q : Ω X)
-    → Ω-fmap F (p ∙ q) == Ω-fmap F p ∙ Ω-fmap F q
-  Ω-fmap-∙ (f , idp) p q = ap-∙ f p q
+Ω-fmap-∙ : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y) (p q : Ω X)
+  → Ω-fmap F (p ∙ q) == Ω-fmap F p ∙ Ω-fmap F q
+Ω-fmap-∙ (f , idp) p q = ap-∙ f p q
