@@ -66,16 +66,16 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
 
 -- pre- and post-comp on (unfolded) homotopies of pointed maps
 
-  ⊙∘-pre : {f₁ f₂ : X ⊙→ Y} (g : Y ⊙→ Z) (H : f₁ ⊙-comp f₂) → g ⊙∘ f₁ ⊙-comp g ⊙∘ f₂
-  fst (⊙∘-pre g H) = λ x → ap (fst g) (fst H x)
-  snd (⊙∘-pre {f₁} g H) =
+  ⊙∘-post : {f₁ f₂ : X ⊙→ Y} (g : Y ⊙→ Z) (H : f₁ ⊙-comp f₂) → g ⊙∘ f₁ ⊙-comp g ⊙∘ f₂
+  fst (⊙∘-post g H) = λ x → ap (fst g) (fst H x)
+  snd (⊙∘-post {f₁} g H) =
     ! (∙-assoc (! (ap (fst g) (fst H (pt X)))) (ap (fst g) (snd f₁)) (snd g)) ◃∙
     ap (λ p → p ∙ snd g) (!-ap-∙ (fst g) (fst H (pt X)) (snd f₁)) ◃∙
     ap (λ p → p ∙ snd g) (ap (ap (fst g)) (↯ (snd H))) ◃∎
 
-  ⊙∘post : {f₁ f₂ : X ⊙→ Y} (g : Z ⊙→ X) (H : f₁ ⊙-comp f₂) → f₁ ⊙∘ g ⊙-comp f₂ ⊙∘ g
-  fst (⊙∘post g H) = λ x → fst H (fst g x)
-  snd (⊙∘post {f₁} {f₂} g H) =
+  ⊙∘-pre : {f₁ f₂ : X ⊙→ Y} (g : Z ⊙→ X) (H : f₁ ⊙-comp f₂) → f₁ ⊙∘ g ⊙-comp f₂ ⊙∘ g
+  fst (⊙∘-pre g H) = λ x → fst H (fst g x)
+  snd (⊙∘-pre {f₁} {f₂} g H) =
     ! (∙-assoc (! (fst H (fst g (pt Z)))) (ap (fst f₁) (snd g)) (snd f₁)) ◃∙
     ap (λ p → p ∙ snd f₁) (hmtpy-nat-!-sq (fst H) (snd g)) ◃∙
     ∙-assoc (ap (fst f₂) (snd g)) (! (fst H (pt X))) (snd f₁) ◃∙
@@ -85,7 +85,7 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ f₃ : X ⊙→ Y} where 
 
-  infixr 30 _∙⊙∼_
+  infixr 15 _∙⊙∼_
   _∙⊙∼_ : f₁ ⊙-comp f₂ → f₂ ⊙-comp f₃ → f₁ ⊙-comp f₃
   fst (H₁ ∙⊙∼ H₂) = λ x → fst H₁ x ∙ fst H₂ x 
   snd (H₁ ∙⊙∼ H₂) =
@@ -101,7 +101,7 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
   fst (!-⊙∼ (H₀ , H₁)) x = ! (H₀ x)
   snd (!-⊙∼ {f₁} {f₂} (H₀ , H₁)) =
     ap (λ p → p ∙ snd f₂) (!-! (H₀ (pt (X)))) ◃∙
-    ap (λ p → H₀ (pt X) ∙ p) (! (↯ H₁)) ◃∙
+    ap (λ p → H₀ (pt X) ∙ p) (↯ (seq-! H₁)) ◃∙
     ! (∙-assoc (H₀ (pt X)) (! (H₀ (pt X))) (snd f₁)) ◃∙
     ap (λ p → p ∙ snd f₁) (!-inv-r (H₀ (pt X))) ◃∎
 
@@ -113,7 +113,7 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
 -- homotopies of homotopies of pointed maps
 
-infixr 30 _⊙→∼_
+infixr 10 _⊙→∼_
 _⊙→∼_ : ∀ {i j} {X : Ptd i} {Y : Ptd j} {f g : X ⊙→ Y} (H₁ H₂ : f ⊙-comp g) → Type (lmax i j)
 _⊙→∼_ {X = X} {f = f} H₁ H₂ =
   Σ (fst H₁ ∼ fst H₂) (λ K → ap (λ p →  ! p ∙ snd f) (K (pt X)) ◃∙ snd H₂ =ₛ snd H₁)

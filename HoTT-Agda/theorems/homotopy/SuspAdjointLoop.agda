@@ -101,7 +101,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
   naturality of into in its first argument
 -}
 
-module _ {i j} {X Y : Ptd i} (U : Ptd j) where 
+module _ {i j} {X Y : Ptd i} {U : Ptd j} where 
 
   module _ (r₀ : Susp (de⊙ Y) → de⊙ U) (h₀ : de⊙ X → de⊙ Y) where
 
@@ -141,9 +141,9 @@ module _ {i j} {X Y : Ptd i} (U : Ptd j) where
       ap-!-inv r₀ ((merid ∘ h₀) (pt X)) ∙ ! (cmp-inv-r {f = Susp-fmap h₀} {g = r₀} (glue (pt X))) 
     nat-dom-aux-l = nat-dom-aux-l2 (SuspFmap.merid-β h₀ (pt X)) 
 
-  nat-dom : (r : ⊙Susp Y ⊙→ U) (h : X ⊙→ Y)
+  nat-dom : (h : X ⊙→ Y) (r : ⊙Susp Y ⊙→ U)
     → (into Y U) r ⊙∘ h ⊙-comp (into X U) (r ⊙∘ ⊙Susp-fmap h)
-  fst (nat-dom (r₀ , idp) (h₀ , idp)) x = ↯ (
+  fst (nat-dom (h₀ , idp) (r₀ , idp)) x = ↯ (
     ap-∙ r₀ (glue (h₀ x)) (! (glue (pt Y))) ◃∙
     ! (ap (λ p → ap r₀ (glue (h₀ x)) ∙ p) (ap (λ p → ap r₀ (! p)) (SuspFmap.merid-β h₀ (pt X)))) ◃∙
     ! (ap (λ p → ap r₀ (glue (h₀ x)) ∙ p) (ap-∘ r₀ (Susp-fmap h₀) (! (glue (pt X))) ∙
@@ -152,7 +152,7 @@ module _ {i j} {X Y : Ptd i} (U : Ptd j) where
     ! ((ap (λ p → p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (ap-∘ r₀ (Susp-fmap h₀) (glue x)))) ◃∙
     ! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue x) (! (glue (pt X)))) ◃∎
     )
-  snd (nat-dom (r₀ , idp) (h₀ , idp)) =
+  snd (nat-dom (h₀ , idp) (r₀ , idp)) =
     ap (λ p → ! (ap-∙ r₀ (glue (h₀ (pt X))) (! (glue (h₀ (pt X)))) ∙ p) ∙ ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp)
       (assoc-4-∙
         (! (ap (_∙_ (ap r₀ (glue (h₀ (pt X))))) (ap (λ p → ap r₀ (! p)) (SuspFmap.merid-β h₀ (pt X)))))
@@ -169,7 +169,19 @@ module _ {i j} {X Y : Ptd i} (U : Ptd j) where
 
 {- the nat-dom proof makes Susp a 2-coherent left adjoint to Loop -} 
 
--- module 2_coher_Susp (h₁ : ) (h₂ : ) (h₃ : ) where 
+module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where 
+
+  two_coher_Susp : (h₁ : ⊙Susp X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →
+    !-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃) ∙⊙∼
+    ⊙∘-pre h₃ (nat-dom h₂ h₁) ∙⊙∼
+    nat-dom h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂) ∙⊙∼
+    ap-comp-into W Y (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
+      ⊙∘-post h₁ (!-⊙∼ ((Susp-fmap-∘ (fst h₂) (fst h₃)) , idp ◃∎))) ∙⊙∼
+    !-⊙∼ (nat-dom (h₂ ⊙∘ h₃) h₁)
+      ⊙→∼
+    ⊙∼-id ((into X Y h₁) ⊙∘ h₂ ⊙∘ h₃)
+  fst (two f₁ , idp coher f₂ , idp Susp (f₃ , idp)) x = {!!}
+  snd (two f₁ , idp coher f₂ , idp Susp (f₃ , idp)) = {!!}
 
 -- ap into () ⊙-comp ?
 
