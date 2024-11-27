@@ -58,7 +58,6 @@ susp-⊙span X =
 ⊙Susp : ∀ {i} → Ptd i → Ptd i
 ⊙Susp ⊙[ A , _ ] = ⊙[ Susp A , north ]
 
-
 σloop : ∀ {i} (X : Ptd i) → de⊙ X → north' (de⊙ X) == north' (de⊙ X)
 σloop ⊙[ _ , x₀ ] x = merid x ∙ ! (merid x₀)
 
@@ -67,6 +66,20 @@ susp-⊙span X =
 
 ⊙σloop : ∀ {i} (X : Ptd i) → X ⊙→ ⊙[ north' (de⊙ X) == north' (de⊙ X) , idp ]
 ⊙σloop X = σloop X , σloop-pt
+
+module _ {i j} {A : Type i} {B : Type j} (f g : Susp A → B) where
+
+  SuspMapEq : (n : f north == g north) (s : f south == g south)
+    (c : (a : A) → ap f (merid a) == n ∙ ap g (merid a) ∙' ! s)
+    → f ∼ g
+  SuspMapEq n s c = Susp-elim n s λ a → from-hmpty-nat f g (merid a) (c a)
+
+  SuspMapEq-β : (n : f north == g north) (s : f south == g south)
+    (c : (a : A) → ap f (merid a) == n ∙ ap g (merid a) ∙' ! s)
+    → (a : A) → hmpty-nat-∙'-r (SuspMapEq n s c) (merid a) == c a
+  SuspMapEq-β n s c a =
+    apd-to-hnat f g (SuspMapEq n s c) (merid a) (c a)
+      (SuspElim.merid-β n s (λ z → from-hmpty-nat f g (merid z) (c z)) a )
 
 module _ {i j} where
 

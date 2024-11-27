@@ -327,8 +327,27 @@ module _ {i j} {A : Type i} where
   from-transp-g B idp h = h
 
   apd-to-tr : (B : A → Type j) (f : (a : A) → B a) {x y : A} (p : x == y)
-    (s : transport B p (f x) == f y) → apd f p == from-transp-g B p s → apd-tr f p == s
+    (s : transport B p (f x) == f y)
+    → apd f p == from-transp-g B p s → apd-tr f p == s
   apd-to-tr B f idp s h = h
+
+-- hmpty-nat conversion
+
+module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
+
+  from-hmpty-nat : {x y : A} (p : x == y) {e₁ : f x == g x} {e₂ : f y == g y} 
+    → ap f p == e₁ ∙ ap g p  ∙' ! e₂ → e₁ == e₂ [ (λ z → f z == g z) ↓ p ]
+  from-hmpty-nat idp {e₁} {e₂} p = ∙-idp-!-∙'-rot e₁ e₂ p
+
+  apd-to-hnat : (K : (z : A) → f z == g z) {x y : A} (p : x == y)
+    (m : ap f p == K x ∙ ap g p  ∙' ! (K y))
+    → apd K p == from-hmpty-nat p m → hmpty-nat-∙'-r K p == m
+  apd-to-hnat K {x} idp m q = lemma (K x) m q
+    where
+      lemma : {x₁ x₂ : B} (v : x₁ == x₂) (n : idp == v ∙ idp ∙' ! v)
+        (r : idp == ∙-idp-!-∙'-rot v v n)
+        → ! (!-inv-r v) ∙ ap (_∙_ v) (! (∙'-unit-l (! v))) == n
+      lemma idp n r = !-inj-rot n (r ∙ ∙-unit-r (ap ! (n ∙ idp)) ∙ ap (ap !) (∙-unit-r n))
 
 {-
   A coordinate definition of homotopy of pointed functions.

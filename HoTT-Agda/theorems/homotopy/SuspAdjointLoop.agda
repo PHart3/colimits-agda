@@ -153,7 +153,8 @@ module _ {i j} {X Y : Ptd i} {U : Ptd j} where
     ! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue x) (! (glue (pt X)))) ◃∎
     )
   snd (nat-dom (h₀ , idp) (r₀ , idp)) =
-    ap (λ p → ! (ap-∙ r₀ (glue (h₀ (pt X))) (! (glue (h₀ (pt X)))) ∙ p) ∙ ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp)
+    ap (λ p → ! (ap-∙ r₀ (glue (h₀ (pt X))) (! (glue (h₀ (pt X)))) ∙ p) ∙
+      ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp)
       (assoc-4-∙
         (! (ap (_∙_ (ap r₀ (glue (h₀ (pt X))))) (ap (λ p → ap r₀ (! p)) (SuspFmap.merid-β h₀ (pt X)))))
         (! (ap (_∙_ (ap r₀ (glue (h₀ (pt X))))) (ap-∘ r₀ (Susp-fmap h₀) (! (glue (pt X))) ∙
@@ -163,14 +164,87 @@ module _ {i j} {X Y : Ptd i} {U : Ptd j} where
         (! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue (pt X)) (! (glue (pt X)))))) ◃∙
     ap (λ p → ! (ap-∙ r₀ (glue (h₀ (pt X))) (! (glue (h₀ (pt X)))) ∙ p ∙
       ! (ap (λ p → p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (ap-∘ r₀ (Susp-fmap h₀) (glue (pt X)))) ∙
-      ! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue (pt X)) (! (glue (pt X))))) ∙ ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp)
-        (nat-dom-aux-l r₀ h₀) ◃∙
+      ! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue (pt X)) (! (glue (pt X))))) ∙
+        ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp) (nat-dom-aux-l r₀ h₀) ◃∙
     nat-dom-aux-r r₀ h₀ ((glue (h₀ (pt X)))) ◃∎
 
 {- the nat-dom proof makes Susp a 2-coherent left adjoint to Loop -} 
 
 module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where 
 
+
+  -- unfolded version of naturality square for Susp-fmap-∘
+
+  module _ (f₂ : de⊙ Z → de⊙ X) (f₃ : de⊙ W → de⊙ Z) (f₁ : Susp (de⊙ X) → de⊙ Y)
+    (x : de⊙ W) where 
+
+    Susp-fmap-∘-sq-unf : 
+      ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x ∙ ! (glue (pt W)))
+        =-=
+      ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x ∙ ! (glue (pt W)))
+    Susp-fmap-∘-sq-unf = 
+      ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x ∙ ! (glue (pt W)))
+        =⟪ ap-∙ (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x) (! (glue (pt W))) ⟫
+      ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x) ∙
+      ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (! (glue (pt W)))
+        =⟪ ap (λ p → ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x) ∙ p)
+             (ap-! (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue (pt W))) ⟫
+      ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x) ∙
+      ! (ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue (pt W)))
+        =⟪ ap (λ p → ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x) ∙ ! p)
+             (ap-∘-∘ f₁ (Susp-fmap f₂) (Susp-fmap f₃) (glue (pt W))) ⟫
+      ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x) ∙
+      ! (ap f₁ (ap (Susp-fmap f₂) (ap (Susp-fmap f₃) (glue (pt W)))))
+        =⟪ ap (λ p → p ∙ ! (ap f₁ (ap (Susp-fmap f₂) (ap (Susp-fmap f₃) (glue (pt W))))))
+            (ap-∘-∘ f₁ (Susp-fmap f₂) (Susp-fmap f₃) (glue x)) ⟫
+      ap f₁ (ap (Susp-fmap f₂) (ap (Susp-fmap f₃) (glue x))) ∙
+      ! (ap f₁ (ap (Susp-fmap f₂) (ap (Susp-fmap f₃) (glue (pt W)))))
+        =⟪ ap (λ p → p ∙ ! (ap f₁ (ap (Susp-fmap f₂) (ap (Susp-fmap f₃) (glue (pt W)))))) (
+             ap (ap f₁) (ap (ap (Susp-fmap f₂)) (SuspFmap.merid-β f₃ x))) ⟫
+      ap f₁ (ap (Susp-fmap f₂) ((merid ∘ f₃) x)) ∙
+      ! (ap f₁ (ap (Susp-fmap f₂) (ap (Susp-fmap f₃) (glue (pt W)))))
+        =⟪ ap (λ p → ap f₁ (ap (Susp-fmap f₂) ((merid ∘ f₃) x)) ∙ ! p) (
+             ap (ap f₁) (ap (ap (Susp-fmap f₂)) (SuspFmap.merid-β f₃ (pt W)))) ⟫
+      ap f₁ (ap (Susp-fmap f₂) ((merid ∘ f₃) x)) ∙
+      ! (ap f₁ (ap (Susp-fmap f₂) ((merid ∘ f₃) (pt W))))
+        =⟪ ap (λ p → p ∙ ! (ap f₁ (ap (Susp-fmap f₂) ((merid ∘ f₃) (pt W))))) (
+             ap (ap f₁) (SuspFmap.merid-β f₂ (f₃ x))) ⟫
+      ap f₁ ((merid ∘ f₂) (f₃ x)) ∙
+      ! (ap f₁ (ap (Susp-fmap f₂) ((merid ∘ f₃) (pt W))))
+        =⟪ ap (λ p → ap f₁ ((merid ∘ f₂) (f₃ x)) ∙ ! p) (
+             ap (ap f₁) (SuspFmap.merid-β f₂ (f₃ (pt W)))) ⟫
+      ap f₁ ((merid ∘ f₂) (f₃ x)) ∙ ! (ap f₁ ((merid ∘ f₂) (f₃ (pt W))))
+        =⟪ ap (λ p → ap f₁ ((merid ∘ f₂) (f₃ x)) ∙ ! p) (ap (ap f₁) (! (
+             SuspFmap.merid-β (f₂ ∘ f₃) (pt W)))) ⟫
+      ap f₁ ((merid ∘ f₂) (f₃ x)) ∙ ! (ap f₁ (ap (Susp-fmap (f₂ ∘ f₃)) (glue (pt W))))
+        =⟪ ! (ap (λ p → ap f₁ ((merid ∘ f₂) (f₃ x)) ∙ ! p) (
+             ap-∘ f₁ (Susp-fmap (f₂ ∘ f₃)) (glue (pt W)))) ⟫
+      ap f₁ ((merid ∘ f₂ ∘ f₃) x) ∙
+      ! (ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue (pt W)))
+        =⟪ ! (ap (λ p → p ∙ ! (ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue (pt W)))) (
+             ap (ap f₁) (SuspFmap.merid-β (f₂ ∘ f₃) x))) ⟫
+      ap f₁ (ap (Susp-fmap (f₂ ∘ f₃)) (glue x)) ∙
+      ! (ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue (pt W)))
+        =⟪ ! (ap (λ p → p ∙ ! (ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue (pt W))))
+             (ap-∘ f₁ (Susp-fmap (f₂ ∘ f₃)) (glue x))) ⟫
+      ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x) ∙
+      ! (ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue (pt W)))
+        =⟪ ! (ap (λ p → ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x) ∙ p) (
+             ap-! (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue (pt W)))) ⟫
+      ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x) ∙
+      ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (! (glue (pt W)))
+        =⟪ ! (ap-∙ (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x) (! (glue (pt W)))) ⟫
+      ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x ∙ ! (glue (pt W))) ∎∎
+
+    Susp-fmap-∘-sq-rw : 
+      (hmpty-nat-∙'-r (λ x₁ → ap f₁ (! (Susp-fmap-∘ f₂ f₃ x₁)))
+        (glue x ∙ ! (glue (pt W))) ∙ idp) ∙ idp
+        ==
+      ↯ (Susp-fmap-∘-sq-unf)
+    Susp-fmap-∘-sq-rw = {!!}
+
+{-
+  -- proof of 2-coherence
   two_coher_Susp : (h₁ : ⊙Susp X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →
     !-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃) ∙⊙∼
     ⊙∘-pre h₃ (nat-dom h₂ h₁) ∙⊙∼
@@ -180,8 +254,53 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
     !-⊙∼ (nat-dom (h₂ ⊙∘ h₃) h₁)
       ⊙→∼
     ⊙∼-id ((into X Y h₁) ⊙∘ h₂ ⊙∘ h₃)
-  fst (two f₁ , idp coher f₂ , idp Susp (f₃ , idp)) x = {!!}
-  snd (two f₁ , idp coher f₂ , idp Susp (f₃ , idp)) = {!!}
+  fst (two_coher_Susp (f₁ , idp) (f₂ , idp) (f₃ , idp)) x = {!!}
+  snd (two_coher_Susp (f₁ , idp) (f₂ , idp) (f₃ , idp)) = {!!}
+-}
 
--- ap into () ⊙-comp ?
+{-
+
+(ap-∙ f₁ (glue (f₂ (f₃ x))) (! (glue (f₂ (f₃ (pt W))))) ∙
+! (ap (_∙_ (ap f₁ (glue (f₂ (f₃ x))))) (ap (λ p → ap f₁ (! p))
+  (SuspFmap.merid-β f₂ (f₃ (pt W))))) ∙
+! (ap (_∙_ (ap f₁ (glue (f₂ (f₃ x)))))
+  (ap-∘ f₁ (Susp-fmap f₂) (! (glue (f₃ (pt W)))) ∙
+  ap (ap f₁) (ap-! (Susp-fmap f₂) (glue (f₃ (pt W)))))) ∙
+! (ap (λ p → ap f₁ p ∙ ap (f₁ ∘ Susp-fmap f₂) (! (glue (f₃ (pt W)))))
+  (SuspFmap.merid-β f₂ (f₃ x))) ∙
+! (ap (λ p → p ∙ ap (f₁ ∘ Susp-fmap f₂) (! (glue (f₃ (pt W)))))
+  (ap-∘ f₁ (Susp-fmap f₂) (glue (f₃ x)))) ∙
+! (ap-∙ (f₁ ∘ Susp-fmap f₂) (glue (f₃ x)) (! (glue (f₃ (pt W)))))) ∙
+(ap-∙ (f₁ ∘ (Susp-fmap f₂)) (glue (f₃ x)) (! (glue (f₃ (pt W)))) ∙
+! (ap (_∙_ (ap (f₁ ∘ (Susp-fmap f₂)) (glue (f₃ x))))
+  (ap (λ p → ap (f₁ ∘ (Susp-fmap f₂)) (! p))
+  (SuspFmap.merid-β f₃ (pt W)))) ∙
+! (ap (_∙_ (ap (f₁ ∘ (Susp-fmap f₂)) (glue (f₃ x))))
+  (ap-∘ (f₁ ∘ (Susp-fmap f₂)) (Susp-fmap f₃) (! (glue (pt W))) ∙
+  ap (ap (f₁ ∘ (Susp-fmap f₂))) (ap-! (Susp-fmap f₃) (glue (pt W))))) ∙
+! (ap (λ p → ap (f₁ ∘ (Susp-fmap f₂)) p ∙
+  ap (f₁ ∘ (Susp-fmap f₂) ∘ Susp-fmap f₃) (! (glue (pt W))))
+  (SuspFmap.merid-β f₃ x)) ∙
+! (ap (λ p → p ∙ ap (f₁ ∘ (Susp-fmap f₂) ∘ Susp-fmap f₃)
+  (! (glue (pt W)))) (ap-∘ (f₁ ∘ (Susp-fmap f₂)) (Susp-fmap f₃)
+  (glue x))) ∙
+! (ap-∙ (f₁ ∘ (Susp-fmap f₂) ∘ Susp-fmap f₃)
+  (glue x) (! (glue (pt W))))) ∙
+((hmpty-nat-∙'-r (λ x₁ → ap f₁ (! (Susp-fmap-∘ f₂ f₃ x₁)))
+  (glue x ∙ ! (glue (pt W))) ∙ idp) ∙ idp) ∙
+! (ap-∙ f₁ (glue (f₂ ∘ f₃ x)) (! (glue (f₂ ∘ f₃ (pt W)))) ∙
+! (ap (_∙_ (ap f₁ (glue (f₂ ∘ f₃ x)))) (ap (λ p → ap f₁ (! p))
+  (SuspFmap.merid-β (f₂ ∘ f₃) (pt W)))) ∙
+! (ap (_∙_ (ap f₁ (glue (f₂ ∘ f₃ x)))) (ap-∘ f₁ (Susp-fmap (f₂ ∘ f₃))
+  (! (glue (pt W))) ∙ ap (ap f₁)
+  (ap-! (Susp-fmap (f₂ ∘ f₃)) (glue (pt W))))) ∙
+! (ap (λ p → ap f₁ p ∙ ap (f₁ ∘ Susp-fmap (f₂ ∘ f₃))
+  (! (glue (pt W)))) (SuspFmap.merid-β (f₂ ∘ f₃) x)) ∙
+! (ap (λ p → p ∙ ap (f₁ ∘ Susp-fmap (f₂ ∘ f₃)) (! (glue (pt W))))
+  (ap-∘ f₁ (Susp-fmap (f₂ ∘ f₃)) (glue x))) ∙
+! (ap-∙ (f₁ ∘ Susp-fmap (f₂ ∘ f₃)) (glue x) (! (glue (pt W)))))
+=₂
+idp ◃∎
+
+-}
 

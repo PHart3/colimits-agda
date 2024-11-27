@@ -97,6 +97,16 @@ module _ {i} {A : Type i} where
   !-! : {x y : A} (p : x == y) → ! (! p) == p
   !-! idp = idp
 
+  ∙-idp-!-∙'-rot : {x y : A} (p : x == y) (q : x == y)
+    → idp == p ∙ idp ∙' ! q → p == q
+  ∙-idp-!-∙'-rot idp q e = ap ! (e ∙ ∙'-unit-l (! q)) ∙ !-! q   
+
+module _ {i} {A : Type i} where
+
+  !-inj-rot : {x y : A} {p₁ p₂ : x == y} (n : p₁ == p₂) {m : ! p₁ == ! p₂}
+    → m == ap ! n →  ! (!-! p₁) ∙ ap ! m ∙' !-! p₂ == n
+  !-inj-rot {p₁ = idp} idp idp = idp
+
   {- additional algebraic lemmas -}
 
   inv-rid : {x y : A} (p : x == y) → ! p ∙ p ∙ idp == idp
