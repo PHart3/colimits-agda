@@ -170,14 +170,14 @@ module _ {i j} {X Y : Ptd i} {U : Ptd j} where
 
 {- the nat-dom proof makes Susp a 2-coherent left adjoint to Loop -} 
 
-{-
+
 module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where 
 
   -- unfolded version of naturality square for Susp-fmap-∘
 
   module _ (f₂ : de⊙ Z → de⊙ X) (f₃ : de⊙ W → de⊙ Z) (f₁ : Susp (de⊙ X) → de⊙ Y)
     (x : de⊙ W) where 
-
+{-
     Susp-fmap-∘-sq-unf : 
       ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x ∙ ! (glue (pt W)))
         =-=
@@ -235,14 +235,33 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
       ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (! (glue (pt W)))
         =⟪ ! (ap-∙ (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x) (! (glue (pt W)))) ⟫
       ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x ∙ ! (glue (pt W))) ∎∎
-
+-}
     Susp-fmap-∘-sq-rw : 
-      (hmpty-nat-∙'-r (λ x₁ → ap f₁ (! (Susp-fmap-∘ f₂ f₃ x₁)))
+      (hmpty-nat-∙'-r (λ x₁ → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ x₁)))
         (glue x ∙ ! (glue (pt W))) ∙ idp) ∙ idp
         ==
-      ↯ (Susp-fmap-∘-sq-unf)
-    Susp-fmap-∘-sq-rw = {!!}
--}
+      ((ap-∘-long f₁ (Susp-fmap f₂ ∘ Susp-fmap f₃) (Susp-fmap (f₂ ∘ f₃))
+        (SuspMapEq (Susp-fmap (f₂ ∘ f₃)) (Susp-fmap f₂ ∘ Susp-fmap f₃)
+        idp idp (Susp-fmap-∘ f₂ f₃)) (merid x ∙ ! (merid (pt W))) ∙
+      ! (ap (λ p → ap f₁ p) (ap-∙ (Susp-fmap (f₂ ∘ f₃)) (merid x) (! (merid (pt W))) ∙
+        ap (λ p → p ∙ ap (Susp-fmap (f₂ ∘ f₃)) (! (merid (pt W))))
+        (SuspFmap.merid-β (f₂ ∘ f₃) x ∙ ! (SuspFmap.merid-β f₂ (f₃ x)) ∙
+          ! (ap (ap (Susp-fmap f₂)) (SuspFmap.merid-β f₃ x)) ∙
+          ! (ap-∘ (Susp-fmap f₂) (Susp-fmap f₃) (merid x))) ∙
+        ap (_∙_ (ap (Susp-fmap f₂ ∘ Susp-fmap f₃) (merid x)))
+          (ap-! (Susp-fmap (f₂ ∘ f₃)) (merid (pt W)) ∙
+          ap ! (SuspFmap.merid-β (f₂ ∘ f₃) (pt W) ∙
+            ! (SuspFmap.merid-β f₂ (f₃ (pt W))) ∙
+            ! (ap (ap (Susp-fmap f₂)) (SuspFmap.merid-β f₃ (pt W))) ∙
+            ! (ap-∘ (Susp-fmap f₂) (Susp-fmap f₃) (merid (pt W)))) ∙
+          !-ap (Susp-fmap f₂ ∘ Susp-fmap f₃) (merid (pt W))) ∙
+          ap (λ p → p) (! (ap-∙ (Susp-fmap f₂ ∘ Susp-fmap f₃) (merid x)
+            (! (merid (pt W))))))) ∙
+        ! (ap (λ q → q) (ap-∘ f₁ (Susp-fmap (f₂ ∘ f₃))
+          (merid x ∙ ! (merid (pt W)))))) ∙ idp) ∙ idp
+    Susp-fmap-∘-sq-rw = ap (λ p → (p ∙ idp) ∙ idp) (SuspMapEq-β-∙-ap! (Susp-fmap (f₂ ∘ f₃))
+      (Susp-fmap f₂ ∘ Susp-fmap f₃) idp idp (Susp-fmap-∘ f₂ f₃) f₁ x (pt W))
+      
 {-
   -- proof of 2-coherence
   two_coher_Susp : (h₁ : ⊙Susp X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →
@@ -286,7 +305,7 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
   (glue x))) ∙
 ! (ap-∙ (f₁ ∘ (Susp-fmap f₂) ∘ Susp-fmap f₃)
   (glue x) (! (glue (pt W))))) ∙
-((hmpty-nat-∙'-r (λ x₁ → ap f₁ (! (Susp-fmap-∘ f₂ f₃ x₁)))
+((hmpty-nat-∙'-r (λ x₁ → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ x₁)))
   (glue x ∙ ! (glue (pt W))) ∙ idp) ∙ idp) ∙
 ! (ap-∙ f₁ (glue (f₂ ∘ f₃ x)) (! (glue (f₂ ∘ f₃ (pt W)))) ∙
 ! (ap (_∙_ (ap f₁ (glue (f₂ ∘ f₃ x)))) (ap (λ p → ap f₁ (! p))
