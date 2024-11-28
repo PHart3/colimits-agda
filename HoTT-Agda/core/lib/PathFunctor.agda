@@ -90,6 +90,30 @@ module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
     → ! (ap g p) ∙ ap g r ∙ s == ap g (! p ∙ r) ∙ s
   !-ap-∙-s idp = idp
 
+  !-∙-ap-∙'-! : {x w : B} {y z : A} (p : x == g y) (q : y == z) (r : w == g z)
+    → ! (p ∙ ap g q ∙' ! r) == r ∙ ap g (! q) ∙' ! p
+  !-∙-ap-∙'-! idp q idp = !-ap g q
+
+  !-∙-ap-∙'-!-coher : {y : A} {x : B} (p : x == g y) →
+    ! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))
+    ==
+    ap ! (! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))) ∙
+    !-∙-ap-∙'-! p idp p
+  !-∙-ap-∙'-!-coher idp = idp
+
+  idp-ap-!-!-∙-∙' : {x y : A} (p : x == y)
+    → idp == ap g (! p) ∙ ap g (p ∙ idp ∙' ! p) ∙' ! (ap g (! p))
+  idp-ap-!-!-∙-∙' idp = idp  
+
+  idp-ap-!-!-∙-∙'-coher : {x y : A} (p : x == y) →
+    ! (!-inv-r (ap g (! p))) ∙
+    ap (_∙_ (ap g (! p))) (! (∙'-unit-l (! (ap g (! p)))))
+    ==
+    idp-ap-!-!-∙-∙' p ∙
+    ! (ap (λ q → ap g (! p) ∙ ap g q ∙' ! (ap g (! p)))
+      (! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p))))) ∙ idp
+  idp-ap-!-!-∙-∙'-coher idp = idp
+
 module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A → B) where
 
   ∘-ap : {x y : A} (p : x == y) → ap g (ap f p) == ap (g ∘ f) p
@@ -314,6 +338,12 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   ap-∘-∙-coh :  {a a' a'' : A} (p : a == a') (p' : a' == a'')
     → ap-∘-∙-coh-seq₁ p p' =ₛ ap-∘-∙-coh-seq₂ p p'
   ap-∘-∙-coh idp idp = =ₛ-in idp
+
+  ap-∘-long : (h : A → B) (K : (z : A) → h z == f z) {x y : A} (p : x == y) →
+    ap (g ∘ f) p
+    ==
+    ap g (! (K x)) ∙ ap g (K x ∙ ap f p ∙' ! (K y)) ∙' ! (ap g (! (K y)))
+  ap-∘-long h K {x} idp = idp-ap-!-!-∙-∙' g (K x)
 
 module _ {i j} {A : Type i} {B : Type j} (b : B) where
 

@@ -170,8 +170,8 @@ module _ {i j} {X Y : Ptd i} {U : Ptd j} where
 
 {- the nat-dom proof makes Susp a 2-coherent left adjoint to Loop -} 
 
+{-
 module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where 
-
 
   -- unfolded version of naturality square for Susp-fmap-∘
 
@@ -242,7 +242,7 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
         ==
       ↯ (Susp-fmap-∘-sq-unf)
     Susp-fmap-∘-sq-rw = {!!}
-
+-}
 {-
   -- proof of 2-coherence
   two_coher_Susp : (h₁ : ⊙Susp X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →

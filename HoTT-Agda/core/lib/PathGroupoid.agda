@@ -99,15 +99,37 @@ module _ {i} {A : Type i} where
 
   ∙-idp-!-∙'-rot : {x y : A} (p : x == y) (q : x == y)
     → idp == p ∙ idp ∙' ! q → p == q
-  ∙-idp-!-∙'-rot idp q e = ap ! (e ∙ ∙'-unit-l (! q)) ∙ !-! q   
+  ∙-idp-!-∙'-rot idp q e = ap ! (e ∙ ∙'-unit-l (! q)) ∙ !-! q
+
+{- additional algebraic lemmas -}
 
 module _ {i} {A : Type i} where
+
+  ∙-∙'-!-rot : {x y z w : A} (p₀ : x == y) (p₁ : x == z) (p₂ : z == w) (p₃ : y == w)
+    → p₀ == p₁ ∙ p₂  ∙' ! p₃ → p₂ == ! p₁ ∙ p₀ ∙' p₃
+  ∙-∙'-!-rot p₀ idp p₂ idp e = ! e 
 
   !-inj-rot : {x y : A} {p₁ p₂ : x == y} (n : p₁ == p₂) {m : ! p₁ == ! p₂}
     → m == ap ! n →  ! (!-! p₁) ∙ ap ! m ∙' !-! p₂ == n
   !-inj-rot {p₁ = idp} idp idp = idp
 
-  {- additional algebraic lemmas -}
+  ∙'-!-∙-∙ : {x y z w : A} (p₁ : x == y) (p₂ : z == y) (p₃ : y == w)
+    → (p₁ ∙' ! p₂) ∙ p₂ ∙ p₃ == p₁ ∙ p₃
+  ∙'-!-∙-∙ p₁ idp p₃ = idp
+
+  assoc-tri-!-mid : {x y z w u v : A} (p₀ : x == y) (p₁ : y == z) (p₂ : w == z)
+    (p₃ : z == u) (p₄ : u == v)
+    → (p₀ ∙ p₁ ∙' ! p₂) ∙ p₂ ∙ p₃ ∙' p₄ == p₀ ∙ (p₁ ∙ p₃) ∙' p₄
+  assoc-tri-!-mid idp p₁ p₂ p₃ idp = ∙'-!-∙-∙ p₁ p₂ p₃
+
+  assoc-tri-!-coher : {x y : A} (p : x == y) →
+    ! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p))) ==
+    ap (λ q → q ∙ idp)
+      (! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))) ∙
+    ap (_∙_ (p ∙ idp ∙' ! p))
+      (! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))) ∙
+    assoc-tri-!-mid p idp p idp (! p) ∙ idp
+  assoc-tri-!-coher idp = idp
 
   inv-rid : {x y : A} (p : x == y) → ! p ∙ p ∙ idp == idp
   inv-rid idp = idp

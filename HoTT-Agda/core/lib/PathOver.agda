@@ -339,15 +339,42 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
     → ap f p == e₁ ∙ ap g p  ∙' ! e₂ → e₁ == e₂ [ (λ z → f z == g z) ↓ p ]
   from-hmpty-nat idp {e₁} {e₂} p = ∙-idp-!-∙'-rot e₁ e₂ p
 
-  apd-to-hnat : (K : (z : A) → f z == g z) {x y : A} (p : x == y)
-    (m : ap f p == K x ∙ ap g p  ∙' ! (K y))
-    → apd K p == from-hmpty-nat p m → hmpty-nat-∙'-r K p == m
-  apd-to-hnat K {x} idp m q = lemma (K x) m q
-    where
-      lemma : {x₁ x₂ : B} (v : x₁ == x₂) (n : idp == v ∙ idp ∙' ! v)
-        (r : idp == ∙-idp-!-∙'-rot v v n)
-        → ! (!-inv-r v) ∙ ap (_∙_ v) (! (∙'-unit-l (! v))) == n
-      lemma idp n r = !-inj-rot n (r ∙ ∙-unit-r (ap ! (n ∙ idp)) ∙ ap (ap !) (∙-unit-r n))
+  module _ (K : (z : A) → f z == g z) where
+
+    apd-to-hnat : {x y : A} (p : x == y)
+      (m : ap f p == K x ∙ ap g p  ∙' ! (K y))
+      → apd K p == from-hmpty-nat p m → hmpty-nat-∙'-r K p == m
+    apd-to-hnat {x} idp m q = lemma (K x) m q
+      where
+        lemma : {x₁ x₂ : B} (v : x₁ == x₂) (n : idp == v ∙ idp ∙' ! v)
+          (r : idp == ∙-idp-!-∙'-rot v v n)
+          → ! (!-inv-r v) ∙ ap (_∙_ v) (! (∙'-unit-l (! v))) == n
+        lemma idp n r = !-inj-rot n (r ∙ ∙-unit-r (ap ! (n ∙ idp)) ∙ ap (ap !) (∙-unit-r n))
+
+    apd-to-hnat-∙ : {x y z : A} (p₁ : x == y) (p₂ : y == z)
+      {m₁ : ap f p₁ == K x ∙ ap g p₁  ∙' ! (K y)} {m₂ : ap f p₂ == K y ∙ ap g p₂  ∙' ! (K z)}
+      (τ₁ : hmpty-nat-∙'-r K p₁ == m₁) (τ₂ : hmpty-nat-∙'-r K p₂ == m₂)
+      → hmpty-nat-∙'-r K (p₁ ∙ p₂)
+        ==
+        ↯ (ap-∙ f p₁ p₂ ◃∙
+        ap (λ p → p ∙ ap f p₂) m₁ ◃∙
+        ap (λ p → (K x ∙ ap g p₁ ∙' ! (K y)) ∙ p) m₂ ◃∙
+        assoc-tri-!-mid (K x) (ap g p₁) (K y) (ap g p₂) (! (K z)) ◃∙
+        ap (λ p → K x ∙ p ∙' ! (K z)) (! (ap-∙ g p₁ p₂)) ◃∎)
+    apd-to-hnat-∙ {x} idp idp idp idp = assoc-tri-!-coher (K x)
+
+    apd-to-hnat-! : {x y : A} (p : x == y)
+      {m : ap f p == K x ∙ ap g p  ∙' ! (K y)} (τ : hmpty-nat-∙'-r K p == m)
+      → hmpty-nat-∙'-r K (! p) == ap-! f p ∙ ap ! m ∙ !-∙-ap-∙'-! g (K x) p (K y)
+    apd-to-hnat-! {x} idp idp = !-∙-ap-∙'-!-coher g (K x)
+
+    apd-to-hnat-ap! : ∀ {l} {C : Type l} (h : B → C) {x y : A} (p : x == y)
+      {m : ap f p == K x ∙ ap g p  ∙' ! (K y)} (τ : hmpty-nat-∙'-r K p == m)
+      → hmpty-nat-∙'-r (λ z → ap h (! (K z))) p ==
+      ap-∘-long h g f K p ∙
+      ! (ap (λ q → ap h (! (K x)) ∙ ap h q ∙' ! (ap h (! (K y)))) m) ∙
+      ! (ap (λ q → ap h (! (K x)) ∙ q ∙' ! (ap h (! (K y)))) (ap-∘ h f p))
+    apd-to-hnat-ap! h {x} idp idp = idp-ap-!-!-∙-∙'-coher h (K x)
 
 {-
   A coordinate definition of homotopy of pointed functions.
