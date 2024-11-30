@@ -177,65 +177,7 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
 
   module _ (f₂ : de⊙ Z → de⊙ X) (f₃ : de⊙ W → de⊙ Z) (f₁ : Susp (de⊙ X) → de⊙ Y)
     (x : de⊙ W) where 
-{-
-    Susp-fmap-∘-sq-unf : 
-      ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x ∙ ! (glue (pt W)))
-        =-=
-      ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x ∙ ! (glue (pt W)))
-    Susp-fmap-∘-sq-unf = 
-      ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x ∙ ! (glue (pt W)))
-        =⟪ ap-∙ (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x) (! (glue (pt W))) ⟫
-      ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x) ∙
-      ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (! (glue (pt W)))
-        =⟪ ap (λ p → ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x) ∙ p)
-             (ap-! (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue (pt W))) ⟫
-      ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x) ∙
-      ! (ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue (pt W)))
-        =⟪ ap (λ p → ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x) ∙ ! p)
-             (ap-∘-∘ f₁ (Susp-fmap f₂) (Susp-fmap f₃) (glue (pt W))) ⟫
-      ap (λ z → f₁ (Susp-fmap f₂ (Susp-fmap f₃ z))) (glue x) ∙
-      ! (ap f₁ (ap (Susp-fmap f₂) (ap (Susp-fmap f₃) (glue (pt W)))))
-        =⟪ ap (λ p → p ∙ ! (ap f₁ (ap (Susp-fmap f₂) (ap (Susp-fmap f₃) (glue (pt W))))))
-            (ap-∘-∘ f₁ (Susp-fmap f₂) (Susp-fmap f₃) (glue x)) ⟫
-      ap f₁ (ap (Susp-fmap f₂) (ap (Susp-fmap f₃) (glue x))) ∙
-      ! (ap f₁ (ap (Susp-fmap f₂) (ap (Susp-fmap f₃) (glue (pt W)))))
-        =⟪ ap (λ p → p ∙ ! (ap f₁ (ap (Susp-fmap f₂) (ap (Susp-fmap f₃) (glue (pt W)))))) (
-             ap (ap f₁) (ap (ap (Susp-fmap f₂)) (SuspFmap.merid-β f₃ x))) ⟫
-      ap f₁ (ap (Susp-fmap f₂) ((merid ∘ f₃) x)) ∙
-      ! (ap f₁ (ap (Susp-fmap f₂) (ap (Susp-fmap f₃) (glue (pt W)))))
-        =⟪ ap (λ p → ap f₁ (ap (Susp-fmap f₂) ((merid ∘ f₃) x)) ∙ ! p) (
-             ap (ap f₁) (ap (ap (Susp-fmap f₂)) (SuspFmap.merid-β f₃ (pt W)))) ⟫
-      ap f₁ (ap (Susp-fmap f₂) ((merid ∘ f₃) x)) ∙
-      ! (ap f₁ (ap (Susp-fmap f₂) ((merid ∘ f₃) (pt W))))
-        =⟪ ap (λ p → p ∙ ! (ap f₁ (ap (Susp-fmap f₂) ((merid ∘ f₃) (pt W))))) (
-             ap (ap f₁) (SuspFmap.merid-β f₂ (f₃ x))) ⟫
-      ap f₁ ((merid ∘ f₂) (f₃ x)) ∙
-      ! (ap f₁ (ap (Susp-fmap f₂) ((merid ∘ f₃) (pt W))))
-        =⟪ ap (λ p → ap f₁ ((merid ∘ f₂) (f₃ x)) ∙ ! p) (
-             ap (ap f₁) (SuspFmap.merid-β f₂ (f₃ (pt W)))) ⟫
-      ap f₁ ((merid ∘ f₂) (f₃ x)) ∙ ! (ap f₁ ((merid ∘ f₂) (f₃ (pt W))))
-        =⟪ ap (λ p → ap f₁ ((merid ∘ f₂) (f₃ x)) ∙ ! p) (ap (ap f₁) (! (
-             SuspFmap.merid-β (f₂ ∘ f₃) (pt W)))) ⟫
-      ap f₁ ((merid ∘ f₂) (f₃ x)) ∙ ! (ap f₁ (ap (Susp-fmap (f₂ ∘ f₃)) (glue (pt W))))
-        =⟪ ! (ap (λ p → ap f₁ ((merid ∘ f₂) (f₃ x)) ∙ ! p) (
-             ap-∘ f₁ (Susp-fmap (f₂ ∘ f₃)) (glue (pt W)))) ⟫
-      ap f₁ ((merid ∘ f₂ ∘ f₃) x) ∙
-      ! (ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue (pt W)))
-        =⟪ ! (ap (λ p → p ∙ ! (ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue (pt W)))) (
-             ap (ap f₁) (SuspFmap.merid-β (f₂ ∘ f₃) x))) ⟫
-      ap f₁ (ap (Susp-fmap (f₂ ∘ f₃)) (glue x)) ∙
-      ! (ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue (pt W)))
-        =⟪ ! (ap (λ p → p ∙ ! (ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue (pt W))))
-             (ap-∘ f₁ (Susp-fmap (f₂ ∘ f₃)) (glue x))) ⟫
-      ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x) ∙
-      ! (ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue (pt W)))
-        =⟪ ! (ap (λ p → ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x) ∙ p) (
-             ap-! (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue (pt W)))) ⟫
-      ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x) ∙
-      ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (! (glue (pt W)))
-        =⟪ ! (ap-∙ (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x) (! (glue (pt W)))) ⟫
-      ap (λ z → f₁ (Susp-fmap (f₂ ∘ f₃) z)) (glue x ∙ ! (glue (pt W))) ∎∎
--}
+
     Susp-fmap-∘-sq-rw : 
       (hmpty-nat-∙'-r (λ x₁ → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ x₁)))
         (glue x ∙ ! (glue (pt W))) ∙ idp) ∙ idp
@@ -243,9 +185,10 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
       ((ap-∘-long f₁ (Susp-fmap f₂ ∘ Susp-fmap f₃) (Susp-fmap (f₂ ∘ f₃))
         (SuspMapEq (Susp-fmap (f₂ ∘ f₃)) (Susp-fmap f₂ ∘ Susp-fmap f₃)
         idp idp (Susp-fmap-∘ f₂ f₃)) (merid x ∙ ! (merid (pt W))) ∙
-      ! (ap (λ p → ap f₁ p) (ap-∙ (Susp-fmap (f₂ ∘ f₃)) (merid x) (! (merid (pt W))) ∙
+      ! (ap (ap f₁) (
+        ap-∙ (Susp-fmap (f₂ ∘ f₃)) (merid x) (! (merid (pt W))) ∙
         ap (λ p → p ∙ ap (Susp-fmap (f₂ ∘ f₃)) (! (merid (pt W))))
-        (SuspFmap.merid-β (f₂ ∘ f₃) x ∙ ! (SuspFmap.merid-β f₂ (f₃ x)) ∙
+          (SuspFmap.merid-β (f₂ ∘ f₃) x ∙ ! (SuspFmap.merid-β f₂ (f₃ x)) ∙
           ! (ap (ap (Susp-fmap f₂)) (SuspFmap.merid-β f₃ x)) ∙
           ! (ap-∘ (Susp-fmap f₂) (Susp-fmap f₃) (merid x))) ∙
         ap (_∙_ (ap (Susp-fmap f₂ ∘ Susp-fmap f₃) (merid x)))
@@ -255,13 +198,60 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
             ! (ap (ap (Susp-fmap f₂)) (SuspFmap.merid-β f₃ (pt W))) ∙
             ! (ap-∘ (Susp-fmap f₂) (Susp-fmap f₃) (merid (pt W)))) ∙
           !-ap (Susp-fmap f₂ ∘ Susp-fmap f₃) (merid (pt W))) ∙
-          ap (λ p → p) (! (ap-∙ (Susp-fmap f₂ ∘ Susp-fmap f₃) (merid x)
-            (! (merid (pt W))))))) ∙
-        ! (ap (λ q → q) (ap-∘ f₁ (Susp-fmap (f₂ ∘ f₃))
-          (merid x ∙ ! (merid (pt W)))))) ∙ idp) ∙ idp
+        ap (λ p → p) (! (ap-∙ (Susp-fmap f₂ ∘ Susp-fmap f₃) (merid x)
+          (! (merid (pt W))))))) ∙
+      ! (ap (λ q → q) (ap-∘ f₁ (Susp-fmap (f₂ ∘ f₃))
+        (merid x ∙ ! (merid (pt W)))))) ∙
+      idp) ∙ idp
     Susp-fmap-∘-sq-rw = ap (λ p → (p ∙ idp) ∙ idp) (SuspMapEq-β-∙-ap! (Susp-fmap (f₂ ∘ f₃))
       (Susp-fmap f₂ ∘ Susp-fmap f₃) idp idp (Susp-fmap-∘ f₂ f₃) f₁ x (pt W))
-      
+
+-- an ad-hoc datatype for a messy computation required by our proof
+
+module _ {i j k l ℓ} {A : Type i} {B : Type j} {C : Type k} {D : Type l} {E : Type ℓ}
+  (m : A → D) (n : B → A) (s : C → A) (r : E → C) where
+
+  record sev_step_red_inp {x₁ x₂ : D} {x₃ x₄ : A} {x₅ x₆ x₇ : B} {x₈ x₁₃ : C}
+    {x₉ x₁₀ x₁₁ x₁₂ : E} (q₁ : x₁ == m x₃) (q₂ : x₄ == n x₅) (q₃ : x₅ == x₆)
+    (q₄ : x₆ == x₇) {b : B} (q₅ : x₇ == b) (ϕ : n b  == s x₈) (q₆ : x₈ == r x₉)
+    (q₇ : x₉ == x₁₀) (q₈ : x₁₀ == x₁₁) (q₉ : x₁₁ == x₁₂) (q₁₀ : r x₁₂ == x₁₃)
+    (q₁₁ : s x₁₃ == x₃) (q₁₂ : m x₄ == x₂) (τ : x₁ == x₂)
+    {d₁ d₂ d₃ d₄ d₅ : D} (p₁ : d₁ == d₂) (p₂ : d₂ == d₃) (p₃ : d₃ == d₄)
+    (p₄ : d₄ == x₁) (p₅ : d₁ == d₅) (p₆ : d₅ == x₂)
+    (R₁ : d₃ == m (s (r x₁₁))) (R₂ : d₃ == m (n x₇)) (R₃ : d₁ == m (n x₇))
+    (R₄ : d₁ == m (n x₆)) (R₅ : m (n x₆) == d₅)
+      : Type (lmax i (lmax j (lmax k l))) where
+    constructor sev_step
+    field
+      red1 : τ == ((q₁ ∙ ! (ap m (q₂ ∙ ap n (q₃ ∙ q₄ ∙ q₅) ∙ ϕ ∙
+        ap s (q₆ ∙ ap r (q₇ ∙ q₈ ∙ q₉) ∙ q₁₀) ∙ q₁₁)) ∙ q₁₂) ∙ idp) ∙ idp
+      red2 : p₃ ∙ p₄ ∙ q₁ ∙ ! (ap m (ap s (ap r q₉ ∙ q₁₀) ∙ q₁₁)) == R₁
+      red3 : R₁ ∙ ! (ap m (ap n q₅ ∙ ϕ ∙ ap s (q₆ ∙ ap r (q₇ ∙ q₈)))) == R₂
+      red4 : p₁ ∙ p₂ ∙ R₂ == R₃
+      red5 : R₃ ∙ ! (ap m (ap n q₄)) == R₄
+      red6 : ! (ap m (q₂ ∙ ap n q₃)) ∙ q₁₂ ∙ ! p₆ == R₅
+      red7 : R₄ ∙ R₅ ∙ ! p₅ == idp
+  open sev_step_red_inp
+
+  sev_step_reduce : {x₁ x₂ : D} {x₃ x₄ : A} {x₅ x₆ x₇ : B} {x₈ x₁₃ : C}
+    {x₉ x₁₀ x₁₁ x₁₂ : E} (q₁ : x₁ == m x₃) (q₂ : x₄ == n x₅) (q₃ : x₅ == x₆)
+    (q₄ : x₆ == x₇) {b : B} (q₅ : x₇ == b) (ϕ : n b  == s x₈) (q₆ : x₈ == r x₉)
+    (q₇ : x₉ == x₁₀) (q₈ : x₁₀ == x₁₁) (q₉ : x₁₁ == x₁₂) (q₁₀ : r x₁₂ == x₁₃)
+    (q₁₁ : s x₁₃ == x₃) (q₁₂ : m x₄ == x₂) {τ : x₁ == x₂}
+    {d₁ d₂ d₃ d₄ d₅ : D} (p₁ : d₁ == d₂) (p₂ : d₂ == d₃) (p₃ : d₃ == d₄)
+    (p₄ : d₄ == x₁) (p₅ : d₁ == d₅) (p₆ : d₅ == x₂)
+    {R₁ : d₃ == m (s (r x₁₁))} {R₂ : d₃ == m (n x₇)} {R₃ : d₁ == m (n x₇)}
+    {R₄ : d₁ == m (n x₆)} {R₅ : m (n x₆) == d₅}
+    → sev_step_red_inp q₁ q₂ q₃ q₄ q₅ ϕ q₆ q₇ q₈ q₉ q₁₀ q₁₁ q₁₂ τ p₁ p₂ p₃ p₄ p₅ p₆ R₁ R₂ R₃ R₄ R₅
+    → (p₁ ∙ p₂) ∙ (p₃ ∙ p₄) ∙ τ ∙ ! (p₅ ∙ p₆) == idp
+  sev idp step idp reduce idp idp idp ϕ idp idp idp idp idp idp idp idp idp idp idp idp p₆
+    (sev_step idp idp idp idp idp idp red7) =
+      ap (λ p → p ∙ ! p₆) (∙-unit-r ((! (ap m (ϕ ∙ idp)) ∙ idp) ∙ idp) ∙ ∙-unit-r (! (ap m (ϕ ∙ idp)) ∙ idp)) ∙
+      ap (λ p → (! (ap m (ϕ ∙ idp)) ∙ idp) ∙ p) (! (∙-unit-r (! p₆))) ∙
+      red7
+
+-- ϕ = idp
+
 {-
   -- proof of 2-coherence
   two_coher_Susp : (h₁ : ⊙Susp X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →
@@ -276,6 +266,8 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
   fst (two_coher_Susp (f₁ , idp) (f₂ , idp) (f₃ , idp)) x = {!!}
   snd (two_coher_Susp (f₁ , idp) (f₂ , idp) (f₃ , idp)) = {!!}
 -}
+
+
 
 {-
 
@@ -318,8 +310,8 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
 ! (ap (λ p → p ∙ ap (f₁ ∘ Susp-fmap (f₂ ∘ f₃)) (! (glue (pt W))))
   (ap-∘ f₁ (Susp-fmap (f₂ ∘ f₃)) (glue x))) ∙
 ! (ap-∙ (f₁ ∘ Susp-fmap (f₂ ∘ f₃)) (glue x) (! (glue (pt W)))))
-=₂
-idp ◃∎
+==
+idp
 
 -}
 
