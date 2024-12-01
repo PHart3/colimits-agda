@@ -50,6 +50,15 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
 
   -- note: ap-∙' is defined in PathGroupoid
 
+  module _ {k} {C : Type k} (g : B → C) where
+
+    ap3-!-ap-!-rid : {x y : A} (p₁ : x == y)
+      {e : f x == f y} (p₂ : ap f p₁ == e) →
+      ap (ap g) (ap (λ p → p) (! (ap-! p₁ ∙ ap ! (p₂ ∙ idp))))
+      ==
+      ap (λ p → ap g (! p)) (! p₂) ∙ ap (ap g) (!-ap p₁)
+    ap3-!-ap-!-rid idp idp = idp
+
 {- Dependent stuff -}
 module _ {i j} {A : Type i} {B : A → Type j} (f : Π A B) where
 
@@ -132,6 +141,15 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
 
   !ap-∘=∘-ap : {x y : A} (p : x == y) → ! (ap-∘ p) == ∘-ap p
   !ap-∘=∘-ap idp = idp
+
+  ap-∘2-ap-! : {x y : A} (v : x == y)
+    {c : g (f (y)) == g (f x)} (e : ap g (! (ap f v)) == c) 
+    → (! (ap (λ q → q) (ap-∘ (! v) ∙
+      ap (ap g) (ap-! f v))) ∙ idp) ∙
+      ap-∘ (! v) ∙
+      ap (ap g) (ap (λ p → p) (ap-! f v)) ∙ e
+      == e
+  ap-∘2-ap-! idp e = idp 
 
   ap-cp-rev : {w : C} {z : B} {x y : A} (p : x == y) (q : f x == z) (r : g (f y) == w) →
     ! (ap g q) ∙ ap (g ∘ f) p ∙ r == ! (ap g (! (ap f p) ∙ q)) ∙  r

@@ -383,50 +383,64 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
 
     β-free3 : {y : Susp (de⊙ Z)} (ω₁ : y == right unit)
       {x : Susp (de⊙ W)} (ω₆ : x == right unit)
-      {w : Susp-fmap (f₂ ∘ f₃) x == right unit}
-      (ω₈¹ : ap (Susp-fmap (f₂ ∘ f₃)) ω₆ == w)
+      {ω₁₁ : Susp-fmap (f₂ ∘ f₃) x == right unit}
+      (ω₈¹ : ap (Susp-fmap (f₂ ∘ f₃)) ω₆ == ω₁₁)
       {ω₁₀ : Susp-fmap f₂ y == right unit}
-      (ω₁₁ : Susp-fmap (f₂ ∘ f₃) x == right unit)
       (ω₁₂ : ap (Susp-fmap f₂) ω₁ == ω₁₀) → 
       ap f₁ (ω₁₀ ∙ ! ω₁₁)
       ==
       ap f₁ (ap (Susp-fmap f₂) ω₁ ∙
         ap (Susp-fmap (f₂ ∘ f₃)) (! ω₆))
-    β-free3 ω₁ ω₆ ω₈¹ {ω₁₀} ω₁₁ ω₁₂ = {!!} 
-
+    β-free3 ω₁ ω₆ {ω₁₁} ω₈¹ {ω₁₀} ω₁₂ =
+      ap (λ p → ap f₁ (p ∙ ! ω₁₁)) (! ω₁₂) ∙
+      ap (λ p → ap f₁ (ap (Susp-fmap f₂) ω₁ ∙ ! p)) (! ω₈¹) ∙
+      ap (λ p → ap f₁ (ap (Susp-fmap f₂) ω₁ ∙ p))
+        (!-ap (Susp-fmap (f₂ ∘ f₃)) ω₆)  
 {-
-ap-∙ f₁ (merid (f₂ (f₃ x))) (! (merid (f₂ (f₃ (pt W))))) ∙
-!
-(ap (_∙_ (ap f₁ (merid (f₂ (f₃ x)))))
- (ap (λ p → ap f₁ (! p)) (SuspFmap.merid-β f₂ (f₃ (pt W)))))
-∙
-(!
- (ap (_∙_ (ap f₁ (merid (f₂ (f₃ x)))))
-  (ap-∘ f₁ (Susp-fmap f₂) (! (merid (f₃ (pt W)))) ∙
-   ap (ap f₁) (ap-! (Susp-fmap f₂) (merid (f₃ (pt W))))))
- ∙
- !
- (ap
-  (λ p → ap f₁ p ∙ ap (f₁ ∘ Susp-fmap f₂) (! (merid (f₃ (pt W)))))
-  (SuspFmap.merid-β f₂ (f₃ x)))
- ∙
- !
- (ap (λ p → p ∙ ap (f₁ ∘ Susp-fmap f₂) (! (merid (f₃ (pt W)))))
-  (ap-∘ f₁ (Susp-fmap f₂) (merid (f₃ x))))
- ∙
- !
- (ap-∙ (f₁ ∘ Susp-fmap f₂) (merid (f₃ x)) (! (merid (f₃ (pt W))))))
-∙
-β-free2 ((merid ∘ f₃) x) (merid (f₃ (pt W)))
-(ap-! (Susp-fmap (f₂ ∘ f₃)) (merid (pt W)) ∙
- ap !
- (PushoutRec.glue-β (λ _ → north) (λ _ → south) (merid ∘ f₂ ∘ f₃)
-  (pt W)
-  ∙
-  !
-  (PushoutRec.glue-β (λ _ → north) (λ _ → south) (merid ∘ f₂)
-   (f₃ (pt W)))))
-= β-free3 -}
+    β-red3-aux : {w : Susp (de⊙ W)} {z₁ z₂ : Susp (de⊙ Z)}
+      (ω₂ : z₁ == z₂) (ω₆ : {!Susp-fmap f₂ z₁!} == {!w!})
+      {e : Susp-fmap f₂ z₁ == Susp-fmap f₂ z₂} (ω₈¹ : ap (Susp-fmap (f₂ ∘ f₃)) ω₆ == {!e!}) →
+      (! (ap (λ q → q) (ap-∘ f₁ (Susp-fmap f₂) (! ω₂) ∙
+      ap (ap f₁) (ap-! (Susp-fmap f₂) ω₂))) ∙ idp) ∙
+      ap-∘ f₁ (Susp-fmap f₂) (! ω₂) ∙
+      ap (ap f₁) (ap (λ p → p) (ap-! (Susp-fmap f₂) ω₂)) ∙
+      ap (ap f₁) (ap (λ p → p) (! (ap-! (Susp-fmap (f₂ ∘ f₃)) ω₆ ∙
+        ap ! (ω₈¹ ∙ idp))))
+      ==
+      ap (λ p → ap f₁ (! p)) (! ω₈¹) ∙
+      ap (λ p → ap f₁ p) (!-ap (Susp-fmap (f₂ ∘ f₃)) ω₆)
+    β-red3-aux ω₂ ω₆ = ? ∙ ?
+-}
+    β-red3 : {y : Susp (de⊙ Z)} (ω₁ : y == right unit)
+      (ω₂ : left unit == right unit)
+      (ω₆ : left unit == right unit)
+      {ω₁₁ : left unit == right unit}
+      (ω₈² : ap (Susp-fmap f₂) ω₂ == ω₁₁)
+      (ω₈¹ : ap (Susp-fmap (f₂ ∘ f₃)) ω₆ == ω₁₁)
+      {ω₁₀ : Susp-fmap f₂ y == right unit}
+      (ω₁₂ : ap (Susp-fmap f₂) ω₁ == ω₁₀) →
+      ap-∙ f₁ ω₁₀ (! ω₁₁) ∙
+      ! (ap (_∙_ (ap f₁ ω₁₀))
+        (ap (λ p → ap f₁ (! p)) ω₈²)) ∙
+      (! (ap (_∙_ (ap f₁ ω₁₀))
+         (ap-∘ f₁ (Susp-fmap f₂) (! ω₂) ∙
+         ap (ap f₁) (ap-! (Susp-fmap f₂) ω₂))) ∙
+      ! (ap (λ p → ap f₁ p ∙ ap (f₁ ∘ Susp-fmap f₂) (! ω₂)) ω₁₂) ∙
+      ! (ap (λ p → p ∙ ap (f₁ ∘ Susp-fmap f₂) (! ω₂))
+        (ap-∘ f₁ (Susp-fmap f₂) ω₁)) ∙
+      ! (ap-∙ (f₁ ∘ Susp-fmap f₂) ω₁ (! ω₂))) ∙
+      β-free2 ω₁ ω₂ (ap-! (Susp-fmap (f₂ ∘ f₃)) ω₆ ∙
+        ap ! (ω₈¹ ∙ ! ω₈²))
+      ==
+      ap (λ p → ap f₁ (p ∙ ! ω₁₁)) (! ω₁₂) ∙
+      ap (λ p → ap f₁ (ap (Susp-fmap f₂) ω₁ ∙ ! p)) (! ω₈¹) ∙
+      ap (λ p → ap f₁ (ap (Susp-fmap f₂) ω₁ ∙ p))
+        (!-ap (Susp-fmap (f₂ ∘ f₃)) ω₆)
+    β-red3 idp ω₂ ω₆ idp ω₈¹ idp = 
+      ap-∘2-ap-! f₁ (Susp-fmap f₂) ω₂
+        (ap (ap f₁) (ap (λ p → p) (! (ap-! (Susp-fmap (f₂ ∘ f₃)) ω₆ ∙
+        ap ! (ω₈¹ ∙ idp))))) ∙
+      ap3-!-ap-!-rid (Susp-fmap (f₂ ∘ f₃)) f₁ ω₆ ω₈¹
 
 {-
   ω₁ = merid (f₃ x)
@@ -443,7 +457,7 @@ ap-∙ f₁ (merid (f₂ (f₃ x))) (! (merid (f₂ (f₃ (pt W))))) ∙
   ω₁₁ = merid (f₂ (f₃ (pt W)))
   ω₁₂ = SuspFmap.merid-β f₂ (f₃ x)
 -}
-{-
+
     Susp-fmap-∘-sq-rw : 
       (hmpty-nat-∙'-r (λ x₁ → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ x₁)))
         (merid x ∙ ! (merid (pt W))) ∙ idp) ∙ idp
@@ -543,11 +557,14 @@ ap-∙ f₁ (merid (f₂ (f₃ x))) (! (merid (f₂ (f₃ (pt W))))) ∙
         (SuspFmap.merid-β f₂ (f₃ (pt W)))
         (SuspFmap.merid-β (f₂ ∘ f₃) (pt W))
         (SuspFmap.merid-β f₃ x)
-    red4 two_coher_Susp-∼ = {!!}
+    red4 two_coher_Susp-∼ =
+      β-red3 (merid (f₃ x)) (merid (f₃ (pt W))) (merid (pt W))
+      (SuspFmap.merid-β f₂ (f₃ (pt W))) (SuspFmap.merid-β (f₂ ∘ f₃) (pt W))
+      (SuspFmap.merid-β f₂ (f₃ x))
     red5 two_coher_Susp-∼ = {!!}
     red6 two_coher_Susp-∼ = {!!}
     red7 two_coher_Susp-∼ = {!!}
--}
+    
 {-
   ω₁ = merid (f₃ x)
   ω₂ = merid (f₃ (pt W))
@@ -561,6 +578,7 @@ ap-∙ f₁ (merid (f₂ (f₃ x))) (! (merid (f₂ (f₃ (pt W))))) ∙
   ω₉ = SuspFmap.merid-β f₃ x
   ω₁₀ = merid (f₂ (f₃ x))
   ω₁₁ = merid (f₂ (f₃ (pt W)))
+  ω₁₂ = SuspFmap.merid-β f₂ (f₃ x)
 -}
 
 -- (μ₁ ∙ p₁ ∙ p₂) ∙ (μ₂ ∙ p₃ ∙ p₄) ∙ τ ∙ ! (μ₃ ∙ p₅ ∙ p₆)
