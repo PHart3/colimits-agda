@@ -86,6 +86,10 @@ module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
   !-ap-∙ : {x y : A} (p : x == y) {z : A} (r : x == z) → ! (ap g p) ∙ ap g r == ap g (! p ∙ r)
   !-ap-∙ idp r = idp
 
+  ap-!-∙-ap : ∀ {k} {C : Type k} (h : C → A) {y z : C} {x : A} (q : y == z) (p : x == h y) 
+    →  ap g (! p) ∙ ap g (p ∙ ap h q) == ap g (ap h q)
+  ap-!-∙-ap h q idp = idp 
+
   !-ap-∙-s : {x y : A} (p : x == y) {z : A} {r : x == z} {w : B} {s : g z == w}
     → ! (ap g p) ∙ ap g r ∙ s == ap g (! p ∙ r) ∙ s
   !-ap-∙-s idp = idp
