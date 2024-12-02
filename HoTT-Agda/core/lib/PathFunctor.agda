@@ -151,6 +151,15 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
       == e
   ap-∘2-ap-! idp e = idp 
 
+  ap-∘2-ap-∙ : {x y : A} (v : x == y) → 
+    ! (ap (ap g) (ap-∙ f v idp ∙ idp)) ∙
+    ! (ap (λ q → q) (ap-∘ (v ∙ idp))) ∙
+    ! (! (ap (λ p → p ∙ idp) (ap-∘ v)) ∙
+      ! (ap-∙ (g ∘ f) v idp))
+    ==
+    ap-∙ g (ap f v) idp ∙ idp
+  ap-∘2-ap-∙ idp = idp
+
   ap-cp-rev : {w : C} {z : B} {x y : A} (p : x == y) (q : f x == z) (r : g (f y) == w) →
     ! (ap g q) ∙ ap (g ∘ f) p ∙ r == ! (ap g (! (ap f p) ∙ q)) ∙  r
   ap-cp-rev idp q r = idp
