@@ -117,6 +117,12 @@ module _ {i} {A : Type i} where
     → (p₁ ∙' ! p₂) ∙ p₂ ∙ p₃ == p₁ ∙ p₃
   ∙'-!-∙-∙ p₁ idp p₃ = idp
 
+  !-inv-l-r-unit-assoc : {x y : A} (p : x == y) →
+    ! (ap (λ c → p ∙ c) (!-inv-l p) ∙ ∙-unit-r p) ∙
+    ! (∙-assoc p (! p) p) ∙ ap (λ c → c ∙ p) (!-inv-r p)
+    == idp
+  !-inv-l-r-unit-assoc idp = idp
+
   assoc-tri-!-mid : {x y z w u v : A} (p₀ : x == y) (p₁ : y == z) (p₂ : w == z)
     (p₃ : z == u) (p₄ : u == v)
     → (p₀ ∙ p₁ ∙' ! p₂) ∙ p₂ ∙ p₃ ∙' p₄ == p₀ ∙ (p₁ ∙ p₃) ∙' p₄

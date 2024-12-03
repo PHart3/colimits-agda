@@ -5,6 +5,7 @@ open import lib.types.Pointed
 open import lib.types.Pushout
 open import lib.types.Suspension
 open import lib.types.LoopSpace
+open import lib.types.Homogenous
 open import homotopy.PtdAdjoint
 
 module homotopy.SuspAdjointLoop where
@@ -491,23 +492,6 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
       == idp
     β-red6 idp idp idp = idp
 
-{-
-  ω₁ = merid (f₃ x)
-  ω₂ = merid (f₃ (pt W))
-  ω₃ = merid x
-  ω₄ = SuspFmap.merid-β f₃ x
-  ω₅ = SuspFmap.merid-β f₃ (pt W)
-  ω₆ = merid (pt W) 
-  ω₇ = ap (Susp-fmap (f₂ ∘ f₃)) (! ω₆)
-  ω₈¹ = SuspFmap.merid-β (f₂ ∘ f₃) (pt W)
-  ω₈² = SuspFmap.merid-β f₂ (f₃ (pt W))
-  ω₉ = SuspFmap.merid-β f₃ x
-  ω₁₀ = merid (f₂ (f₃ x))
-  ω₁₁ = merid (f₂ (f₃ (pt W)))
-  ω₁₂ = SuspFmap.merid-β f₂ (f₃ x)
-  ω₁₃ = SuspFmap.merid-β (f₂ ∘ f₃) x
--}
-
     Susp-fmap-∘-sq-rw : 
       (hmpty-nat-∙'-r (λ z → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ z)))
         (merid x ∙ ! (merid (pt W))) ∙ idp) ∙ idp
@@ -621,7 +605,6 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
       β-red6 (merid (f₂ (f₃ x))) (merid (pt W))
         (SuspFmap.merid-β (f₂ ∘ f₃) (pt W))
 
-{-
   two_coher_Susp : (h₁ : ⊙Susp X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →
     !-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃) ∙⊙∼
     ⊙∘-pre h₃ (nat-dom h₂ h₁) ∙⊙∼
@@ -631,24 +614,5 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
     !-⊙∼ (nat-dom (h₂ ⊙∘ h₃) h₁)
       ⊙→∼
     ⊙∼-id ((into X Y h₁) ⊙∘ h₂ ⊙∘ h₃)
-  fst (two_coher_Susp (f₁ , idp) (f₂ , idp) (f₃ , idp)) x =
-    sev_step_reduce (two_coher_Susp-∼ f₂ f₃ f₁ x)
-  snd (two_coher_Susp (f₁ , idp) (f₂ , idp) (f₃ , idp)) = {!!}
--}
-
-{-
-  ω₁ = merid (f₃ x)
-  ω₂ = merid (f₃ (pt W))
-  ω₃ = merid x
-  ω₄ = SuspFmap.merid-β f₃ x
-  ω₅ = SuspFmap.merid-β f₃ (pt W)
-  ω₆ = merid (pt W) 
-  ω₇ = ap (Susp-fmap (f₂ ∘ f₃)) (! ω₆)
-  ω₈¹ = SuspFmap.merid-β (f₂ ∘ f₃) (pt W)
-  ω₈² = SuspFmap.merid-β f₂ (f₃ (pt W))
-  ω₉ = SuspFmap.merid-β f₃ x
-  ω₁₀ = merid (f₂ (f₃ x))
-  ω₁₁ = merid (f₂ (f₃ (pt W)))
-  ω₁₂ = SuspFmap.merid-β f₂ (f₃ x)
-  ω₁₃ = SuspFmap.merid-β (f₂ ∘ f₃) x
--}
+  two_coher_Susp (f₁ , idp) (f₂ , idp) (f₃ , idp) =
+    ∼⊙Ωhomog∼ λ x → sev_step_reduce (two_coher_Susp-∼ f₂ f₃ f₁ x)

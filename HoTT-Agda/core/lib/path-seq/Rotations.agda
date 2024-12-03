@@ -26,6 +26,13 @@ pre-rotate-in {q = q} {p = idp} {r = r} e =
     =ₛ⟨ =ₛ-in (! (↯-∙∙ (idp ◃∎) r)) ⟩
   idp ◃∙ r ∎ₛ
 
+pre-rotate-in-↯-assoc : {a₀ a₁ a₂ a₃ a₄ : A} {q : a₁ == a₀} {p : a₁ == a₂} {r : a₀ == a₃}
+  {s₁ : a₃ =-= a₄} {s₂ : a₂ =-= a₄}
+  → q ◃∙ (r ∙ ↯ s₁) ◃∎ =ₛ (p ∙ ↯ s₂) ◃∎
+  → ↯ (! p ◃∙ q ◃∙ r ◃∎) ◃∙ s₁ =ₛ s₂
+pre-rotate-in-↯-assoc {q = idp} {p = idp} {r = idp} {s₁} {s₂} e =
+  =ₛ-in (↯-∙∙ (idp ◃∎) s₁ ∙ =ₛ-out e)
+
 pre-rotate-out : {a a' a'' : A} {p : a == a'} {q : a' =-= a''} {r : a =-= a''}
   → q =ₛ ! p ◃∙ r
   → p ◃∙ q =ₛ r

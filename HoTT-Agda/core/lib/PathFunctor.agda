@@ -40,6 +40,10 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f (p ∙ q ∙ r) == ap f p ∙ ap f q ∙ ap f r
   ap-∙∙ idp idp r = idp
 
+  ap-!∙∙ : {x y z w : A} (p : y == x) (q : y == z) (r : z == w)
+    → ap f (! p ∙ q ∙ r) == ! (ap f p) ∙ ap f q ∙ ap f r
+  ap-!∙∙ idp idp r = idp
+
   ap-∙∙∙ : {x y z w t : A} (p : x == y) (q : y == z) (r : z == w) (s : w == t)
     → ap f (p ∙ q ∙ r ∙ s) == ap f p ∙ ap f q ∙ ap f r ∙ ap f s
   ap-∙∙∙ idp idp idp s = idp
