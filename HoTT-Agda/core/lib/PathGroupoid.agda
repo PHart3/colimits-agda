@@ -107,7 +107,7 @@ module _ {i} {A : Type i} where
 
   ∙-∙'-!-rot : {x y z w : A} (p₀ : x == y) (p₁ : x == z) (p₂ : z == w) (p₃ : y == w)
     → p₀ == p₁ ∙ p₂  ∙' ! p₃ → p₂ == ! p₁ ∙ p₀ ∙' p₃
-  ∙-∙'-!-rot p₀ idp p₂ idp e = ! e 
+  ∙-∙'-!-rot p₀ idp p₂ idp e = ! e
 
   !-inj-rot : {x y : A} {p₁ p₂ : x == y} (n : p₁ == p₂) {m : ! p₁ == ! p₂}
     → m == ap ! n →  ! (!-! p₁) ∙ ap ! m ∙' !-! p₂ == n

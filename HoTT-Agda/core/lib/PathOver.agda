@@ -393,6 +393,11 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
   ⊙-to-comp : {f g : X ⊙→ Y} → f ⊙∼ g → f ⊙-comp g
   ⊙-to-comp H = fst H , comp-⊙∼ H  
 
+  comp-to-⊙ : {f g : X ⊙→ Y} → f ⊙-comp g → f ⊙∼ g
+  fst (comp-to-⊙ H) = fst H
+  snd (comp-to-⊙ {f} H) =
+    from-transp (_== pt Y) (fst H (pt X)) (transp-cst=idf-l (fst H (pt X)) (snd f) ∙ ↯ (snd H))
+
   ⊙id-to-comp : {f g : X ⊙→ Y} (p : f == g) → f ⊙-comp g
   fst (⊙id-to-comp idp) = λ x → idp
   snd (⊙id-to-comp idp) = idp ◃∎

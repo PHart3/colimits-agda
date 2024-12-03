@@ -87,6 +87,14 @@ post-rotate-in : {a a' a'' : A}
 post-rotate-in {p = p} {r = r} {q = q} e =
   !ₛ (post-rotate'-in (!ₛ e))
 
+post↯-rotate-in : {a a' a'' : A} {r : a'' =-= a} {p : a' =-= a} {q : a' == a''}
+  → q ◃∎ =ₛ ↯ p ◃∙ ! (↯ r) ◃∎
+  → q ◃∙ r =ₛ p
+post↯-rotate-in {r = r} {p = p} {q = idp} e =
+  =ₛ-in (↯-∙∙ (idp ◃∎) r ∙ ap (λ v → v ∙ ↯ r) (=ₛ-out e) ∙
+    ∙-assoc (↯ p) (! (↯ r)) (↯ r) ∙ ap (λ v → ↯ p ∙ v) (!-inv-l (↯ r)) ∙
+    ∙-unit-r (↯ p))
+
 post-rotate-out : {a a' a'' : A}
   → {p : a =-= a'} {q : a' == a''} {r : a =-= a''}
   → p =ₛ r ∙▹ ! q

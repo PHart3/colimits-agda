@@ -113,10 +113,21 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
 -- homotopies of homotopies of pointed maps
 
-infixr 10 _⊙→∼_
-_⊙→∼_ : ∀ {i j} {X : Ptd i} {Y : Ptd j} {f g : X ⊙→ Y} (H₁ H₂ : f ⊙-comp g) → Type (lmax i j)
-_⊙→∼_ {X = X} {f = f} H₁ H₂ =
-  Σ (fst H₁ ∼ fst H₂) (λ K → ap (λ p →  ! p ∙ snd f) (K (pt X)) ◃∙ snd H₂ =ₛ snd H₁)
+module _ {i j} {X : Ptd i} {Y : Ptd j} where
+
+  infixr 10 _⊙→∼_
+  _⊙→∼_ : {f g : X ⊙→ Y} (H₁ H₂ : f ⊙-comp g) → Type (lmax i j)
+  _⊙→∼_ {f = f} H₁ H₂ =
+    Σ (fst H₁ ∼ fst H₂)
+      (λ K → ap (λ p →  ! p ∙ snd f) (K (pt X)) ◃∙ snd H₂ =ₛ snd H₁)
+
+-- pointed sections
+
+  record has-sect⊙ (f : X ⊙→ Y) : Type (lmax i j) where
+    constructor sect⊙
+    field
+      r-inv : Y ⊙→ X
+      sect⊙-eq : f ⊙∘ r-inv == ⊙idf Y
 
 {- Pointed equivalences -}
 

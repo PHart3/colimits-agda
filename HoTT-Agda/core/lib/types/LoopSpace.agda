@@ -41,6 +41,10 @@ module _ {i} {X : Ptd i} where
   → Ω-fmap F p == ! (snd F) ∙ ap (fst F) p ∙' snd F
 Ω-fmap-β (_ , idp) _ = idp
 
+Ω-fmap-β∙ : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y) (p : Ω X)
+  → Ω-fmap F p == ! (snd F) ∙ ap (fst F) p ∙ snd F
+Ω-fmap-β∙ (f , idp) p = ! (∙-unit-r (ap f p))
+
 Ω-fmap-pt-β : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y)
   → snd (⊙Ω-fmap F) ==
     Ω-fmap-β F idp ∙ ap (λ p → ! (snd F) ∙ p) (∙'-unit-l (snd F)) ∙ !-inv-l (snd F) 
@@ -101,6 +105,12 @@ module _ {i} {X : Ptd i} where
 
 ⊙Ω-fmap-idf : ∀ {i} {X : Ptd i} → ⊙Ω-fmap (⊙idf X) == ⊙idf _
 ⊙Ω-fmap-idf = ⊙λ=' ap-idf idp
+
+⊙Ω-sect : ∀ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y)
+  → has-sect⊙ f → has-sect⊙ (⊙Ω-fmap f)
+has-sect⊙.r-inv (⊙Ω-sect f (sect⊙ r-inv sect⊙-eq)) = ⊙Ω-fmap r-inv
+has-sect⊙.sect⊙-eq (⊙Ω-sect f (sect⊙ r-inv sect⊙-eq)) =
+  ! (! (ap (⊙Ω-fmap) sect⊙-eq ∙ ⊙Ω-fmap-idf) ∙ ⊙Ω-fmap-∘ f r-inv)
 
 ⊙Ω-fmap2-fst : ∀ {i j} {X : Ptd i} {Y : Ptd j}
   → ⊙Ω-fmap2 {X = X} {Y = Y} ⊙fst == ⊙fst
