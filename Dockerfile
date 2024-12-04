@@ -29,7 +29,7 @@ RUN \
 
 FROM alpine AS hottagda
 
-COPY ["HoTT-Agda", "/build/Hott-Agda"]
+COPY ["HoTT-Agda", "/build/HoTT-Agda"]
 COPY ["Colimit-code", "/build/Colimit-code"]
 
 FROM alpine
@@ -40,9 +40,13 @@ COPY --from=hottagda /build /build
 COPY ["Pullback-stability", "/build/Pullback-stability"]
 COPY agda-html.sh /
 
-RUN echo "/build/Hott-Agda/hott-core.agda-lib" >> /dist/libraries
+RUN echo "/build/HoTT-Agda/hott-core.agda-lib" >> /dist/libraries
+RUN echo "/build/HoTT-Agda/hott-theorems.agda-lib" >> /dist/libraries
 RUN echo "/build/Colimit-code/cos-colim.agda-lib" >> /dist/libraries
 RUN echo "/build/Pullback-stability/stab.agda-lib" >> /dist/libraries
+
+WORKDIR /build/HoTT-Agda
+RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/SuspAdjointLoop.agda
 
 WORKDIR /build/Colimit-code
 RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-0.agda
