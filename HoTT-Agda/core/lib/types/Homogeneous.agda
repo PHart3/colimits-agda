@@ -6,29 +6,29 @@ open import lib.types.LoopSpace
 open import lib.types.Paths
 open import lib.types.Sigma
 
-module lib.types.Homogenous where
+module lib.types.Homogeneous where
 
--- homogenous types satisfying a coherence condition at the basepoint
+-- homogeneous types satisfying a coherence condition at the basepoint
 
 module _ {i} {X : Type i} where
 
   module _ (x : X) where
 
-    record homogenous : Type i where
+    record homogeneous : Type i where
       constructor homog
       field
         auto : (y : X) → ⊙[ X , x ] ⊙≃ ⊙[ X , y ]
         homog-idf : fst (auto x) == ⊙idf ⊙[ X , x ]
-    open homogenous public
+    open homogeneous public
 
-    homog-⊙Ω≃ : (y : X) → homogenous → ⊙Ω ⊙[ X , x ] ⊙≃ ⊙Ω ⊙[ X , y ]
+    homog-⊙Ω≃ : (y : X) → homogeneous → ⊙Ω ⊙[ X , x ] ⊙≃ ⊙Ω ⊙[ X , y ]
     homog-⊙Ω≃ y (homog auto _) = ⊙Ω-emap (auto y)
 
-    homog-Ω≃ : (y : X) → homogenous → (x == x) ≃ (y == y)
+    homog-Ω≃ : (y : X) → homogeneous → (x == x) ≃ (y == y)
     homog-Ω≃ y η = ⊙≃-to-≃ (homog-⊙Ω≃ y η)
 
   {-
-    Two pointed homotopies of pointed maps valued in a coherently homogenous
+    Two pointed homotopies of pointed maps valued in a coherently homogeneous
     type are equal as soon as their underlying homotopies are equal.
   -}
   
@@ -38,7 +38,7 @@ module _ {i} {X : Type i} where
     fst ⊙∼-eval = λ H → H z
     snd ⊙∼-eval = idp
 
-    ⊙∼-eval-sect : homogenous (f z) → has-sect⊙ ⊙∼-eval
+    ⊙∼-eval-sect : homogeneous (f z) → has-sect⊙ ⊙∼-eval
     fst (has-sect⊙.r-inv (⊙∼-eval-sect η)) p = λ x₁ → –>(homog-Ω≃ (f z) (f x₁) η) p
     snd (has-sect⊙.r-inv (⊙∼-eval-sect (homog auto _))) =
       λ= λ x → Ω-fmap-β∙ (fst (auto (f x))) idp ∙
@@ -107,10 +107,10 @@ module _ {i} {X : Type i} where
             =⟪ lemma homog-idf ⟫
           idp ∎∎
 
-    ⊙∼-evalΩ-sect : homogenous (f z) → has-sect⊙ (⊙Ω-fmap ⊙∼-eval)
+    ⊙∼-evalΩ-sect : homogeneous (f z) → has-sect⊙ (⊙Ω-fmap ⊙∼-eval)
     ⊙∼-evalΩ-sect η = ⊙Ω-sect (⊙∼-eval) (⊙∼-eval-sect η)
 
-    module _ (η : homogenous (f z)) where
+    module _ (η : homogeneous (f z)) where
 
       open has-sect⊙
 
@@ -170,13 +170,13 @@ module _ {i} {X : Type i} where
                  (ap λ= (λ= K)))) ⟩
          H₁ₚ ∎ₛ
 
--- All loop spaces are coherently homogenous.
+-- All loop spaces are coherently homogeneous.
 
 module _ {i} {X : Type i} {x : X} where
 
   module _ {p : x == x} where
 
-    loop-homog : homogenous p
+    loop-homog : homogeneous p
     fst (fst (auto loop-homog q)) = λ ℓ → ℓ ∙ ! p ∙ q
     snd (fst (auto loop-homog q)) =
       ! (∙-assoc p (! p) q) ∙ ap (λ c → c ∙ q) (!-inv-r p)

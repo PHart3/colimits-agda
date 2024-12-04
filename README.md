@@ -9,7 +9,7 @@
 
   A stripped down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
   with local changes for general lemmas we proved during the development. It also includes a proof of the 2-coherence of
-  the Suspension-Loop adjunction and some properties of homogenous types (used for the proof of 2-coherence).
+  the Suspension-Loop adjunction and some properties of homogeneous types (used for the proof of 2-coherence).
 
   See `HoTT-Agda/README.md` for the license of the work inside this directory.
 

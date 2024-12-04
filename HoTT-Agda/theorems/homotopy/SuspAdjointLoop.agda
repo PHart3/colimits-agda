@@ -5,7 +5,7 @@ open import lib.types.Pointed
 open import lib.types.Pushout
 open import lib.types.Suspension
 open import lib.types.LoopSpace
-open import lib.types.Homogenous
+open import lib.types.Homogeneous
 open import homotopy.PtdAdjoint
 
 module homotopy.SuspAdjointLoop where
@@ -626,7 +626,7 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
 
   {-
     It suffices to prove that the underlying homotopies are equal
-    because loop spaces are coherently homogenous.
+    because loop spaces are coherently homogeneous.
   -}
   
   two_coher_Susp : (h₁ : ⊙Susp X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →

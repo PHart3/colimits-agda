@@ -30,7 +30,7 @@ The main library is more or less divided into two parts.
 - The first part is exported in the module `lib.Basics` and contains everything needed to make the second
   part compile.
 - The second part is found in `lib.types` and develops type formers.
-  Note that it contains new facts about homogenous types and reformulates some of the basic theory of
+  Note that it contains new facts about homogeneous types and reformulates some of the basic theory of
   the Suspension type.
 
 Note that our work on colimits makes extensive use of the `path-seq/` directory.
@@ -39,7 +39,7 @@ Note that our work on colimits makes extensive use of the `path-seq/` directory.
 
 This directory contains a proof of the 2-coherence of the Suspension-Loop adjunction.
 This property of the adjunction is important because it ensures that the Suspension
-functor preserves colimits. The proof relies on our work on homogenous types.
+functor preserves colimits. The proof relies on our work on homogeneous types.
 
 Citation
 --------
