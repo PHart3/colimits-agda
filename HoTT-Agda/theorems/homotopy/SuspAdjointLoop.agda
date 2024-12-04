@@ -26,7 +26,7 @@ module _ {i} where
     id = λ _ → ⊙Ω-fmap-idf;
     comp = ⊙Ω-fmap-∘}
 
--- counit
+  -- counit
 
   module _ (X : Ptd i) where
 
@@ -98,11 +98,18 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
   snd (ap-comp-into {f₁ = (f , idp)} {f₂} H) = ap-comp-into-coher (fst H) (↯ (snd H))
 
 {-
+   This definition of ap agrees with the standard ap on the id homotopy,
+   hence on all homotopies by the SIP.
+-}
+
+-- ap-comp-into
+
+{-
   an explicit component-based homotopy witnessing the
   naturality of into in its first argument
 -}
 
-module _ {i j} {X Y : Ptd i} {U : Ptd j} where 
+module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where 
 
   module _ (r₀ : Susp (de⊙ Y) → de⊙ U) (h₀ : de⊙ X → de⊙ Y) where
 
@@ -226,7 +233,7 @@ module _ {i j k l ℓ} {A : Type i} {B : Type j} {C : Type k} {D : Type l} {E : 
       ap (λ p → (! (ap m (ϕ ∙ idp)) ∙ idp) ∙ p) (! (∙-unit-r (! p₆))) ∙
       red7
 
-module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where 
+module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W : Ptd i₄} where 
 
   -- unfolded version of naturality square for Susp-fmap-∘
 
@@ -346,8 +353,6 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
       ==
       β-free2 idp ω₂ ↑ω₈
     β-red2-aux2 idp idp = idp
-
--- ↑ω₈ = ap-! (Susp-fmap (f₂ ∘ f₃)) ω₆ ∙ ap ! (ω₈¹ ∙ idp)
 
     β-red2-aux : {w : Susp (de⊙ W)} (ω₃ : w == right unit)
       (ω₂ : left unit == right unit)
@@ -605,6 +610,11 @@ module _ {i} {X : Ptd i} {Y : Ptd i} {Z : Ptd i} {W : Ptd i} where
       β-red6 (merid (f₂ (f₃ x))) (merid (pt W))
         (SuspFmap.merid-β (f₂ ∘ f₃) (pt W))
 
+  {-
+    It suffices to prove that the underlying homotopies are equal
+    because loop spaces are coherently homogenous.
+  -}
+  
   two_coher_Susp : (h₁ : ⊙Susp X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →
     !-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃) ∙⊙∼
     ⊙∘-pre h₃ (nat-dom h₂ h₁) ∙⊙∼

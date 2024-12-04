@@ -8,6 +8,8 @@ open import lib.types.Sigma
 
 module lib.types.Homogenous where
 
+-- homogenous types satisfying a coherence condition at the basepoint
+
 module _ {i} {X : Type i} where
 
   module _ (x : X) where
@@ -25,6 +27,11 @@ module _ {i} {X : Type i} where
     homog-Ω≃ : (y : X) → homogenous → (x == x) ≃ (y == y)
     homog-Ω≃ y η = ⊙≃-to-≃ (homog-⊙Ω≃ y η)
 
+  {-
+    Two pointed homotopies of pointed maps valued in a coherently homogenous
+    type are equal as soon as their underlying homotopies are equal.
+  -}
+  
   module _ {j} {Z : Type j} {z : Z} {f : Z → X} where
 
     ⊙∼-eval : ⊙[ f ∼ f , (λ z → idp) ] ⊙→ ⊙[ f z == f z , idp ]
@@ -163,6 +170,8 @@ module _ {i} {X : Type i} where
                  (ap λ= (λ= K)))) ⟩
          H₁ₚ ∎ₛ
 
+-- All loop spaces are coherently homogenous.
+
 module _ {i} {X : Type i} {x : X} where
 
   module _ {p : x == x} where
@@ -175,7 +184,6 @@ module _ {i} {X : Type i} {x : X} where
     homog-idf loop-homog =
       ⊙λ= (comp-to-⊙ ((λ x₁ → ap (λ c → x₁ ∙ c) (!-inv-l p) ∙ ∙-unit-r x₁) ,
         !-inv-l-r-unit-assoc p ◃∎))
-
 
   ∼⊙Ωhomog∼ : ∀ {j} {Z : Ptd j} {p : x == x}
     {f g : Z ⊙→ ⊙[ x == x , p ]}
