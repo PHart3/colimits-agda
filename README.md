@@ -11,7 +11,7 @@
   with local changes for general lemmas we proved during the development. It also includes a proof of the 2-coherence of
   the Suspension-Loop adjunction and some properties of homogenous types (used for the proof of 2-coherence).
 
-  See HoTT-Agda/LICENSE.md for the license of the work inside this directory.
+  See `HoTT-Agda/README.md` for the license of the work inside this directory.
 
 - `Colimit-code/`
 
