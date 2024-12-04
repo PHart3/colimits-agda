@@ -4,6 +4,7 @@ open import lib.Base
 open import lib.PathFunctor
 open import lib.PathGroupoid
 open import lib.Equivalence
+open import lib.Function
 
 {- Structural lemmas about paths over paths
 
@@ -285,7 +286,6 @@ module _ {i j} {A : Type i} where
   to-transp-equiv B p =
     equiv to-transp (from-transp B p) (to-transp-β B p) (to-transp-η)
 
-
   from-transp! : (B : A → Type j)
     {a a' : A} (p : a == a')
     {u : B a} {v : B a'}
@@ -327,8 +327,80 @@ module _ {i j} {A : Type i} where
   from-transp-g B idp h = h
 
   apd-to-tr : (B : A → Type j) (f : (a : A) → B a) {x y : A} (p : x == y)
-    (s : transport B p (f x) == f y) → apd f p == from-transp-g B p s → apd-tr f p == s
+    (s : transport B p (f x) == f y)
+    → apd f p == from-transp-g B p s → apd-tr f p == s
   apd-to-tr B f idp s h = h
+
+-- hmpty-nat conversion
+
+module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
+
+  from-hmpty-nat : {x y : A} (p : x == y) {e₁ : f x == g x} {e₂ : f y == g y} 
+    → ap f p == e₁ ∙ ap g p  ∙' ! e₂ → e₁ == e₂ [ (λ z → f z == g z) ↓ p ]
+  from-hmpty-nat idp {e₁} {e₂} p = ∙-idp-!-∙'-rot e₁ e₂ p
+
+  module _ (K : (z : A) → f z == g z) where
+
+    apd-to-hnat : {x y : A} (p : x == y)
+      (m : ap f p == K x ∙ ap g p  ∙' ! (K y))
+      → apd K p == from-hmpty-nat p m → hmpty-nat-∙'-r K p == m
+    apd-to-hnat {x} idp m q = lemma (K x) m q
+      where
+        lemma : {x₁ x₂ : B} (v : x₁ == x₂) (n : idp == v ∙ idp ∙' ! v)
+          (r : idp == ∙-idp-!-∙'-rot v v n)
+          → ! (!-inv-r v) ∙ ap (_∙_ v) (! (∙'-unit-l (! v))) == n
+        lemma idp n r = !-inj-rot n (r ∙ ∙-unit-r (ap ! (n ∙ idp)) ∙ ap (ap !) (∙-unit-r n))
+
+    apd-to-hnat-∙ : {x y z : A} (p₁ : x == y) (p₂ : y == z)
+      {m₁ : ap f p₁ == K x ∙ ap g p₁  ∙' ! (K y)} {m₂ : ap f p₂ == K y ∙ ap g p₂  ∙' ! (K z)}
+      (τ₁ : hmpty-nat-∙'-r K p₁ == m₁) (τ₂ : hmpty-nat-∙'-r K p₂ == m₂)
+      → hmpty-nat-∙'-r K (p₁ ∙ p₂)
+        ==
+        ↯ (ap-∙ f p₁ p₂ ◃∙
+        ap (λ p → p ∙ ap f p₂) m₁ ◃∙
+        ap (λ p → (K x ∙ ap g p₁ ∙' ! (K y)) ∙ p) m₂ ◃∙
+        assoc-tri-!-mid (K x) (ap g p₁) (K y) (ap g p₂) (! (K z)) ◃∙
+        ap (λ p → K x ∙ p ∙' ! (K z)) (! (ap-∙ g p₁ p₂)) ◃∎)
+    apd-to-hnat-∙ {x} idp idp idp idp = assoc-tri-!-coher (K x)
+
+    apd-to-hnat-! : {x y : A} (p : x == y)
+      {m : ap f p == K x ∙ ap g p  ∙' ! (K y)} (τ : hmpty-nat-∙'-r K p == m)
+      → hmpty-nat-∙'-r K (! p) == ap-! f p ∙ ap ! m ∙ !-∙-ap-∙'-! g (K x) p (K y)
+    apd-to-hnat-! {x} idp idp = !-∙-ap-∙'-!-coher g (K x)
+
+    apd-to-hnat-ap! : ∀ {l} {C : Type l} (h : B → C) {x y : A} (p : x == y)
+      {m : ap f p == K x ∙ ap g p  ∙' ! (K y)} (τ : hmpty-nat-∙'-r K p == m)
+      → hmpty-nat-∙'-r (λ z → ap h (! (K z))) p ==
+      ap-∘-long h g f K p ∙
+      ! (ap (λ q → ap h (! (K x)) ∙ ap h q ∙' ! (ap h (! (K y)))) m) ∙
+      ! (ap (λ q → ap h (! (K x)) ∙ q ∙' ! (ap h (! (K y)))) (ap-∘ h f p))
+    apd-to-hnat-ap! h {x} idp idp = idp-ap-!-!-∙-∙'-coher h (K x)
+
+{-
+  A coordinate definition of homotopy of pointed functions.
+  We also call such a homotopy "unfolded." 
+-}
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} where 
+
+  infixr 30 _⊙-comp_
+  _⊙-comp_ : (f g : X ⊙→ Y) → Type (lmax i j)
+  _⊙-comp_ f g = Σ (fst f ∼ fst g) λ H → ! (H (pt X)) ∙ snd f =-= snd g
+
+  comp-⊙∼ : {f g : X ⊙→ Y} (H : f ⊙∼ g) → ! (fst H (pt X)) ∙ snd f =-= snd g
+  comp-⊙∼ {f = f} H = ! (transp-cst=idf-l (fst H (pt X)) (snd f)) ◃∙ to-transp (snd H) ◃∎
+
+  ⊙-to-comp : {f g : X ⊙→ Y} → f ⊙∼ g → f ⊙-comp g
+  ⊙-to-comp H = fst H , comp-⊙∼ H  
+
+  comp-to-⊙ : {f g : X ⊙→ Y} → f ⊙-comp g → f ⊙∼ g
+  fst (comp-to-⊙ H) = fst H
+  snd (comp-to-⊙ {f} H) =
+    from-transp (_== pt Y) (fst H (pt X)) (transp-cst=idf-l (fst H (pt X)) (snd f) ∙ ↯ (snd H))
+
+  ⊙id-to-comp : {f g : X ⊙→ Y} (p : f == g) → f ⊙-comp g
+  fst (⊙id-to-comp idp) = λ x → idp
+  snd (⊙id-to-comp idp) = idp ◃∎
 
 {- Various other lemmas -}
 

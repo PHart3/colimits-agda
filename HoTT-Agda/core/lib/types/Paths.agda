@@ -62,6 +62,31 @@ module _ {i} {A : Type i} {x y z : A} where
   post∙'-equiv : (p : y == z) → (x == y) ≃ (x == z)
   post∙'-equiv p = ((λ q → q ∙' p) , post∙'-is-equiv p)
 
+module _ {i} {A : Type i} {x y : A} where
+
+  post∙idp∘!-is-equiv : (x == y) ≃ (y == x) 
+  post∙idp∘!-is-equiv = (post∙-equiv idp) ∘e (!-equiv)
+
+  ap-post∙idp∘!-inv : {p₁ p₂ : x == y}
+    → (! p₁ ∙ idp == ! p₂ ∙ idp) → p₁ == p₂
+  ap-post∙idp∘!-inv {p₁} {p₂} = <– (ap-equiv (post∙idp∘!-is-equiv) p₁ p₂)
+
+
+module _ {i j} {A : Type i} {B : Type j} {f g : A → B} where
+
+  funext-nat : (a : A) {H₁ H₂ : f ∼ g} (K : H₁ == H₂)
+    → ap (λ H → H a) K == app= K a
+  funext-nat a idp = idp
+
+  funext-nat-∼ : (a : A) {H₁ H₂ : f ∼ g} (K : H₁ ∼ H₂)
+    → ap (λ H → H a) (λ= K) == K a
+  funext-nat-∼ a K = funext-nat a (λ= K) ∙ app=-β K a
+
+module _ {i} {A : Type i} {a : A} where
+
+  λ=-ap-idf : ap (λ H → H (idp :> (a == a))) (λ= (ap-idf {A = A})) == idp
+  λ=-ap-idf = funext-nat-∼ idp ap-idf
+
 module _ {i j} {A : Type i} {B : Type j}
   {f : A → B} {x y : A} {b : B} where
 
@@ -290,37 +315,3 @@ module _ {i j} {A : Type i} {B : Type j} (g : B → A) (f : A → B) where
     → ((ap g (ap f p) ∙' v) == (u ∙ p))
     → (u == v [ (λ x → g (f x) == x) ↓ p ])
   ↓-∘=idf-in' {p = idp} q = ! (∙-unit-r _) ∙ (! q) ∙ (∙'-unit-l _)
-
--- WIP, derive it from more primitive principles
--- ↓-∘=id-in f g {p = p} {u} {v} q =
---   ↓-=-in (u ◃ apd (λ x → g (f x)) p =⟨ apd-∘ f g p |in-ctx (λ t → u ◃ t) ⟩
---         u ◃ ↓-apd-out _ f p (apdd g p (apd f p)) =⟨ apdd-cst (λ _ b → g b) p (ap f p) (! (apd-nd f p)) |in-ctx (λ t → u ◃ ↓-apd-out _ f p t) ⟩
---         u ◃ ↓-apd-out _ f p (apd (λ t → g (π₂ t)) (pair= p (apd f p))) =⟨ apd-∘ π₂ g (pair= p (apd f p)) |in-ctx (λ t → u ◃ ↓-apd-out _ f p t) ⟩
---         u ◃ ↓-apd-out _ f p (↓-apd-out _ π₂ (pair= p (apd f p)) (apdd g (pair= p (apd f p)) (apd π₂ (pair= p (apd f p))))) =⟨ {!!} ⟩
---         apd (λ x → x) p ▹ v ∎)
-
--- module _ {i j} {A : Type i} {B : Type j} {x y z : A → B} where
-
---   lhs :
---     {a a' : A} {p : a == a'} {q : x a == y a} {q' : x a' == y a'}
---     {r : y a == z a} {r' : y a' == z a'}
---     (α : q == q'            [ (λ a → x a == y a) ↓ p ])
---     (β : r ∙ ap z p == ap y p ∙' r')
---     → (q ∙' r) ∙ ap z p == ap x p ∙' q' ∙' r'
---   lhs =
---     (q ∙' r) ∙ ap z p     =⟨ ? ⟩  -- assoc
---     q ∙' (r ∙ ap z p)     =⟨ ? ⟩  -- β
---     q ∙' (ap y p ∙' r')   =⟨ ? ⟩  -- assoc
---     (q ∙' ap y p) ∙' r'   =⟨ ? ⟩  -- ∙ = ∙'
---     (q ∙ ap y p) ∙' r'    =⟨ ? ⟩  -- α
---     (ap x p ∙' q') ∙' r'  =⟨ ? ⟩  -- assoc
---     ap x p ∙' q' ∙' r' ∎
-
-
---   thing :
---     {a a' : A} {p : a == a'} {q : x a == y a} {q' : x a' == y a'}
---     {r : y a == z a} {r' : y a' == z a'}
---     (α : q == q'            [ (λ a → x a == y a) ↓ p ])
---     (β : r ∙ ap z p == ap y p ∙' r')
---     → (_∙'2ᵈ_ {r = r} {r' = r'} α (↓-='-in' β) == ↓-='-in' {!!})
---   thing = {!!}

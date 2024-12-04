@@ -47,6 +47,10 @@ module _ {i} {A : Type i} where
     → (p ∙' q) ∙ r == p ∙ (q ∙ r)
   ∙'∙-∙∙-assoc p idp r = idp
 
+  assoc-4-∙ : {x₁ x₂ x₃ x₄ x₅ x₆ : A} (p₁ : x₁ == x₂) (p₂ : x₂ == x₃) (p₃ : x₃ == x₄) (p₄ : x₄ == x₅) (p₅ : x₅ == x₆)
+    → p₁ ∙ p₂ ∙ p₃ ∙ p₄ ∙ p₅ == (p₁ ∙ p₂ ∙ p₃) ∙ p₄ ∙ p₅
+  assoc-4-∙ idp idp p₃ p₄ p₅ = idp 
+
   -- [∙-unit-l] and [∙'-unit-r] are definitional
 
   ∙-unit-r : {x y : A} (q : x == y) → q ∙ idp == q
@@ -93,8 +97,60 @@ module _ {i} {A : Type i} where
   !-! : {x y : A} (p : x == y) → ! (! p) == p
   !-! idp = idp
 
+  ∙-idp-!-∙'-rot : {x y : A} (p : x == y) (q : x == y)
+    → idp == p ∙ idp ∙' ! q → p == q
+  ∙-idp-!-∙'-rot idp q e = ap ! (e ∙ ∙'-unit-l (! q)) ∙ !-! q
+
+{- additional algebraic lemmas -}
+
+module _ {i} {A : Type i} where
+
+  ∙-∙'-!-rot : {x y z w : A} (p₀ : x == y) (p₁ : x == z) (p₂ : z == w) (p₃ : y == w)
+    → p₀ == p₁ ∙ p₂  ∙' ! p₃ → p₂ == ! p₁ ∙ p₀ ∙' p₃
+  ∙-∙'-!-rot p₀ idp p₂ idp e = ! e
+
+  !-inj-rot : {x y : A} {p₁ p₂ : x == y} (n : p₁ == p₂) {m : ! p₁ == ! p₂}
+    → m == ap ! n →  ! (!-! p₁) ∙ ap ! m ∙' !-! p₂ == n
+  !-inj-rot {p₁ = idp} idp idp = idp
+
+  ∙'-!-∙-∙ : {x y z w : A} (p₁ : x == y) (p₂ : z == y) (p₃ : y == w)
+    → (p₁ ∙' ! p₂) ∙ p₂ ∙ p₃ == p₁ ∙ p₃
+  ∙'-!-∙-∙ p₁ idp p₃ = idp
+
+  !-inv-l-r-unit-assoc : {x y : A} (p : x == y) →
+    ! (ap (λ c → p ∙ c) (!-inv-l p) ∙ ∙-unit-r p) ∙
+    ! (∙-assoc p (! p) p) ∙ ap (λ c → c ∙ p) (!-inv-r p)
+    == idp
+  !-inv-l-r-unit-assoc idp = idp
+
+  assoc-tri-!-mid : {x y z w u v : A} (p₀ : x == y) (p₁ : y == z) (p₂ : w == z)
+    (p₃ : z == u) (p₄ : u == v)
+    → (p₀ ∙ p₁ ∙' ! p₂) ∙ p₂ ∙ p₃ ∙' p₄ == p₀ ∙ (p₁ ∙ p₃) ∙' p₄
+  assoc-tri-!-mid idp p₁ p₂ p₃ idp = ∙'-!-∙-∙ p₁ p₂ p₃
+
+  assoc-tri-!-coher : {x y : A} (p : x == y) →
+    ! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p))) ==
+    ap (λ q → q ∙ idp)
+      (! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))) ∙
+    ap (_∙_ (p ∙ idp ∙' ! p))
+      (! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))) ∙
+    assoc-tri-!-mid p idp p idp (! p) ∙ idp
+  assoc-tri-!-coher idp = idp
+
   inv-rid : {x y : A} (p : x == y) → ! p ∙ p ∙ idp == idp
   inv-rid idp = idp
+
+  !3-∙3 : {x y z w : A} (p : x == y) (q : z == y) (r : w == y)
+    → ! ((p ∙ ! q) ∙ q ∙ ! r) ∙ p == r
+  !3-∙3 idp idp r = ∙-unit-r (! (! r)) ∙ !-! r
+
+  ∙-∙'-= : {x y : A} {p r : x == y} (q : x == x)
+    → p == r → ! p ∙ q ∙' p == ! r ∙ q ∙' r
+  ∙-∙'-= q idp = idp
+
+  tri-exch : {x y z : A} {p : y == x} {q : y == z} {r : x == z}
+    → ! p ∙ q == r → p == q ∙ ! r
+  tri-exch {p = idp} {q = idp} {r} e = ap ! e
 
   {- Horizontal compositions -}
 
@@ -122,6 +178,9 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type �
 
   cmp-inv-l : {x y : A} (p : x == y) → ! (ap (g ∘ f) p) ∙ ap g (ap f p) == idp
   cmp-inv-l idp = idp
+
+  cmp-inv-r : {x y : A} (p : x == y) → ap g (ap f p) ∙ (ap (g ∘ f) (! p)) == idp
+  cmp-inv-r idp = idp
 
   cmp-inv-rid : {x y : A} (p : x == y) → idp == ap (g ∘ f) p ∙ ! (ap g (ap f p) ∙ idp)
   cmp-inv-rid idp = idp

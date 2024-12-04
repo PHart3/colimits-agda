@@ -8,18 +8,24 @@
 - `HoTT-Agda/`
 
   A stripped down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
-  with local changes for general lemmas we proved during the development.
+  with local changes for general lemmas we proved during the development. It also includes a proof of the 2-coherence of
+  the Suspension-Loop adjunction and some properties of homogeneous types (used for the proof of 2-coherence).
+
+  See `HoTT-Agda/README.md` for the license of the work inside this directory.
 
 - `Colimit-code/`
 
   Our formalization of our construction of an A-colimit.
+
   See `Colimit-code/README.md` for details and for the
   license of the work inside this directory.
 
 - `Pullback-stability/`
 
   Our formalization of pullback stability (or universality)
-  for all ordinary colimits. See `Pullback-stability/README.md`
+  for all ordinary colimits.
+
+  See `Pullback-stability/README.md`
   for details and for the license of the work inside this
   directory.
 
