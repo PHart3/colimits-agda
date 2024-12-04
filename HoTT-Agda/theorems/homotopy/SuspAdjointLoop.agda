@@ -97,13 +97,27 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
     ! (Ω-fmap-β f₂ (glue x ∙ ! (glue (pt X)))) 
   snd (ap-comp-into {f₁ = (f , idp)} {f₂} H) = ap-comp-into-coher (fst H) (↯ (snd H))
 
-{-
-   This definition of ap agrees with the standard ap on the id homotopy,
-   hence on all homotopies by the SIP.
--}
+  {-
+     This definition of ap agrees with the standard ap on the id homotopy,
+     hence on all homotopies by the SIP.
+  -}
 
--- ap-comp-into
-
+  ap-comp-into-id : (f* : ⊙Susp X ⊙→ U) → ap-comp-into (⊙∼-id f*) ⊙→∼ ⊙∼-id (into f*)
+  fst (ap-comp-into-id (f , idp)) x = 
+    ∙-unit-r (hmpty-nat-∙'-r (λ x₁ → idp) (glue x ∙ ! (glue (pt X))) ∙ idp) ∙
+    ∙-unit-r (hmpty-nat-∙'-r (λ x₁ → idp) (glue x ∙ ! (glue (pt X)))) ∙
+    hmpty-nat-∙'-r-idp (glue x ∙ ! (glue (pt X)))
+  snd (ap-comp-into-id (f , idp)) = =ₛ-in (lemma (glue (pt X)))
+    where
+      lemma : {x : Susp (de⊙ X)} (v : x == right unit) →
+        ap (λ p → ! p ∙ ap (ap f) (!-inv-r v) ∙ idp)
+        (∙-unit-r (hmpty-nat-∙'-r (λ x₁ → idp) (v ∙ ! v) ∙ idp) ∙
+        ∙-unit-r (hmpty-nat-∙'-r (λ x₁ → idp) (v ∙ ! v)) ∙
+        hmpty-nat-∙'-r-idp (v ∙ ! v)) ∙ idp
+        ==
+        ↯ (ap-comp-into-coher-aux (λ x → idp) v)
+      lemma idp = idp
+      
 {-
   an explicit component-based homotopy witnessing the
   naturality of into in its first argument
