@@ -89,6 +89,12 @@ module MapsCos {j : ULevel} (A : Type j) where
       ∙-assoc (! (K₁ (fun X a))) (! (H₁ (fun X a))) (snd h₁ a)) ∙
       ap (λ p → ! (K₁ (fun X a)) ∙ p) (H₂ a) ∙ K₂ a)
 
+  -- identity
+  cos∼id : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} (h : X *→ Y)
+    → < X > h ∼ h
+  fst (cos∼id h) = λ x → idp
+  snd (cos∼id h) = λ a → idp
+
   -- homotopy of homotopies of A-maps
   infixr 30 <_>_∼∼_
   <_>_∼∼_ : ∀ {i k} (X : Coslice i j A) {Y : Coslice k j A} {h₁ h₂ : X *→ Y} →
