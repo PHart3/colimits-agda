@@ -78,11 +78,11 @@ module MapsCos {j : ULevel} (A : Type j) where
     ap (λ p → ap (fst h₂) (snd f a) ∙ p) (snd H a)
 
   -- concatenation
-  infixr 40 <_>_∼∘_
-  <_>_∼∘_ : ∀ {i k} (X : Coslice i j A) {Y : Coslice k j A} →
+  infixr 40 _∼∘-cos_
+  _∼∘-cos_ : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} →
     {h₁ h₂ h₃ : X *→ Y} →
     < X > h₁ ∼ h₂ → < X > h₂ ∼ h₃ → < X > h₁ ∼ h₃
-  <_>_∼∘_ X {h₁ = h₁} (H₁ , H₂) (K₁ , K₂) =
+  _∼∘-cos_ {X = X} {h₁ = h₁} (H₁ , H₂) (K₁ , K₂) =
     (λ x → H₁ x ∙ K₁ x) ,
     (λ a →
       (ap (λ p → p ∙ snd h₁ a) (!-∙ (H₁ (fun X a)) (K₁ (fun X a))) ∙
