@@ -49,6 +49,8 @@ WORKDIR /build/HoTT-Agda
 RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/SuspAdjointLoop.agda
 
 WORKDIR /build/Colimit-code
+RUN /dist/agda --library-file=/dist/libraries ./Trunc-Cos/TruncAdj.agda
+
 RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-0.agda
 RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-1.agda
 RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-2.agda
