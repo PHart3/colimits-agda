@@ -1,7 +1,7 @@
 ## Overview
 
   This Agda code accompanies our paper [Coslice Colimits in Homotopy Type Theory](https://phart3.github.io/colimits-paper.pdf).
-  (The link points to the preprint.) It has been checked with Agda 2.6.3.
+  (The link points to the preprint.) It has been checked with Agda 2.6.4.3.
 
 ## Organization
 
