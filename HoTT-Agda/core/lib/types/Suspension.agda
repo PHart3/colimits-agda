@@ -69,29 +69,29 @@ susp-⊙span X =
 
 module _ {i j} {A : Type i} {B : Type j} (f g : Susp A → B)
   (n : f north == g north) (s : f south == g south)
-  (c : (a : A) → ap f (merid a) =-= n ∙ ap g (merid a) ∙' ! s) where
+  (c : (a : A) → ap f (merid a) == n ∙ ap g (merid a) ∙' ! s) where
 
   SuspMapEq : f ∼ g
-  SuspMapEq = Susp-elim n s λ a → from-hmpty-nat f g (merid a) (↯ (c a))
+  SuspMapEq = Susp-elim n s λ a → from-hmpty-nat f g (merid a) (c a)
 
-  SuspMapEq-β : (a : A) → hmpty-nat-∙'-r SuspMapEq (merid a) == ↯ (c a)
+  SuspMapEq-β : (a : A) → hmpty-nat-∙'-r SuspMapEq (merid a) == c a
   SuspMapEq-β a =
-    apd-to-hnat f g SuspMapEq (merid a) (↯ (c a))
-      (SuspElim.merid-β n s (λ z → from-hmpty-nat f g (merid z) (↯ (c z))) a)
+    apd-to-hnat f g SuspMapEq (merid a) (c a)
+      (SuspElim.merid-β n s (λ z → from-hmpty-nat f g (merid z) (c z)) a)
 
   SuspMapEq-!-β : (a : A) →
    hmpty-nat-∙'-r SuspMapEq (! (merid a))
    ==
-   ap-! f (merid a) ∙ ap ! (↯ (c a)) ∙ !-∙-ap-∙'-! g n (merid a) s
+   ap-! f (merid a) ∙ ap ! (c a) ∙ !-∙-ap-∙'-! g n (merid a) s
   SuspMapEq-!-β a = apd-to-hnat-! f g SuspMapEq (merid a) (SuspMapEq-β a)
 
   SuspMapEq-β-∙ : (a b : A) →
     hmpty-nat-∙'-r SuspMapEq (merid a ∙ ! (merid b))
     ==
     ap-∙ f (merid a) (! (merid b)) ∙
-    ap (λ p → p ∙ ap f (! (merid b))) (↯ (c a)) ∙
+    ap (λ p → p ∙ ap f (! (merid b))) (c a) ∙
     ap (_∙_ (SuspMapEq north ∙ ap g (merid a) ∙' ! (SuspMapEq south)))
-      (ap-! f (merid b) ∙ ap ! (↯ (c b)) ∙ !-∙-ap-∙'-! g n (merid b) s) ∙
+      (ap-! f (merid b) ∙ ap ! (c b) ∙ !-∙-ap-∙'-! g n (merid b) s) ∙
     assoc-tri-!-mid (SuspMapEq north) (ap g (merid a)) (SuspMapEq south)
       (ap g (! (merid b))) (! (SuspMapEq north)) ∙
     ap (λ p → SuspMapEq north ∙ p ∙' ! (SuspMapEq north))
@@ -104,9 +104,9 @@ module _ {i j} {A : Type i} {B : Type j} (f g : Susp A → B)
     ==
     ap-∘-long k g f SuspMapEq (merid a ∙ ! (merid b)) ∙
     ! (ap (λ q → ap k (! (SuspMapEq north)) ∙ ap k q ∙' ! (ap k (! (SuspMapEq north))))
-      (ap-∙ f (merid a) (! (merid b)) ∙ ap (λ p → p ∙ ap f (! (merid b))) (↯ (c a)) ∙
+      (ap-∙ f (merid a) (! (merid b)) ∙ ap (λ p → p ∙ ap f (! (merid b))) (c a) ∙
       ap (_∙_ (SuspMapEq north ∙ ap g (merid a) ∙' ! (SuspMapEq south)))
-      (ap-! f (merid b) ∙ ap ! (↯ (c b)) ∙ !-∙-ap-∙'-! g n (merid b) s) ∙
+      (ap-! f (merid b) ∙ ap ! (c b) ∙ !-∙-ap-∙'-! g n (merid b) s) ∙
       assoc-tri-!-mid (SuspMapEq north) (ap g (merid a))
       (SuspMapEq south) (ap g (! (merid b))) (! (SuspMapEq north)) ∙
       ap (λ p → SuspMapEq north ∙ p ∙' ! (SuspMapEq north))
@@ -158,7 +158,7 @@ module _ {i j k} {X : Type i} {Y : Type j} {Z : Type k} (g : Y → Z) (f : X →
 
   Susp-fmap-∘-∼ =
     SuspMapEq (Susp-fmap (g ∘ f)) (Susp-fmap g ∘ Susp-fmap f) idp idp
-      (Susp-fmap-∘ g f)
+      (λ a → ↯ (Susp-fmap-∘ g f a))
 
 module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} (g : Y ⊙→ Z) (f : X ⊙→ Y) where
 
