@@ -53,7 +53,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
             (! (∙-unit-r (! (H₀ x)))) ∙ idp) ∙
         ! (Ω-fmap-β (g , ! (H₀ x) ∙ idp)  (v ∙ ! v))) ∙
       ap (ap f) (!-inv-r v) ∙ idp
-      =-=
+      ==
       ap (fst (⊙Ω-fmap (g , ! (H₀ x) ∙ idp))) (!-inv-r v) ∙
       snd (⊙Ω-fmap (g , ! (H₀ x) ∙ idp))
   ap-comp-into-coher-aux {g = g} H₀ idp = lemma (H₀ (right unit))
@@ -67,9 +67,9 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
           ap (λ p → ! (! u ∙ idp) ∙ idp ∙' p)
             (! (∙-unit-r (! u))) ∙ idp) ∙
           ! (Ω-fmap-β (g , ! u ∙ idp) idp)) ∙ idp
-          =-=
+          ==
           snd (⊙Ω-fmap (g , ! u ∙ idp))
-      lemma idp = idp ◃∎
+      lemma idp = idp
 
   ap-comp-into-coher : {f g : Susp (de⊙ X) → de⊙ U} (H₀ : f ∼ g)
     {gₚ : g (left unit) == f (left unit)} (H₁ : ! (H₀ (left unit)) ∙ idp == gₚ)
@@ -82,7 +82,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
         ∙-∙'-= (ap g (glue (pt X) ∙ ! (glue (pt X)))) H₁) ∙
         ! (Ω-fmap-β (g , gₚ) (glue (pt X) ∙ ! (glue (pt X))))) ∙
       ap (ap f) (!-inv-r (glue (pt X))) ∙ idp
-      =-=
+      ==
       ap (Ω-fmap (g , gₚ)) (!-inv-r (glue (pt X))) ∙ snd (⊙Ω-fmap (g , gₚ))
   ap-comp-into-coher H₀ idp = ap-comp-into-coher-aux H₀ (glue (pt X))
 
@@ -93,9 +93,9 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
         (! (!-! (fst H (left unit))) ∙ ! (!-∙ (! (fst H (left unit))) idp)) ∙
       ap (λ p → (! (! (fst H (left unit)) ∙ idp)) ∙ ap (fst f₂) (glue x ∙ ! (glue (pt X))) ∙' p)
         (! (∙-unit-r (! (fst H (left unit))))) ∙
-      ∙-∙'-= (ap (fst f₂) (glue x ∙ ! (glue (pt X)))) (↯ (snd H))) ∙
+      ∙-∙'-= (ap (fst f₂) (glue x ∙ ! (glue (pt X)))) (snd H)) ∙
     ! (Ω-fmap-β f₂ (glue x ∙ ! (glue (pt X)))) 
-  snd (ap-comp-into {f₁ = (f , idp)} {f₂} H) = ap-comp-into-coher (fst H) (↯ (snd H))
+  snd (ap-comp-into {f₁ = (f , idp)} {f₂} H) = ap-comp-into-coher (fst H) (snd H)
 
   {-
      This definition of ap agrees with the standard ap on the id homotopy,
@@ -115,7 +115,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
         ∙-unit-r (hmpty-nat-∙'-r (λ x₁ → idp) (v ∙ ! v)) ∙
         hmpty-nat-∙'-r-idp (v ∙ ! v)) ∙ idp
         ==
-        ↯ (ap-comp-into-coher-aux (λ x → idp) v)
+        ap-comp-into-coher-aux (λ x → idp) v
       lemma idp = idp
       
 {-
@@ -183,12 +183,12 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
           ap (ap r₀) (ap-! (Susp-fmap h₀) (glue (pt X))))))
         (! (ap (λ p → ap r₀ p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (SuspFmap.merid-β h₀ (pt X))))
         (! (ap (λ p → p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (ap-∘ r₀ (Susp-fmap h₀) (glue (pt X)))))
-        (! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue (pt X)) (! (glue (pt X)))))) ◃∙
+        (! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue (pt X)) (! (glue (pt X)))))) ∙
     ap (λ p → ! (ap-∙ r₀ (glue (h₀ (pt X))) (! (glue (h₀ (pt X)))) ∙ p ∙
       ! (ap (λ p → p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (ap-∘ r₀ (Susp-fmap h₀) (glue (pt X)))) ∙
       ! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue (pt X)) (! (glue (pt X))))) ∙
-        ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp) (nat-dom-aux-l r₀ h₀) ◃∙
-    nat-dom-aux-r r₀ h₀ ((glue (h₀ (pt X)))) ◃∎
+        ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp) (nat-dom-aux-l r₀ h₀) ∙
+    nat-dom-aux-r r₀ h₀ ((glue (h₀ (pt X))))
 
 {- the nat-dom proof makes Susp a 2-coherent left adjoint to Loop -}
 
@@ -272,19 +272,19 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
 
     β-red1-aux2 : {w : Susp (de⊙ W)} (ω₆ : left unit == w)
       {𝕗 : ap f₁ (! (SuspMapEq (Susp-fmap (f₂ ∘ f₃))
-        (Susp-fmap f₂ ∘ Susp-fmap f₃) idp idp (Susp-fmap-∘ f₂ f₃) w)) ∙
+        (Susp-fmap f₂ ∘ Susp-fmap f₃) idp idp (λ x → ↯ (Susp-fmap-∘ f₂ f₃ x)) w)) ∙
       ap f₁ (SuspMapEq (Susp-fmap (f₂ ∘ f₃)) (Susp-fmap f₂ ∘ Susp-fmap f₃)
-        idp idp (Susp-fmap-∘ f₂ f₃) w ∙
+        idp idp (λ x → ↯ (Susp-fmap-∘ f₂ f₃ x)) w ∙
         ap (Susp-fmap f₂ ∘ Susp-fmap f₃) (! ω₆))
       == ap f₁ (ap (Susp-fmap f₂ ∘ Susp-fmap f₃) (! ω₆))}
       (𝕣 : 𝕗 == ap-!-∙-ap f₁ (Susp-fmap f₂ ∘ Susp-fmap f₃) (! ω₆)
         (SuspMapEq (Susp-fmap (f₂ ∘ f₃)) (Susp-fmap f₂ ∘ Susp-fmap f₃)
-        idp idp (Susp-fmap-∘ f₂ f₃) w)) →
+        idp idp (λ x → ↯ (Susp-fmap-∘ f₂ f₃ x)) w)) →
       (! (ap (λ q → q) (ap-∘ (f₁ ∘ Susp-fmap f₂) (Susp-fmap f₃) (! ω₆) ∙
         ap (ap (f₁ ∘ Susp-fmap f₂)) (ap-! (Susp-fmap f₃) ω₆))) ∙ idp) ∙
       ap-∘-long f₁ (Susp-fmap f₂ ∘ Susp-fmap f₃) (Susp-fmap (f₂ ∘ f₃))
         (SuspMapEq (Susp-fmap (f₂ ∘ f₃)) (Susp-fmap f₂ ∘ Susp-fmap f₃)
-        idp idp (Susp-fmap-∘ f₂ f₃)) (! ω₆) ∙
+        idp idp (λ x → ↯ (Susp-fmap-∘ f₂ f₃ x))) (! ω₆) ∙
       𝕗 ∙ 
       ! (ap (ap f₁) (ap (λ q → q) (ap ! (! (ap-∘ (Susp-fmap f₂) (Susp-fmap f₃) ω₆)) ∙
         !-ap (Susp-fmap f₂ ∘ Susp-fmap f₃) ω₆) ∙ idp))
@@ -304,7 +304,7 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
       ! (ap-∙ (f₁ ∘ Susp-fmap f₂ ∘ Susp-fmap f₃) ω₃ (! ω₆))) ∙
       ap-∘-long f₁ (Susp-fmap f₂ ∘ Susp-fmap f₃) (Susp-fmap (f₂ ∘ f₃))
         (SuspMapEq (Susp-fmap (f₂ ∘ f₃)) (Susp-fmap f₂ ∘ Susp-fmap f₃)
-        idp idp (Susp-fmap-∘ f₂ f₃)) (ω₃ ∙ ! ω₆) ∙
+        idp idp (λ x → ↯ (Susp-fmap-∘ f₂ f₃ x))) (ω₃ ∙ ! ω₆) ∙
       ! (ap (ap f₁) (ap (_∙_ (ap (Susp-fmap f₂ ∘ Susp-fmap f₃) ω₃))
         (ap ! (! (ap-∘ (Susp-fmap f₂) (Susp-fmap f₃) ω₆)) ∙
         !-ap (Susp-fmap f₂ ∘ Susp-fmap f₃) ω₆) ∙
@@ -336,7 +336,7 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
       ! (ap-∙ (f₁ ∘ Susp-fmap f₂ ∘ Susp-fmap f₃) ω₃ (! ω₆))) ∙
       ap-∘-long f₁ (Susp-fmap f₂ ∘ Susp-fmap f₃) (Susp-fmap (f₂ ∘ f₃))
         (SuspMapEq (Susp-fmap (f₂ ∘ f₃)) (Susp-fmap f₂ ∘ Susp-fmap f₃)
-        idp idp (Susp-fmap-∘ f₂ f₃)) (ω₃ ∙ ! ω₆) ∙
+        idp idp (λ x → ↯ (Susp-fmap-∘ f₂ f₃ x))) (ω₃ ∙ ! ω₆) ∙
       ! (ap (ap f₁) (ap (λ p → ap (Susp-fmap f₂ ∘ Susp-fmap f₃) ω₃ ∙ p)
           (ap ! (! (ap (ap (Susp-fmap f₂)) ω₅) ∙
           ! (ap-∘ (Susp-fmap f₂) (Susp-fmap f₃) ω₆)) ∙
@@ -517,7 +517,7 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
         ==
       ((ap-∘-long f₁ (Susp-fmap f₂ ∘ Susp-fmap f₃) (Susp-fmap (f₂ ∘ f₃))
         (SuspMapEq (Susp-fmap (f₂ ∘ f₃)) (Susp-fmap f₂ ∘ Susp-fmap f₃)
-        idp idp (Susp-fmap-∘ f₂ f₃)) (merid x ∙ ! (merid (pt W))) ∙
+        idp idp (λ x → ↯ (Susp-fmap-∘ f₂ f₃ x))) (merid x ∙ ! (merid (pt W))) ∙
       ! (ap (ap f₁) (
         ap-∙ (Susp-fmap (f₂ ∘ f₃)) (merid x) (! (merid (pt W))) ∙
         ap (λ p → p ∙ ap (Susp-fmap (f₂ ∘ f₃)) (! (merid (pt W))))
@@ -537,7 +537,7 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
         (merid x ∙ ! (merid (pt W)))))) ∙
       idp) ∙ idp
     Susp-fmap-∘-sq-rw = ap (λ p → (p ∙ idp) ∙ idp) (SuspMapEq-β-∙-ap! (Susp-fmap (f₂ ∘ f₃))
-      (Susp-fmap f₂ ∘ Susp-fmap f₃) idp idp (Susp-fmap-∘ f₂ f₃) f₁ x (pt W))
+      (Susp-fmap f₂ ∘ Susp-fmap f₃) idp idp (λ x → ↯ (Susp-fmap-∘ f₂ f₃ x)) f₁ x (pt W))
 
     -- proof of 2-coherence
 
@@ -546,7 +546,7 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
       (λ p → ap (Susp-fmap f₂ ∘ Susp-fmap f₃) (merid x) ∙ p) !
       (ap-∘-long f₁ (Susp-fmap f₂ ∘ Susp-fmap f₃) (Susp-fmap (f₂ ∘ f₃))
         (SuspMapEq (Susp-fmap (f₂ ∘ f₃)) (Susp-fmap f₂ ∘ Susp-fmap f₃)
-        idp idp (Susp-fmap-∘ f₂ f₃)) (merid x ∙ ! (merid (pt W))))
+        idp idp (λ x → ↯ (Susp-fmap-∘ f₂ f₃ x))) (merid x ∙ ! (merid (pt W))))
       (ap-∙ (Susp-fmap (f₂ ∘ f₃)) (merid x) (! (merid (pt W))))
       (SuspFmap.merid-β (f₂ ∘ f₃) x)
       (! (SuspFmap.merid-β f₂ (f₃ x)))
@@ -634,7 +634,7 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
     ⊙∘-pre h₃ (nat-dom h₂ h₁) ∙⊙∼
     nat-dom h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂) ∙⊙∼
     ap-comp-into W Y (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
-      ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp ◃∎))) ∙⊙∼
+      ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp))) ∙⊙∼
     !-⊙∼ (nat-dom (h₂ ⊙∘ h₃) h₁)
       ⊙→∼
     ⊙∼-id ((into X Y h₁) ⊙∘ h₂ ⊙∘ h₃)

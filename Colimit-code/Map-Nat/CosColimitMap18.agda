@@ -109,7 +109,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         ap (λ p → ap f p ∙ idp) (ap (λ p → ! (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ p)) ∙ idp)
           (apCommSq2 (λ x → cin j (fst (G <#> g) x)) (λ v → cin j (fst (G <#> g) v)) (λ x → idp) τ₁₀) ∙
           !-!-!-∘-∘-∘-rid (cin j) (fst (G <#> g)) (λ v → cin j (fst (G <#> g) v)) right τ₁₀ τ₁₃ idp idp idp ∙ idp)) ∙
-        ap-∘-∙ f (right ∘ (λ v → cin j (fst (G <#> g) v))) τ₁₀ (ap (right ∘ cin j) τ₁₃ ∙ idp)
+        ap-∘-∙-∙ f (right ∘ (λ v → cin j (fst (G <#> g) v))) τ₁₀ (ap (right ∘ cin j) τ₁₃ ∙ idp)
           ==
         !-!-∙-pth (ap (λ x → f (right (cin j x))) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) idp ∙
         ap (λ p → p ∙ ap (λ x → f (right (cin j x))) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp) ∙ idp) (hmtpy-nat-! (λ x → idp) τ₁₀) ∙
@@ -145,7 +145,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
           (apCommSq2 (λ x → cin j (fst (G <#> g) x)) (cin i) (cglue g) τ₁₀) ∙
           !-!-!-∘-∘-∘-rid (cin j) (fst (G <#> g)) (cin i) right τ₁₀ τ₁₃ idp
           idp (cglue g (fun (G # i) a)) ∙ idp)) ∙
-        ap-∘-∙ f (right ∘ cin i) τ₁₀ (! (ap right (cglue g (fun (G # i) a))) ∙ ap (right ∘ cin j) τ₁₃ ∙ idp)
+        ap-∘-∙-∙ f (right ∘ cin i) τ₁₀ (! (ap right (cglue g (fun (G # i) a))) ∙ ap (right ∘ cin j) τ₁₃ ∙ idp)
           ==
         !-!-∙-pth (ap (λ x → f (right (cin j x))) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp))
           (ap f (ap right (cglue g (fst (nat δ i) (fun (F # i) a))))) ∙
@@ -169,7 +169,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
           (apCommSq2 (λ x → cin j (fst (G <#> g) x)) h H τ₁₀) ∙
           !-!-!-∘-∘-∘-rid (cin j) (fst (G <#> g)) h right τ₁₀ τ₁₃ idp
           idp (H (fun (G # i) a)) ∙ idp)) ∙
-        ap-∘-∙ f (right ∘ h) τ₁₀ (! (ap right (H (fun (G # i) a))) ∙ ap (right ∘ cin j) τ₁₃ ∙ idp)
+        ap-∘-∙-∙ f (right ∘ h) τ₁₀ (! (ap right (H (fun (G # i) a))) ∙ ap (right ∘ cin j) τ₁₃ ∙ idp)
           ==
         !-!-∙-pth (ap (λ x → f (right (cin j x))) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp))
           (ap f (ap right (H (fst (nat δ i) (fun (F # i) a))))) ∙
@@ -197,7 +197,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
           ap (λ p → ! (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ p)) ∙ idp)
           (apCommSq2 (λ x → cin j (fst (G <#> g) x)) (cin i) (cglue g) τ₁₀) ∙
           !-!-!-∘-∘-∘-rid (cin j) (fst (G <#> g)) (cin i) right τ₁₀ τ₁₃ idp idp (cglue g (fun (G # i) a)) ∙ idp)) ∙
-        ap-∘-∙ f (right ∘ cin i) τ₁₀ (! (ap right (cglue g (fun (G # i) a))) ∙
+        ap-∘-∙-∙ f (right ∘ cin i) τ₁₀ (! (ap right (cglue g (fun (G # i) a))) ∙
         ap (right ∘ cin j) τ₁₃ ∙ idp)
           ==
         !-!-∙-pth (ap (λ x → f (right (cin j x))) σ₁)
@@ -240,7 +240,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
           (cglue g (fst (nat δ i) (fun (F # i) a))))) ∙ idp) ∙
           ap (f ∘ right ∘ cin j ∘ fst (nat δ j)) τ₅ ∙
           ap (f ∘ right ∘ cin j) τ₆ ∙ ap f τ₇ ∙ τ₈)
-          (ap-∘-∙ f (right ∘ cin j) τ₆ τ₇) ◃∙
+          (ap-∘-∙-∙ f (right ∘ cin j) τ₆ τ₇) ◃∙
         long-path-red τ₅
           (ap (f ∘ right ∘ cin j) τ₆ ∙ ap f τ₇ ∙ τ₈)
           (ap f (ap (λ x → right (cin j x)) τ₆ ∙
@@ -264,7 +264,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
              right τ₁₀ τ₁₃ τ₅
              τ₆ (cglue g (fun (G # i) a)) τ₇ ∙
            ap (_∙_ (ap (λ x → right (cin i x)) τ₁₀)) τ₁)) ◃∙
-           ap-∘-∙ f (right ∘ cin i) τ₁₀ τ₁₁ ◃∎
+           ap-∘-∙-∙ f (right ∘ cin i) τ₁₀ τ₁₁ ◃∎
           =ₛ
         (!-!-∙-pth (ap (λ x → f (right (cin j x))) (comSq δ g (fun (F # i) a)))
           (ap f (ap right (cglue g (fst (nat δ i) (fun (F # i) a))))) ∙
@@ -309,7 +309,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
 
     CosColim-NatSq2 : CosCocEq F T (Map-to-Lim-map F (f , fₚ) K-diag) (Diag-to-Lim-map (PostComp ColCoC (f , fₚ)))
     W CosColim-NatSq2 i x = idp
-    u CosColim-NatSq2 i a = ap-∘-∙ f (right ∘ cin i) (snd (nat δ i) a) (! (glue (cin i a)))
+    u CosColim-NatSq2 i a = ap-∘-∙-∙ f (right ∘ cin i) (snd (nat δ i) a) (! (glue (cin i a)))
     Λ CosColim-NatSq2 {i} {j} g = (λ x → ap-∘-∘-!-∙-rid f right (cin j) (comSq δ g x) (cglue g (fst (nat δ i) x))) ,
       λ a → NatSq2-Λ-coher g a (snd (F <#> g) a) (snd (nat δ j) a) (! (glue (cin j a))) (fₚ a) (snd (nat δ i) a)
         (snd (G <#> g) a) (comSq-coher δ g a)

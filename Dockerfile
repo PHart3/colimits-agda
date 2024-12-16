@@ -6,8 +6,8 @@ ARG GHC_VERSION=9.4.7
 FROM fossa/haskell-static-alpine:ghc-${GHC_VERSION} AS agda
 
 WORKDIR /build/agda
-# Agda 2.6.3
-ARG AGDA_VERSION=b499d12412bac32ab1af9f470463ed9dc54f8907
+# Agda 2.6.4.3
+ARG AGDA_VERSION=714c7d2c76c5ffda3180e95c28669259f0dc5b5c
 RUN \
   git init && \
   git remote add origin https://github.com/agda/agda.git && \
@@ -49,6 +49,8 @@ WORKDIR /build/HoTT-Agda
 RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/SuspAdjointLoop.agda
 
 WORKDIR /build/Colimit-code
+RUN /dist/agda --library-file=/dist/libraries ./Trunc-Cos/TruncAdj.agda
+
 RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-0.agda
 RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-1.agda
 RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-2.agda

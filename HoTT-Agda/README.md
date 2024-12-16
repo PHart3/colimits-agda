@@ -10,7 +10,7 @@ lemmas. The structure of the source code is described below.
 Setup
 -----
 
-The library is compatible with Agda 2.6.3. To use it, you need a recent version of Agda and to include at
+The library is compatible with Agda 2.6.4.3. To use it, you need a recent version of Agda and to include at
 least the path to `hott-core.agda-lib` in your Agda library list.
 
 Agda Options

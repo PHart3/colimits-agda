@@ -139,9 +139,17 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   ap-∘ : {x y : A} (p : x == y) → ap (g ∘ f) p == ap g (ap f p)
   ap-∘ idp = idp
 
+  ap-∘-∙ : {x y : A} (p : x == y) {b : B} (q : f y == b)
+    → ap g (ap f p ∙ q) == ap (g ∘ f) p ∙ ap g q
+  ap-∘-∙ idp q = idp
+
   ap-∘-∘ : ∀ {l} {D : Type l} (h : D → A) {x y : D} (p : x == y)
     → ap (g ∘ f ∘ h) p == ap g (ap f (ap h p))
   ap-∘-∘ h idp = idp
+
+  ap2-∙-∙ : {x y : A} (p₁ : x == y) {b : B} (p₂ : f y == b) {c : C} (p₃ : g b == c)
+    → ap g (ap f p₁ ∙ p₂) ∙ p₃ == ap g (ap f p₁) ∙ ap g p₂ ∙ p₃
+  ap2-∙-∙ idp p₂ p₃ = idp
 
   !ap-∘=∘-ap : {x y : A} (p : x == y) → ! (ap-∘ p) == ∘-ap p
   !ap-∘=∘-ap idp = idp

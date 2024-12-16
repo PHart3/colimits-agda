@@ -106,5 +106,5 @@ module _ {ℓi ℓj k} {A : Type ℓj} {Γ : Graph ℓv ℓe} {F : CosDiag ℓi 
   PostComp : ∀ {k'} {D : Coslice k' ℓj A} → CosCocone A F C → (< A > C *→ D) →  CosCocone A F D
   comp (PostComp K (f , fₚ)) i = f ∘ (fst (comp K i)) , λ a → ap f (snd (comp K i) a) ∙ fₚ a 
   comTri (PostComp K (f , fₚ)) {y = j} {x = i} g = (λ x → ap f (fst (comTri K g) x)) ,
-    λ a →   ap-cp-revR f (fst (comp K j)) (snd (F <#> g) a)  (fst (comTri K g) (fun (F # i) a)) ∙
+    λ a → ap-cp-revR f (fst (comp K j)) (snd (F <#> g) a) (fst (comTri K g) (fun (F # i) a)) ∙
       ap (λ p → p ∙ fₚ a) (ap (ap f) (snd (comTri K g) a))

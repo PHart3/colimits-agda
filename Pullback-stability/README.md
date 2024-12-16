@@ -9,7 +9,7 @@ Theorem 16 of our preprint).
 
 ## Manual Type-Checking
 
-1. Install Agda 2.6.3.
+1. Install Agda 2.6.4.3.
 2. Install the stripped, modified HoTT-Agda library under `../HoTT-Agda`.
 3. Install the library under `../Colimit-code`.
 3. Type check the file `Stability.agda`.
