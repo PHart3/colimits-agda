@@ -26,8 +26,7 @@ Hom (CosGr i j A) X Y = < A > X *→ Y
 
 -- Graph homomorphisms
 
-record GraphHom (G  : Graph ℓv  ℓe) (G' : Graph ℓv' ℓe')
-                : Type (lmax (lmax ℓv ℓe) (lmax ℓv' ℓe')) where
+record GraphHom (G  : Graph ℓv  ℓe) (G' : Graph ℓv' ℓe') : Type (lmax (lmax ℓv ℓe) (lmax ℓv' ℓe')) where
   field
     _#_ : Obj G → Obj G'
     _<#>_ : ∀ {x y : Obj G} → Hom G x y → Hom G' (_#_ x) (_#_ y)
@@ -57,7 +56,7 @@ DiagForg : ∀ {i j} (A : Type j) (G : Graph ℓv ℓe) → CosDiag i j A G → 
 -- Maps of diagrams
 
 record DiagMor {G : Graph ℓv ℓe} (F : Diag ℓd G) (F' : Diag ℓd' G)
-         : Type (lmax (lmax ℓv ℓe) (lmax ℓd ℓd')) where
+  : Type (lmax (lmax ℓv ℓe) (lmax ℓd ℓd')) where
   constructor Δ
   field
     nat : ∀ (x : Obj G) → F # x → F' # x
@@ -65,20 +64,22 @@ record DiagMor {G : Graph ℓv ℓe} (F : Diag ℓd G) (F' : Diag ℓd' G)
 
 open DiagMor public
 
-record CosDiagMor {G : Graph ℓv ℓe} {ℓ₁ ℓ₂ ℓ₃} (A : Type ℓ₁) (F : CosDiag ℓ₂ ℓ₁ A G) (F' : CosDiag ℓ₃ ℓ₁ A G) 
-         : Type (lmax (lmax (lmax ℓv ℓe) (lmax (lsucc ℓ₂) ℓ₁)) (lmax (lmax ℓv ℓe) (lmax ℓ₃ ℓ₁))) where
+record CosDiagMor {G : Graph ℓv ℓe} {ℓ₁ ℓ₂ ℓ₃} (A : Type ℓ₁) (F : CosDiag ℓ₂ ℓ₁ A G) (F' : CosDiag ℓ₃ ℓ₁ A G)
+  : Type (lmax (lmax (lmax ℓv ℓe) (lmax (lsucc ℓ₂) ℓ₁)) (lmax (lmax ℓv ℓe) (lmax ℓ₃ ℓ₁))) where
   field
     nat : ∀ (i : Obj G) → < A > F # i *→ F' # i
-    comSq : ∀ {i j : Obj G} (g : Hom G i j) (z : ty (F # i)) →  fst (F' <#> g) (fst (nat i) z) == fst (nat j) (fst (F <#> g) z)
-    comSq-coher : {i j : Obj G} (g : Hom G i j) (a : A) → comSq g (fun (F # i) a) ==
-      ap (fst (F' <#> g)) (snd (nat i) a) ∙ snd (F' <#> g) a ∙ ! (snd (nat j) a) ∙ ! (ap (fst (nat j)) (snd (F <#> g) a))
+    comSq : ∀ {i j : Obj G} (g : Hom G i j) (z : ty (F # i)) → fst (F' <#> g) (fst (nat i) z) == fst (nat j) (fst (F <#> g) z)
+    comSq-coher : {i j : Obj G} (g : Hom G i j) (a : A)
+      → comSq g (fun (F # i) a)
+          ==
+        ap (fst (F' <#> g)) (snd (nat i) a) ∙ snd (F' <#> g) a ∙ ! (snd (nat j) a) ∙ ! (ap (fst (nat j)) (snd (F <#> g) a))
 
 open CosDiagMor public
 
 -- Cocones under diagrams
 
 record Cocone {i k} {G : Graph ℓv ℓe} (F : Diag i G) (C : Type k)
-         : Type (lmax k (lmax (lmax ℓv ℓe) i)) where
+  : Type (lmax k (lmax (lmax ℓv ℓe) i)) where
   constructor _&_
   field
     comp : (x : Obj G) → F # x → C
@@ -87,7 +88,7 @@ record Cocone {i k} {G : Graph ℓv ℓe} (F : Diag i G) (C : Type k)
 open Cocone public
 
 record CosCocone {i j k} (A : Type j) {G : Graph ℓv ℓe} (F : CosDiag i j A G) (C : Coslice k j A)
-         : Type (lmax k (lmax (lmax ℓv ℓe) (lmax i j))) where
+  : Type (lmax k (lmax (lmax ℓv ℓe) (lmax i j))) where
   constructor _&_
   field
     comp : (x : Obj G) → < A > (F # x) *→ C
@@ -105,6 +106,8 @@ module _ {ℓi ℓj k} {A : Type ℓj} {Γ : Graph ℓv ℓe} {F : CosDiag ℓi 
 
   PostComp : ∀ {k'} {D : Coslice k' ℓj A} → CosCocone A F C → (< A > C *→ D) →  CosCocone A F D
   comp (PostComp K (f , fₚ)) i = f ∘ (fst (comp K i)) , λ a → ap f (snd (comp K i) a) ∙ fₚ a 
-  comTri (PostComp K (f , fₚ)) {y = j} {x = i} g = (λ x → ap f (fst (comTri K g) x)) ,
-    λ a → ap-cp-revR f (fst (comp K j)) (snd (F <#> g) a) (fst (comTri K g) (fun (F # i) a)) ∙
+  comTri (PostComp K (f , fₚ)) {y = j} {x = i} g =
+    (λ x → ap f (fst (comTri K g) x)) ,
+    λ a →
+      ap-cp-revR f (fst (comp K j)) (snd (F <#> g) a) (fst (comTri K g) (fun (F # i) a)) ∙
       ap (λ p → p ∙ fₚ a) (ap (ap f) (snd (comTri K g) a))
