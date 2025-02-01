@@ -743,13 +743,6 @@ module _ {i j} {A : Type i} {F : A → Type j} {γ : (x : A) → F x} {x y z : A
   apd-concat-arg : (p : x == y) (q : y == z) → apd-tr γ (p ∙ q) ◃∎ =ₛ apd-helper p ◃∙ apd-tr γ q ◃∎
   apd-concat-arg idp idp = =ₛ-in idp
 
-module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {g : B → A} {f : A → C}  where
-
-  Δ-red : {t u : B} (v : t == u) {c : C} (R : f (g t) == c) {d : C} (σ : f (g u) == d) {z : A} (D : g t == z)
-    {W : f z == f (g u)} (τ : W == ! (ap f (! (ap g v) ∙ D)))
-    → W ∙ σ ∙ ! (! R ∙ (ap (f ∘ g) v) ∙ σ) ==  ! (ap f D) ∙ R
-  Δ-red idp idp idp idp idp = idp
-
 {- for functions with more arguments -}
 module _ {i₀ i₁ i₂ j} {A₀ : Type i₀} {A₁ : Type i₁} {A₂ : Type i₂}
   {B : Type j} (f : A₀ → A₁ → A₂ → B) where

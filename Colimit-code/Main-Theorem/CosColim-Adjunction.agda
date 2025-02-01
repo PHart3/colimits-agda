@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
 open import lib.Basics
+open import lib.types.Pushout
 open import Coslice
 open import Diagram
 open import Cocone

@@ -75,7 +75,7 @@ Path = _==_
 
 {- Paulin-Mohring J rule
 
-At the time I’m writing this (July 2013), the identity type is somehow broken in
+At the time of writing this (July 2013), the identity type is somehow broken in
 Agda dev, it behaves more or less as the Martin-Löf identity type instead of
 behaving like the Paulin-Mohring identity type.
 So here is the Paulin-Mohring J rule -}
@@ -96,7 +96,7 @@ idp ∙ q = q
 
 {- Rewriting
 
-This is a new pragma added to Agda to help create higher inductive types.
+This is a pragma added to Agda to help create higher inductive types.
 -}
 
 infix 30 _↦_

@@ -46,10 +46,16 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type �
     → ! (ap f (ap h K)) ∙ s ∙ (ap f (ap h K) ∙ r ∙ idp) ∙ ! r  == transport (λ x → f (h x) == f (h x)) K s
   O₅ s idp idp = ∙-unit-r s
 
+module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {g : B → A} {f : A → C}  where
+
+  Δ-red : {t u : B} (v : t == u) {c : C} (R : f (g t) == c) {d : C} (σ : f (g u) == d) {z : A} (D : g t == z)
+    {W : f z == f (g u)} (τ : W == ! (ap f (! (ap g v) ∙ D)))
+    → W ∙ σ ∙ ! (! R ∙ (ap (f ∘ g) v) ∙ σ) == ! (ap f D) ∙ R
+  Δ-red idp idp idp idp idp = idp
+
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {h : D → A} {g : A → B} {f : B → C} where
 
   abstract
-
     𝕐 : {c d : D} (Q : c == d) {x : A} (R₁ : h c == x) {z : B} (S : g (h d) == z) {p : h d == x}
       (R₂ : p == ! (ap h Q) ∙ R₁) {w : C} (fₚ : f z == w)
       →
@@ -65,7 +71,6 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂
   {τ : A → B} {h : C → A} {v : C → D} {u : D → B} {f : B → E} where
 
   abstract
-
     𝕏 : {x y : C} (p : x == y) {S : h x == h y} (T : ap h p == S) (r : (z : C) →  u (v z) == τ (h z)) {k : A → E} (fₚ : f ∘ τ ∼ k)
       →
       ! (ap (λ q → ! (ap (f ∘ u) (ap v p)) ∙ q ∙ ap k S ∙ ! (ap f (r y) ∙ fₚ (h y)))
