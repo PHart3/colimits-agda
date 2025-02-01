@@ -3,7 +3,6 @@
 open import lib.Basics
 open import lib.Equivalence2
 open import lib.types.Pushout
-open import lib.types.Span
 open import Coslice
 open import Diagram
 open import Cocone
@@ -27,7 +26,9 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
   colim-contr = equiv-is-contr-map (Colim-Iso F (Cos P₂ left))
 
   K-diag-𝕕-eq : (Recc.recCosCoc F (Cos P₂ left)) K-diag == 𝕕
-  K-diag-𝕕-eq = ap fst (contr-has-all-paths {{colim-contr K-diag}}
-    ((Recc.recCosCoc F (Cos P₂ left)) K-diag , LRfunEq K-diag)
-    (𝕕 , CosCocEq-ind F (Cos P₂ left) (PostComp (ColCoC F) 𝕕) (fib-inhab δ)))
+  K-diag-𝕕-eq =
+    ap fst
+      (contr-has-all-paths {{colim-contr K-diag}}
+      ((Recc.recCosCoc F (Cos P₂ left)) K-diag , LRfunEq K-diag)
+      (𝕕 , CosCocEq-ind F (Cos P₂ left) (PostComp (ColCoC F) 𝕕) (fib-inhab δ)))
 

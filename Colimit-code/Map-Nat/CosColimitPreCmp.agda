@@ -2,7 +2,6 @@
 
 open import lib.Basics
 open import lib.types.Pushout
-open import lib.types.Span
 open import Coslice
 open import Diagram
 open import Cocone
