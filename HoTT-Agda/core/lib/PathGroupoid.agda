@@ -120,7 +120,8 @@ module _ {i} {A : Type i} where
   !-inv-l-r-unit-assoc : {x y : A} (p : x == y) →
     ! (ap (λ c → p ∙ c) (!-inv-l p) ∙ ∙-unit-r p) ∙
     ! (∙-assoc p (! p) p) ∙ ap (λ c → c ∙ p) (!-inv-r p)
-    == idp
+      ==
+    idp
   !-inv-l-r-unit-assoc idp = idp
 
   assoc-tri-!-mid : {x y z w u v : A} (p₀ : x == y) (p₁ : y == z) (p₂ : w == z)
@@ -129,7 +130,8 @@ module _ {i} {A : Type i} where
   assoc-tri-!-mid idp p₁ p₂ p₃ idp = ∙'-!-∙-∙ p₁ p₂ p₃
 
   assoc-tri-!-coher : {x y : A} (p : x == y) →
-    ! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p))) ==
+    ! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))
+      ==
     ap (λ q → q ∙ idp)
       (! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))) ∙
     ap (_∙_ (p ∙ idp ∙' ! p))
@@ -187,7 +189,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type �
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} where
 
-  fun-rid-inv1 : {x y : A} (p : x == y) →  ((ap f p ∙ idp) ∙ idp) ∙ ! (ap f p ∙ idp) == idp
+  fun-rid-inv1 : {x y : A} (p : x == y) → ((ap f p ∙ idp) ∙ idp) ∙ ! (ap f p ∙ idp) == idp
   fun-rid-inv1 idp = idp
 
   fun-rid-inv2 : {x y : A} (p : x == y) → idp == (ap f p ∙ idp) ∙ ! (ap f (p ∙ idp) ∙ idp)
@@ -444,7 +446,6 @@ module _ {i j} {A : Type i} {B : A → Type j} where
   !◃idp :{x : A} {v w : B x} (q : v == w)
     → q !◃ idp == ! q
   !◃idp idp = idp
-
 
   {-
   This is some kind of dependent horizontal composition (used in [apd∙]).
