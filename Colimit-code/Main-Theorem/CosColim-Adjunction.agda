@@ -1,8 +1,6 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
 open import lib.Basics
-open import lib.types.Pushout
-open import lib.types.Span
 open import Coslice
 open import Diagram
 open import Cocone
@@ -35,8 +33,8 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 -- The first naturality square, arising from post-composition with the coslice map
 
   Iso-Nat-PostCmp : ∀ {ℓd ℓc₁ ℓc₂} (F : CosDiag ℓd ℓ A Γ) {T : Coslice ℓc₁ ℓ A} {U : Coslice ℓc₂ ℓ A}
-    (φ : T *→ U) (f* : (Cos (P F) left) *→ T) →
-    Map-to-Lim-map F φ (PostComp (ColCoC F) f*) == PostComp (ColCoC F) (φ ∘* f*)
+    (φ : T *→ U) (f* : (Cos (P F) left) *→ T)
+    → Map-to-Lim-map F φ (PostComp (ColCoC F) f*) == PostComp (ColCoC F) (φ ∘* f*)
   Iso-Nat-PostCmp F φ (f , fₚ) = CosColim-NatSq1-eq F φ f fₚ 
 
 -- The second naturality square, arising from pre-composition with the diagram map

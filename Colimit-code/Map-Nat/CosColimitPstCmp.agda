@@ -81,12 +81,6 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
         ↯ (NatSq-1-Λ-aux g a p₁ p₂ p₃ p₄ p₅) ◃∎
     NatSq-1-Λ-red g a idp idp idp idp idp = =ₛ-in idp 
 
--- p₁ = (ap right (cglue g (fun (F # i) a)))
--- p₂ = (snd (F <#> g) a)
--- p₃ = (! (glue (cin j a)))
--- p₄ = (fₚ a)
--- p₅ = φ₂ a
-
     NatSq-1-Λ-red2 : {i j : Obj Γ} (g : Hom Γ i j) (a : A) {x : P} {y : ty (F # j)}
       (p₁ : right (cin j (fst (F <#> g) (fun (F # i) a))) == x) (p₂ : fst (F <#> g) (fun (F # i) a) == y) (p₃ : right (cin j y) == left a)
       {σ : x == left a} (τ : ! p₁ ∙ ap (right ∘ cin j) p₂ ∙ p₃ == σ)
@@ -109,8 +103,6 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
         lemma : {z : P} (p : right (cin j (fst (F <#> g) (fun (F # i) a))) == z) (c : f z == fun T a)
           → ↯ (NatSq-1-Λ-aux g a idp idp p c (φ₂ a)) ∙ ap-∘-∙-∙ φ₁ f p c == idp
         lemma idp c = idp
-
--- τ = (snd (comTri ColCoC g) a)
 
     CosColim-NatSq1 : CosCocEq F U (Map-to-Lim-map (PostComp ColCoC (f , fₚ))) (PostComp ColCoC (φ ∘* (f , fₚ)))
     W CosColim-NatSq1 = λ i x → idp
