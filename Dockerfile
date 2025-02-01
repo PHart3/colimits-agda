@@ -50,46 +50,13 @@ RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/SuspAdjointLoo
 
 WORKDIR /build/Colimit-code
 RUN /dist/agda --library-file=/dist/libraries ./Trunc-Cos/TruncAdj.agda
-
-RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-0.agda
-RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-1.agda
-RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-2.agda
-RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-3.agda
-RUN /dist/agda --library-file=/dist/libraries ./R-L-R/CC-Equiv-RLR-4.agda
-RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-0.agda
-RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-1.agda
-RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-2.agda
-RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-3.agda
-RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-4.agda
-RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-5.agda
-RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-6.agda
-RUN /dist/agda --library-file=/dist/libraries ./L-R-L/CC-Equiv-LRL-7.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap00.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap01.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap02.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap03.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap04.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap05.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap06.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap07.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap08.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap09.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap10.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap11.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap12.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap13.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap14.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap15.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap16.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap17.agda
-RUN /dist/agda --library-file=/dist/libraries ./Map-Nat/CosColimitMap18.agda
 RUN /dist/agda --library-file=/dist/libraries ./Main-Theorem/CosColim-Adjunction.agda
 
 WORKDIR /build/Pullback-stability
 RUN /dist/agda --library-file=/dist/libraries ./Stability.agda
 
 ####################################################################################################
-# Execute shell script to create html files
+# Execute shell script to create html files for colimit code
 ####################################################################################################
 
 WORKDIR /build
