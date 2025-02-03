@@ -1,15 +1,17 @@
 ## Overview
 
-  This Agda code accompanies our paper [Coslice Colimits in Homotopy Type Theory](https://phart3.github.io/colimits-paper.pdf).
-  (The link points to the preprint.) It has been checked with Agda 2.6.4.3.
+  This Agda code accompanies our CSL 2025 paper [Coslice Colimits in Homotopy Type Theory](https://doi.org/10.4230/LIPIcs.CSL.2025.46).
+  It has been checked with Agda 2.6.4.3.
 
 ## Organization
 
 - `HoTT-Agda/`
 
   A stripped down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
-  with local changes for general lemmas we proved during the development. It also includes a proof of the 2-coherence of
-  the Suspension-Loop adjunction and some properties of homogeneous types (used for the proof of 2-coherence).
+  with local changes for general lemmas we proved during the development.
+
+  It also includes a proof of the 2-coherence of the Suspension-Loop adjunction and some properties of homogeneous types
+  (used for the proof of 2-coherence).
 
   See `HoTT-Agda/README.md` for the license of the work inside this directory.
 
