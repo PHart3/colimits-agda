@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting  #-}
+{-# OPTIONS --without-K --rewriting #-}
 
 -- Identity system on A-maps formed by A-homotopy
 
@@ -41,14 +41,14 @@ module _ {i j} {A : Type i} {B : A → Type j} {f : (x : A) → B x} where
   FunHomContr : is-contr (Σ (Π A B) (λ g → f ∼ g))
   FunHomContr = equiv-preserves-level (Σ-emap-r (λ g → app=-equiv)) {{pathfrom-is-contr f}}
 
-  CentFunExt : (r : Σ (Π A B) (λ g → f ∼ g))  → (f , λ (x : A) → idp {a = f x}) == r
+  CentFunExt : (r : Σ (Π A B) (λ g → f ∼ g)) → (f , λ (x : A) → idp {a = f x}) == r
   CentFunExt r = contr-path FunHomContr r
 
-  IndFunHom : ∀ {k} {P : (g : Π A B) →  (f ∼ g →  Type k)}
+  IndFunHom : ∀ {k} {P : (g : Π A B) → (f ∼ g → Type k)}
     → P f (λ x → idp) → (g : Π A B) (p : f ∼ g) → P g p
   IndFunHom {P = P} r g p = ind (ID-ind {P = P} CentFunExt) r g p
 
-  IndFunHom-β : ∀ {k} {P : (g : Π A B) →  (f ∼ g →  Type k)} → (r : P f (λ x → idp))
+  IndFunHom-β : ∀ {k} {P : (g : Π A B) → (f ∼ g → Type k)} → (r : P f (λ x → idp))
     → IndFunHom {P = P} r f (λ x → idp) == r
   IndFunHom-β r = ind-eq (ID-ind CentFunExt) r
 
@@ -65,7 +65,7 @@ module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {E : Type ℓ₅} {τ : A → B}
   {h : C → A} {v : C → D} {u : D → B} {f : B → E} where
 
-  cmp-helper : {x y : C} (p : x == y) (s : h x == h y) (r : (z : C) →  u (v z) == τ (h z)) {k : A → E} (fₚ : f ∘ τ ∼ k)
+  cmp-helper : {x y : C} (p : x == y) (s : h x == h y) (r : (z : C) → u (v z) == τ (h z)) {k : A → E} (fₚ : f ∘ τ ∼ k)
     →
     ! (ap (f ∘ u) (ap v p)) ∙
     (ap (f ∘ u) (ap v p) ∙ (ap f (r y) ∙ fₚ (h y)) ∙ ! (ap k s)) ∙
@@ -108,7 +108,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂
         fun-rid-inv1 R ∙ fun-rid-inv2 R
       lemma idp = idp
 
-module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} (f : < A >  X *→ Y) where
+module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} (f : < A > X *→ Y) where
 
   PtFunHomContr-aux :
     is-contr
@@ -123,7 +123,7 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} (f : < A >
 
   open MapsCos A
 
-  PtFunHomContr :  is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
+  PtFunHomContr : is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
   PtFunHomContr = equiv-preserves-level lemma {{PtFunHomContr-aux }}
     where
       lemma :
