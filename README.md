@@ -57,7 +57,7 @@ NOTE: We have successfully tested the following Docker container on Linux but no
 
    The HTML files will be under `html1/` and `html2/`.
    The entry points will be
-   - `html1/CosColim-Adjunction.html`
+   - `html1/CosColim-main.html`
    - `html2/Stability.html`
 
 ## Acknowledgement
