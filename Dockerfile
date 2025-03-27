@@ -50,7 +50,7 @@ RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/SuspAdjointLoo
 
 WORKDIR /build/Colimit-code
 RUN /dist/agda --library-file=/dist/libraries ./Trunc-Cos/TruncAdj.agda
-RUN /dist/agda --library-file=/dist/libraries ./Main-Theorem/CosColim-Adjunction.agda
+RUN /dist/agda --library-file=/dist/libraries ./Main-Theorem/CosColim-main.agda
 
 WORKDIR /build/Pullback-stability
 RUN /dist/agda --library-file=/dist/libraries ./Stability.agda

@@ -5,7 +5,6 @@ open import lib.types.Pushout
 open import Coslice
 open import Diagram
 open import Cocone
-open import CosColim-Iso
 open import CC-Equiv-LRL-7
 open import CC-Equiv-RLR-4
 open import CosColimitMap00
@@ -16,11 +15,8 @@ open import CosColimitPreCmp
 module CosColim-Adjunction where
 
 {-
-
-  This module shows that our pushout construction satisfies the universal property of an A-colimit,
-  namely that it's left adjoint to the constant diagram functor. We construct such an adjunction
-  by presenting the expected natural isomorphism.
-
+  This module shows that our pushout construction's action on maps fits into the two
+  naturality squares satisfied by the left adjoint to the constant diagram functor.
 -}
 
 module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
@@ -33,10 +29,10 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
 -- The first naturality square, arising from post-composition with the coslice map
 
-  Iso-Nat-PostCmp : ∀ {ℓd ℓc₁ ℓc₂} (F : CosDiag ℓd ℓ A Γ) {T : Coslice ℓc₁ ℓ A} {U : Coslice ℓc₂ ℓ A}
+  AdjSq-PostCmp : ∀ {ℓd ℓc₁ ℓc₂} (F : CosDiag ℓd ℓ A Γ) {T : Coslice ℓc₁ ℓ A} {U : Coslice ℓc₂ ℓ A}
     (φ : T *→ U) (f* : (Cos (P F) left) *→ T)
     → Map-to-Lim-map F φ (PostComp (ColCoC F) f*) == PostComp (ColCoC F) (φ ∘* f*)
-  Iso-Nat-PostCmp F φ (f , fₚ) = CosColim-NatSq1-eq F φ f fₚ 
+  AdjSq-PostCmp F φ (f , fₚ) = CosColim-NatSq1-eq F φ f fₚ 
 
 -- The second naturality square, arising from pre-composition with the diagram map
 
@@ -46,6 +42,6 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
     open ConstrMap19 δ
 
-    Iso-Nat-PreCmp : ∀ {ℓc} {T : Coslice ℓc ℓ A} (f* : (Cos P₂ left) *→ T)
+    AdjSq-PreCmp : ∀ {ℓc} {T : Coslice ℓc ℓ A} (f* : (Cos P₂ left) *→ T)
       → Diag-to-Lim-map (PostComp (ColCoC G) f*) == PostComp (ColCoC F) (f* ∘* 𝕕)
-    Iso-Nat-PreCmp f* = NatSq-PreCmp δ f*
+    AdjSq-PreCmp f* = NatSq-PreCmp δ f*
