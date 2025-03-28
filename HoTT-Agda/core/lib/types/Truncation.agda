@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
+{-# OPTIONS --without-K --rewriting --confluence-check --overlapping-instances #-}
 
 open import lib.Basics
 open import lib.types.TLevel
