@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
+{-# OPTIONS --without-K --confluence-check --rewriting --overlapping-instances #-}
 
 {- Definition of colimit HIT and its basic theory -}
 
