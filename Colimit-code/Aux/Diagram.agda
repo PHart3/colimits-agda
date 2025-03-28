@@ -60,7 +60,7 @@ record DiagMor {G : Graph ℓv ℓe} (F : Diag ℓd G) (F' : Diag ℓd' G)
   constructor Δ
   field
     nat : ∀ (x : Obj G) → F # x → F' # x
-    comSq : ∀ {x y : Obj G} (f : Hom G x y) (z : F # x) →  (F' <#> f) ((nat x) z) == nat y ((F <#> f) z)
+    comSq : ∀ {x y : Obj G} (f : Hom G x y) (z : F # x) → (F' <#> f) (nat x z) == nat y ((F <#> f) z)
 
 open DiagMor public
 
@@ -69,10 +69,10 @@ record CosDiagMor {G : Graph ℓv ℓe} {ℓ₁ ℓ₂ ℓ₃} (A : Type ℓ₁)
   field
     nat : ∀ (i : Obj G) → < A > F # i *→ F' # i
     comSq : ∀ {i j : Obj G} (g : Hom G i j) (z : ty (F # i)) → fst (F' <#> g) (fst (nat i) z) == fst (nat j) (fst (F <#> g) z)
-    comSq-coher : {i j : Obj G} (g : Hom G i j) (a : A)
-      → comSq g (fun (F # i) a)
-          ==
-        ap (fst (F' <#> g)) (snd (nat i) a) ∙ snd (F' <#> g) a ∙ ! (snd (nat j) a) ∙ ! (ap (fst (nat j)) (snd (F <#> g) a))
+    comSq-coher : {i j : Obj G} (g : Hom G i j) (a : A) →
+      comSq g (fun (F # i) a)
+        ==
+      ap (fst (F' <#> g)) (snd (nat i) a) ∙ snd (F' <#> g) a ∙ ! (snd (nat j) a) ∙ ! (ap (fst (nat j)) (snd (F <#> g) a))
 
 open CosDiagMor public
 
@@ -104,7 +104,7 @@ module _ {ℓi ℓj k} {A : Type ℓj} {Γ : Graph ℓv ℓe} {F : CosDiag ℓi 
   comp (ForgCoc (K & _)) i = fst (K i)
   comTri (ForgCoc (_ & r)) {y = j} {x = i} g = fst (r g)
 
-  PostComp : ∀ {k'} {D : Coslice k' ℓj A} → CosCocone A F C → (< A > C *→ D) →  CosCocone A F D
+  PostComp : ∀ {k'} {D : Coslice k' ℓj A} → CosCocone A F C → (< A > C *→ D) → CosCocone A F D
   comp (PostComp K (f , fₚ)) i = f ∘ (fst (comp K i)) , λ a → ap f (snd (comp K i) a) ∙ fₚ a 
   comTri (PostComp K (f , fₚ)) {y = j} {x = i} g =
     (λ x → ap f (fst (comTri K g) x)) ,
