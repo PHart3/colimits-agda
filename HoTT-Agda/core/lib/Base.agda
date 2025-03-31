@@ -107,7 +107,7 @@ postulate  -- HIT
 
 {- Unit type
 
-The unit type is defined as record so that we also get the η-rule definitionally.
+The unit type is defined as a record so that we also get the η-rule definitionally.
 -}
 
 record ⊤ : Type₀ where
