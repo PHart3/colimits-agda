@@ -91,4 +91,4 @@ module _ {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag
             (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₁-v2 {g = cin j} {R = cglue g (fun (F # i) a)} (snd (F <#> g) a)))))) ◃∙
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
             (ap ! (ap-cp-revR f (right ∘ cin j ) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))))) ◃∎
-      PathSeq2 = Ω-pth1 ∙ₛ (Ω-pth2 ∙ₛ (Ω-pth3 ∙ₛ Ω-pth4))
+      PathSeq2 = Ω-pth1 ∙ₛ Ω-pth2 ∙ₛ Ω-pth3 ∙ₛ Ω-pth4

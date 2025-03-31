@@ -76,4 +76,4 @@ module Constr5 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))
           =ₛ
         ! (apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ ! (ap f (! (glue x)) ∙ fₚ ([id] x))) (cglue g a)) ◃∎
-      LeftRW = LeftRW₀ ∙ₛ (LeftRW₁ ∙ₛ (LeftRW₂ ∙ₛ BigReduct1))
+      LeftRW = LeftRW₀ ∙ₛ LeftRW₁ ∙ₛ LeftRW₂ ∙ₛ BigReduct1

@@ -392,9 +392,8 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
       ap ! (ap ! (snd (comTri K g) a)) ◃∙
       !-! (snd (comp K i) a) ◃∎
         =ₛ⟨ 6 & 1 &
-          =ₛ-in
-            (ap (ap (λ p → p ∙ (snd (recCosCoc K) a))) (=ₛ-out (ap-seq-∙ (ap (fst (recCosCoc K))) (ϵ g g a)))) ∙ₛ
-            ap-seq-∙ (λ p → p ∙ (snd (recCosCoc K) a)) (ap-seq (ap (fst (recCosCoc K))) (ϵ g g a)) ⟩
+          =ₛ-in (ap (ap (λ p → p ∙ (snd (recCosCoc K) a))) (=ₛ-out (ap-seq-∙ (ap (fst (recCosCoc K))) (ϵ g g a)))) ∙ₛ
+          ap-seq-∙ (λ p → p ∙ (snd (recCosCoc K) a)) (ap-seq (ap (fst (recCosCoc K))) (ϵ g g a)) ⟩
       ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
         (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
       ap (λ p →
@@ -470,4 +469,4 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
             (ap (λ p → ! (ap (fun T) p)) (id-βr g a))) ◃∙
         ap ! (ap ! (snd (comTri K g) a)) ◃∙
         !-! (snd (comp K i) a) ◃∎
-      Ξ-rewrite = Ξ-RW1 ∙ₛ (Ξ-RW2 ∙ₛ (Ξ-RW3 ∙ₛ (Ξ-RW4 ∙ₛ (Ξ-RW5 ∙ₛ Ξ-RW6))))
+      Ξ-rewrite = Ξ-RW1 ∙ₛ Ξ-RW2 ∙ₛ Ξ-RW3 ∙ₛ Ξ-RW4 ∙ₛ Ξ-RW5 ∙ₛ Ξ-RW6

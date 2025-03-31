@@ -115,4 +115,4 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         apd-tr (λ x → RfunEq (f , fₚ) (ψ x)) (cglue g a) ◃∎
           =ₛ
         apd-tr-refl {f = f ∘ right} {h = ψ} (cglue g a) ◃∎
-      RightRW = RightRW₁ ∙ₛ (RightRW₂ ∙ₛ (RightRW1a ∙ₛ (RightRW1 ∙ₛ (RightRW2a ∙ₛ (ζ₂ fₚ)))))
+      RightRW = RightRW₁ ∙ₛ RightRW₂ ∙ₛ RightRW1a ∙ₛ RightRW1 ∙ₛ RightRW2a ∙ₛ (ζ₂ fₚ)
