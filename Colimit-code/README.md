@@ -50,7 +50,7 @@ check the entire development in a reasonable amount of time.
 
 ## Manual Type-Checking
 
-1. Install Agda 2.6.4.3.
+1. Install Agda 2.6.3 or 2.6.4.
 2. Install the stripped, modified HoTT-Agda library under `../HoTT-Agda`.
 3. Type check the file `Main-Theorem/CosColim-main.agda`.
 

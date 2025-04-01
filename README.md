@@ -1,7 +1,7 @@
 ## Overview
 
   This Agda code accompanies our CSL 2025 paper [Coslice Colimits in Homotopy Type Theory](https://doi.org/10.4230/LIPIcs.CSL.2025.46).
-  It has been checked with Agda 2.6.4.3.
+  It has been checked with Agda 2.6.3 and 2.6.4.
 
 ## Organization
 
@@ -41,12 +41,10 @@ We have successfully tested the following Docker container on Linux but not on o
    docker build . -t colimit
    ```
 
-   The build itself type checks the whole development. The Agda code is partitioned into
-   multiple stages across files to facilitate type-checking. The entire build may take
-   over an hour. The type checking of all our Agda code takes about 38 minutes on our
-   host Ubuntu with 16 GB of RAM.
-
-   (Note the build uses Agda 2.6.4 instead of 2.6.4.3.)
+   The build, which uses Agda 2.6.4, type checks the whole development. The Agda code
+   is partitioned into multiple stages across files to facilitate type-checking. The
+   entire build may take over an hour. The type checking of all our Agda code takes
+   about 38 minutes on our host Ubuntu with 16 GB of RAM.
 
 2. Generate HTML files:
 
