@@ -33,7 +33,7 @@
 
 ## Type-checking with Docker
 
-NOTE: We have successfully tested the following Docker container on Linux but not on other operating systems.
+We have successfully tested the following Docker container on Linux but not on other operating systems.
 
 1. Build Docker image:
 
@@ -41,11 +41,12 @@ NOTE: We have successfully tested the following Docker container on Linux but no
    docker build . -t colimit
    ```
 
-   The building itself type checks the whole development. The type-checking
-   is partitioned into multiple stages, for otherwise the type-checking
-   could take an unacceptably long time. The entire build may take over an hour.
-   The type-checking of all our Agda code takes about 23 minutes on our host
-   Ubuntu with 16 GB of RAM.
+   The build itself type checks the whole development. The Agda code is partitioned into
+   multiple stages across files to facilitate type-checking. The entire build may take
+   over an hour. The type checking of all our Agda code takes about 38 minutes on our
+   host Ubuntu with 16 GB of RAM.
+
+   (Note the build uses Agda 2.6.4 instead of 2.6.4.3.)
 
 2. Generate HTML files:
 
