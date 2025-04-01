@@ -105,4 +105,4 @@ module Constr7 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         transport (λ z → (! (ap f (glue z)) ∙ fₚ ([id] z)) ∙ ap (fst (RLfun (f , fₚ))) (glue z) == RfunEq (f , fₚ) (ψ z)) (cglue g a) 𝕣₂ ◃∎
           =ₛ
         𝕣₁
-      RLfunHtpy = RLfunHtpy1 ∙ₛ (RLfunHtpy2 ∙ₛ (RLfunHtpy3 ∙ₛ (RLfunHtpy4 ∙ₛ RLfunHtpy5))) 
+      RLfunHtpy = RLfunHtpy1 ∙ₛ RLfunHtpy2 ∙ₛ RLfunHtpy3 ∙ₛ RLfunHtpy4 ∙ₛ RLfunHtpy5

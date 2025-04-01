@@ -167,4 +167,4 @@ module ConstrMap3 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
 
     open ConstrMap2.MapCoher δ g a
 
-    fib-coher-conc = fib-coher0 ∙ₛ (fib-coher1 ∙ₛ fib-coher2)
+    fib-coher-conc = fib-coher0 ∙ₛ fib-coher1 ∙ₛ fib-coher2

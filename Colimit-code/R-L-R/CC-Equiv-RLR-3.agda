@@ -176,4 +176,4 @@ module ConstrE2Cont3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type 
         ! (ap (λ p → ! p ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a) (↯ (FunHomEq g (fun (F # i) a)))) ◃∙ Ξ-inst
           =ₛ
         snd (comTri K g) a ◃∎
-      Λ-eq = Λ-eq0 ∙ₛ (Λ-eq1 ∙ₛ (Λ-eq2-pre ∙ₛ (Λ-eq2 ∙ₛ (Λ-eq3 ∙ₛ Λ-eq4))))
+      Λ-eq = Λ-eq0 ∙ₛ Λ-eq1 ∙ₛ Λ-eq2-pre ∙ₛ Λ-eq2 ∙ₛ Λ-eq3 ∙ₛ Λ-eq4
