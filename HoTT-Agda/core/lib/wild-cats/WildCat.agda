@@ -32,3 +32,12 @@ record Functor-wc {i₁ j₁ i₂ j₂} (B : WildCat {i₁} {j₁}) (C : WildCat
     F-◻ : {a b c : ob B} (f : hom B a b) (g : hom B b c) → F₁ (⟦ B ⟧ g ◻ f) == ⟦ C ⟧ F₁ g ◻ F₁ f
 
 open Functor-wc public
+
+Type-wc : (i j : ULevel) → WildCat {lsucc i} {i}
+ob (Type-wc i j) = Type i
+hom (Type-wc i j) A B = A → B
+id₁ (Type-wc i j) = idf
+_◻_ (Type-wc i j) g f = g ∘ f
+ρ (Type-wc i j) = λ _ → idp
+lamb (Type-wc i j) = λ _ → idp
+α (Type-wc i j) = λ _ _ _ → idp
