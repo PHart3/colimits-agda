@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.types.Graph
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Diagram-wc
 

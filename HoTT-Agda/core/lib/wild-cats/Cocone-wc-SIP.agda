@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.types.Graph
 open import lib.types.Sigma
 open import lib.SIP
 open import lib.wild-cats.WildCat
@@ -64,7 +65,7 @@ module _ {ℓv ℓe : ULevel} (G : Graph ℓv ℓe)
             equiv
               (λ ((leg₂ , H) , tri₂ , K) → 
                 cocone leg₂ (λ {x} {y} f → tri₂ ((x , y) , f)) , H , λ {x} {y} f → K ((x , y) , f))
-              (λ ((cocone leg₂ tri₂) , H , K) → (leg₂ , H) , (λ ((x , y) , f) → tri₂ f) , (λ ((x , y) , f) → K f))
+              (λ ((cocone leg₂ tri₂) , H , K) → (leg₂ , H) , (λ (_ , f) → tri₂ f) , (λ (_ , f) → K f))
               (λ ((cocone leg₂ tri₂) , H , K) → idp) 
               (λ ((leg₂ , H) , tri₂ , K) → idp)
 

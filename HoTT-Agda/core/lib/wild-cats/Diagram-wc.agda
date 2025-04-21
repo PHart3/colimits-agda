@@ -1,34 +1,29 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.types.Graph
 open import lib.types.Sigma
 open import lib.wild-cats.WildCat
 
-module lib.wild-cats.Diagram-wc where
+module lib.wild-cats.Diagram-wc {ℓv ℓe : ULevel} where
 
-record Graph (ℓv ℓe : ULevel) : Type (lsucc (lmax ℓv ℓe)) where
-  field
-    Obj : Type ℓv
-    Hom : Obj → Obj → Type ℓe
-open Graph public
-
-module _ {ℓv ℓe : ULevel} where
-
-  record Diagram {ℓc₁ ℓc₂} (G : Graph ℓv ℓe) (C : WildCat {ℓc₁} {ℓc₂}) : Type (lmax (lmax ℓv ℓe) (lmax ℓc₁ ℓc₂)) where
+  record Diagram {ℓc₁ ℓc₂} (G : Graph ℓv ℓe) (C : WildCat {ℓc₁} {ℓc₂}) :
+    Type (lmax (lmax ℓv ℓe) (lmax ℓc₁ ℓc₂)) where
     field
       D₀ : Obj G → ob C
       D₁ : {x y : Obj G} (f : Hom G x y) → hom C (D₀ x) (D₀ y)
   open Diagram public
 
-  record Map-diag {ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} (Δ₁ : Diagram G C) (Δ₂ : Diagram G C) :
+  record Map-diag {ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}}
+    (Δ₁ : Diagram G C) (Δ₂ : Diagram G C) :
     Type (lmax (lmax ℓv ℓe) (lmax ℓc₁ ℓc₂)) where
     field
       comp : (x : Obj G) → hom C (D₀ Δ₁ x) (D₀ Δ₂ x)
       sq : {x y : Obj G} (f : Hom G x y) → ⟦ C ⟧ D₁ Δ₂ f ◻ comp x == ⟦ C ⟧ comp y ◻ D₁ Δ₁ f
   open Map-diag
 
-  F-diag : ∀ {ℓc₁ ℓc₂ ℓd₁ ℓd₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} {D : WildCat {ℓd₁} {ℓd₂}} (F : Functor-wc C D)
-    → Diagram G C → Diagram G D
+  F-diag : ∀ {ℓc₁ ℓc₂ ℓd₁ ℓd₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} {D : WildCat {ℓd₁} {ℓd₂}}
+    (F : Functor-wc C D) → Diagram G C → Diagram G D
   D₀ (F-diag F Δ) x = F₀ F (D₀ Δ x)
   D₁ (F-diag F Δ) f = F₁ F (D₁ Δ f)
 
