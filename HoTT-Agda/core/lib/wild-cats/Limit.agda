@@ -6,7 +6,6 @@ open import lib.types.Sigma
 open import lib.types.Graph
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Diagram-wc
-open import lib.wild-cats.Diag-map-wc
 
 module lib.wild-cats.Limit where
 
@@ -21,7 +20,7 @@ module _ {ℓv ℓe ℓ} {G : Graph ℓv ℓe} where
 
   Limit-map : {Δ₁ Δ₂ : Diagram G (Type-wc ℓ)} → Map-diag Δ₁ Δ₂ → Limit Δ₁ → Limit Δ₂
   fst (Limit-map μ (m , c)) i = comp μ i (m i)
-  snd (Limit-map μ (m , c)) {i} {j} g = app= (sq μ g) (m i) ∙ ap (comp μ j) (c g)
+  snd (Limit-map μ (m , c)) {i} {j} g = sq μ g (m i) ∙ ap (comp μ j) (c g)
 
   module _ {Δ : Diagram G (Type-wc ℓ)} where
 

@@ -111,6 +111,9 @@ module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
   !-ap-∙ : {x y : A} (p : x == y) {z : A} (r : x == z) → ! (ap g p) ∙ ap g r == ap g (! p ∙ r)
   !-ap-∙ idp r = idp
 
+  ap-∙! : {x y : A} (p : x == y) {z : A} (r : x == z) → ap g (! p ∙ r) == ! (ap g p) ∙ ap g r
+  ap-∙! idp r = idp
+
   ap-!-∙-ap : ∀ {k} {C : Type k} (h : C → A) {y z : C} {x : A} (q : y == z) (p : x == h y) 
     → ap g (! p) ∙ ap g (p ∙ ap h q) == ap g (ap h q)
   ap-!-∙-ap h q idp = idp 
@@ -154,6 +157,9 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   ap-∘-∙ : {x y : A} (p : x == y) {b : B} (q : f y == b)
     → ap g (ap f p ∙ q) == ap (g ∘ f) p ∙ ap g q
   ap-∘-∙ idp q = idp
+
+  ∘-ap-! : {x y : A} (p : x == y) → ap g (! (ap f p)) == ! (ap (g ∘ f) p)
+  ∘-ap-! idp = idp
 
   ap-∘-∘ : ∀ {l} {D : Type l} (h : D → A) {x y : D} (p : x == y)
     → ap (g ∘ f ∘ h) p == ap g (ap f (ap h p))
@@ -216,6 +222,9 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
 {- ap of idf -}
 ap-idf : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ap (idf A) p == p
 ap-idf idp = idp
+
+ap-idf-inv-r : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ap (λ v → v) p ∙' ! p == idp
+ap-idf-inv-r idp = idp
 
 {- Functoriality of [coe] -}
 coe-∙ : ∀ {i} {A B C : Type i} (p : A == B) (q : B == C) (a : A)
@@ -515,7 +524,10 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H 
   hmtpy-nat-!-sq : {x y : A} (p : x == y) → ! (H x) ∙ ap f p == ap g p ∙ ! (H y)
   hmtpy-nat-!-sq {x = x} idp = ∙-unit-r (! (H x))
 
-  hmtpy-nat-∙'-r : {x y : A} (p : x == y) → ap f p ==  H x ∙ ap g p ∙' ! (H y)
+  hnat-sq-! : {x y : A} (p : x == y) → ! (H y) == ! (ap g p) ∙ ! (H x) ∙ ap f p
+  hnat-sq-! {x} idp = ! (∙-unit-r (! (H x)))
+
+  hmtpy-nat-∙'-r : {x y : A} (p : x == y) → ap f p == H x ∙ ap g p ∙' ! (H y)
   hmtpy-nat-∙'-r {x} idp = ! (!-inv-r (H x)) ∙ ap (λ p → H x ∙ p) (! (∙'-unit-l (! (H x))))
 
   hmtpy-nat-∙◃ : {x y : A} (p : x == y) → ap f p ◃∎ =ₛ H x ◃∙ ap g p ◃∙ ! (H y) ◃∎
