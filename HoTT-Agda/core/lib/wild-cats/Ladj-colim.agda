@@ -8,6 +8,7 @@ open import lib.wild-cats.Colim-wc
 open import lib.wild-cats.Adjoint
 open import lib.wild-cats.Cocone-wc-SIP
 open import lib.wild-cats.Ladj-2-coher
+open import lib.wild-cats.Limit
 
 module lib.wild-cats.Ladj-colim where
 
@@ -20,7 +21,17 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
   private adj₀ = comp adj
 
   hom-to-lim : (y : ob D) → hom D (F₀ L c) y ≃ Cocone (F-diag L Δ) y
-  hom-to-lim y = {!!} ∘e is-colim-≃  K cl (F₀ R y) ∘e adj₀
+  hom-to-lim y = Cocone-adj-eqv ∘e is-colim-≃  K cl (F₀ R y) ∘e adj₀
+    where
+      Cocone-adj-eqv : Cocone Δ (F₀ R y) ≃ Cocone (F-diag L Δ) y
+      Cocone-adj-eqv = 
+        Cocone Δ (F₀ R y)
+          ≃⟨ cocone-wc-Σ ⟩
+        Limit (Diagram-hom (F₀ R y) Δ)
+          ≃⟨ (adj-lim-map-eqv adj) ⁻¹ ⟩
+        Limit (Diagram-hom y (F-diag L Δ))
+          ≃⟨ cocone-wc-Σ ⁻¹ ⟩
+        Cocone (F-diag L Δ) y ≃∎
 
   module comps-eq (y : ob D) (h : hom D (F₀ L c) y) where
 
@@ -221,5 +232,10 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
   abstract
     Ladj-prsrv-clim : is-colim {D = F-diag L Δ} (F-coc L K)
     Ladj-prsrv-clim y = ∼-preserves-equiv {f₀ = –> (hom-to-lim y)}
-      (λ h → coc-to-== G (leg-eq y h , λ f → =ₛ-out (tri-eq y h f)))
+      (λ h → coc-to-== G
+        (leg-eq y h , λ {x} f → 
+          (∙'=∙ _
+            (ap (is-equiv.g (snd (comp adj))) (sq₂ adj (leg K x) h) ∙
+            is-equiv.g-f (snd (comp adj)) ((D ◻ h) (F₁ L (leg K x))))) ∙
+          =ₛ-out (tri-eq y h f)))
       (snd (hom-to-lim y))

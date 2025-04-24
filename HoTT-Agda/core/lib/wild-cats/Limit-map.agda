@@ -11,16 +11,17 @@ open import lib.wild-cats.Limit
 
 module lib.wild-cats.Limit-map where
 
-module _ {ℓv ℓe ℓ} {G : Graph ℓv ℓe} where
+module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
 
   open Map-diag
 
-  lim-map-idf : {Δ : Diagram G (Type-wc ℓ)} → Limit-map (diag-map-idf Δ) ∼ idf (Limit Δ)
-  lim-map-idf {Δ} K = lim-to-== {Δ = Δ} ((λ _ → idp) , (λ f → ap-idf (snd K f))) 
+  lim-map-idf : ∀ {ℓ} {Δ : Diagram G (Type-wc ℓ)} → Limit-map (diag-map-idf Δ) ∼ idf (Limit Δ)
+  lim-map-idf {Δ = Δ} K = lim-to-== {Δ = Δ} ((λ _ → idp) , (λ f → ap-idf (snd K f))) 
 
-  lim-map-∘ : {Δ₁ Δ₂ Δ₃ : Diagram G (Type-wc ℓ)} {μ₂ : Map-diag Δ₂ Δ₃} {μ₁ : Map-diag Δ₁ Δ₂}
+  lim-map-∘ : ∀ {ℓ₁ ℓ₂ ℓ₃} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)} {Δ₃ : Diagram G (Type-wc ℓ₃)}
+    {μ₂ : Map-diag Δ₂ Δ₃} {μ₁ : Map-diag Δ₁ Δ₂}
     → Limit-map μ₂ ∘ Limit-map μ₁ ∼ Limit-map (μ₂ diag-map-∘ μ₁)
-  lim-map-∘ {Δ₁} {Δ₂} {Δ₃} {μ₂} {μ₁} K = lim-to-== {Δ = Δ₃} ((λ _ → idp) ,
+  lim-map-∘ {Δ₁ = Δ₁} {Δ₂} {Δ₃} {μ₂} {μ₁} K = lim-to-== {Δ = Δ₃} ((λ _ → idp) ,
     (λ {x} {y} f → lemma (sq μ₂ f (comp μ₁ x (fst K x))) (snd K f)))
     where
       lemma : {x y : Obj G} {f : Hom G x y}
@@ -34,20 +35,20 @@ module _ {ℓv ℓe ℓ} {G : Graph ℓv ℓe} where
       lemma {x} {y} {f} idp idp = ap-∙ (comp μ₂ y) (sq μ₁ f (fst K x)) idp 
 
   infixr 70 _=-dmap_
-  _=-dmap_ : {Δ₁ Δ₂ : Diagram G (Type-wc ℓ)}
-    → Map-diag Δ₁ Δ₂ → Map-diag Δ₁ Δ₂ → Type (lmax (lmax ℓv ℓe) ℓ)
-  _=-dmap_ {Δ₁} {Δ₂} μ₁ μ₂ =
+  _=-dmap_ : ∀ {ℓ₁ ℓ₂} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)}
+    → Map-diag Δ₁ Δ₂ → Map-diag Δ₁ Δ₂ → Type (lmax (lmax ℓv ℓe) (lmax ℓ₁ ℓ₂))
+  _=-dmap_ {Δ₁ = Δ₁} {Δ₂} μ₁ μ₂ =
     Σ ((i : Obj G) → comp μ₁ i ∼ comp μ₂ i)
       (λ H → {i j : Obj G} (f : Hom G i j) (x : D₀ Δ₁ i) → 
         sq μ₁ f x ∙' H j (D₁ Δ₁ f x) == ap (D₁ Δ₂ f) (H i x) ∙ sq μ₂ f x)
 
-  module _ {Δ₁ Δ₂ : Diagram G (Type-wc ℓ)} where
+  module _ {ℓ₁ ℓ₂} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)} where
 
     =-dmap-id : (μ : Map-diag Δ₁ Δ₂) → μ =-dmap μ
     fst (=-dmap-id μ) _ _ = idp
     snd (=-dmap-id μ) _ _ = idp
 
-    qinv-dmap : (μ : Map-diag Δ₁ Δ₂) → Type (lmax (lmax ℓv ℓe) ℓ)
+    qinv-dmap : (μ : Map-diag Δ₁ Δ₂) → Type (lmax (lmax ℓv ℓe) (lmax ℓ₁ ℓ₂))
     qinv-dmap μ =
       Σ (Map-diag Δ₂ Δ₁) (λ ν → (ν diag-map-∘ μ =-dmap diag-map-idf Δ₁) × (μ diag-map-∘ ν =-dmap diag-map-idf Δ₂))
 
@@ -196,9 +197,9 @@ module _ {ℓv ℓe ℓ} {G : Graph ℓv ℓe} where
               → (((! p ∙ idp) ∙ idp) ∙ idp) ∙' p == idp
             aux2 idp = idp
 
-  lim-eqv-to-eqv : {Δ₁ Δ₂ : Diagram G (Type-wc ℓ)} (μ : Map-diag Δ₁ Δ₂)
+  lim-eqv-to-eqv : ∀ {ℓ₁ ℓ₂} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)} (μ : Map-diag Δ₁ Δ₂)
     → eqv-dmap μ → is-equiv (Limit-map μ)
-  lim-eqv-to-eqv {Δ₁} {Δ₂} μ e = is-eq (Limit-map μ) (Limit-map (fst (eqv-to-qinv-dmap μ e)))
+  lim-eqv-to-eqv {Δ₁ = Δ₁} {Δ₂} μ e = is-eq (Limit-map μ) (Limit-map (fst (eqv-to-qinv-dmap μ e)))
     (λ b →
       lim-map-∘ {μ₂ = μ} {μ₁ = fst (eqv-to-qinv-dmap μ e)} b ∙
       app= (ap Limit-map (dmap-to-== (snd (snd (eqv-to-qinv-dmap μ e))))) b ∙

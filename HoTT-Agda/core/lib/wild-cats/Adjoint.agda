@@ -1,8 +1,11 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.types.Graph
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Diagram-wc
+open import lib.wild-cats.Limit
+open import lib.wild-cats.Limit-map
 
 module lib.wild-cats.Adjoint where
 
@@ -30,6 +33,16 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
   module _ {L : Functor-wc C D} {R : Functor-wc D C} (α : Adjunction L R) where
 
     open Adjunction α
+
+    adj-hom-limit : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} (Δ : Diagram G C) (T : ob D)
+      → Map-diag (Diagram-hom T (F-diag L Δ)) (Diagram-hom (F₀ R T) Δ)
+    Map-diag.comp (adj-hom-limit Δ T) x = –> comp
+    Map-diag.sq (adj-hom-limit Δ T) f m = sq₂ (D₁ Δ f) m
+
+    adj-lim-map-eqv : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} {Δ : Diagram G C} {T : ob D}
+      → Limit (Diagram-hom T (F-diag L Δ)) ≃ Limit (Diagram-hom (F₀ R T) Δ)
+    adj-lim-map-eqv {Δ = Δ} {T} = Limit-map (adj-hom-limit Δ T) ,
+      lim-eqv-to-eqv (adj-hom-limit Δ T) (λ _ → snd comp)
 
     abstract
       sq₂-exch : {x : ob D} {a b : ob C} (f : hom C a b) (v : hom D (F₀ L b) x) →

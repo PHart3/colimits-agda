@@ -9,20 +9,21 @@ open import lib.wild-cats.Diagram-wc
 
 module lib.wild-cats.Limit where
 
-module _ {ℓv ℓe ℓ} {G : Graph ℓv ℓe} where
+module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
 
-  Limit : Diagram G (Type-wc ℓ) → Type (lmax (lmax ℓv ℓe) ℓ)
+  Limit : ∀ {ℓ} → Diagram G (Type-wc ℓ) → Type (lmax (lmax ℓv ℓe) ℓ)
   Limit Δ =
     Σ ((i : Obj G) → D₀ Δ i)
       (λ m → ∀ {i j : Obj G} (g : Hom G i j) → D₁ Δ g (m i) == m j)
 
   open Map-diag
 
-  Limit-map : {Δ₁ Δ₂ : Diagram G (Type-wc ℓ)} → Map-diag Δ₁ Δ₂ → Limit Δ₁ → Limit Δ₂
+  Limit-map : ∀ {ℓ₁ ℓ₂} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)}
+    → Map-diag Δ₁ Δ₂ → Limit Δ₁ → Limit Δ₂
   fst (Limit-map μ (m , c)) i = comp μ i (m i)
   snd (Limit-map μ (m , c)) {i} {j} g = sq μ g (m i) ∙ ap (comp μ j) (c g)
 
-  module _ {Δ : Diagram G (Type-wc ℓ)} where
+  module _ {ℓ} {Δ : Diagram G (Type-wc ℓ)} where
 
     infixr 80 _=-lim_
     _=-lim_ : Limit Δ → Limit Δ → Type (lmax (lmax ℓv ℓe) ℓ)
