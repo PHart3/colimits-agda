@@ -1,6 +1,7 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
+open import lib.SIP
 open import lib.NType2
 open import lib.types.Bool
 open import lib.types.Empty
@@ -119,7 +120,11 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
   _⊙→∼_ : {f g : X ⊙→ Y} (H₁ H₂ : f ⊙-comp g) → Type (lmax i j)
   _⊙→∼_ {f = f} H₁ H₂ =
     Σ (fst H₁ ∼ fst H₂)
-      (λ K → ap (λ p →  ! p ∙ snd f) (K (pt X)) ◃∙ snd H₂ ◃∎ =ₛ snd H₁ ◃∎)
+      (λ K → ap (λ p →  ! p ∙ snd f) (K (pt X)) ∙ snd H₂ == snd H₁)
+      
+  ⊙→∼-id : {f g : X ⊙→ Y} (H : f ⊙-comp g) → H ⊙→∼ H
+  fst (⊙→∼-id H) = λ x → idp
+  snd (⊙→∼-id H) = idp
 
 -- pointed sections
 
@@ -128,6 +133,136 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
     field
       r-inv : Y ⊙→ X
       sect⊙-eq : f ⊙∘ r-inv == ⊙idf Y
+
+-- induction principle for ⊙-comp
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
+
+  ⊙hom-contr-aux :
+    is-contr
+      (Σ (Σ (de⊙ X → de⊙ Y) (λ g → fst f ∼ g))
+        (λ (h , K) → Σ (h (pt X) == pt Y) (λ p → (! (K (pt X)) ∙ snd f == p))))
+  ⊙hom-contr-aux =
+    equiv-preserves-level
+      ((Σ-contr-red
+        {P = λ (h , K) → Σ (h (pt X) == pt Y) (λ p → (! (K (pt X)) ∙ snd f == p))}
+        (funhom-contr {f = fst f}))⁻¹)
+
+  abstract
+    ⊙hom-contr : is-contr (Σ (X ⊙→ Y) (λ g → f ⊙-comp g))
+    ⊙hom-contr = equiv-preserves-level lemma {{⊙hom-contr-aux }}
+      where
+        lemma :
+          Σ (Σ (de⊙ X → de⊙ Y) (λ g → fst f ∼ g))
+            (λ (h , K) → Σ (h (pt X) == pt Y) (λ p → (! (K (pt X)) ∙ snd f == p)))
+            ≃
+          Σ (X ⊙→ Y) (λ g → f ⊙-comp g)
+        lemma =
+          equiv
+            (λ ((g , K) , (p , H)) → (g , p) , (K , H))
+            (λ ((h , p) , (H , K)) → (h , H) , (p , K))
+            (λ ((h , p) , (H , K)) → idp)
+            λ ((g , K) , (p , H)) → idp
+
+  ⊙hom-ind : ∀ {k} (P : (g : X ⊙→ Y) → (f ⊙-comp g → Type k))
+    → P f (⊙∼-id f) → {g : X ⊙→ Y} (p : f ⊙-comp g) → P g p
+  ⊙hom-ind P = ID-ind-map P ⊙hom-contr
+
+  ⊙hom-ind-β : ∀ {k} (P : (g : X ⊙→ Y) → (f ⊙-comp g → Type k))
+    → (r : P f (⊙∼-id f)) → ⊙hom-ind P r {f} (⊙∼-id f) == r
+  ⊙hom-ind-β P = ID-ind-map-β P ⊙hom-contr
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} where
+
+  ⊙-comp-to-== : {f : X ⊙→ Y} {g : X ⊙→ Y} → f ⊙-comp g → f == g
+  ⊙-comp-to-== {f} = ⊙hom-ind f (λ g _ → f == g) idp
+
+  ⊙-comp-to-==-β : (f : X ⊙→ Y) → ⊙-comp-to-== (⊙∼-id f) == idp
+  ⊙-comp-to-==-β f = ⊙hom-ind-β f (λ g _ → f == g) idp
+
+  ==-to-⊙-comp : {f : X ⊙→ Y} {g : X ⊙→ Y} → f == g → f ⊙-comp g
+  ==-to-⊙-comp idp = ⊙∼-id _
+
+  ⊙-comp-==-≃ : {f : X ⊙→ Y} {g : X ⊙→ Y} → (f == g) ≃ (f ⊙-comp g)
+  ⊙-comp-==-≃ {f} {g} = equiv ==-to-⊙-comp ⊙-comp-to-== aux1 aux2
+    where
+      aux1 : {k : X ⊙→ Y} (H : f ⊙-comp k) → ==-to-⊙-comp (⊙-comp-to-== H) == H
+      aux1 =
+        ⊙hom-ind f (λ k H → ==-to-⊙-comp (⊙-comp-to-== H) == H)
+          (ap (==-to-⊙-comp) (⊙-comp-to-==-β f))
+
+      aux2 : {k : X ⊙→ Y} (p : f == k) → ⊙-comp-to-== (==-to-⊙-comp p) == p
+      aux2 idp = ⊙-comp-to-==-β f 
+
+-- induction principle for ⊙∼→
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ : X ⊙→ Y} {H : f₁ ⊙-comp f₂} where
+
+  ⊙→∼-contr-aux :
+    is-contr $
+      Σ (Σ (fst f₁ ∼ fst f₂) (λ h → fst H ∼ h))
+        (λ (h , k) → Σ (! (h (pt X)) ∙ snd f₁ == snd f₂)
+          (λ L → ap (λ p →  ! p ∙ snd f₁) (k (pt X)) ∙ L == snd H))
+  ⊙→∼-contr-aux =
+    equiv-preserves-level
+      ((Σ-contr-red
+        {P = λ (h , k) →
+          Σ (! (h (pt X)) ∙ snd f₁ == snd f₂) (λ L → ap (λ p →  ! p ∙ snd f₁) (k (pt X)) ∙ L == snd H)}
+        (funhom-contr {f = fst H}))⁻¹)
+
+  ⊙→∼-contr : is-contr (Σ (f₁ ⊙-comp f₂) (λ K → H ⊙→∼ K))
+  ⊙→∼-contr = equiv-preserves-level lemma {{⊙→∼-contr-aux}}
+    where
+      lemma :
+        Σ (Σ (fst f₁ ∼ fst f₂) (λ h → fst H ∼ h))
+          (λ (h , k) → Σ (! (h (pt X)) ∙ snd f₁ == snd f₂)
+            (λ L → ap (λ p →  ! p ∙ snd f₁) (k (pt X)) ∙ L == snd H))
+          ≃
+        Σ (f₁ ⊙-comp f₂) (λ K → H ⊙→∼ K)
+      lemma =
+        equiv
+          (λ ((h , k) , (L , c)) → (h , L) , (k , c))
+          (λ ((K₁ , K₂) , (c₁ , c₂)) → (K₁ , c₁) , (K₂ , c₂))
+          (λ ((K₁ , K₂) , (c₁ , c₂)) → idp)
+          λ ((h , k) , (L , c)) → idp
+
+  ⊙→∼-ind : ∀ {k} (P : (K : f₁ ⊙-comp f₂) → (H ⊙→∼ K → Type k))
+    → P H (⊙→∼-id H) → {K : f₁ ⊙-comp f₂} (p : H ⊙→∼ K) → P K p
+  ⊙→∼-ind P = ID-ind-map P ⊙→∼-contr
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} {f g : X ⊙→ Y} {H₁ H₂ : f ⊙-comp g} where
+
+  ⊙→∼-to-== : H₁ ⊙→∼ H₂ → H₁ == H₂
+  ⊙→∼-to-== = ⊙→∼-ind {H = H₁} (λ H₂ _ → H₁ == H₂) idp 
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} where
+
+ ∙⊙∼-! : (f : X ⊙→ Y) → !-⊙∼ (⊙∼-id f) == ⊙∼-id f
+ ∙⊙∼-! (f₀ , idp) = ⊙→∼-to-== ((λ _ → idp) , idp)
+
+ ∙⊙∼-unit-l : {f g : X ⊙→ Y} (H : f ⊙-comp g) → (⊙∼-id f ∙⊙∼ H) == H
+ ∙⊙∼-unit-l {f = (f₀ , idp)} H = ⊙→∼-to-== ((λ _ → idp) , aux (snd H))
+   where
+     aux : ∀ {k} {A : Type k} {x y : A} {r : y == x} {q₂ : x == y} (q₁ : ! r ∙ idp == q₂) →
+       q₁ == ap (λ p → ! p ∙ idp) (tri-exch q₁) ∙ ∙-unit-r (! (! q₂)) ∙ !-! q₂
+     aux {r = idp} idp = idp
+
+ ∙⊙∼-unit-r : {f g : X ⊙→ Y} (H : f ⊙-comp g)→ (H ∙⊙∼ ⊙∼-id g) == H
+ ∙⊙∼-unit-r {g = (g₀ , idp)} H = ⊙→∼-to-== ((λ x → ∙-unit-r (fst H x)) , aux {r = fst H (pt X)} (snd H))
+   where
+     aux : ∀ {k} {A : Type k} {x y : A} {r q₂ : x == y} (q₁ : ! r ∙ q₂ == idp) →
+       ap (λ p → ! p ∙ q₂) (∙-unit-r r) ∙ q₁
+         ==
+       ap (λ p → ! (p ∙ idp) ∙ q₂) (tri-exch q₁) ∙ !3-∙3 q₂ idp idp
+     aux {r = idp} idp = idp
+
+module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
+
+  ∙⊙-post : {f : X ⊙→ Y} {g : Y ⊙→ Z} → ⊙∘-post g (⊙∼-id f) == ⊙∼-id (g ⊙∘ f)
+  ∙⊙-post = ⊙→∼-to-== ((λ _ → idp) , idp)
+
+  ∙⊙-pre : {f : X ⊙→ Y} {g : Z ⊙→ X} → ⊙∘-pre g (⊙∼-id f) == ⊙∼-id (f ⊙∘ g)
+  ∙⊙-pre {g = (g₀ , idp)} = ⊙→∼-to-== ((λ _ → idp) , idp)
 
 {- Pointed equivalences -}
 
