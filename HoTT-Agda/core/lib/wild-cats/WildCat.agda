@@ -15,7 +15,6 @@ record WildCat {i j} : Type (lmax (lsucc i) (lsucc j)) where
     ρ : {a b : ob} (f : hom a b) → f == f ◻ id₁ a
     lamb : {a b : ob} (f : hom a b) → f == id₁ b ◻ f
     α : {a b c d : ob} (h : hom c d) (g : hom b c) (f : hom a b) → (h ◻ g) ◻ f == h ◻ g ◻ f
-
 open WildCat public
 
 infixr 82 ⟦_⟧_◻_
@@ -26,11 +25,10 @@ record Functor-wc {i₁ j₁ i₂ j₂} (B : WildCat {i₁} {j₁}) (C : WildCat
   Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
   constructor functor-wc
   field
-    F₀ : ob B → ob C
-    F₁ : {a b : ob B} → hom B a b → hom C (F₀ a) (F₀ b)
-    F-id₁ : (a : ob B) → F₁ (id₁ B a) == id₁ C (F₀ a)
-    F-◻ : {a b c : ob B} (f : hom B a b) (g : hom B b c) → F₁ (⟦ B ⟧ g ◻ f) == ⟦ C ⟧ F₁ g ◻ F₁ f
-
+    obj : ob B → ob C
+    arr : {a b : ob B} → hom B a b → hom C (obj a) (obj b)
+    id : (a : ob B) → arr (id₁ B a) == id₁ C (obj a)
+    comp : {a b c : ob B} (f : hom B a b) (g : hom B b c) → arr (⟦ B ⟧ g ◻ f) == ⟦ C ⟧ arr g ◻ arr f
 open Functor-wc public
 
 Type-wc : (i : ULevel) → WildCat {lsucc i} {i}

@@ -6,7 +6,9 @@ open import lib.types.Pushout
 open import lib.types.Suspension
 open import lib.types.LoopSpace
 open import lib.types.Homogeneous
-open import homotopy.PtdAdjoint
+open import lib.wild-cats.WildCat
+open import lib.wild-cats.Ptd-wc
+open import lib.wild-cats.Adjoint
 
 module homotopy.SuspAdjointLoop where
 
@@ -17,14 +19,14 @@ module _ {i} where
     obj = ⊙Susp;
     arr = ⊙Susp-fmap;
     id = ⊙Susp-fmap-idf;
-    comp = ⊙Susp-fmap-∘}
+    comp = λ f g → ⊙Susp-fmap-∘ g f}
 
   LoopFunctor : PtdFunctor i i
   LoopFunctor = record {
     obj = ⊙Ω;
     arr = ⊙Ω-fmap;
     id = λ _ → ⊙Ω-fmap-idf;
-    comp = ⊙Ω-fmap-∘}
+    comp = λ f g → ⊙Ω-fmap-∘ g f}
 
   -- counit
 
@@ -107,7 +109,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
     ∙-unit-r (hmtpy-nat-∙'-r (λ x₁ → idp) (glue x ∙ ! (glue (pt X))) ∙ idp) ∙
     ∙-unit-r (hmtpy-nat-∙'-r (λ x₁ → idp) (glue x ∙ ! (glue (pt X)))) ∙
     hmtpy-nat-∙'-r-idp (glue x ∙ ! (glue (pt X)))
-  snd (ap-comp-into-id (f , idp)) = =ₛ-in (lemma (glue (pt X)))
+  snd (ap-comp-into-id (f , idp)) = lemma (glue (pt X))
     where
       lemma : {x : Susp (de⊙ X)} (v : x == right unit) →
         ap (λ p → ! p ∙ ap (ap f) (!-inv-r v) ∙ idp)
@@ -163,9 +165,9 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
       ap-!-inv r₀ ((merid ∘ h₀) (pt X)) ∙ ! (cmp-inv-r {f = Susp-fmap h₀} {g = r₀} (glue (pt X))) 
     nat-dom-aux-l = nat-dom-aux-l2 (SuspFmap.merid-β h₀ (pt X)) 
 
-  nat-dom : (h : X ⊙→ Y) (r : ⊙Susp Y ⊙→ U)
+  nat-dom-comp : (h : X ⊙→ Y) (r : ⊙Susp Y ⊙→ U)
     → (into Y U) r ⊙∘ h ⊙-comp (into X U) (r ⊙∘ ⊙Susp-fmap h)
-  fst (nat-dom (h₀ , idp) (r₀ , idp)) x = ↯ (
+  fst (nat-dom-comp (h₀ , idp) (r₀ , idp)) x = ↯ (
     ap-∙ r₀ (glue (h₀ x)) (! (glue (pt Y))) ◃∙
     ! (ap (λ p → ap r₀ (glue (h₀ x)) ∙ p) (ap (λ p → ap r₀ (! p)) (SuspFmap.merid-β h₀ (pt X)))) ◃∙
     ! (ap (λ p → ap r₀ (glue (h₀ x)) ∙ p) (ap-∘ r₀ (Susp-fmap h₀) (! (glue (pt X))) ∙
@@ -174,7 +176,7 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
     ! ((ap (λ p → p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (ap-∘ r₀ (Susp-fmap h₀) (glue x)))) ◃∙
     ! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue x) (! (glue (pt X)))) ◃∎
     )
-  snd (nat-dom (h₀ , idp) (r₀ , idp)) =
+  snd (nat-dom-comp (h₀ , idp) (r₀ , idp)) =
     ap (λ p → ! (ap-∙ r₀ (glue (h₀ (pt X))) (! (glue (h₀ (pt X)))) ∙ p) ∙
       ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp)
       (assoc-4-∙
@@ -631,11 +633,11 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
   
   two_coher_Susp : (h₁ : ⊙Susp X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →
     !-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃) ∙⊙∼
-    ⊙∘-pre h₃ (nat-dom h₂ h₁) ∙⊙∼
-    nat-dom h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂) ∙⊙∼
+    ⊙∘-pre h₃ (nat-dom-comp h₂ h₁) ∙⊙∼
+    nat-dom-comp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂) ∙⊙∼
     ap-comp-into W Y (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
       ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp))) ∙⊙∼
-    !-⊙∼ (nat-dom (h₂ ⊙∘ h₃) h₁)
+    !-⊙∼ (nat-dom-comp (h₂ ⊙∘ h₃) h₁)
       ⊙→∼
     ⊙∼-id ((into X Y h₁) ⊙∘ h₂ ⊙∘ h₃)
   two_coher_Susp (f₁ , idp) (f₂ , idp) (f₃ , idp) =

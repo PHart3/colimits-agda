@@ -59,18 +59,18 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
           Σ (Σ ((x : Obj G) → D₀ Δ₁ x → D₀ Δ₂ x) (λ comp₂ → (x : Obj G) → comp μ₁ x ∼ comp₂ x)) (λ (comp₂ , H) →
             Σ ((((x , y) , f , z) : Σ (Obj G × Obj G) (λ (x , y) → Hom G x y × D₀ Δ₁ x)) →
               D₁ Δ₂ f (comp₂ x z) == comp₂ y (D₁ Δ₁ f z))
-            (λ sq₂ →
+            (λ nat-dom →
               (((x , y) , f , z) : Σ (Obj G × Obj G) (λ (x , y) → Hom G x y × D₀ Δ₁ x)) →
-                sq μ₁ f z ∙' H y ((D₁ Δ₁ f z)) == ap (D₁ Δ₂ f) (H x z) ∙ sq₂ ((x , y) , f , z)))
+                sq μ₁ f z ∙' H y ((D₁ Δ₁ f z)) == ap (D₁ Δ₂ f) (H x z) ∙ nat-dom ((x , y) , f , z)))
       dmap-contr-aux =
         equiv-preserves-level
           ((Σ-contr-red
             {P = λ (comp₂ , H) →
               Σ ((((x , y) , f , z) : Σ (Obj G × Obj G) (λ (x , y) → Hom G x y × D₀ Δ₁ x)) →
                 D₁ Δ₂ f (comp₂ x z) == comp₂ y (D₁ Δ₁ f z))
-              (λ sq₂ →
+              (λ nat-dom →
                 (((x , y) , f , z) : Σ (Obj G × Obj G) (λ (x , y) → Hom G x y × D₀ Δ₁ x)) →
-                  sq μ₁ f z ∙' H y ((D₁ Δ₁ f z)) == ap (D₁ Δ₂ f) (H x z) ∙ sq₂ ((x , y) , f , z))}
+                  sq μ₁ f z ∙' H y ((D₁ Δ₁ f z)) == ap (D₁ Δ₂ f) (H x z) ∙ nat-dom ((x , y) , f , z))}
             (equiv-preserves-level choice {{Π-level λ x → funhom-contr}}))⁻¹)
             {{funhom-contr}}
 
@@ -82,19 +82,19 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
               Σ (Σ ((x : Obj G) → D₀ Δ₁ x → D₀ Δ₂ x) (λ comp₂ → (x : Obj G) → comp μ₁ x ∼ comp₂ x)) (λ (comp₂ , H) →
                 Σ ((((x , y) , f , z) : Σ (Obj G × Obj G) (λ (x , y) → Hom G x y × D₀ Δ₁ x)) →
                   D₁ Δ₂ f (comp₂ x z) == comp₂ y (D₁ Δ₁ f z))
-                (λ sq₂ →
+                (λ nat-dom →
                   (((x , y) , f , z) : Σ (Obj G × Obj G) (λ (x , y) → Hom G x y × D₀ Δ₁ x)) →
-                    sq μ₁ f z ∙' H y ((D₁ Δ₁ f z)) == ap (D₁ Δ₂ f) (H x z) ∙ sq₂ ((x , y) , f , z)))
+                    sq μ₁ f z ∙' H y ((D₁ Δ₁ f z)) == ap (D₁ Δ₂ f) (H x z) ∙ nat-dom ((x , y) , f , z)))
                 ≃
               Σ (Map-diag Δ₁ Δ₂) (λ μ₂ → μ₁ =-dmap μ₂)
             lemma = 
               equiv
-                (λ ((comp₂ , H) , (sq₂ , K)) →
-                  (map-diag comp₂ (λ {x} {y} f z → sq₂ ((x , y) , f , z)) , H , (λ {x} {y} f z → K ((x , y) , f , z))))
-                (λ ((map-diag comp₂ sq₂) , (H , K)) →
-                  (comp₂ , H) , ((λ ((_ , _) , f , z) → sq₂ f z) , λ ((_ , _) , f , z) → K f z))
-                (λ ((map-diag comp₂ sq₂) , (H , K)) → idp)
-                λ ((comp₂ , H) , (sq₂ , K)) → idp
+                (λ ((comp₂ , H) , (nat-dom , K)) →
+                  (map-diag comp₂ (λ {x} {y} f z → nat-dom ((x , y) , f , z)) , H , (λ {x} {y} f z → K ((x , y) , f , z))))
+                (λ ((map-diag comp₂ nat-dom) , (H , K)) →
+                  (comp₂ , H) , ((λ ((_ , _) , f , z) → nat-dom f z) , λ ((_ , _) , f , z) → K f z))
+                (λ ((map-diag comp₂ nat-dom) , (H , K)) → idp)
+                λ ((comp₂ , H) , (nat-dom , K)) → idp
 
       dmap-ind : ∀ {k} (P : (μ₂ : Map-diag Δ₁ Δ₂) → (μ₁ =-dmap μ₂ → Type k))
         → P μ₁ (=-dmap-id μ₁) → {μ₂ : Map-diag Δ₁ Δ₂} (e : μ₁ =-dmap μ₂) → P μ₂ e

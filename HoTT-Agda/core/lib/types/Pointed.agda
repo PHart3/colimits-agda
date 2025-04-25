@@ -94,6 +94,16 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ f₃ : X ⊙→ Y} where
     ap (λ p → ! ((snd f₁ ∙ ! (snd f₂)) ∙ p) ∙ snd f₁) (tri-exch (snd H₂)) ∙
     !3-∙3 (snd f₁) (snd f₂) (snd f₃)
 
+module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
+
+  ⊙∘-lunit : f ⊙-comp ⊙idf Y ⊙∘ f
+  fst ⊙∘-lunit x = idp
+  snd ⊙∘-lunit = ! (∙-unit-r (ap (λ x → x) (snd f)) ∙ ap-idf (snd f))
+
+  ⊙∘-runit : f ⊙-comp f ⊙∘ ⊙idf X
+  fst ⊙∘-runit x = idp
+  snd ⊙∘-runit = idp
+
 -- inverse of homotopy of pointed maps
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} where
@@ -125,6 +135,12 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
   ⊙→∼-id : {f g : X ⊙→ Y} (H : f ⊙-comp g) → H ⊙→∼ H
   fst (⊙→∼-id H) = λ x → idp
   snd (⊙→∼-id H) = idp
+
+  infixr 10 _⊙→∼◃_
+  _⊙→∼◃_ : {f g : X ⊙→ Y} (H₁ H₂ : f ⊙-comp g) → Type (lmax i j)
+  _⊙→∼◃_ {f = f} H₁ H₂ =
+    Σ (fst H₁ ∼ fst H₂)
+      (λ K → ap (λ p →  ! p ∙ snd f) (K (pt X)) ◃∙ snd H₂ ◃∎ =ₛ snd H₁ ◃∎)
 
 -- pointed sections
 

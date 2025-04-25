@@ -21,8 +21,8 @@ module lib.wild-cats.Diagram-wc {ℓv ℓe : ULevel} where
 
   F-diag : ∀ {ℓc₁ ℓc₂ ℓd₁ ℓd₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} {D : WildCat {ℓd₁} {ℓd₂}}
     (F : Functor-wc C D) → Diagram G C → Diagram G D
-  D₀ (F-diag F Δ) x = F₀ F (D₀ Δ x)
-  D₁ (F-diag F Δ) f = F₁ F (D₁ Δ f)
+  D₀ (F-diag F Δ) x = obj F (D₀ Δ x)
+  D₁ (F-diag F Δ) f = arr F (D₁ Δ f)
 
   -- We just need maps of diagrams valued in Type.
   record Map-diag {ℓ₁ ℓ₂} {G : Graph ℓv ℓe} (Δ₁ : Diagram G (Type-wc ℓ₁)) (Δ₂ : Diagram G (Type-wc ℓ₂)) :
@@ -66,6 +66,6 @@ module lib.wild-cats.Diagram-wc {ℓv ℓe : ULevel} where
 
     F-coc : ∀ {ℓc₁ ℓc₂ ℓd₁ ℓd₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T : ob C}
       {D :  WildCat {ℓd₁} {ℓd₂}} (F : Functor-wc C D)
-      → Cocone Δ T → Cocone (F-diag F Δ) (F₀ F T)
-    leg (F-coc {Δ = Δ} F K) x = F₁ F (leg K x)
-    tri (F-coc {Δ = Δ} F K) {y = y} f = ! (F-◻ F (D₁ Δ f) (leg K y)) ∙ ap (F₁ F) (tri K f)
+      → Cocone Δ T → Cocone (F-diag F Δ) (obj F T)
+    leg (F-coc {Δ = Δ} F K) x = arr F (leg K x)
+    tri (F-coc {Δ = Δ} F K) {y = y} f = ! (comp F (D₁ Δ f) (leg K y)) ∙ ap (arr F) (tri K f)
