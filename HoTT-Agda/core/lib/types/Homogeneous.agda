@@ -119,7 +119,7 @@ module _ {i} {X : Type i} where
         {H₁ H₂ : f == g}
         {H₁ₚ : ! (app= H₁ z) ∙ fₚ == gₚ}
         {H₂ₚ : ! (app= H₂ z) ∙ fₚ == gₚ}
-        →  H₁ == H₂ → (app= H₁ , H₁ₚ) ⊙→∼ (app= H₂ , H₂ₚ)
+        →  H₁ == H₂ → (app= H₁ , H₁ₚ) ⊙→∼◃ (app= H₂ , H₂ₚ)
       fst (∼⊙homog= x {fₚ = idp} {H₁ = idp} {H₁ₚ = H₁ₚ} {H₂ₚ} idp) =
         λ x₁ → app= (fst (r-inv (⊙∼-evalΩ-sect η))
           (ap-post∙idp∘!-inv (H₁ₚ ∙ ! (H₂ₚ)))) x₁
@@ -143,7 +143,7 @@ module _ {i} {X : Type i} where
           {H₂ₚ = (ap (λ p → ! p ∙ idp) (app=-β H₂ z) ∙ H₂ₚ)}
           (ap λ= (λ= K))) t ∙
         app=-β H₂ t
-      snd (∼⊙homog∼ x {fₚ = idp} {gₚ} {H₁} {H₂} {H₁ₚ} {H₂ₚ} K) =
+      snd (∼⊙homog∼ x {fₚ = idp} {gₚ} {H₁} {H₂} {H₁ₚ} {H₂ₚ} K) = =ₛ-out $
         ap (λ p → ! p ∙ idp) (! (app=-β H₁ z) ∙
           fst (∼⊙homog= (f z) {fₚ = idp} {gₚ = gₚ} {H₁ = λ= H₁} {H₂ = λ= H₂}
             {H₁ₚ = (ap (λ p → ! p ∙ idp) (app=-β H₁ z) ∙ H₁ₚ)}

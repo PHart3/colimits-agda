@@ -46,11 +46,12 @@ RUN echo "/build/Colimit-code/cos-colim.agda-lib" >> /dist/libraries
 RUN echo "/build/Pullback-stability/stab.agda-lib" >> /dist/libraries
 
 WORKDIR /build/HoTT-Agda
-RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/SuspAdjointLoop.agda
+RUN /dist/agda --library-file=/dist/libraries ./core/lib/wild-cats/WildCats.agda
+RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/Susp-2coher.agda
 
 WORKDIR /build/Colimit-code
 RUN /dist/agda --library-file=/dist/libraries ./Trunc-Cos/TruncAdj.agda
-RUN /dist/agda --library-file=/dist/libraries ./Main-Theorem/CosColim-main.agda
+RUN /dist/agda +RTS -M4.5G -RTS --library-file=/dist/libraries ./Main-Theorem/CosColim-main.agda
 
 WORKDIR /build/Pullback-stability
 RUN /dist/agda --library-file=/dist/libraries ./Stability.agda
