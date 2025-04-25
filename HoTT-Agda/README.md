@@ -28,15 +28,15 @@ Structure of the source
 
 ### Core library (directory `core/lib/`)
 
-The main library is more or less divided into two parts.
+The main library is more or less divided into three parts.
 
 - The first part is exported in the module `lib.Basics` and contains everything needed to make the second
   part compile.
 - The second part is found in `lib.types` and develops type formers.
   Note that it contains new facts about homogeneous types and reformulates some of the basic theory of
   the Suspension type.
-
-Note that our work on colimits makes extensive use of the `path-seq/` directory.
+- The third part is found in `lib.wild-cats` and develops wild category theory.
+  In particular, it shows that 2-coherent left adjoints between wild categories preserve colimiting cocones.
 
 ### Homotopy (directory `theorems/homotopy/`)
 
