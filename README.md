@@ -11,7 +11,7 @@
   with local changes for general lemmas we proved during the development.
 
   It also includes wild category theory, centered on 2-coherent left adjoints. We prove that such adjoints preserve colimits.
-  Moreover, we prove that the Suspension functor is a 2-coherent left adjoint to Loop-spaces, for which we develop some
+  Moreover, we prove that the Suspension functor is a 2-coherent left adjoint to Loop-space, for which we develop some new
   properties of homogeneous types.
 
   See `HoTT-Agda/README.md` for the license of the work inside this directory.
