@@ -114,6 +114,9 @@ module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
   ap-∙! : {x y : A} (p : x == y) {z : A} (r : x == z) → ap g (! p ∙ r) == ! (ap g p) ∙ ap g r
   ap-∙! idp r = idp
 
+  ap-∙-! : {x y : A} (p : y == x) {z : A} (r : z == x) → ap g (p ∙ ! r) == ap g p ∙ ! (ap g r)
+  ap-∙-! idp idp = idp
+
   ap-!-∙-ap : ∀ {k} {C : Type k} (h : C → A) {y z : C} {x : A} (q : y == z) (p : x == h y) 
     → ap g (! p) ∙ ap g (p ∙ ap h q) == ap g (ap h q)
   ap-!-∙-ap h q idp = idp 
@@ -511,6 +514,9 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H 
 
   apCommSq◃ : {x y : A} (p : x == y) → ap g p ◃∎ =ₛ ! (H x) ◃∙ ap f p ◃∙ H y ◃∎
   apCommSq◃ {x = x} idp = =ₛ-in (! (!-inv-l (H x)))
+
+  apCommSq◃-! : {x y : A} (p : x == y) → ! (ap g p) ◃∎ =ₛ ! (H y) ◃∙ ! (ap f p) ◃∙ H x ◃∎
+  apCommSq◃-! {x = x} idp = =ₛ-in (! (!-inv-l (H x)))
 
   apCommSq2◃' : {x y : A} (p : x == y) → H x ◃∎ =ₛ ap f p ◃∙ H y ◃∙ ! (ap g p) ◃∎
   apCommSq2◃' {x = x} idp = =ₛ-in (! (∙-unit-r (H x)))
