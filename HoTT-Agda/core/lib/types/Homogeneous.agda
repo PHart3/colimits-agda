@@ -28,7 +28,7 @@ module _ {i} {X : Type i} where
     homog-Ω≃ y η = ⊙≃-to-≃ (homog-⊙Ω≃ y η)
 
   {-
-    Two pointed homotopies of pointed maps valued in a coherently homogeneous
+    Two pointed homotopies of pointed maps valued in a strongly homogeneous
     type are equal as soon as their underlying homotopies are equal.
   -}
   
@@ -170,7 +170,7 @@ module _ {i} {X : Type i} where
                  (ap λ= (λ= K)))) ⟩
          H₁ₚ ◃∎ ∎ₛ
 
--- All loop spaces are coherently homogeneous.
+-- All loop spaces are strongly homogeneous.
 
 module _ {i} {X : Type i} {x : X} where
 

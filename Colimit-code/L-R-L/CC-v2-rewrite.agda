@@ -33,14 +33,14 @@ module _ {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag
         snd (comTri κ g) a ◃∎
           =ₛ⟨ =ₛ-in idp ⟩
         ap-cp-revR f (right ∘ cin j ) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a))) ◃∙
-        ap (λ q → q ∙ fₚ a) (ap (ap f) (↯ (ϵ g g a))) ◃∎
-          =ₛ₁⟨ 1 & 1 & ap (λ p → (ap (λ q → q ∙ fₚ a) (ap (ap f) p))) (=ₛ-out ϵ-Eq) ⟩
+        ap (λ q → q ∙ fₚ a) (ap (ap f) (↯ (ε g g a))) ◃∎
+          =ₛ₁⟨ 1 & 1 & ap (λ p → (ap (λ q → q ∙ fₚ a) (ap (ap f) p))) (=ₛ-out ε-Eq) ⟩
         ap-cp-revR f (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a))) ◃∙
-        ap (λ q → q ∙ fₚ a) (ap (ap f) (↯ ϵ-v2)) ◃∎
-          =ₛ⟨ 1 & 1 & =ₛ-in (ap (λ p → ap (λ q → q ∙ fₚ a) p) (=ₛ-out (ap-seq-∙ (ap f) ϵ-v2))) ⟩
+        ap (λ q → q ∙ fₚ a) (ap (ap f) (↯ ε-v2)) ◃∎
+          =ₛ⟨ 1 & 1 & =ₛ-in (ap (λ p → ap (λ q → q ∙ fₚ a) p) (=ₛ-out (ap-seq-∙ (ap f) ε-v2))) ⟩
         ap-cp-revR f (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a))) ◃∙
-        ap (λ q → q ∙ fₚ a) (↯ (ap-seq (ap f) ϵ-v2)) ◃∎  
-          =ₛ⟨ 1 & 1 & ap-seq-∙ (λ q → q ∙ fₚ a) (ap-seq (ap f) ϵ-v2) ⟩                                                                                                          
+        ap (λ q → q ∙ fₚ a) (↯ (ap-seq (ap f) ε-v2)) ◃∎  
+          =ₛ⟨ 1 & 1 & ap-seq-∙ (λ q → q ∙ fₚ a) (ap-seq (ap f) ε-v2) ⟩                                                                                                          
         Ω ∎ₛ
 
     abstract

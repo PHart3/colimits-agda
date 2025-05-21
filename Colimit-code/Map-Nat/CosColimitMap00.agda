@@ -171,7 +171,7 @@ module ConstrMap {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ}
         =⟪ long-red-ap-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right (snd (nat δ i) a) (snd (G <#> g) a) (snd (F <#> g) a)
              (snd (nat δ j) a) (cglue g (fun (G # i) a)) (! (glue (cin j a))) ⟫
       ap (right ∘ cin i) (snd (nat δ i) a) ∙ ! (ap right (cglue g (fun (G # i) a))) ∙ ap (right ∘ cin j) (snd (G <#> g) a) ∙ ! (glue (cin j a))
-        =⟪ ap (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p) (↯ (ϵ G g g a)) ⟫
+        =⟪ ap (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p) (↯ (ε G g g a)) ⟫
       ap (right ∘ cin i) (snd (nat δ i) a) ∙ ! (glue (cin i a)) ∎∎
 
   K-diag : CosCocone A F (Cos P₂ left)
