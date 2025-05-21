@@ -9,7 +9,7 @@ open import lib.wild-cats.Limit-map
 
 module lib.wild-cats.Adjoint where
 
-module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {j₂}}  where
+module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {j₂}} where
 
   record Adjunction (L : Functor-wc C D) (R : Functor-wc D C) : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
     constructor adjunction

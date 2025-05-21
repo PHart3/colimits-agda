@@ -8,11 +8,7 @@ open import lib.types.Suspension
 open import lib.types.LoopSpace
 open import lib.types.Homogeneous
 open import homotopy.SuspAdjointLoop
-open import lib.wild-cats.WildCat
-open import lib.wild-cats.Ptd-wc
-open import lib.wild-cats.Adjoint
-open import lib.wild-cats.Ladj-2-coher
-open import lib.wild-cats.Ladj-colim
+open import lib.wild-cats.WildCats
 
 {- the nat-dom proof makes Susp a 2-coherent left adjoint to Loop -}
 
@@ -456,7 +452,7 @@ module 2-coher-cmp {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd 
 
   {-
     It suffices to prove that the underlying homotopies are equal
-    because loop spaces are coherently homogeneous.
+    because loop spaces are strongly homogeneous.
   -}
 
   abstract
@@ -564,3 +560,7 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
       ⊙-comp-to-== (⊙∼-id ((into X Y h₁) ⊙∘ h₂ ⊙∘ h₃)) ◃∎
         =ₛ₁⟨ ⊙-comp-to-==-β (into X Y h₁ ⊙∘ h₂ ⊙∘ h₃) ⟩
       idp ◃∎ ∎ₛ
+
+abstract
+  Susp-is-2-coher : ∀ {i} → ladj-is-2coher (SuspLoopAdj-exp {i})
+  Susp-is-2-coher = 2-coher-Susp

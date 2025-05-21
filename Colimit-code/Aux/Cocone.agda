@@ -54,11 +54,11 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
 
     ColCoC : CosCocone A F (Cos P left)
     comp ColCoC i = right ∘ cin i , λ a → ! (glue (cin i a))
-    comTri ColCoC g =  (λ x → ap right (cglue g x)) ,  λ a → ↯ (ϵ g a)
+    comTri ColCoC g =  (λ x → ap right (cglue g x)) ,  λ a → ↯ (ε g a)
       module _ where
-      ϵ : ∀ {i j} (g : Hom Γ i j) (a : A) →
+      ε : ∀ {i j} (g : Hom Γ i j) (a : A) →
         ! (ap right (cglue g (fun (F # i) a))) ∙ ap (right ∘ cin j) (snd (F <#> g) a) ∙ ! (glue (cin j a)) =-= ! (glue (cin i a))
-      ϵ {i} {j} g a =
+      ε {i} {j} g a =
         ! (ap right  (cglue g (fun (F # i) a))) ∙ (ap (right ∘ cin j) (snd (F <#> g) a)) ∙ (! (glue (cin j a)))
           =⟪ E₁ (snd (F <#> g) a) (! (glue (cin j a))) ⟫
         ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ idp

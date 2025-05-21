@@ -1,42 +1,110 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.cubical.Square
 open import lib.types.Pointed
 open import lib.types.Pushout
 open import lib.types.Suspension
 open import lib.types.LoopSpace
 open import lib.types.Homogeneous
-open import lib.wild-cats.WildCat
-open import lib.wild-cats.Ptd-wc
-open import lib.wild-cats.Adjoint
+open import lib.wild-cats.WildCats
 
 module homotopy.SuspAdjointLoop where
 
+SuspFunctor : ∀ {i} → PtdFunctor i i
+obj SuspFunctor = ⊙Susp
+arr SuspFunctor = ⊙Susp-fmap
+id SuspFunctor = ⊙Susp-fmap-idf
+comp SuspFunctor f g = ⊙Susp-fmap-∘ g f
+
+LoopFunctor : ∀ {i} → PtdFunctor i i
+obj LoopFunctor = ⊙Ω
+arr LoopFunctor = ⊙Ω-fmap
+id LoopFunctor _ = ⊙Ω-fmap-idf
+comp LoopFunctor f g = ⊙Ω-fmap-∘ g f
+
+module _ {i} (X : Ptd i) where
+
+  η : de⊙ X → Ω (⊙Susp X)
+  η x = σloop X x
+
+  module E = SuspRec (pt X) (pt X) (idf _)
+
+  ε : de⊙ (⊙Susp (⊙Ω X)) → de⊙ X
+  ε = E.f
+
+  ⊙η : X ⊙→ ⊙Ω (⊙Susp X)
+  ⊙η = (η , σloop-pt)
+
+  ⊙ε : ⊙Susp (⊙Ω X) ⊙→ X
+  ⊙ε = (ε , idp)
+
 module _ {i} where
 
-  SuspFunctor : PtdFunctor i i
-  obj SuspFunctor = ⊙Susp
-  arr SuspFunctor = ⊙Susp-fmap
-  id SuspFunctor = ⊙Susp-fmap-idf
-  comp SuspFunctor f g = ⊙Susp-fmap-∘ g f
-  
-  LoopFunctor : PtdFunctor i i
-  obj LoopFunctor = ⊙Ω
-  arr LoopFunctor = ⊙Ω-fmap
-  id LoopFunctor _ = ⊙Ω-fmap-idf
-  comp LoopFunctor f g = ⊙Ω-fmap-∘ g f
+  η-natural : {X Y : Ptd i} (f : X ⊙→ Y)
+    → ⊙η Y ⊙∘ f == ⊙Ω-fmap (⊙Susp-fmap f) ⊙∘ ⊙η X
+  η-natural {X = X} (f , idp) = ⊙λ='
+    (λ x → ! $
+      ap-∙ (Susp-fmap f) (merid x) (! (merid (pt X)))
+      ∙ SuspFmap.merid-β f x
+        ∙2 (ap-! (Susp-fmap f) (merid (pt X))
+            ∙ ap ! (SuspFmap.merid-β f (pt X))))
+    (pt-lemma (Susp-fmap f) (merid (pt X)) (SuspFmap.merid-β f (pt X)))
+    where
+    pt-lemma : ∀ {i j} {A : Type i} {B : Type j} (f : A → B)
+      {x y : A} (p : x == y) {q : f x == f y} (α : ap f p == q)
+      → !-inv-r q == ap (ap f) (!-inv-r p) ∙ idp
+        [ _== idp ↓ ! (ap-∙ f p (! p) ∙ α ∙2 (ap-! f p ∙ ap ! α)) ]
+    pt-lemma f idp idp = idp
 
-  -- counit
+  ε-natural : {X Y : Ptd i} (f : X ⊙→ Y)
+    → ⊙ε Y ⊙∘ ⊙Susp-fmap (⊙Ω-fmap f) == f ⊙∘ ⊙ε X
+  ε-natural (f , idp) = ⊙λ='
+    (SuspElim.f idp idp
+      (λ p → ↓-='-from-square $ vert-degen-square $
+        ap-∘ (ε _) (Susp-fmap (ap f)) (merid p)
+        ∙ ap (ap (ε _)) (SuspFmap.merid-β (ap f) p)
+        ∙ E.merid-β _ (ap f p)
+        ∙ ap (ap f) (! (E.merid-β _ p))
+        ∙ ∘-ap f (ε _) (merid p)))
+    idp
 
-  module _ (X : Ptd i) where
+  εΣ-Ση : (X : Ptd i) → ⊙ε (⊙Susp X) ⊙∘ ⊙Susp-fmap (⊙η X) == ⊙idf _
+  εΣ-Ση X = ⊙λ='
+    (SuspElim.f
+      idp
+      (merid (pt X))
+      (λ x → ↓-='-from-square $
+        (ap-∘ (ε (⊙Susp X)) (Susp-fmap (η X)) (merid x)
+         ∙ ap (ap (ε (⊙Susp X))) (SuspFmap.merid-β (η X) x)
+         ∙ E.merid-β _ (merid x ∙ ! (merid (pt X))))
+        ∙v⊡ square-lemma (merid x) (merid (pt X))
+        ⊡v∙ ! (ap-idf (merid x))))
+    idp
+    where
+    square-lemma : ∀ {i} {A : Type i} {x y z : A}
+      (p : x == y) (q : z == y)
+      → Square idp (p ∙ ! q) p q
+    square-lemma idp idp = ids
 
-    η : de⊙ X → Ω (⊙Susp X)
-    η x = σloop X x
+  Ωε-ηΩ : (X : Ptd i) → ⊙Ω-fmap (⊙ε X) ⊙∘ ⊙η (⊙Ω X) == ⊙idf _
+  Ωε-ηΩ X = ⊙λ='
+    (λ p → ap-∙ (ε X) (merid p) (! (merid idp))
+         ∙ (E.merid-β X p ∙2 (ap-! (ε X) (merid idp) ∙ ap ! (E.merid-β X idp)))
+         ∙ ∙-unit-r _)
+    (pt-lemma (ε X) (merid idp) (E.merid-β X idp))
+    where
+    pt-lemma : ∀ {i j} {A : Type i} {B : Type j} (f : A → B)
+      {x y : A} (p : x == y) {q : f x == f y} (α : ap f p == q)
+      → ap (ap f) (!-inv-r p) ∙ idp == idp
+        [ _== idp ↓ ap-∙ f p (! p) ∙ (α ∙2 (ap-! f p ∙ ap ! α)) ∙ !-inv-r q ]
+    pt-lemma f idp idp = idp
 
-    ⊙η : X ⊙→ ⊙Ω (⊙Susp X)
-    ⊙η = (η , σloop-pt)
+  SuspLoopAdj-unit : CounitUnitAdjoint SuspFunctor LoopFunctor
+  SuspLoopAdj-unit = counitunitadjoint ⊙η ⊙ε η-natural ε-natural εΣ-Ση Ωε-ηΩ
 
--- induced map of hom types
+  SuspLoopAdj : Adjunction SuspFunctor LoopFunctor
+  SuspLoopAdj = counit-unit-to-hom SuspLoopAdj-unit
 
 module _ {i j} (X : Ptd i) (U : Ptd j) where
 
@@ -130,7 +198,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
   naturality of into in its first argument
 -}
 
-module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where 
+module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
 
   module _ (r₀ : Susp (de⊙ Y) → de⊙ U) (h₀ : de⊙ X → de⊙ Y) where
 
@@ -195,3 +263,9 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
       ! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue (pt X)) (! (glue (pt X))))) ∙
         ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp) (nat-dom-aux-l r₀ h₀) ∙
     nat-dom-aux-r r₀ h₀ ((glue (h₀ (pt X))))
+
+-- adjunction with nat-dom replaced by explicit version
+SuspLoopAdj-exp : ∀ {i} → Adjunction (SuspFunctor {i}) (LoopFunctor {i})
+iso SuspLoopAdj-exp = iso SuspLoopAdj
+nat-cod SuspLoopAdj-exp = nat-cod SuspLoopAdj
+nat-dom SuspLoopAdj-exp h r = ⊙-comp-to-== (nat-dom-cmp h r)

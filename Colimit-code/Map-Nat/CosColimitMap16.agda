@@ -84,8 +84,8 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
         (apCommSq2 (cin j ∘ fst (G <#> g)) (cin i) (cglue g) (snd (nat δ i) a)) ◃∙
       long-red-ap-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right (snd (nat δ i) a) (snd (G <#> g) a)
         (snd (F <#> g) a) (snd (nat δ j) a) (cglue g (fun (G # i) a)) (! (glue (cin j a))) ◃∙
-      ap-seq (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p) (ϵ G g g a)
-        =ₛ⟨ 3 & 4 & ∙-ap-seq (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p) (ϵ G g g a) ⟩
+      ap-seq (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p) (ε G g g a)
+        =ₛ⟨ 3 & 4 & ∙-ap-seq (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p) (ε G g g a) ⟩
       ap (λ p → ! (ap (right {d = SpCos₂}) p) ∙ ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙
           ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
           (ap (λ p → ! (ap (cin j) p) ∙ cglue g (fst (nat δ i) (fun (F # i) a))) (comSq-coher δ g a)) ◃∙
@@ -95,7 +95,7 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
         (apCommSq2 (cin j ∘ fst (G <#> g)) (cin i) (cglue g) (snd (nat δ i) a)) ◃∙
       long-red-ap-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right (snd (nat δ i) a) (snd (G <#> g) a)
         (snd (F <#> g) a) (snd (nat δ j) a) (cglue g (fun (G # i) a)) (! (glue (cin j a))) ◃∙
-      ap (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p) (↯ (ϵ G g g a)) ◃∎ ∎ₛ      
+      ap (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p) (↯ (ε G g g a)) ◃∎ ∎ₛ      
 
   fib-inhab : CosCocEq F (Cos P₂ left) (PostComp (ColCoC F) 𝕕) K-diag
   W fib-inhab i x = idp

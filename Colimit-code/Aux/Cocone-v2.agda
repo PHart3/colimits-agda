@@ -23,8 +23,8 @@ module CC-v2-Constr {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
   open Maps F public
 
-  ϵ-v2 : ! (ap right (cglue g (fun (F # i) a))) ∙ ap (right {d = SpCos} ∘ cin j) (snd (F <#> g) a) ∙ ! (glue (cin j a)) =-= ! (glue (cin i a))
-  ϵ-v2 =
+  ε-v2 : ! (ap right (cglue g (fun (F # i) a))) ∙ ap (right {d = SpCos} ∘ cin j) (snd (F <#> g) a) ∙ ! (glue (cin j a)) =-= ! (glue (cin i a))
+  ε-v2 =
     ! (ap right  (cglue g (fun (F # i) a))) ∙ (ap (right ∘ cin j) (snd (F <#> g) a)) ∙ (! (glue (cin j a)))
       =⟪ E₁-v2 (snd (F <#> g) a) ⟫
     ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a))
@@ -64,5 +64,5 @@ module CC-v2-Constr {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
           lemma2 idp idp = idp
 
   abstract
-    ϵ-Eq : ϵ g g a =ₛ ϵ-v2
-    ϵ-Eq = E-eq (λ z → (! (glue z))) (snd (F <#> g) a) (id-βr g a) (cglue g (fun (F # i) a)) (ψ-βr g a)
+    ε-Eq : ε g g a =ₛ ε-v2
+    ε-Eq = E-eq (λ z → (! (glue z))) (snd (F <#> g) a) (id-βr g a) (cglue g (fun (F # i) a)) (ψ-βr g a)

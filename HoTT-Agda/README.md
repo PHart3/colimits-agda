@@ -3,9 +3,10 @@ Homotopy Type Theory in Agda
 
 This directory contains a heavily stripped-down version of Andrew Swan's [branch](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) of the
 HoTT-Agda library. It also contains a bunch of additional auxiliary lemmas, which arose
-during our development of coslice colimits. Finally, it contains a new verification of the
+during our development of coslice colimits. Finally, it contains a verification of the
 2-coherence of the Suspension-Loop adjunction, which itself relies on a bunch of new auxiliary
-lemmas. The structure of the source code is described below.
+lemmas. We prove that Suspension preserves colimits as a corollary. The structure of the
+source code is described below.
 
 Setup
 -----
@@ -41,8 +42,8 @@ The main library is more or less divided into three parts.
 ### Homotopy (directory `theorems/homotopy/`)
 
 This directory contains a proof of the 2-coherence of the Suspension-Loop adjunction.
-This property of the adjunction is important because it ensures that the Suspension
-functor preserves colimits. The proof relies on our work on homogeneous types.
+This property of the adjunction lets us prove that the Suspension functor preserves
+colimits. The proof of 2-coherence relies on our work on homogeneous types.
 
 Citation
 --------

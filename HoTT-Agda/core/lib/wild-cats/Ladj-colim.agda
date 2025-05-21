@@ -15,8 +15,9 @@ module lib.wild-cats.Ladj-colim where
 module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {j₂}}
   {ℓv ℓe} {G : Graph ℓv ℓe} {Δ : Diagram G C}
   {L : Functor-wc C D} {R : Functor-wc D C} {adj : Adjunction L R}
+  (κ : ladj-is-2coher adj)
   {c : ob C} {K : Cocone Δ c} (cl : is-colim K) 
-  (κ : ladj-is-2coher adj) where
+  where
 
   private adj₀ = iso adj
 
