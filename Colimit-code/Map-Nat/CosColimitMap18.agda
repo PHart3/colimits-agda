@@ -1,14 +1,14 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
 open import lib.Basics
+open import lib.SIP
+open import lib.types.Colim
 open import lib.types.Pushout
 open import AuxPaths
 open import Helper-paths
 open import SIP-Cos
-open import SIP-Cos
 open import Coslice
 open import Diagram-Cos
-open import lib.types.Colim
 open import Cocone
 open import CosColimitMap00
 open import CosColimitPstCmp
@@ -38,8 +38,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : 
 module _ {ℓ₀ ℓ₁ ℓ₂ ℓ₃} {A₁ : Type ℓ₀} {A₂ : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} (f : B → C) (h : A₂ → B) (g : A₁ → B) where
 
   long-path-red-V : {c₁ c₂ : C} (p₁ : c₁ == c₂) {a₁ a₂ : A₂} (p₂ : a₁ == a₂) (p₃ : c₂ == f (h a₂))
-    {b : B} (p₄ : h a₂ == b) {z₁ z₂ : A₁} (p₆ : z₁  == z₂) (p₅ : g z₂ == b) {c : C} (p₇ : f b == c)
-    →
+    {b : B} (p₄ : h a₂ == b) {z₁ z₂ : A₁} (p₆ : z₁  == z₂) (p₅ : g z₂ == b) {c : C} (p₇ : f b == c) →
     (p₁ ∙ p₃ ∙ ! (ap (f ∘ h) p₂)) ∙ ap f (ap h p₂ ∙ p₄ ∙ ! p₅ ∙ ! (ap g p₆)) ∙ ap (f ∘ g) p₆ ∙ ap f p₅ ∙ p₇
       ==
     p₁ ∙ p₃ ∙ ap f p₄ ∙ p₇
@@ -157,8 +156,8 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         ap (_∙_ (ap (λ x → f (right (cin i x))) τ₁₀))
           (ap-cp-revR f (λ x → right (cin j x)) τ₁₃ (ap right (cglue g (fun (G # i) a))) ∙ idp)
       NatSq2-Λ-coher-aux2 τ₁₀ τ₁₃ =
-        IndFunHom
-          {P = λ h H →
+        ∼-ind
+          (λ h H →
             ! (ap (λ p → ! p ∙ idp) (ap-∘-∘-!-∙-rid f right (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)
               (H (fst (nat δ i) (fun (F # i) a))))) ∙
             long-path-red {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)} idp idp idp
@@ -179,7 +178,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
             long-path-red-V (λ x → f (right (cin j x))) (fst (G <#> g))
               (fst (nat δ j)) (ap (λ x → f (right (h x))) τ₁₀) τ₁₀
               (! (ap f (ap right (H (fun (G # i) a))))) τ₁₃ idp idp idp ∙
-            ap (_∙_ (ap (λ x → f (right (h x))) τ₁₀)) (ap-cp-revR f (λ x → right (cin j x)) τ₁₃ (ap right (H (fun (G # i) a))) ∙ idp)}
+            ap (_∙_ (ap (λ x → f (right (h x))) τ₁₀)) (ap-cp-revR f (λ x → right (cin j x)) τ₁₃ (ap right (H (fun (G # i) a))) ∙ idp))
           (NatSq2-Λ-coher-aux3 τ₁₀ τ₁₃)
           (cin i) (cglue g)
 
