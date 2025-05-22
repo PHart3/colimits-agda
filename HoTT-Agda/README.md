@@ -11,8 +11,8 @@ source code is described below.
 Setup
 -----
 
-The library is compatible with Agda 2.6.3 and 2.6.4. To use it, include at least the path to
-`hott-core.agda-lib` in your Agda library list.
+The library is compatible with Agda 2.6.3 and 2.6.4.
+To use it, include `hott-core.agda-lib` and `hott-theorems.agda-lib` to your Agda library file.
 
 Agda Options
 ------------

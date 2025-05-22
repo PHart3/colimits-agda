@@ -1,14 +1,14 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
-{- Formation of A-cocone structure on pushout -}
-
 open import lib.Basics
 open import lib.types.Pushout
 open import lib.types.Span
 open import lib.types.Colim
 open import Coslice
-open import Diagram
+open import Diagram-Cos
 open import AuxPaths
+
+{- formation of A-cocone structure on pushout -}
 
 module Cocone where
 
@@ -63,7 +63,7 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
           =⟪ E₁ (snd (F <#> g) a) (! (glue (cin j a))) ⟫
         ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ idp
           =⟪ ! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ p)
-               (ap (ap left) (id-βr g a))) ⟫
+                 (ap (ap left) (id-βr g a))) ⟫
         ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ ap left (ap [id] (cglue g a))
           =⟪ E₃ (λ x → ! (glue x)) (cglue g a) (ψ-βr g a) (λ x → idp) ⟫
         ! (glue (cin i a)) ∙ idp

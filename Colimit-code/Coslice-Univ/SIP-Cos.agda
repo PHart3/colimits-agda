@@ -6,7 +6,7 @@ open import lib.types.Sigma
 open import lib.types.Pi
 open import Helper-paths
 open import Coslice
-open import Diagram
+open import Diagram-Cos
 
 module SIP-Cos where
 

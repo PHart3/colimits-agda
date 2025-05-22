@@ -2,7 +2,7 @@
 
 open import lib.Basics
 open import Coslice
-open import Diagram
+open import Diagram-Cos
 open import lib.types.Colim
 open import SIP-Cos
 open import CC-Equiv-RLR-0

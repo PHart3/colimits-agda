@@ -7,8 +7,8 @@
 
 - `HoTT-Agda/`
 
-  A stripped down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
-  with local changes for general lemmas we proved during the development of coslice colimits.
+  A stripped-down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
+  with specific additions and local changes for general lemmas used in our development of colimits.
 
   In addition, it includes wild category theory, centered on 2-coherent left adjoints. We prove that such adjoints preserve
   colimits (over graphs). Moreover, we prove that the Suspension functor is a 2-coherent left adjoint to Loop-space, for which

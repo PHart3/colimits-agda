@@ -7,7 +7,7 @@ open import Helper-paths
 open import SIP-Cos
 open import SIP-Cos
 open import Coslice
-open import Diagram
+open import Diagram-Cos
 open import lib.types.Colim
 open import Cocone
 open import CosColimitMap00

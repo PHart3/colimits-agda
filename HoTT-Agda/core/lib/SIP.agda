@@ -64,3 +64,47 @@ module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
 
   funhom-contr-to : is-contr (Σ (Π A B) (λ g → g ∼ f))
   funhom-contr-to = equiv-preserves-level (Σ-emap-r (λ g → app=-equiv)) {{pathto-is-contr f}}
+
+-- helper equality
+
+module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {E : Type ℓ₅} {τ : A → B}
+  {h : C → A} {v : C → D} {u : D → B} {f : B → E} where
+
+  cmp-helper : {x y : C} (p : x == y) (s : h x == h y) (r : (z : C) → u (v z) == τ (h z)) {k : A → E} (fₚ : f ∘ τ ∼ k) →
+    ! (ap (f ∘ u) (ap v p)) ∙
+    (ap (f ∘ u) (ap v p) ∙ (ap f (r y) ∙ fₚ (h y)) ∙ ! (ap k s)) ∙
+    ap k s ∙ ! (ap f (r y) ∙ fₚ (h y))
+      ==
+    ! (ap (f ∘ u) (ap v p)) ∙
+    (ap f (r x) ∙ fₚ (h x)) ∙
+    ap k s ∙ ! (ap f (! (ap u (ap v p)) ∙ r x ∙ ap τ s) ∙ fₚ (h y)) 
+  cmp-helper {x = x} {y = y} p s r {k = k} fₚ =
+    ∼-ind
+      (λ m F →
+        ! (ap (f ∘ u) (ap v p)) ∙ (ap (f ∘ u) (ap v p) ∙ (ap f (r y) ∙ F (h y)) ∙ ! (ap m s)) ∙ ap m s ∙ ! (ap f (r y) ∙ F (h y))
+          ==
+        ! (ap (f ∘ u) (ap v p)) ∙ (ap f (r x) ∙ F (h x)) ∙ ap m s ∙ ! (ap f (! (ap u (ap v p)) ∙ r x ∙ ap τ s) ∙ F (h y)))
+      (coher1 s p (r y) ∙ coher2 s p (r x))
+      k fₚ
+    module CMPH where
+      coher1 : {a b : A} (σ : a == b) {c d : C} (P : c == d) (R : u (v d) == τ b)
+        → ! (ap (f ∘ u) (ap v P)) ∙ (ap (f ∘ u) (ap v P) ∙ (ap f R ∙ idp) ∙ ! (ap (f ∘ τ) σ)) ∙ ap (f ∘ τ) σ ∙ ! (ap f R ∙ idp) == idp
+      coher1 idp idp R = fun-rid-inv1 R
+
+      coher2 : {a b : A} (σ : a == b) {c d : C} (P : c == d) (R : u (v c) == τ a)
+        → idp == ! (ap (f ∘ u) (ap v P)) ∙ (ap f R ∙ idp) ∙ ap (f ∘ τ) σ ∙ ! (ap f (! (ap u (ap v P)) ∙ R ∙ ap τ σ) ∙ idp)
+      coher2 idp idp R = fun-rid-inv2 R
+
+  ap-pth-unitr : (x : C) (r : (z : C) → u (v z) == τ (h z)) →
+    ! (ap (λ q → q ∙ ! (ap f (r x) ∙ idp)) (! (∙-unit-r (ap f (r x) ∙ idp)))) ∙
+    ! (ap (λ q → (ap f (r x) ∙ idp) ∙ q) (ap ! (ap (λ q → q ∙ idp) (ap (ap f) (∙-unit-r (r x))))))
+      ==
+    CMPH.coher1 {x = x} idp idp r (λ x₁ → idp) idp idp (r x) ∙ CMPH.coher2 {x = x} idp idp r (λ x₁ → idp) idp idp (r x)
+  ap-pth-unitr x r = lemma (r x)
+    where
+      lemma : {b : B} (R : b == τ (h x)) →
+        ! (ap (λ q → q ∙ ! (ap f R ∙ idp)) (! (∙-unit-r (ap f R ∙ idp)))) ∙
+        ! (ap (_∙_ (ap f R ∙ idp)) (ap ! (ap (λ q → q ∙ idp) (ap (ap f) (∙-unit-r R)))))
+          ==
+        fun-rid-inv1 R ∙ fun-rid-inv2 R
+      lemma idp = idp

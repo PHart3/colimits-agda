@@ -1,11 +1,12 @@
 {-# OPTIONS --without-K --confluence-check --rewriting #-}
 
-{- Definition of colimit HIT and its basic theory -}
-
 open import lib.Basics
-open import Diagram
+open import lib.types.Graph
+open import lib.types.Diagram
 
-module Colim where 
+-- definition of colimit HIT and its basic theory
+
+module lib.types.Colim where 
 
 module _ {ℓv ℓe}  where
 

@@ -1,11 +1,12 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
 open import lib.Basics
+open import lib.SIP
+open import lib.types.Colim
 open import lib.types.Pushout
 open import lib.types.Span
 open import Coslice
-open import Diagram
-open import lib.types.Colim
+open import Diagram-Cos
 open import SIP-Cos
 open import AuxPaths-v2
 open import CC-Equiv-LRL-0
@@ -120,13 +121,14 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
           =ₛ
         apd-tr-refl {f = f ∘ right} {h = ψ} (cglue g a) ◃∎
       ζ₂ {k} κ =
-        IndFunHom
-          {P = λ k₁ κ₁ →
+        ∼-ind
+          (λ k₁ κ₁ →
             ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ κ₁ a)) ◃∙
             cmp-helper {τ = left} {h = [id]} {v = ψ} {u = right} {f = f} (cglue g a) idp (λ x → ! (glue x)) κ₁ ◃∙
             inv-canc-cmp f right (ap ψ (cglue g a)) (! (glue (cin j a))) (κ₁ a) ◃∎
               =ₛ
-            apd-tr-refl {f = f ∘ right} {h = ψ} (cglue g a) ◃∎} lemma k κ
+            apd-tr-refl {f = f ∘ right} {h = ψ} (cglue g a) ◃∎)
+          lemma k κ
         where
           lemma :
             ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ idp)) ◃∙
@@ -139,7 +141,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
             cmp-helper {τ = left} {h = [id]} {v = ψ} {u = right} {f = f} (cglue g a) idp (λ x → ! (glue x)) (λ x → idp) ◃∙
             inv-canc-cmp f right (ap ψ (cglue g a)) (! (glue (cin j a))) idp ◃∎
               =ₛ₁⟨ 1 & 1 &
-                   IndFunHom-β
+                   ∼-ind-β
                      {P = λ m F →
                        ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap (f ∘ right) (ap ψ (cglue g a)) ∙ (ap f (! (glue (cin i a))) ∙ F a) ∙ idp) ∙ ! (ap f (! (glue (cin i a))) ∙ F a)
                          ==

@@ -3,7 +3,7 @@
 open import lib.Basics
 open import lib.types.Pushout
 open import Coslice
-open import Diagram
+open import Diagram-Cos
 open import lib.types.Colim
 open import Cocone
 open import CC-Equiv-LRL-7

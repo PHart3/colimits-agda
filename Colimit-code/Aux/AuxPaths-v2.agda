@@ -1,6 +1,7 @@
-{-# OPTIONS --without-K --rewriting  #-}
+{-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.SIP
 open import SIP-Cos
 module AuxPaths-v2 where
 
@@ -79,15 +80,16 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂
         ==
       cmp-helper {f = f} p S r fₚ
     𝕏 {x = x} idp idp r {k = k} fₚ =
-      IndFunHom
-        {P = λ g F →
+      ∼-ind
+        (λ g F →
           ! (ap (λ q → q ∙ ! (ap f (r x) ∙ F (h x))) (! (∙-unit-r (ap f (r x) ∙ F (h x))))) ∙
           ! (ap (λ q → (ap f (r x) ∙ F (h x)) ∙ q) (ap ! (ap (λ q → q ∙ F (h x))
             (ap (ap f) (∙-unit-r (r x))))))
             ==
-          cmp-helper {v = v} {u = u} {f = f} idp idp r {k = g} F} (ap-pth-unitr {τ = τ} {h = h} {v = v} {u = u} {f = f} x r ∙
-          ! (IndFunHom-β
-              {P = λ _ G → ((ap f (r x) ∙ G (h x)) ∙ idp) ∙ ! (ap f (r x) ∙ G (h x)) == (ap f (r x) ∙ G (h x)) ∙ ! (ap f (r x ∙ idp) ∙ G (h x))}
-              (CMPH.coher1 {τ = τ} {h = h} {v = v} {u = u} {x = x} idp idp r (λ x₁ → idp) idp idp (r x) ∙
-                CMPH.coher2 {τ = τ} {h = h} {v = v} {u = u} {x = x} idp idp r (λ x₁ → idp) idp idp (r x) )))
-              k fₚ
+          cmp-helper {v = v} {u = u} {f = f} idp idp r {k = g} F)
+        (ap-pth-unitr {τ = τ} {h = h} {v = v} {u = u} {f = f} x r ∙
+        ! (∼-ind-β
+            {P = λ _ G → ((ap f (r x) ∙ G (h x)) ∙ idp) ∙ ! (ap f (r x) ∙ G (h x)) == (ap f (r x) ∙ G (h x)) ∙ ! (ap f (r x ∙ idp) ∙ G (h x))}
+            (CMPH.coher1 {τ = τ} {h = h} {v = v} {u = u} {x = x} idp idp r (λ x₁ → idp) idp idp (r x) ∙
+             CMPH.coher2 {τ = τ} {h = h} {v = v} {u = u} {x = x} idp idp r (λ x₁ → idp) idp idp (r x))))
+        k fₚ

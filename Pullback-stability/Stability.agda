@@ -3,8 +3,9 @@
 open import lib.Basics
 open import lib.types.Cospan
 open import lib.types.Pullback
-open import Diagram
-open import Colim
+open import lib.types.Colim
+open import lib.types.Graph
+open import lib.types.Diagram
 open import Path-alg
 
 module Stability where
