@@ -8,10 +8,11 @@ isomorphism.
 ## Organization
 
 - The `Aux/` folder contains auxiliary definitions and lemmas,
-  including the inductive definition of ordinary colimits and
-  the basic development of coslices of Type.
+  usually formulated in an ad-hoc manner.
 
-  - The file `Aux/Cocone.agda` contains the definition of
+- The `Coslice-Univ/` folder contains the basic development of coslices of Type.
+
+  - The file `Coslice-Univ/Cocone.agda` contains the definition of
     the colimiting pushout together with its A-cocone structure.
   - This pushout and its A-cocone structure are described
     in **Section 5.3** of the (CSL) paper.
