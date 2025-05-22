@@ -5,7 +5,7 @@ open import lib.types.Pushout
 open import Coslice
 open import Diagram
 open import AuxPaths
-open import Colim
+open import lib.types.Colim
 open import Cocone
 open import CosColimitMap00
 open import CosColimitMap06

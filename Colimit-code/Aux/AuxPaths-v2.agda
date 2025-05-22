@@ -1,8 +1,7 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
 open import lib.Basics
-open import FTID
-
+open import FTID-Cos
 module AuxPaths-v2 where
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} {x : A} {z : B} where

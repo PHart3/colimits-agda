@@ -5,9 +5,9 @@
 open import lib.Basics
 open import lib.types.Pushout
 open import lib.types.Span
+open import lib.types.Colim
 open import Coslice
 open import Diagram
-open import Colim
 open import AuxPaths
 
 module Cocone where

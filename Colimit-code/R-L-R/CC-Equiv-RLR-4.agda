@@ -3,7 +3,7 @@
 open import lib.Basics
 open import Coslice
 open import Diagram
-open import Colim
+open import lib.types.Colim
 open import FTID-Cos
 open import CC-Equiv-RLR-0
 open import CC-Equiv-RLR-3

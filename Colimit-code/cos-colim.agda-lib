@@ -5,5 +5,6 @@ include:
   Map-Nat
   R-L-R
   Aux
+  Coslice-Univ
   Main-Theorem
   Trunc-Cos

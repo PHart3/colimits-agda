@@ -119,7 +119,7 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
         is-equiv.g-f (e y) (D₁ Δ₁ f z))
       (! (ap (λ p →  (ap (D₁ Δ₂ f) p)) (is-equiv.adj (e x) z)) ∙
       ∘-ap (D₁ Δ₂ f) (comp μ x) (is-equiv.g-f (e x) z) ∙
-      hmtpy-nat-∙'-r (sq μ f) (is-equiv.g-f (e x) z)) ∙
+      hmtpy-nat-∙' (sq μ f) (is-equiv.g-f (e x) z)) ∙
       aux (sq μ f (is-equiv.g (e x) (comp μ x z))) (sq μ f z)
       where abstract
         aux : {t₁ t₂ : D₀ Δ₂ y}

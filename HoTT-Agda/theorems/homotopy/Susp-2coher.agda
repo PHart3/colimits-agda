@@ -338,7 +338,7 @@ module 2-coher-cmp {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd 
     β-red6 idp idp idp = idp
 
     Susp-fmap-∘-sq-rw : 
-      (hmtpy-nat-∙'-r (λ z → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ z)))
+      (hmtpy-nat-∙' (λ z → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ z)))
         (merid x ∙ ! (merid (pt W))) ∙ idp) ∙ idp
         ==
       ((ap-∘-long f₁ (Susp-fmap f₂ ∘ Susp-fmap f₃) (Susp-fmap (f₂ ∘ f₃))
@@ -388,7 +388,7 @@ module 2-coher-cmp {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd 
         (! (merid (pt W))))))
       (! (ap (λ q → q) (ap-∘ f₁ (Susp-fmap (f₂ ∘ f₃))
         (merid x ∙ ! (merid (pt W))))))
-      ((hmtpy-nat-∙'-r (λ z → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ z)))
+      ((hmtpy-nat-∙' (λ z → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ z)))
         (merid x ∙ ! (merid (pt W))) ∙ idp) ∙ idp)
       (ap-∙ f₁ (merid (f₂ (f₃ x))) (! (merid (f₂ (f₃ (pt W))))))
       (ap-∙ (f₁ ∘ (Susp-fmap f₂)) (merid (f₃ x)) (! (merid (f₃ (pt W)))))

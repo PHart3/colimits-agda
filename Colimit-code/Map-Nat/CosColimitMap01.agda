@@ -7,7 +7,7 @@ open import Diagram
 open import AuxPaths
 open import Helper-paths
 open import FTID-Cos
-open import Colim
+open import lib.types.Colim
 open import Cocone
 open import CosColimitMap00
 

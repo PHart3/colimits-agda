@@ -509,40 +509,46 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H 
   homotopy-naturality-rot {x} idp =
     =ₛ-in (∙-unit-r (! (H x)))
 
+  apeq : {x y : A} (p : x == y) → ap g p == ! (H x) ∙ ap f p ∙ H y
+  apeq {x = x} idp = ! (!-inv-l (H x))
+
+  apeq-rev : {x y : A} (p : x == y) → ap f p == H x ∙ ap g p ∙ ! (H y)
+  apeq-rev {x = x} idp = ! (!-inv-r (H x))
+
   apCommSq◃ : {x y : A} (p : x == y) → ap g p ◃∎ =ₛ ! (H x) ◃∙ ap f p ◃∙ H y ◃∎
-  apCommSq◃ {x = x} idp = =ₛ-in (! (!-inv-l (H x)))
+  apCommSq◃ {x} idp = =ₛ-in (! (!-inv-l (H x)))
 
   apCommSq2◃' : {x y : A} (p : x == y) → H x ◃∎ =ₛ ap f p ◃∙ H y ◃∙ ! (ap g p) ◃∎
-  apCommSq2◃' {x = x} idp = =ₛ-in (! (∙-unit-r (H x)))
+  apCommSq2◃' {x} idp = =ₛ-in (! (∙-unit-r (H x)))
 
   hmtpy-nat-! : {x y : A} (p : x == y) → ! (H x) == ap g p ∙ ! (H y) ∙ ! (ap f p)
-  hmtpy-nat-! {x = x} idp = ! (∙-unit-r (! (H x)))
+  hmtpy-nat-! {x} idp = ! (∙-unit-r (! (H x)))
 
   hmtpy-nat-!◃ : {x y : A} (p : x == y) → ! (H x) ◃∎ =ₛ ap g p ◃∙ ! (H y) ◃∙ ! (ap f p) ◃∎
-  hmtpy-nat-!◃ {x = x} idp = =ₛ-in (! (∙-unit-r (! (H x))))
+  hmtpy-nat-!◃ {x} idp = =ₛ-in (! (∙-unit-r (! (H x))))
 
   hmtpy-nat-!-sq : {x y : A} (p : x == y) → ! (H x) ∙ ap f p == ap g p ∙ ! (H y)
-  hmtpy-nat-!-sq {x = x} idp = ∙-unit-r (! (H x))
+  hmtpy-nat-!-sq {x} idp = ∙-unit-r (! (H x))
 
   hnat-sq-! : {x y : A} (p : x == y) → ! (H y) == ! (ap g p) ∙ ! (H x) ∙ ap f p
   hnat-sq-! {x} idp = ! (∙-unit-r (! (H x)))
 
-  hmtpy-nat-∙'-r : {x y : A} (p : x == y) → ap f p == H x ∙ ap g p ∙' ! (H y)
-  hmtpy-nat-∙'-r {x} idp = ! (!-inv-r (H x)) ∙ ap (λ p → H x ∙ p) (! (∙'-unit-l (! (H x))))
+  hmtpy-nat-∙' : {x y : A} (p : x == y) → ap f p == H x ∙ ap g p ∙' ! (H y)
+  hmtpy-nat-∙' {x} idp = ! (!-inv-r (H x)) ∙ ap (λ p → H x ∙ p) (! (∙'-unit-l (! (H x))))
 
   hmtpy-nat-∙◃ : {x y : A} (p : x == y) → ap f p ◃∎ =ₛ H x ◃∙ ap g p ◃∙ ! (H y) ◃∎
   hmtpy-nat-∙◃ {x} idp = =ₛ-in (! (!-inv-r (H x)))
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} where
 
-  hmtpy-nat-∙'-r-idp : {x y : A} (p : x == y) → hmtpy-nat-∙'-r {f = f} (λ x → idp) p == idp
-  hmtpy-nat-∙'-r-idp idp = idp
+  hmtpy-nat-∙'-idp : {x y : A} (p : x == y) → hmtpy-nat-∙' {f = f} (λ x → idp) p == idp
+  hmtpy-nat-∙'-idp idp = idp
 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {f : A → B} {g : A → C}
   (v : B → D) (u : C → D) (H : (x : A) → v (f x) == u (g x)) where
 
   apCommSq-cmp : {x y : A} (p : x == y) → ap v (ap f p) == H x ∙ ap u (ap g p) ∙ ! (H y)
-  apCommSq-cmp {x = x} idp = ! (!-inv-r (H x)) 
+  apCommSq-cmp {x} idp = ! (!-inv-r (H x)) 
 
 module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (f : A → B → C) where
 

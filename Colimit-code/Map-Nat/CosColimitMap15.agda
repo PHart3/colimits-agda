@@ -4,7 +4,7 @@ open import lib.Basics
 open import lib.types.Pushout
 open import Coslice
 open import Diagram
-open import Colim
+open import lib.types.Colim
 open import Cocone
 open import CosColimitMap00
 open import CosColimitMap12

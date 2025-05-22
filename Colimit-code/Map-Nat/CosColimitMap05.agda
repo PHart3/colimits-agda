@@ -6,7 +6,7 @@ open import Coslice
 open import Diagram
 open import Helper-paths
 open import AuxPaths
-open import Colim
+open import lib.types.Colim
 open import Cocone
 open import CosColimitMap00
 

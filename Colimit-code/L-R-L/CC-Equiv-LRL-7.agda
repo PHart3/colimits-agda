@@ -5,8 +5,8 @@ open import lib.types.Pushout
 open import lib.types.Span
 open import Coslice
 open import Diagram
-open import FTID
-open import Colim
+open import FTID-Cos
+open import lib.types.Colim
 open import CC-Equiv-LRL-0
 open import CC-Equiv-LRL-5
 open import CC-Equiv-LRL-6
