@@ -8,9 +8,9 @@ open import Helper-paths
 open import Coslice
 open import Diagram
 
-module FTID-Cos where
+module SIP-Cos where
 
--- identity system on A-maps formed by A-homotopy
+-- SIP for A-homotopy
 
 module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} (f : < A > X *→ Y) where
 
@@ -45,7 +45,7 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} (f : < A >
   PtFunEq : {g : X *→ Y} → (< X > f ∼ g) → f == g
   PtFunEq {g} = ID-ind-map {b = (λ _ → idp) , (λ _ → idp)} (λ g _ → f == g) PtFunHomContr idp
 
--- coordinate description of A-cocone identity
+-- SIP for A-cocone identity
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} where
 

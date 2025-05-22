@@ -8,7 +8,7 @@ open import Diagram
 open import Cocone
 open import Cocone-switch
 open import AuxPaths-v2
-open import FTID-Cos
+open import SIP-Cos
 open import lib.types.Colim
 open import CC-Equiv-LRL-2
 

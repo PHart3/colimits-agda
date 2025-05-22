@@ -3,7 +3,7 @@
 open import lib.Basics
 open import lib.types.Pushout
 open import Helper-paths
-open import FTID-Cos
+open import SIP-Cos
 open import Coslice
 open import Diagram
 open import lib.types.Colim
