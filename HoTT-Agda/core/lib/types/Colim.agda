@@ -22,8 +22,7 @@ module _ {ℓv ℓe}  where
   module ColimElim {ℓd ℓ} {Γ : Graph ℓv ℓe} {D : Diag ℓd Γ} {P : Colim {ℓd = ℓd} {Γ = Γ} D → Type ℓ}
     (cin* : (i : Obj Γ) (x : D # i) → P (cin i x))
     (cglue* : (i j : Obj Γ) (g : Hom Γ i j) (x : D # i)
-      → cin* j ((D <#> g) x) == cin* i x [ P ↓ cglue {i = i} {j = j} g x ])
-    where
+      → cin* j ((D <#> g) x) == cin* i x [ P ↓ cglue {i = i} {j = j} g x ]) where
 
     postulate  -- HIT
       colimE : Π (Colim {Γ = Γ} D) P
@@ -43,14 +42,12 @@ module _ {ℓv ℓe}  where
         → ! (ap h₁ (cglue g x)) ∙ H j ((D <#> g) x) ∙ ap h₂ (cglue g x)  == H i x )
       → h₁ ∼ h₂
     ColimMapEq {D = D} h₁ h₂ H = λ S → colimE H
-      (λ i → λ j → λ g → λ x → from-transp (λ x → h₁ x == h₂ x) (cglue g x)
-        (transp-pth (cglue g x) (H j ((D <#> g) x)) ∙ (S i j g x))  ) 
+      (λ i j g x → from-transp (λ x → h₁ x == h₂ x) (cglue g x) (transp-pth (cglue g x) (H j ((D <#> g) x)) ∙ (S i j g x))) 
 
     module ColimRec {ℓd ℓ} {D : Diag ℓd Γ} {V : Type ℓ}
       (cin* : (i : Obj Γ) → (D # i) → V)
       (cglue* :  (i j : Obj Γ) (g : Hom Γ i j) (x : D # i)
-        → cin* j ((D <#> g) x) == cin* i x)
-      where
+        → cin* j ((D <#> g) x) == cin* i x) where
 
       private
         module M = ColimElim cin* (λ i j g x → ↓-cst-in (cglue* i j g x))
@@ -72,8 +69,7 @@ module _ {ℓv ℓe}  where
     ColMap : Colim F → Colim G
     ColMap = M.colimR
 
-    MapComp : {i j : Obj Γ} (g : Hom Γ i j) (x : F # i)
-      →
+    MapComp : {i j : Obj Γ} (g : Hom Γ i j) (x : F # i)  →
       ap ColMap (cglue {i = i} {j = j} g x) == ! (ap (cin j) (comSq M g x)) ∙ (cglue {i = i} {j = j} g (nat M i x))
     MapComp g x = M.cglue-βr g x
 
