@@ -20,7 +20,7 @@ module Constr6 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
   𝕣 : (f* : < A > Cos P left *→ T) (i : Obj Γ) (a : A)
     →  (! (ap (fst f*) (glue (cin i a))) ∙ snd f* a) ∙ ap (fst (RLfun f*)) (glue (cin i a)) =-= idp
   𝕣 (f , fₚ) i a =
-    ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) (FPrecc-βr (PostComp ColCoC (f , fₚ)) (cin i a)) ◃∙
+    ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) (FPrecc-βr (PostComp-cos ColCoC (f , fₚ)) (cin i a)) ◃∙
     ap-inv-canc f (glue (cin i a)) (fₚ a) ◃∎
 
   module DiagCoher6 (i j : Obj Γ) (f : P → ty T) (fₚ : (a : A) → f (left a)  == fun T a) (g : Hom Γ i j) (a : A) where

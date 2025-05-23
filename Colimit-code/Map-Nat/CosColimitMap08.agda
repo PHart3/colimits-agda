@@ -86,7 +86,7 @@ module ConstrMap9 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       long-path-red d₄ (ap (right ∘ cin j) d₁ ∙ ! d₂)
         (ap 𝕕₀ (! d₃) ∙ idp)
         (ap 𝕕₀ (ap right (cglue g (fun (F # i) a)))) idp ◃∙
-      ap (λ q → q) (ap-cp-revR 𝕕₀ (right ∘ cin j) d₄ (ap right (cglue g (fun (F # i) a)))) ◃∙
+      ap (λ q → q) (!-ap-ap-∘-ap-∙ 𝕕₀ (right ∘ cin j) d₄ (ap right (cglue g (fun (F # i) a)))) ◃∙
       ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (E₁ d₄ (! d₃)))) ◃∙
       idp ◃∙
       ap2-!-!-!-rid2 𝕕₀ d₄ (cglue g (fun (F # i) a)) d₃ ◃∙

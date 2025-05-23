@@ -106,7 +106,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         long-path-red {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)}
           idp idp idp (ap f (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ idp))) idp ∙
         ap (λ q → q)
-          (ap-cp-revR f (right ∘ cin j ∘ fst (nat δ j)) idp (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ idp)) ∙
+          (!-ap-ap-∘-ap-∙ f (right ∘ cin j ∘ fst (nat δ j)) idp (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ idp)) ∙
           ap (λ p → ap f p ∙ idp)
             (ap (λ p → ! (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ p)) ∙ idp)
               (apCommSq2 (λ x → cin j (fst (G <#> g) x)) (λ v → cin j (fst (G <#> g) v)) (λ x → idp) τ₁₀) ∙
@@ -117,7 +117,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         ap (λ p → p ∙ ap (λ x → f (right (cin j x))) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp) ∙ idp) (hmtpy-nat-! (λ x → idp) τ₁₀) ∙
         long-path-red-V (λ x → f (right (cin j x))) (fst (G <#> g)) (fst (nat δ j))
           (ap (λ x → f (right (cin j (fst (G <#> g) x)))) τ₁₀) τ₁₀ idp τ₁₃ idp idp idp ∙
-        ap (_∙_ (ap (λ x → f (right (cin j (fst (G <#> g) x)))) τ₁₀)) (ap-cp-revR f (λ x → right (cin j x)) τ₁₃ idp ∙ idp)
+        ap (_∙_ (ap (λ x → f (right (cin j (fst (G <#> g) x)))) τ₁₀)) (!-ap-ap-∘-ap-∙ f (λ x → right (cin j x)) τ₁₃ idp ∙ idp)
       NatSq2-Λ-coher-aux3 {w} idp τ₁₃ = lemma τ₁₃
         where
           lemma : {z : ty (G # j)} (τ : fst (G <#> g) w == z) →
@@ -129,7 +129,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
               ==
             !-!-∙-pth (ap (λ x → f (right (cin j x))) (τ ∙ idp)) idp ∙
             ap-rid-∙ (λ x → f (right (cin j x))) τ idp ∙
-            ap (λ q → q) (ap-cp-revR f (λ x → right (cin j x)) τ idp ∙ idp)
+            ap (λ q → q) (!-ap-ap-∘-ap-∙ f (λ x → right (cin j x)) τ idp ∙ idp)
           lemma idp = idp
 
       NatSq2-Λ-coher-aux2 : (τ₁₀ : fst (nat δ i) (fun (F # i) a) == fun (G # i) a)
@@ -139,7 +139,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         long-path-red {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)} idp idp idp
           (ap f (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ cglue g (fst (nat δ i) (fun (F # i) a))))) idp ∙
         ap (λ q → q)
-          (ap-cp-revR f (right ∘ cin j ∘ fst (nat δ j)) idp
+          (!-ap-ap-∘-ap-∙ f (right ∘ cin j ∘ fst (nat δ j)) idp
             (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ cglue g (fst (nat δ i) (fun (F # i) a)))) ∙
           ap (λ p → ap f p ∙ idp)
             (ap (λ p → ! (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ p)) ∙ idp)
@@ -154,7 +154,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         long-path-red-V (λ x → f (right (cin j x))) (fst (G <#> g)) (fst (nat δ j))
           (ap (λ x → f (right (cin i x))) τ₁₀) τ₁₀ (! (ap f (ap right (cglue g (fun (G # i) a))))) τ₁₃ idp idp idp ∙
         ap (_∙_ (ap (λ x → f (right (cin i x))) τ₁₀))
-          (ap-cp-revR f (λ x → right (cin j x)) τ₁₃ (ap right (cglue g (fun (G # i) a))) ∙ idp)
+          (!-ap-ap-∘-ap-∙ f (λ x → right (cin j x)) τ₁₃ (ap right (cglue g (fun (G # i) a))) ∙ idp)
       NatSq2-Λ-coher-aux2 τ₁₀ τ₁₃ =
         ∼-ind
           (λ h H →
@@ -163,7 +163,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
             long-path-red {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)} idp idp idp
               (ap f (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ H (fst (nat δ i) (fun (F # i) a))))) idp ∙
             ap (λ q → q)
-              (ap-cp-revR f (right ∘ cin j ∘ fst (nat δ j)) idp
+              (!-ap-ap-∘-ap-∙ f (right ∘ cin j ∘ fst (nat δ j)) idp
               (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ H (fst (nat δ i) (fun (F # i) a)))) ∙
               ap (λ p → ap f p ∙ idp)
                 (ap (λ p → ! (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ p)) ∙ idp)
@@ -178,7 +178,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
             long-path-red-V (λ x → f (right (cin j x))) (fst (G <#> g))
               (fst (nat δ j)) (ap (λ x → f (right (h x))) τ₁₀) τ₁₀
               (! (ap f (ap right (H (fun (G # i) a))))) τ₁₃ idp idp idp ∙
-            ap (_∙_ (ap (λ x → f (right (h x))) τ₁₀)) (ap-cp-revR f (λ x → right (cin j x)) τ₁₃ (ap right (H (fun (G # i) a))) ∙ idp))
+            ap (_∙_ (ap (λ x → f (right (h x))) τ₁₀)) (!-ap-ap-∘-ap-∙ f (λ x → right (cin j x)) τ₁₃ (ap right (H (fun (G # i) a))) ∙ idp))
           (NatSq2-Λ-coher-aux3 τ₁₀ τ₁₃)
           (cin i) (cglue g)
 
@@ -190,7 +190,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         long-path-red {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)} idp idp idp
           (ap f (ap right (! (ap (cin j) σ₁) ∙ cglue g (fst (nat δ i) (fun (F # i) a))))) idp ∙
         ap (λ q → q)
-          (ap-cp-revR f (right ∘ cin j ∘ fst (nat δ j)) idp
+          (!-ap-ap-∘-ap-∙ f (right ∘ cin j ∘ fst (nat δ j)) idp
           (ap right (! (ap (cin j) σ₁) ∙ cglue g (fst (nat δ i) (fun (F # i) a)))) ∙
           ap (λ p → ap f p ∙ idp)
             (ap (λ p → ! (ap right p) ∙ idp)
@@ -210,7 +210,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
           (ap (λ x → f (right (cin i x))) τ₁₀) τ₁₀
           (! (ap f (ap right (cglue g (fun (G # i) a))))) τ₁₃ idp idp idp ∙
         ap (_∙_ (ap (λ x → f (right (cin i x))) τ₁₀))
-          (ap-cp-revR f (λ x → right (cin j x)) τ₁₃ (ap right (cglue g (fun (G # i) a))) ∙ idp)
+          (!-ap-ap-∘-ap-∙ f (λ x → right (cin j x)) τ₁₃ (ap right (cglue g (fun (G # i) a))) ∙ idp)
       NatSq2-Λ-coher-aux τ₁₀ τ₁₃ idp = NatSq2-Λ-coher-aux2 τ₁₀ τ₁₃
 
       NatSq2-Λ-coher : {x : ty (F # j)} (τ₅ : fst (F <#> g) (fun (F # i) a) == x) {y : ty (G # j)} (τ₆ : fst (nat δ j) x == y)
@@ -237,7 +237,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
           (ap f (ap (λ x → right (cin j x)) τ₆ ∙ τ₇) ∙ τ₈)
           (ap f (ap right (! (ap (cin j) (comSq δ g (fun (F # i) a))) ∙ (cglue g (fst (nat δ i) (fun (F # i) a)))))) idp ◃∙
         ap (λ q → q)
-          (ap-cp-revR f (right ∘ cin j ∘ fst (nat δ j)) τ₅
+          (!-ap-ap-∘-ap-∙ f (right ∘ cin j ∘ fst (nat δ j)) τ₅
             (ap right (! (ap (cin j) (comSq δ g (fun (F # i) a))) ∙ (cglue g (fst (nat δ i) (fun (F # i) a))))) ∙
           ap (λ p → ap f p ∙ τ₈)
             (ap (λ p → ! (ap right p) ∙
@@ -271,11 +271,11 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
           (fst (nat δ j)) (ap (λ x → f (right (cin i x))) τ₁₀) τ₁₀
           (! (ap f (ap right (cglue g (fun (G # i) a))))) τ₁₃ τ₅ τ₆ (ap f τ₇ ∙ τ₈) ∙
         ap (_∙_ (ap (λ x → f (right (cin i x))) τ₁₀))
-          (ap-cp-revR f (λ x → right (cin j x)) τ₁₃ (ap right (cglue g (fun (G # i) a))) ∙
+          (!-ap-ap-∘-ap-∙ f (λ x → right (cin j x)) τ₁₃ (ap right (cglue g (fun (G # i) a))) ∙
             ap (λ p → p ∙ τ₈) (ap (ap f) τ₁))) ◃∎
       NatSq2-Λ-coher idp idp idp idp τ₁₀ τ₁₃ τ₁₄ idp = =ₛ-in (NatSq2-Λ-coher-aux τ₁₀ τ₁₃ τ₁₄)
 
-    CosColim-NatSq2 : CosCocEq F T (Map-to-Lim-map F (f , fₚ) K-diag) (Diag-to-Lim-map (PostComp ColCoC (f , fₚ)))
+    CosColim-NatSq2 : CosCocEq F T (Map-to-Lim-map F (f , fₚ) K-diag) (Diag-to-Lim-map (PostComp-cos ColCoC (f , fₚ)))
     W CosColim-NatSq2 i x = idp
     u CosColim-NatSq2 i a = ap-∘-∙-∙ f (right ∘ cin i) (snd (nat δ i) a) (! (glue (cin i a)))
     Λ CosColim-NatSq2 {i} {j} g =
@@ -288,5 +288,5 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         E₃ (λ x → ! (glue x)) (cglue g a) (ψ₂-βr g a) (λ x → idp) ∙
         ∙-unit-r (! (glue (cin i a))))
 
-    CosColim-NatSq2-eq : Map-to-Lim-map F (f , fₚ) K-diag == Diag-to-Lim-map (PostComp ColCoC (f , fₚ))
+    CosColim-NatSq2-eq : Map-to-Lim-map F (f , fₚ) K-diag == Diag-to-Lim-map (PostComp-cos ColCoC (f , fₚ))
     CosColim-NatSq2-eq = CosCocEq-ind F T (Map-to-Lim-map F (f , fₚ) K-diag) (CosColim-NatSq2)

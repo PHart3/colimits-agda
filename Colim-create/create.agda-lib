@@ -1,7 +1,6 @@
-name: stab
+name: create
 depend:
   hott-core-modified
   cos-colim
-  create
 include:
   ./

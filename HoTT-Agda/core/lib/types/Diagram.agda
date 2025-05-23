@@ -29,3 +29,10 @@ record Cocone {i k} {G : Graph ℓv ℓe} (F : Diag i G) (C : Type k)
     comp : (x : Obj G) → F # x → C
     comTri : ∀ {y x : Obj G} (f : Hom G x y) (z : F # x) → comp y ((F <#> f) z) == comp x z
 open Cocone public
+
+module _ {ℓ₁ ℓ₂} {Γ : Graph ℓv ℓe} {F : Diag ℓd Γ} {C : Type ℓ₁} {D : Type ℓ₂} where
+
+  -- canonical post-composition function on cocones
+  PostComp : Cocone F C → (C → D) → Cocone F D
+  comp (PostComp K f) x = f ∘ comp K x
+  comTri (PostComp K f) g z = ap f (comTri K g z)

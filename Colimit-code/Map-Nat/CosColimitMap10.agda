@@ -48,7 +48,7 @@ module ConstrMap11 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
       long-path-red (snd (F <#> g) a) (ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
         (ap 𝕕₀ (! (glue (cin j a))) ∙ idp)
         (ap 𝕕₀ (ap right (cglue g (fun (F # i) a)))) idp ◃∙
-      ap (λ q → q) (ap-cp-revR 𝕕₀ (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))) ◃∙
+      ap (λ q → q) (!-ap-ap-∘-ap-∙ 𝕕₀ (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))) ◃∙
       ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (E₁ (snd (F <#> g) a) (! (glue (cin j a)))))) ◃∙
       ap (λ q → q)
         (ap (λ p → p ∙ idp)
@@ -112,7 +112,7 @@ module ConstrMap11 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
       long-path-red (snd (F <#> g) a) (ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
         (ap 𝕕₀ (! (glue (cin j a))) ∙ idp)
         (ap 𝕕₀ (ap right (cglue g (fun (F # i) a)))) idp ◃∙
-      ap (λ q → q) (ap-cp-revR 𝕕₀ (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))) ◃∙
+      ap (λ q → q) (!-ap-ap-∘-ap-∙ 𝕕₀ (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))) ◃∙
       ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (E₁ (snd (F <#> g) a) (! (glue (cin j a)))))) ◃∙
       ap (λ q → q)
         (ap (λ p → p ∙ idp)

@@ -19,7 +19,7 @@ module Constr {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F
   open Recc T public
 
   RLfun : (< A > Cos P left *→ T) →  (< A > Cos P left *→ T)
-  RLfun f* = recCosCoc (PostComp ColCoC f*) 
+  RLfun f* = recCosCoc (PostComp-cos ColCoC f*) 
 
   RfunEq : (f* : < A > Cos P left *→ T) → fst f* ∘ right ∼ fst (RLfun f*) ∘ right
   RfunEq (f , fₚ) =
@@ -32,8 +32,8 @@ module Constr {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F
       V i j g x =
         transport (λ z → (f ∘ right) z == (fst (RLfun (f , fₚ)) ∘ right) z) (cglue g x) idp
           =⟪ transp-pth {f = f ∘ right} {g = fst (RLfun (f , fₚ)) ∘ right} (cglue g x)  idp ⟫
-        ! (ap (f ∘ right) (cglue g x)) ∙ ap (reccForg (PostComp ColCoC (f , fₚ))) (cglue g x)
-          =⟪ ap (λ p → ! (ap (f ∘ right) (cglue g x)) ∙ p) (recc-βr (PostComp ColCoC (f , fₚ)) g x) ⟫
+        ! (ap (f ∘ right) (cglue g x)) ∙ ap (reccForg (PostComp-cos ColCoC (f , fₚ))) (cglue g x)
+          =⟪ ap (λ p → ! (ap (f ∘ right) (cglue g x)) ∙ p) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g x) ⟫
         ! (ap (f ∘ right) (cglue g x)) ∙ (ap f (ap right (cglue g x)))
           =⟪ cmp-inv-l (cglue g x) ⟫ 
         idp ∎∎

@@ -31,7 +31,7 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
   AdjSq-PostCmp : ∀ {ℓd ℓc₁ ℓc₂} (F : CosDiag ℓd ℓ A Γ) {T : Coslice ℓc₁ ℓ A} {U : Coslice ℓc₂ ℓ A}
     (φ : T *→ U) (f* : (Cos (P F) left) *→ T)
-    → Map-to-Lim-map F φ (PostComp (ColCoC F) f*) == PostComp (ColCoC F) (φ ∘* f*)
+    → Map-to-Lim-map F φ (PostComp-cos (ColCoC F) f*) == PostComp-cos (ColCoC F) (φ ∘* f*)
   AdjSq-PostCmp F φ (f , fₚ) = CosColim-NatSq1-eq F φ f fₚ 
 
 -- The second naturality square, arising from pre-composition with the diagram map
@@ -43,5 +43,5 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
     open ConstrMap19 δ
 
     AdjSq-PreCmp : ∀ {ℓc} {T : Coslice ℓc ℓ A} (f* : (Cos P₂ left) *→ T)
-      → Diag-to-Lim-map (PostComp (ColCoC G) f*) == PostComp (ColCoC F) (f* ∘* 𝕕)
+      → Diag-to-Lim-map (PostComp-cos (ColCoC G) f*) == PostComp-cos (ColCoC F) (f* ∘* 𝕕)
     AdjSq-PreCmp f* = NatSq-PreCmp δ f*

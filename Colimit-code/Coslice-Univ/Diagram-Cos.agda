@@ -48,18 +48,18 @@ record CosCocone {i j k} (A : Type j) {G : Graph ℓv ℓe} (F : CosDiag i j A G
     comTri : ∀ {y x : Obj G} (f : Hom G x y) → [ A , F # x ] (< A > comp y ∘ F <#> f) ∼ comp x
 open CosCocone public
 
--- some operations on coslice cocones
+module _ {ℓ₁ ℓ₂ k} {A : Type ℓ₂} {Γ : Graph ℓv ℓe} {F : CosDiag ℓ₁ ℓ₂ A Γ} {C : Coslice k ℓ₂ A} where
 
-module _ {ℓi ℓj k} {A : Type ℓj} {Γ : Graph ℓv ℓe} {F : CosDiag ℓi ℓj A Γ} {C : Coslice k ℓj A} where
-
-  ForgCoc : (CosCocone A F C) → Cocone (DiagForg A Γ F) (ty C)
+  -- forgetful map
+  ForgCoc : CosCocone A F C → Cocone (DiagForg A Γ F) (ty C)
   comp (ForgCoc (K & _)) i = fst (K i)
   comTri (ForgCoc (_ & r)) {y = j} {x = i} g = fst (r g)
 
-  PostComp : ∀ {k'} {D : Coslice k' ℓj A} → CosCocone A F C → (< A > C *→ D) → CosCocone A F D
-  comp (PostComp K (f , fₚ)) i = f ∘ (fst (comp K i)) , λ a → ap f (snd (comp K i) a) ∙ fₚ a 
-  comTri (PostComp K (f , fₚ)) {y = j} {x = i} g =
+  -- canonical post-composition function on cocones
+  PostComp-cos : ∀ {k'} {D : Coslice k' ℓ₂ A} → CosCocone A F C → (< A > C *→ D) → CosCocone A F D
+  comp (PostComp-cos K (f , fₚ)) i = f ∘ (fst (comp K i)) , λ a → ap f (snd (comp K i) a) ∙ fₚ a 
+  comTri (PostComp-cos K (f , fₚ)) {y = j} {x = i} g =
     (λ x → ap f (fst (comTri K g) x)) ,
     λ a →
-      ap-cp-revR f (fst (comp K j)) (snd (F <#> g) a) (fst (comTri K g) (fun (F # i) a)) ∙
+      !-ap-ap-∘-ap-∙ f (fst (comp K j)) (snd (F <#> g) a) (fst (comTri K g) (fun (F # i) a)) ∙
       ap (λ p → p ∙ fₚ a) (ap (ap f) (snd (comTri K g) a))

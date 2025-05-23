@@ -44,7 +44,7 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
       long-path-red (snd (F <#> g) a) (ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
         (ap 𝕕₀ (! (glue (cin j a))) ∙ idp) (ap 𝕕₀ (ap right (cglue g (fun (F # i) a)))) idp ◃∙
       ap (λ q → q)
-        (ap-cp-revR 𝕕₀ (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a))) ∙
+        (!-ap-ap-∘-ap-∙ 𝕕₀ (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a))) ∙
           ap (λ p → p ∙ idp)
             (ap (ap 𝕕₀)
               (E₁ (snd (F <#> g) a) (! (glue {d = SpCos₁} (cin j a))) ∙
@@ -97,7 +97,7 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
         (snd (F <#> g) a) (snd (nat δ j) a) (cglue g (fun (G # i) a)) (! (glue (cin j a))) ◃∙
       ap (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p) (↯ (ε G g g a)) ◃∎ ∎ₛ      
 
-  fib-inhab : CosCocEq F (Cos P₂ left) (PostComp (ColCoC F) 𝕕) K-diag
+  fib-inhab : CosCocEq F (Cos P₂ left) (PostComp-cos (ColCoC F) 𝕕) K-diag
   W fib-inhab i x = idp
   u fib-inhab i a = ↯ $
     ap 𝕕₀ (! (glue (cin i a))) ∙ idp

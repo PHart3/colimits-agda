@@ -189,31 +189,29 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     ap-∙ g (ap f v) idp ∙ idp
   ap-∘2-ap-∙ idp = idp
 
-  ap-cp-rev : {w : C} {z : B} {x y : A} (p : x == y) (q : f x == z) (r : g (f y) == w) →
-    ! (ap g q) ∙ ap (g ∘ f) p ∙ r == ! (ap g (! (ap f p) ∙ q)) ∙  r
-  ap-cp-rev idp q r = idp
+  ap-∘-rev : {w : C} {z : B} {x y : A} (p : x == y) (q : f x == z) (r : g (f y) == w) →
+    ! (ap g q) ∙ ap (g ∘ f) p ∙ r == ! (ap g (! (ap f p) ∙ q)) ∙ r
+  ap-∘-rev idp q r = idp
 
-  ap-cp-revR : {x y : A} (q : x == y) {w : B} {z : C} {r : f y == w} {s : g w == z} {b : B} (p : f x == b) 
+  !-ap-ap-∘-ap-∙ : {x y : A} (q : x == y) {w : B} {z : C} {r : f y == w} {s : g w == z} {b : B} (p : f x == b) 
     → ! (ap g p) ∙ (ap (g ∘ f) q) ∙ (ap g r) ∙ s == ap g (! p ∙ ap f q ∙ r) ∙ s
-  ap-cp-revR idp {r = r} {s = s} p = !-ap-∙-s g p {r = r} {s = s}
+  !-ap-ap-∘-ap-∙ idp {r = r} {s = s} p = !-ap-∙-s g p {r = r} {s = s}
 
-  ap-cmp-rev-s : {x y : A} (q : x == y) {z : B} {p : f x == z}
+  ap-cmp-rev-◃ : {x y : A} (q : x == y) {z : B} {p : f x == z}
     → ap g ((! (ap f q)) ∙ p) ◃∎ =ₛ ! (ap (g ∘ f) q) ◃∙ ap g p ◃∎
-  ap-cmp-rev-s idp = =ₛ-in idp
+  ap-cmp-rev-◃ idp = =ₛ-in idp
 
   inv-canc-cmp : {a b : A} (p : a == b) {z : B} (S : f a == z) {w : C} (gₚ : g z == w)
     → ! (ap (g ∘ f) p) ∙ (ap g S ∙ gₚ) ∙ ! (ap g (! (ap f p) ∙ S ∙ idp) ∙ gₚ) == idp
   inv-canc-cmp idp idp idp = idp
 
-  ap-!-∘-rid-coher : {x y : A} (p : x == y)
-    →
+  ap-!-∘-rid-coher : {x y : A} (p : x == y) →
     ! (ap (λ q →  (ap g (ap f p)) ∙ q) (ap-∘ (! p) ∙ ap (ap g) (ap-! f p))) ∙ idp
       ==
     ap-!-inv g (ap f p) ∙ ! (cmp-inv-r p)
   ap-!-∘-rid-coher idp = idp
 
-  ap-!-∘-∙-rid-coher : {x y : A} (p : x == y)
-    →
+  ap-!-∘-∙-rid-coher : {x y : A} (p : x == y) →
     ! (! (cmp-inv-r p) ∙ ! (ap (λ q → q ∙ ap (g ∘ f) (! p)) (ap-∘ p)) ∙ ! (ap-∙ (g ∘ f) p (! p))) ∙ idp
       ==
     ap (ap (g ∘ f)) (!-inv-r p) ∙ idp

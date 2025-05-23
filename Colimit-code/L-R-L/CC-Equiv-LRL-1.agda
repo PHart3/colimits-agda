@@ -212,7 +212,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
             (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₁-v2 (snd (F <#> g) a)))))) ◃∙
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
-            (ap ! (ap-cp-revR f (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))))) ◃∙
+            (ap ! (!-ap-ap-∘-ap-∙ f (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))))) ◃∙
         ! (O₂ {p = ! (ap (f ∘ right) (ap ψ (cglue g a)))} {g = cin j} {q = idp} (snd (F <#> g) a) (ap f (! (glue (cin j a))) ∙ fₚ a)
           (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙
         ! (O₁ {g = H ∘ right} idp (cglue g a) (ψ-βr g a)) ◃∙
@@ -220,7 +220,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
         apd-helper {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         (transp-pth (cglue g (fun (F # i) a)) idp ∙
-        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
+        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a))) ◃∎ 
       RightRW₂ =
         seq-! (transpEq-s idp) ∙∙ apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ◃∙
@@ -238,7 +238,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
             (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₁-v2 (snd (F <#> g) a)))))) ◃∙
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
-            (ap ! (ap-cp-revR f (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))))) ◃∙
+            (ap ! (!-ap-ap-∘-ap-∙ f (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))))) ◃∙
         ! (O₂ {p = ! (ap (f ∘ right) (ap ψ (cglue g a)))} {g = cin j} {q = idp} (snd (F <#> g) a) (ap f (! (glue (cin j a))) ∙ fₚ a)
           (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙
         ! (O₁ {g = H ∘ right} idp (cglue g a) (ψ-βr g a)) ◃∙
@@ -246,7 +246,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
         apd-helper {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         (transp-pth (cglue g (fun (F # i) a)) idp ∙
-        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
+        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a))) ◃∎ ∎ₛ
 
     abstract
@@ -287,7 +287,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
             (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₁-v2 (snd (F <#> g) a)))))) ◃∙
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
-            (ap ! (ap-cp-revR f (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))))) ◃∙
+            (ap ! (!-ap-ap-∘-ap-∙ f (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))))) ◃∙
         ! (O₂ {p = ! (ap (f ∘ right) (ap ψ (cglue g a)))} {g = cin j} {q = idp} (snd (F <#> g) a) (ap f (! (glue (cin j a))) ∙ fₚ a)
           (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ◃∙
         ! (O₁ {g = H ∘ right} idp (cglue g a) (ψ-βr g a)) ◃∙
@@ -295,7 +295,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
         apd-helper {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         (transp-pth (cglue g (fun (F # i) a)) idp ∙
-        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
+        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a))) ◃∎
           =ₛ
         (! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ∙
@@ -308,7 +308,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
             (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₁-v2 (snd (F <#> g) a)))))) ∙
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
-            (ap ! (ap-cp-revR f (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))))) ∙
+            (ap ! (!-ap-ap-∘-ap-∙ f (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (fun (F # i) a)))))) ∙
         ! (O₂ {p = ! (ap (f ∘ right) (ap ψ (cglue g a)))} {g = cin j} {q = idp} (snd (F <#> g) a) (ap f (! (glue (cin j a))) ∙ fₚ a)
           (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a))) ∙
         ! (O₁ {g = H ∘ right} idp (cglue g a) (ψ-βr g a)) ∙
@@ -316,7 +316,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ∙
         apd-helper {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ∙
         (transp-pth (cglue g (fun (F # i) a)) idp ∙
-        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
+        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a)))) ◃∎
       RightRW1a = =ₛ-in idp      
 

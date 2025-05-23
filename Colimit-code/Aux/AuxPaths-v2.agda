@@ -61,7 +61,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : 
       →
       ! (ap (λ q → ! (ap (f ∘ g) p) ∙ (ap f S ∙ fₚ) ∙ q) (ap ! (ap (λ q → q ∙ fₚ) (ap (ap f) (E₂-v2 {p = p} R₂ S))))) ∙
       ! (ap (λ q → ! (ap (f ∘ g) p) ∙ (ap f S ∙ fₚ) ∙ q) (ap ! (ap (λ q → q ∙ fₚ) (ap (ap f) (E₁-v2 {g = h} {R = R₁} Q))))) ∙
-      ! (ap (λ q → ! (ap (f ∘ g) p) ∙ (ap f S ∙ fₚ) ∙ q) (ap ! (ap-cp-revR f (g ∘ h) Q (ap g R₁)))) ∙
+      ! (ap (λ q → ! (ap (f ∘ g) p) ∙ (ap f S ∙ fₚ) ∙ q) (ap ! (!-ap-ap-∘-ap-∙ f (g ∘ h) Q (ap g R₁)))) ∙
       Δ-red Q (ap f (ap g R₁)) (ap f S ∙ fₚ) R₁ (ap (λ q → ! (ap (f ∘ g) q)) R₂) ∙ cmp-inv-l {f = g} {g = f} R₁
         ==
       inv-canc-cmp f g p S fₚ
