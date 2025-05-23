@@ -7,7 +7,7 @@ open import Coslice
 open import Diagram-Cos
 open import lib.types.Colim
 open import AuxPaths-v2
-open import Cocone-v2
+open import Cocone-po-v2
 
 module CC-v2-rewrite  where
 

@@ -12,8 +12,8 @@ isomorphism.
 
 - The `Coslice-Univ/` folder contains the basic development of coslices of Type.
 
-  - The file `Coslice-Univ/Cocone.agda` contains the definition of
-    the colimiting pushout together with its A-cocone structure.
+  - The file `Coslice-Univ/Cocone-po.agda` contains the definition
+    of the colimiting pushout together with its A-cocone structure.
   - This pushout and its A-cocone structure are described
     in **Section 5.3** of the (CSL) paper.
 

@@ -6,7 +6,7 @@ open import Coslice
 open import Diagram-Cos
 open import lib.types.Colim
 open import SIP-Cos
-open import Cocone
+open import Cocone-po
 open import AuxPaths
 open import Helper-paths
 open import CC-Equiv-RLR-1

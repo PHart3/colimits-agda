@@ -5,7 +5,7 @@ open import lib.Equivalence2
 open import lib.types.Pushout
 open import Coslice
 open import Diagram-Cos
-open import Cocone
+open import Cocone-po
 open import SIP-Cos
 open import CosColim-Iso
 open import CC-Equiv-RLR-4

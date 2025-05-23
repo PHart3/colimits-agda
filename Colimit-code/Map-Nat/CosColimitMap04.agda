@@ -7,7 +7,7 @@ open import Diagram-Cos
 open import Helper-paths
 open import AuxPaths
 open import lib.types.Colim
-open import Cocone
+open import Cocone-po
 open import CosColimitMap00
 
 module CosColimitMap04 where

@@ -5,8 +5,8 @@ open import lib.types.Pushout
 open import lib.types.Span
 open import Coslice
 open import Diagram-Cos
-open import Cocone
-open import Cocone-switch
+open import Cocone-po
+open import Cocone-po-switch
 open import AuxPaths-v2
 open import SIP-Cos
 open import lib.types.Colim

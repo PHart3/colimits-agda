@@ -12,7 +12,7 @@ open import Coslice
 open import Diagram-Cos
 open import lib.types.Colim
 open import AuxPaths
-open import Cocone
+open import Cocone-po
 open import AuxPaths-v2
 
 module Cocone-v2 where

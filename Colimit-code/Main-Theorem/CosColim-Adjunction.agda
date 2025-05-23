@@ -4,7 +4,7 @@ open import lib.Basics
 open import lib.types.Pushout
 open import Coslice
 open import Diagram-Cos
-open import Cocone
+open import Cocone-po
 open import CC-Equiv-LRL-7
 open import CC-Equiv-RLR-4
 open import CosColimitMap00

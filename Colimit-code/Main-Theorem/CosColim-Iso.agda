@@ -5,7 +5,7 @@ open import lib.types.Pushout
 open import lib.types.Colim
 open import Coslice
 open import Diagram-Cos
-open import Cocone
+open import Cocone-po
 open import CC-Equiv-LRL-7
 open import CC-Equiv-RLR-4
 

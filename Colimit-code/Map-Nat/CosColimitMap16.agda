@@ -5,7 +5,7 @@ open import lib.types.Pushout
 open import Coslice
 open import Diagram-Cos
 open import lib.types.Colim
-open import Cocone
+open import Cocone-po
 open import SIP-Cos
 open import AuxPaths
 open import Helper-paths

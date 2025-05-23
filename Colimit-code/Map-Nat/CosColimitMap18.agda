@@ -9,7 +9,7 @@ open import Helper-paths
 open import SIP-Cos
 open import Coslice
 open import Diagram-Cos
-open import Cocone
+open import Cocone-po
 open import CosColimitMap00
 open import CosColimitPstCmp
 

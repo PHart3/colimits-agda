@@ -10,7 +10,7 @@ open import AuxPaths
 
 {- formation of A-cocone structure on pushout -}
 
-module Cocone where
+module Cocone-po where
 
 module _ {ℓ₁ ℓ₂} {B : Type ℓ₁} {D : Type ℓ₂} {u : D → B} where
 
