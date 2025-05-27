@@ -44,9 +44,13 @@ _Cocone-≃_ : ∀ {ℓ k₁ k₂} {Γ : Graph ℓv ℓe} {F : Diag ℓ Γ} {C�
   (K₁ : Cocone F C₁) (K₂ : Cocone F C₂) → Type (lmax (lmax (lmax (lmax ℓv ℓe) ℓ) k₁) k₂)
 _Cocone-≃_ {C₁ = C₁} {C₂} K₁ K₂ = Σ (C₁ → C₂) (Cocone-mor-str K₁ K₂)
 
-module _ {ℓ₁ ℓ₂} {Γ : Graph ℓv ℓe} {F : Diag ℓd Γ} {C : Type ℓ₁} where
+module _ {ℓ₁} {Γ : Graph ℓv ℓe} {F : Diag ℓd Γ} {C : Type ℓ₁} where
 
   -- canonical post-composition function on cocones
-  PostComp : Cocone F C → (D : Type ℓ₂) → (C → D) → Cocone F D
+  PostComp : ∀ {ℓ₂} → Cocone F C → (D : Type ℓ₂) → (C → D) → Cocone F D
   comp (PostComp K _ f) i = f ∘ comp K i
   comTri (PostComp K _ f) g z = ap f (comTri K g z)
+
+  -- colimiting cocone in the wild category of types
+  is-colim : Cocone F C → Agda.Primitive.Setω
+  is-colim K = ∀ {ℓ₂} (D : Type ℓ₂) → is-equiv (PostComp K D)
