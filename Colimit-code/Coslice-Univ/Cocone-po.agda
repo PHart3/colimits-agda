@@ -77,7 +77,7 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
 
       recc-βr : ∀ (C : CosCocone A F T) {i j : Obj Γ} (g : Hom Γ i j) (x : ty (F # i))
         → ap (reccForg C) (cglue g x) == fst (comTri C g) x
-      recc-βr C g x = cglue-βr (comp (ForgCoc C)) (λ i j g → fst (comTri C g)) g x
+      recc-βr C g x = cglue-βr (comp (CocForg C)) (λ i j g → fst (comTri C g)) g x
 
       recCosCoc : (CosCocone A F T) → (< A > (Cos P left) *→ T)
       fst (recCosCoc (r & K)) = Pushout-rec (fun T) recc σ

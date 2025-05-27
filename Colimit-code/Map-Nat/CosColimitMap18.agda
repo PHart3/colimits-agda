@@ -289,4 +289,4 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         ∙-unit-r (! (glue (cin i a))))
 
     CosColim-NatSq2-eq : Map-to-Lim-map F (f , fₚ) K-diag == Diag-to-Lim-map (PostComp-cos ColCoC (f , fₚ))
-    CosColim-NatSq2-eq = CosCocEq-ind F T (Map-to-Lim-map F (f , fₚ) K-diag) (CosColim-NatSq2)
+    CosColim-NatSq2-eq = CosCocEq-to-== F T (Map-to-Lim-map F (f , fₚ) K-diag) (CosColim-NatSq2)

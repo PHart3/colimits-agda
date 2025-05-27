@@ -23,4 +23,4 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
   snd (Λ LRfun-∼ {i} {j} g) a = =ₛ-in (=ₛ-out (Λ-eq i j g a))
 
   LRfunEq : LRfun == K
-  LRfunEq = CosCocEq-ind F T LRfun LRfun-∼ 
+  LRfunEq = CosCocEq-to-== F T LRfun LRfun-∼ 

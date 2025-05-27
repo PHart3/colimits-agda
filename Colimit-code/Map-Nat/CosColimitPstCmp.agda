@@ -170,4 +170,4 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
           ap (λ p → p ∙ snd (φ ∘* f , fₚ) a) (ap (ap (φ₁ ∘ f)) (snd (comTri ColCoC g) a))) ◃∎ ∎ₛ
 
     CosColim-NatSq1-eq : Map-to-Lim-map (PostComp-cos ColCoC (f , fₚ)) == PostComp-cos ColCoC (φ ∘* (f , fₚ))
-    CosColim-NatSq1-eq = CosCocEq-ind F U (Map-to-Lim-map (PostComp-cos ColCoC (f , fₚ))) (CosColim-NatSq1)
+    CosColim-NatSq1-eq = CosCocEq-to-== F U (Map-to-Lim-map (PostComp-cos ColCoC (f , fₚ))) (CosColim-NatSq1)

@@ -3,6 +3,7 @@
 open import lib.Basics
 open import lib.SIP
 open import SIP-Cos
+
 module AuxPaths-v2 where
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} {x : A} {z : B} where
@@ -28,13 +29,15 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type �
     → transport (λ x → f (h x) == g (h x)) Q s == ! (ap f (ap h Q)) ∙ s ∙ ap g R
   O₁ idp idp = ! (∙-unit-r s)
 
-module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {a x : C} {p : a == x} {g : B → A} {f : A → C} {z : B} {q : x == f (g z)} where
+module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {a x : C} {p : a == x}
+  {g : B → A} {f : A → C} {z : B} {q : x == f (g z)} where
 
   O₂ : {w : B} (u : w == z) {y : C} (s : f (g z) == y) {t : A} (v : g w == t) {R : f (g w) == f t} (T : ap f v == R)
     → p ∙ q ∙ ap f (! (ap g u) ∙ v) == p ∙ q ∙ s ∙ ! (! R ∙ ap (f ∘ g) u ∙ s)
   O₂ idp idp idp idp = idp
 
-module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} {C : Type ℓ₃} {D : Type ℓ₄} {h : C → A} {v : C → D} {u : D → B} {c : C} where
+module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} {C : Type ℓ₃} {D : Type ℓ₄}
+  {h : C → A} {v : C → D} {u : D → B} {c : C} where
 
   O₄ : (q : (x : C) → f (h x) == u (v x)) {d : C} (p : c == d) {S : v c == v d} (R : ap v p == S)
     → q c == ap f (ap h p) ∙ q d ∙ ! (ap u S)

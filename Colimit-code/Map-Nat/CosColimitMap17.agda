@@ -30,5 +30,5 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
     ap fst
       (contr-has-all-paths {{colim-contr K-diag}}
       ((Recc.recCosCoc F (Cos P₂ left)) K-diag , LRfunEq K-diag)
-      (𝕕 , CosCocEq-ind F (Cos P₂ left) (PostComp-cos (ColCoC F) 𝕕) (fib-inhab δ)))
+      (𝕕 , CosCocEq-to-== F (Cos P₂ left) (PostComp-cos (ColCoC F) 𝕕) (fib-inhab δ)))
 

@@ -20,7 +20,7 @@ module Constr5 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
     abstract
 
-      LeftRW₁ :
+      Left-rw₁ :
         ! (ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) (↯ ω)) ◃∙
         ! (apd-concat-pres {F = λ x → ! (ap f (glue x)) ∙ fₚ ([id] x)} {G = σ (comp K) (comTri K)} (cglue g a)) ◃∙
         transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))
@@ -28,7 +28,7 @@ module Constr5 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (↯ (ap-seq (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) ω)) ◃∙
         ! (apd-concat-pres {F = λ x → ! (ap f (glue x)) ∙ fₚ ([id] x)} {G = σ (comp K) (comTri K)} (cglue g a)) ◃∙
         transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))
-      LeftRW₁ =
+      Left-rw₁ =
         ! (ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) (↯ ω)) ◃∙
         ! (apd-concat-pres {F = λ x → ! (ap f (glue x)) ∙ fₚ ([id] x)} {G = σ (comp K) (comTri K)} (cglue g a)) ◃∙
         transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))
@@ -42,28 +42,28 @@ module Constr5 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (apd-concat-pres {F = λ x → ! (ap f (glue x)) ∙ fₚ ([id] x)} {G = σ (comp K) (comTri K)} (cglue g a)) ◃∙
         transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)) ∎ₛ
                     
-      LeftRW₀ :
+      Left-rw₀ :
         ! (apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ σ (comp K) (comTri K) x) (cglue g a)) ◃∙
         transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))
           =ₛ
         ! (ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) (↯ ω)) ◃∙
         ! (apd-concat-pres {F = λ x → ! (ap f (glue x)) ∙ fₚ ([id] x)} {G = σ (comp K) (comTri K)} (cglue g a)) ◃∙
         transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))
-      LeftRW₀ =
+      Left-rw₀ =
         ! (apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ σ (comp K) (comTri K) x) (cglue g a)) ◃∙
         transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))
-          =ₛ⟨ 0 & 1 & !-=ₛ apdRW1 ⟩
+          =ₛ⟨ 0 & 1 & !-=ₛ apd-rw1 ⟩
         ! (ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) (↯ ω)) ◃∙
         ! (apd-concat-pres {F = λ x → ! (ap f (glue x)) ∙ fₚ ([id] x)} {G = σ (comp K) (comTri K)} (cglue g a)) ◃∙
         transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)) ∎ₛ
                 
-      LeftRW₂ :
+      Left-rw₂ :
         ! (↯ (ap-seq (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) ω)) ◃∙
         ! (apd-concat-pres {F = λ x → ! (ap f (glue x)) ∙ fₚ ([id] x)} {G = σ (comp K) (comTri K)} (cglue g a)) ◃∙
         transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))
           =ₛ
         PathSeq1 
-      LeftRW₂ =
+      Left-rw₂ =
         ! (↯ (ap-seq (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) ω)) ◃∙
         ! (apd-concat-pres {F = λ x → ! (ap f (glue x)) ∙ fₚ ([id] x)} {G = σ (comp K) (comTri K)} (cglue g a)) ◃∙
         transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))
@@ -71,9 +71,9 @@ module Constr5 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         PathSeq1 ∎ₛ
 
     abstract
-      LeftRW :
+      Left-rw :
         ! (apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ σ (comp K) (comTri K) x) (cglue g a)) ◃∙
         transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))
           =ₛ
         ! (apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ ! (ap f (! (glue x)) ∙ fₚ ([id] x))) (cglue g a)) ◃∎
-      LeftRW = LeftRW₀ ∙ₛ LeftRW₁ ∙ₛ LeftRW₂ ∙ₛ BigReduct1
+      Left-rw = Left-rw₀ ∙ₛ Left-rw₁ ∙ₛ Left-rw₂ ∙ₛ BigReduct1

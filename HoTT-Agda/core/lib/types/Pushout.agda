@@ -67,16 +67,14 @@ PushoutMapEq {d = d} h₁ h₂ p₁ p₂ =
     from-transp (λ x → h₁ x == h₂ x) (glue c)
     (transp-pth-l (glue c) (p₁ (Span.f d c)) ∙ S c)
 
-module _ {ℓ} {A : Type ℓ} where
-
-  !-∙→= : {x y : A} (p : x == y) (q : x == y) → ! p ∙ q == idp → p == q
-  !-∙→= idp q e = ! e
-
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f g : A → B) where
 
   transp-pth-reord : {x y : A} (p : x == y) (p₁ : f x == g x) (p₂ : f y == g y)
     → ! p₁ ∙ ap f p ∙ p₂ == ap g p → transport (λ z → f z == g z) p p₁ == p₂
   transp-pth-reord idp p₁ p₂ = !-∙→= p₁ p₂
+    where
+      !-∙→= : ∀ {ℓ} {A : Type ℓ} {x y : A} (p : x == y) (q : x == y) → ! p ∙ q == idp → p == q
+      !-∙→= idp q e = ! e
 
 PushoutMapEq-v2 : ∀ {i j k} {d : Span {i} {j} {k}} {l} {D : Type l} (h₁ h₂ : Pushout d → D)
   → (p₁ : h₁ ∘ left ∼ h₂ ∘ left) (p₂ : h₁ ∘ right ∼ h₂ ∘ right)

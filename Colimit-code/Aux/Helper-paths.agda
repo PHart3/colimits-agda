@@ -57,8 +57,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {B : Type ℓ₁} {C : Type ℓ₂} {E : Type �
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {E : Type ℓ₅} (f : A → B) (g : B → C) where
 
   long-path-red2 : (h : D → A) (k : E → B) {x y : D} (s : x == y) {a : A} (t : h x == a)
-    {z : E} (q : k z == f (h y)) (Q : z == z)
-    →
+    {z : E} (q : k z == f (h y)) (Q : z == z)  →
     ap g (! (ap f (! (ap h s) ∙ t)) ∙ ! q ∙ ap k Q ∙ ap k Q) ∙ idp
       ==
     (! (ap (g ∘ f) t) ∙ ap (g ∘ f ∘ h) s ∙ (ap g (! q) ∙ ap (g ∘ k) Q)) ∙ ap (g ∘ k) Q

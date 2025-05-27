@@ -97,7 +97,7 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
       ap (λ p → p) (snd (comTri LRfun g) a) ◃∙
       CompEq i a
 
-    Ξ-RW1 =
+    Ξ-rw1 =
       Ξ-inst
         =ₛ⟨ 1 & 1 &
           ap-seq-∙
@@ -126,7 +126,7 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
       ap (λ p → p) (snd (comTri LRfun g) a) ◃∙
       CompEq i a ∎ₛ
 
-    Ξ-RW2 =
+    Ξ-rw2 =
       ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
         (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
       ap (λ p →
@@ -169,7 +169,7 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
       snd (comTri LRfun g) a ◃∙
       CompEq i a ∎ₛ
 
-    Ξ-RW3 =
+    Ξ-rw3 =
       ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
         (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
       ap (λ p →
@@ -223,7 +223,7 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
         ap-seq ! (η (comp K) (comTri K) i j g a)) ◃∙
       !-! (snd (comp K i) a) ◃∎ ∎ₛ
 
-    Ξ-RW4 =
+    Ξ-rw4 =
       ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
         (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
       ap (λ p →
@@ -292,7 +292,7 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
       ap ! (ap ! (snd (comTri K g) a)) ◃∙
       !-! (snd (comp K i) a) ◃∎ ∎ₛ
 
-    Ξ-RW5 =
+    Ξ-rw5 =
       ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
         (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
       ap (λ p →
@@ -359,7 +359,7 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
       ap ! (ap ! (snd (comTri K g) a)) ◃∙
       !-! (snd (comp K i) a) ◃∎ ∎ₛ
 
-    Ξ-RW6 =       
+    Ξ-rw6 =       
       ap (λ p → ! (p ∙  fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
         (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
       ap (λ p →
@@ -469,4 +469,4 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
             (ap (λ p → ! (ap (fun T) p)) (id-βr g a))) ◃∙
         ap ! (ap ! (snd (comTri K g) a)) ◃∙
         !-! (snd (comp K i) a) ◃∎
-      Ξ-rewrite = Ξ-RW1 ∙ₛ Ξ-RW2 ∙ₛ Ξ-RW3 ∙ₛ Ξ-RW4 ∙ₛ Ξ-RW5 ∙ₛ Ξ-RW6
+      Ξ-rewrite = Ξ-rw1 ∙ₛ Ξ-rw2 ∙ₛ Ξ-rw3 ∙ₛ Ξ-rw4 ∙ₛ Ξ-rw5 ∙ₛ Ξ-rw6

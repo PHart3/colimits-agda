@@ -497,3 +497,7 @@ module _ {i j} {A : Type i} {P : A → Type j} where
     λ a → fst
     (=Σ-econv (contr-center c , transport P (! (contr-path c (fst a))) (snd a)) a) ((contr-path c (fst a)) ,
       from-transp-g P (contr-path c (fst a)) (transp-inv (contr-path c (fst a)) (snd a)))
+
+-- tensor-hom	adjunction in Type
+×-→-adj : ∀ {i j k} {A : Type i} {B : Type j} {C : Type k} → (A × B → C) ≃ (A → B → C)
+×-→-adj = curry-equiv

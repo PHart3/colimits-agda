@@ -242,12 +242,12 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ ! (ap f (! (glue x)) ∙ fₚ ([id] x))) (cglue g a)) ◃∎ ∎ₛ
 
       abstract
-        apdRW1 :
+        apd-rw1 :
           apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ σ (comp K) (comTri K) x) (cglue g a) ◃∎
             =ₛ
           apd-concat-pres {F = λ x → ! (ap f (glue x)) ∙ fₚ ([id] x)} {G = σ (comp K) (comTri K)} (cglue g a) ◃∙
           ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) (↯ ω) ◃∎
-        apdRW1 =
+        apd-rw1 =
           apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ σ (comp K) (comTri K) x) (cglue g a) ◃∎
             =ₛ⟨ apd-concat-fun-s (cglue g a) ⟩
           apd-concat-pres (cglue g a) ◃∙

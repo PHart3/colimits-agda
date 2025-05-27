@@ -22,7 +22,7 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
     open Constr2.DiagCoher2 F T i j f fₚ g a public
 
     abstract
-      SliceRW :
+      Slice-rw :
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
           (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₂-v2 (ψ-βr g a) (! (glue (cin j (idf A a))))))))) ◃∙
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
@@ -40,7 +40,7 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a)) ◃∎
           =ₛ
         inv-canc-cmp f right (ap ψ (cglue g a)) (! (glue (cin j (idf A a)))) (fₚ a) ◃∎
-      SliceRW =
+      Slice-rw =
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
             (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₂-v2 (ψ-βr g a) (! (glue (cin j (idf A a))))))))) ◃∙
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
@@ -70,7 +70,7 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         inv-canc-cmp f right (ap ψ (cglue g a)) (! (glue (cin j (idf A a)))) (fₚ a) ◃∎ ∎ₛ
 
     abstract  
-      RightRW1 :
+      Right-rw1 :
         (! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ∙
         ! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a))
             (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x)) (cglue g a) (id-βr g a))) ∙
@@ -98,7 +98,7 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
        ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
          (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₃-v2 {f = left} {v = ψ} {u = right} (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))) ◃∙
        inv-canc-cmp f right (ap ψ (cglue g a)) (! (glue (cin j (idf A a)))) (fₚ a) ◃∎
-      RightRW1 =
+      Right-rw1 =
         =ₛ-in
           (ap
             (λ r →
@@ -107,12 +107,12 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
                   (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x)) (cglue g a) (id-βr g a))) ∙
               ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
                   (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₃-v2 (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))) ∙ r)
-            (=ₛ-out SliceRW)) 
+            (=ₛ-out Slice-rw)) 
 
     abstract   
-      RightRW :
+      Right-rw :
         ! (↯ (transpEq-s idp)) ◃∙
         apd-tr (λ x → RfunEq (f , fₚ) (ψ x)) (cglue g a) ◃∎
           =ₛ
         apd-tr-refl {f = f ∘ right} {h = ψ} (cglue g a) ◃∎
-      RightRW = RightRW₁ ∙ₛ RightRW₂ ∙ₛ RightRW1a ∙ₛ RightRW1 ∙ₛ RightRW2a ∙ₛ (ζ₂ fₚ)
+      Right-rw = Right-rw₁ ∙ₛ Right-rw₂ ∙ₛ Right-rw1a ∙ₛ Right-rw1 ∙ₛ Right-rw2a ∙ₛ (ζ₂ fₚ)
