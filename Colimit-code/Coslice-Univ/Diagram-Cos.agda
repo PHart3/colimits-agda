@@ -62,13 +62,13 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₂} {Γ : Graph ℓv ℓe} {F : CosDiag �
   module _ {k₁ k₂} {C₁ : Coslice k₁ ℓ₂ A} {C₂ : Coslice k₂ ℓ₂ A} (K₁ : CosCocone A F C₁) (K₂ : CosCocone A F C₂) where
 
     record CosCoc-mor-data {f : ty C₁ → ty C₂} (σ : Cocone-mor-str (CocForg K₁) (CocForg K₂) f)
-      : Type (lmax (lmax (lmax (lmax ℓv ℓe) ℓ₂) k₂) k₂)
+      : Type (lmax (lmax (lmax ℓv ℓe) ℓ₂) k₂)
       where
         constructor coscocmordata
         field
-          map-cos : f ∘ fun C₁ ∼ fun C₂ 
+          map-∼-cos : f ∘ fun C₁ ∼ fun C₂ 
           comp-∼-cos : (i : Obj Γ) (a : A) → 
-            ! (comp-∼ σ i (fun (F # i) a)) ∙ ap f (snd (comp K₁ i) a) ∙' map-cos a == snd (comp K₂ i) a
+            ! (comp-∼ σ i (fun (F # i) a)) ∙ ap f (snd (comp K₁ i) a) ∙' map-∼-cos a == snd (comp K₂ i) a
           comTri-∼-cos : {i j : Obj Γ} (g : Hom Γ i j) (a : A) → 
             ap (λ p → ! p ∙ ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a) (! (comTri-∼ σ g (fun (F # i) a))) ∙
             ap (λ p →
@@ -82,15 +82,15 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₂} {Γ : Graph ℓv ℓe} {F : CosDiag �
                   comp-∼ σ i (fun (F # i) a)) ∙
                   ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙
                   snd (comp K₂ j) a)
-                (!-∙-∙'-rot (ap f (snd (comp K₁ j) a)) (map-cos a) (comp-∼-cos j a)) ∙
+                (!-∙-∙'-rot (ap f (snd (comp K₁ j) a)) (map-∼-cos a) (comp-∼-cos j a)) ∙
              rearrange-red f (fst (comp K₁ j)) (fst (comp K₂ j))
                (comp-∼ σ i (fun (F # i) a))
                (fst (comTri K₁ g) (fun (F # i) a))
-               (map-cos a)
+               (map-∼-cos a)
                (snd (F <#> g) a)
                (snd (comp K₁ j) a)
                (snd (comp K₂ j) a) ∙
-             ap (λ p →  ! (comp-∼ σ i (fun (F # i) a)) ∙ ap f p ∙' map-cos a) (snd (comTri K₁ g) a) ∙
+             ap (λ p →  ! (comp-∼ σ i (fun (F # i) a)) ∙ ap f p ∙' map-∼-cos a) (snd (comTri K₁ g) a) ∙
              comp-∼-cos i a
               ==
             snd (comTri K₂ g) a
@@ -100,6 +100,7 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₂} {Γ : Graph ℓv ℓe} {F : CosDiag �
     CosCoc-mor-str : (f : ty C₁ → ty C₂) →  Type (lmax (lmax (lmax (lmax ℓv ℓe) ℓ₁) ℓ₂) k₂)
     CosCoc-mor-str f = Σ (Cocone-mor-str (CocForg K₁) (CocForg K₂) f) CosCoc-mor-data
 
+    -- equivalence of coslice cocones
     infixr 30 _CosCoc-≃_
     _CosCoc-≃_ : Type (lmax (lmax (lmax (lmax (lmax ℓv ℓe) ℓ₁) ℓ₂) k₁) k₂)
     _CosCoc-≃_  = Σ (ty C₁ ≃ ty C₂) (λ e → CosCoc-mor-str (–> e))
