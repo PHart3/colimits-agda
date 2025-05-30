@@ -9,25 +9,30 @@ module lib.types.Diagram where
 
 private variable ℓv ℓe ℓd : ULevel
 
-Diag : ∀ ℓd (G : Graph ℓv ℓe) → Type (lmax (lmax ℓv ℓe) (lsucc ℓd))
+Diag : ∀ ℓd (Γ : Graph ℓv ℓe) → Type (lmax (lmax ℓv ℓe) (lsucc ℓd))
 Diag ℓd G = GraphHom G (TypeGr ℓd)
 
-record DiagMor {ℓd ℓd'} {G : Graph ℓv ℓe} (F : Diag ℓd G) (F' : Diag ℓd' G)
+-- constant diagram at a type
+ConsDiag : ∀ {ℓd} (Γ : Graph ℓv ℓe) (A : Type ℓd) → Diag ℓd Γ
+(ConsDiag Γ A) # _ = A
+(ConsDiag Γ A) <#> _ = idf A
+
+record DiagMor {ℓd ℓd'} {Γ : Graph ℓv ℓe} (F : Diag ℓd Γ) (F' : Diag ℓd' Γ)
   : Type (lmax (lmax ℓv ℓe) (lmax ℓd ℓd')) where
   constructor Δ
   field
-    nat : ∀ (x : Obj G) → F # x → F' # x
-    comSq : ∀ {x y : Obj G} (f : Hom G x y) (z : F # x) → (F' <#> f) (nat x z) == nat y ((F <#> f) z)
+    nat : ∀ (x : Obj Γ) → F # x → F' # x
+    comSq : ∀ {x y : Obj Γ} (f : Hom Γ x y) (z : F # x) → (F' <#> f) (nat x z) == nat y ((F <#> f) z)
 open DiagMor public
 
 -- cocones under diagrams
 
-record Cocone {i k} {G : Graph ℓv ℓe} (F : Diag i G) (C : Type k)
+record Cocone {i k} {Γ : Graph ℓv ℓe} (F : Diag i Γ) (C : Type k)
   : Type (lmax k (lmax (lmax ℓv ℓe) i)) where
   constructor _&_
   field
-    comp : (x : Obj G) → F # x → C
-    comTri : ∀ {y x : Obj G} (f : Hom G x y) (z : F # x) → comp y ((F <#> f) z) == comp x z
+    comp : (x : Obj Γ) → F # x → C
+    comTri : ∀ {y x : Obj Γ} (f : Hom Γ x y) (z : F # x) → comp y ((F <#> f) z) == comp x z
 open Cocone public
 
 record Cocone-mor-str {ℓ k₁ k₂} {Γ : Graph ℓv ℓe} {F : Diag ℓ Γ} {C₁ : Type k₁} {C₂ : Type k₂}
@@ -42,7 +47,7 @@ open Cocone-mor-str public
 infixr 30 _Cocone-≃_
 _Cocone-≃_ : ∀ {ℓ k₁ k₂} {Γ : Graph ℓv ℓe} {F : Diag ℓ Γ} {C₁ : Type k₁} {C₂ : Type k₂}
   (K₁ : Cocone F C₁) (K₂ : Cocone F C₂) → Type (lmax (lmax (lmax (lmax ℓv ℓe) ℓ) k₁) k₂)
-_Cocone-≃_ {C₁ = C₁} {C₂} K₁ K₂ = Σ (C₁ → C₂) (Cocone-mor-str K₁ K₂)
+_Cocone-≃_ {C₁ = C₁} {C₂} K₁ K₂ = Σ (C₁ ≃ C₂) (λ e → Cocone-mor-str K₁ K₂ (–> e))
 
 module _ {ℓ₁} {Γ : Graph ℓv ℓe} {F : Diag ℓd Γ} {C : Type ℓ₁} where
 

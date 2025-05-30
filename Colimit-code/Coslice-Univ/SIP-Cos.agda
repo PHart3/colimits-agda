@@ -10,7 +10,7 @@ open import Diagram-Cos
 
 module SIP-Cos where
 
--- SIP for A-homotopy
+-- SIP for equality of A-maps
 
 module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A > X *→ Y} where
 
@@ -71,7 +71,9 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
       snd (comp K₂ j) a
         =⟪ ap (λ p → ! (p ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙ ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a)
              (hmtpy-nat-rev (W j) (snd (F <#> g) a) (snd (comp K₁ j) a)) ⟫
-      ! ((ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ ((! (W j (fun (F # j) a)) ∙ snd (comp K₁ j) a) ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
+      ! ((ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙
+         ((! (W j (fun (F # j) a)) ∙ snd (comp K₁ j) a) ∙ ! (snd (comp K₁ j) a)) ∙
+         ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
         fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙
       ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a
         =⟪ ap (λ p → ! ((ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
@@ -136,7 +138,9 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
       ϕ H i j g a =
         ! (! (fst (snd (H j)) (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
         ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a
-          =⟪ ap (λ p → ! (p ∙  fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a)
+          =⟪ ap (λ p →
+                 ! (p ∙  fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
+                 ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a)
                (hmtpy-nat-rev (fst (snd (H j))) (snd (F <#> g) a) (snd (comp K₁ j) a)) ⟫
         ! ((ap (fst (fst (H j))) (snd (F <#> g) a) ∙
            ((! (fst (snd (H j)) (fun (F # j) a)) ∙ snd (comp K₁ j) a) ∙ ! (snd (comp K₁ j) a)) ∙
@@ -152,23 +156,25 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
           fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
         ap (fst (fst (H j))) (snd (F <#> g) a) ∙
         snd (fst (H j)) a
-          =⟪ long-path-red (snd (F <#> g) a) (snd (fst (H j)) a) (snd (comp K₁ j) a) (fst (comTri K₁ g) (fun (F # i) a)) (fst (snd (H i)) (fun (F # i) a)) ⟫
+          =⟪ long-path-red (snd (F <#> g) a) (snd (fst (H j)) a) (snd (comp K₁ j) a) (fst (comTri K₁ g) (fun (F # i) a))
+               (fst (snd (H i)) (fun (F # i) a)) ⟫
         ! (fst (snd (H i)) (fun (F # i) a)) ∙ ! (fst (comTri K₁ g) (fun (F # i) a)) ∙ ap (fst (comp K₁ j)) (snd (F <#> g) a) ∙ snd (comp K₁ j) a
           =⟪ ap (λ p → ! (fst (snd (H i)) (fun (F # i) a)) ∙ p) (snd (comTri K₁ g) a) ⟫
         ! (fst (snd (H i)) (fun (F # i) a)) ∙ snd (comp K₁ i) a
           =⟪ snd (snd (H i)) a ⟫
         snd (fst (H i)) a ∎∎
 
-  CosCocEq-tot-contr : is-contr (CosCocEq-tot)
-  CosCocEq-tot-contr =
-    equiv-preserves-level ((Σ-contr-red (Π-level (λ _ → UndFunHomContr)))⁻¹)
-      {{Π-level
-        (λ i → (Π-level (λ j → (Π-level (λ g →
-          equiv-preserves-level ((Σ-contr-red (funhom-contr {f = λ z → (fst (comTri K₁ g) z) ∙ idp}))⁻¹)
-          {{funhom-contr {f = λ a → ↯ (CCEq-Σ.ϕ (λ i → (comp K₁ i , (λ x → idp) , (λ a → idp))) i j g a)}}})))))}}
+  abstract
+    CosCocEq-tot-contr : is-contr (CosCocEq-tot)
+    CosCocEq-tot-contr =
+      equiv-preserves-level ((Σ-contr-red (Π-level (λ _ → UndFunHomContr)))⁻¹)
+        {{Π-level
+          (λ i → (Π-level (λ j → (Π-level (λ g →
+            equiv-preserves-level ((Σ-contr-red (funhom-contr {f = λ z → (fst (comTri K₁ g) z) ∙ idp}))⁻¹)
+            {{funhom-contr {f = λ a → ↯ (CCEq-Σ.ϕ (λ i → (comp K₁ i , (λ x → idp) , (λ a → idp))) i j g a)}}})))))}}
 
-  CosCocEq-eqv : CosCocEq-tot ≃ Σ (CosCocone A F T) (λ K₂ → CosCocEq K₂)
-  CosCocEq-eqv = equiv
+  CosCocEq-≃ : CosCocEq-tot ≃ Σ (CosCocone A F T) (λ K₂ → CosCocEq K₂)
+  CosCocEq-≃ = equiv
     (λ x →
       ((λ i → fst (fst x i)) & (λ {j} {i} g → (fst (fst (snd x i j g))) , (fst (snd (snd x i j g))))) ,
       coscoceq (λ i x₁ → fst (snd (fst x i)) x₁) (λ i a → snd (snd (fst x i)) a)
@@ -179,8 +185,9 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
     (λ _ → idp)
     (λ _ → idp)
 
-  CosCocEq-contr : is-contr (Σ (CosCocone A F T) (λ K₂ → CosCocEq K₂))
-  CosCocEq-contr = equiv-preserves-level CosCocEq-eqv {{CosCocEq-tot-contr}}
+  abstract
+    CosCocEq-contr : is-contr (Σ (CosCocone A F T) CosCocEq)
+    CosCocEq-contr = equiv-preserves-level CosCocEq-≃ {{CosCocEq-tot-contr}}
 
   CosCocEq-to-== : {K₂ : CosCocone A F T} → CosCocEq K₂ → K₁ == K₂
   CosCocEq-to-== {K₂} = ID-ind-map {b = center-CCEq} (λ K _ → K₁ == K) CosCocEq-contr idp

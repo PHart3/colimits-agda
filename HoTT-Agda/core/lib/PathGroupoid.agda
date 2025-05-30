@@ -105,6 +105,10 @@ module _ {i} {A : Type i} where
 
 module _ {i} {A : Type i} where
 
+  !-∙-∙'-rot : {x y z w : A} (p₀ : x == y) {p₁ : x == z} {p₂ : z == w} (p₃ : y == w)
+    → ! p₁ ∙ p₀ ∙' p₃ == p₂ → ! p₁ == p₂ ∙ ! p₃ ∙ ! p₀
+  !-∙-∙'-rot idp {p₁ = p₁} {p₂} idp e = ! (ap (λ p → p ∙ idp) (! e ∙ ∙-unit-r (! p₁)) ∙ ∙-unit-r (! p₁))
+
   ∙-∙'-!-rot : {x y z w : A} (p₀ : x == y) (p₁ : x == z) (p₂ : z == w) (p₃ : y == w)
     → p₀ == p₁ ∙ p₂  ∙' ! p₃ → p₂ == ! p₁ ∙ p₀ ∙' p₃
   ∙-∙'-!-rot p₀ idp p₂ idp e = ! e

@@ -29,6 +29,9 @@ module _ {ℓ} {A : Type ℓ} where
     → ! (((q ∙ ! r) ∙ idp) ∙ p ∙ idp) ∙ q == ! p ∙ r
   !-∙-!-rid-∙-rid idp q r = db-neg-rid-db q r
 
+  unit3-r-!-inv-! : {a b : A} (p : a == b) → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ p == idp
+  unit3-r-!-inv-! idp = idp
+
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f : A → B) where
 
   ap-inv-rid : {x y : A} (p : x == y) → ap f (! p) ∙ idp == ! (ap f p)
@@ -78,3 +81,13 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : A → Type ℓ₂} where
   apd-tr-coher : (f g : (x : A) → B x) {x y : A} (p : x == y) (q : (z : A) → f z == g z)
     → q y == ! (apd-tr f p) ∙ ap (transport B p) (q x) ∙ apd-tr g p
   apd-tr-coher f g {x = x} idp q = ap-idf-rid (q x)
+
+module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} (f : B → C) (h : A → B) (g : A → C) where
+
+  rearrange-red : {a₀ a₁ : A} {b₀ b₁ : B} {c₀ c₁ : C}
+    (p₀ : f b₁ == c₀) (p₁ : h a₀ == b₁) (p₂ : f b₀ == c₁)
+    (q₀ : a₀ == a₁) (q₁ : h a₁ == b₀) (q₂ : g a₁ == c₁) → 
+    ! ((ap g q₀ ∙ (q₂ ∙ ! p₂ ∙ ! (ap f q₁)) ∙ ! (ap (f ∘ h) q₀)) ∙ ap f p₁ ∙' p₀) ∙ ap g q₀ ∙ q₂
+      ==
+    ! p₀ ∙ ap f (! p₁ ∙ ap h q₀ ∙ q₁) ∙' p₂
+  rearrange-red idp idp idp idp idp q₂ = unit3-r-!-inv-! q₂

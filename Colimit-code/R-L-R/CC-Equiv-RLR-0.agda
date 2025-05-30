@@ -91,7 +91,8 @@ module ConstrE2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
         (hmtpy-nat-rev (λ z → idp) (snd (F <#> g) a) (snd (comp LRfun j) a)) ◃∙
       ap (λ p →
         ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
-          fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
+           fst (comTri LRfun g) (fun (F # i) a) ∙ idp) ∙
+        ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
         (↯ (CompEq j a)) ◃∙
       long-path-red (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (fun (F # i) a)) idp ◃∙
       ap (λ p → p) (snd (comTri LRfun g) a) ◃∙
