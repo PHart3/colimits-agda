@@ -88,13 +88,13 @@ module _ {j} (A : Type j) where
             ap (λ p₁ → p₁ ∙ ap (fst f₁) (ap [_] (snd f₂ a)) ∙ snd f₁ a)
               (ap-∘ (fst f₁) (Trunc-elim (λ x → [ fst f₂ x ]))
               (ap [_] τ)) ∙
-            ! (ap2-∙-∙ (fst f₁) (Trunc-elim (λ x → [ fst f₂ x ]))
+            ! (ap-ap-∙-∙ (fst f₁) (Trunc-elim (λ x → [ fst f₂ x ]))
               (ap [_] τ) (ap [_] (snd f₂ a)) (snd f₁ a))
             ==
             ap (λ q → q) (ap (λ p₁ → p₁ ∙ ap (λ x → fst f₁ [ x ])
               (snd f₂ a) ∙ snd f₁ a)
               (ap-∘ (λ x → fst f₁ [ x ]) (fst f₂) τ) ∙
-              ! (ap2-∙-∙ (λ x → fst f₁ [ x ]) (fst f₂) τ
+              ! (ap-ap-∙-∙ (λ x → fst f₁ [ x ]) (fst f₂) τ
               (snd f₂ a) (snd f₁ a))) ∙
             ap (λ q → q) (ap (λ p₁ → p₁ ∙ snd f₁ a)
               (ap-∘ (fst f₁) [_] (ap (fst f₂) τ ∙ snd f₂ a))) ∙

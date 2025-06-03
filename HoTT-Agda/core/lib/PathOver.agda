@@ -207,9 +207,7 @@ module _ {i j k} {A : Type i} {B : Type j} (C : B → Type k) (f : A → B) wher
   (f : C → a == a') (g : C → b == b') (r : c == c')
   → ↓-cst-in2 {q = ap f r} (ap g r)
     ==
-    ↓-ap-in (λ p → b == b' [ (λ _ → B) ↓ p ])
-            f
-            (apd (λ c → ↓-cst-in {p = f c} (g c)) r)
+    ↓-ap-in (λ p → b == b' [ (λ _ → B) ↓ p ]) f (apd (λ c → ↓-cst-in {p = f c} (g c)) r)
 ↓-cst-in2-ap {c = c} {c' = .c} f g idp = ↓-cst-in2-idp (f c) (g c)
 
 -- Dependent paths over [ap2 f p q]
@@ -350,8 +348,7 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
 
     apd-to-hnat-∙ : {x y z : A} (p₁ : x == y) (p₂ : y == z)
       {m₁ : ap f p₁ == K x ∙ ap g p₁  ∙' ! (K y)} {m₂ : ap f p₂ == K y ∙ ap g p₂  ∙' ! (K z)}
-      (τ₁ : hmtpy-nat-∙' K p₁ == m₁) (τ₂ : hmtpy-nat-∙' K p₂ == m₂)
-      →
+      (τ₁ : hmtpy-nat-∙' K p₁ == m₁) (τ₂ : hmtpy-nat-∙' K p₂ == m₂) →
       hmtpy-nat-∙' K (p₁ ∙ p₂)
         ==
       ↯ (ap-∙ f p₁ p₂ ◃∙

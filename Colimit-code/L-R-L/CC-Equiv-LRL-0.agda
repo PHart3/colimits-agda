@@ -25,7 +25,7 @@ module Constr {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F
   RfunEq (f , fₚ) =
     colimE
       (λ i x → idp)
-      (λ i → λ j → λ g → λ x → from-transp-g (λ z → (f ∘ right) z == (fst (RLfun (f , fₚ)) ∘ right) z) (cglue g x) (↯ (V i j g x)))
+      (λ i j g x → from-transp-g (λ z → (f ∘ right) z == (fst (RLfun (f , fₚ)) ∘ right) z) (cglue g x) (↯ (V i j g x)))
     module _ where
       V : (i j : Obj Γ) (g : Hom Γ i j) (x : ty (F # i)) →
         transport (λ z → (f ∘ right) z == (fst (RLfun (f , fₚ)) ∘ right) z) (cglue g x) idp =-= idp

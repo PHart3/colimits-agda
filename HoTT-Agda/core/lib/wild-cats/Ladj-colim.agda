@@ -64,7 +64,7 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
         ap (<– adj₀) (α C (–> adj₀ h) (leg K j) (D₁ Δ f) ∙ ap (λ m → ⟦ C ⟧ –> adj₀ h ◻ m) (tri K f)) ◃∙
         ap (<– adj₀) (nat-dom adj (leg K i) h) ◃∙
         <–-inv-l adj₀ (⟦ D ⟧ h ◻ arr L (leg K i)) ◃∎
-          =ₛ⟨ 0 & 1 & apCommSq2◃' (λ m → ↯ (↑nat-dom adj (D₁ Δ f) m)) (nat-dom adj (leg K j) h) ⟩
+          =ₛ⟨ 0 & 1 & apCommSq2◃ (λ m → ↯ (↑nat-dom adj (D₁ Δ f) m)) (nat-dom adj (leg K j) h) ⟩
         ap (λ z → ⟦ D ⟧ <– adj₀ z ◻ arr L (D₁ Δ f)) (nat-dom adj (leg K j) h) ◃∙
         ↯ (↑nat-dom adj (D₁ Δ f) (–> adj₀ (⟦ D ⟧ h ◻ arr L (leg K j)))) ◃∙
         ! (ap (λ z → <– adj₀ (⟦ C ⟧ z ◻ D₁ Δ f)) (nat-dom adj (leg K j) h)) ◃∙

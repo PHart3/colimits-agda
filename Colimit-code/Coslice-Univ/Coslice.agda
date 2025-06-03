@@ -55,7 +55,7 @@ module MapsCos {j} (A : Type j) where
   fst (*→-assoc h₃ h₂ h₁) x = idp
   snd (*→-assoc h₃ h₂ h₁) a =
     ap (λ p → p ∙ ap (fst h₃) (snd h₂ a) ∙ snd h₃ a) (ap-∘ (fst h₃) (fst h₂) (snd h₁ a)) ∙
-    ! (ap2-∙-∙ (fst h₃) (fst h₂) (snd h₁ a) (snd h₂ a) (snd h₃ a))
+    ! (ap-ap-∙-∙ (fst h₃) (fst h₂) (snd h₁ a) (snd h₂ a) (snd h₃ a))
 
   -- post-composition
   post-∘*-∼ : ∀ {i k l} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A}

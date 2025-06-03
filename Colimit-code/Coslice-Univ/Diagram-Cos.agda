@@ -99,8 +99,3 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₂} {Γ : Graph ℓv ℓe} {F : CosDiag �
     -- coslice cocone morphisms built from ordinary cocone morphisms
     CosCoc-mor-str : (f : ty C₁ → ty C₂) →  Type (lmax (lmax (lmax (lmax ℓv ℓe) ℓ₁) ℓ₂) k₂)
     CosCoc-mor-str f = Σ (Cocone-mor-str (CocForg K₁) (CocForg K₂) f) CosCoc-mor-data
-
-    -- equivalence of coslice cocones
-    infixr 30 _CosCoc-≃_
-    _CosCoc-≃_ : Type (lmax (lmax (lmax (lmax (lmax ℓv ℓe) ℓ₁) ℓ₂) k₁) k₂)
-    _CosCoc-≃_  = Σ (ty C₁ ≃ ty C₂) (λ e → CosCoc-mor-str (–> e))

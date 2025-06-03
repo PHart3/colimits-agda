@@ -31,7 +31,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         apd-to-tr (λ x → f (right x) == H (right x)) (RfunEq (f , fₚ)) (cglue g (fun (F # i) a))
           (↯ (V f fₚ i j g (fun (F # i) a)))
           (cglue-β (λ i x → idp)
-            (λ i → λ j → λ g → λ x → from-transp-g (λ z → (f ∘ right) z == (fst (RLfun (f , fₚ)) ∘ right) z) (cglue g x) (↯ (V f fₚ i j g x)))
+            (λ i j g x → from-transp-g (λ z → (f ∘ right) z == (fst (RLfun (f , fₚ)) ∘ right) z) (cglue g x) (↯ (V f fₚ i j g x)))
             g (fun (F # i) a))
 
     abstract
@@ -40,7 +40,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
           =ₛ
         apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ◃∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
-        apd-helper {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
+        transp-over-∙ {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         ↯ (V f fₚ i j g (fun (F # i) a)) ◃∎
       apd-rw2 =
         apd-tr (λ x → RfunEq (f , fₚ) (ψ x)) (cglue g a) ◃∎
@@ -53,12 +53,12 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
           =ₛ⟨ 2 & 1 & apd-concat-arg (! (ap (cin j) (snd (F <#> g) a))) (cglue g (fun (F # i) a)) ⟩
         apd-comp-ap (cglue g a) ◃∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
-        apd-helper {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
+        transp-over-∙ {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         apd-tr (RfunEq (f , fₚ)) (cglue g (fun (F # i) a)) ◃∎
           =ₛ⟨ 3 & 1 & =ₛ-in γ-β ⟩
         apd-comp-ap (cglue g a) ◃∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
-        apd-helper {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
+        transp-over-∙ {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         ↯ (V f fₚ i j g (fun (F # i) a)) ◃∎ ∎ₛ
 
     transpEq-s : (s : f (right (ψ (cin j a))) == H (right (ψ (cin j a))))
@@ -199,7 +199,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
       Right-rw₂ :
         seq-! (transpEq-s idp) ∙∙ apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ◃∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
-        apd-helper {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
+        transp-over-∙ {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         ↯ (V f fₚ i j g (fun (F # i) a)) ◃∎
           =ₛ
         ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ◃∙
@@ -218,14 +218,14 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (O₁ {g = H ∘ right} idp (cglue g a) (ψ-βr g a)) ◃∙
         apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ◃∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
-        apd-helper {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
+        transp-over-∙ {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         (transp-pth (cglue g (fun (F # i) a)) idp ∙
         ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a))) ◃∎ 
       Right-rw₂ =
         seq-! (transpEq-s idp) ∙∙ apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ◃∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
-        apd-helper {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
+        transp-over-∙ {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         ↯ (V f fₚ i j g (fun (F # i) a)) ◃∎
           =ₛ⟨ 2 & 1 &  PathSeq2 F g a T f fₚ ⟩
         ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ◃∙
@@ -244,7 +244,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (O₁ {g = H ∘ right} idp (cglue g a) (ψ-βr g a)) ◃∙
         apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ◃∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
-        apd-helper {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
+        transp-over-∙ {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         (transp-pth (cglue g (fun (F # i) a)) idp ∙
         ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a))) ◃∎ ∎ₛ
@@ -259,7 +259,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (O₁ {g = H ∘ right} idp Q T₁) ∙
         apd-comp-ap {γ = RfunEq (f , fₚ)} Q ∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) T₁ ∙
-        apd-helper {γ = RfunEq (f , fₚ)} (! (ap (cin j) u)) ∙
+        transp-over-∙ {γ = RfunEq (f , fₚ)} (! (ap (cin j) u)) ∙
         transp-pth v idp ∙
         ap (λ p → ! (ap (f ∘ right) v) ∙ p) T₂
           ==
@@ -293,7 +293,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (O₁ {g = H ∘ right} idp (cglue g a) (ψ-βr g a)) ◃∙
         apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ◃∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
-        apd-helper {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
+        transp-over-∙ {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         (transp-pth (cglue g (fun (F # i) a)) idp ∙
         ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a))) ◃∎
@@ -314,7 +314,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (O₁ {g = H ∘ right} idp (cglue g a) (ψ-βr g a)) ∙
         apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ∙
-        apd-helper {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ∙
+        transp-over-∙ {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ∙
         (transp-pth (cglue g (fun (F # i) a)) idp ∙
         ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a)))) ◃∎
@@ -326,7 +326,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
           =ₛ
         seq-! (transpEq-s idp) ∙∙ apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ◃∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
-        apd-helper {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
+        transp-over-∙ {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         ↯ (V f fₚ i j g (fun (F # i) a)) ◃∎ 
       Right-rw₁ =
         ! (↯ (transpEq-s idp)) ◃∙
@@ -335,10 +335,10 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ! (↯ (transpEq-s idp)) ◃∙
         apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ◃∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
-        apd-helper {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
+        transp-over-∙ {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         ↯ (V f fₚ i j g (fun (F # i) a)) ◃∎
           =ₛ⟨ 0 & 1 & !-∙-seq (transpEq-s idp) ⟩
         seq-! (transpEq-s idp) ∙∙ apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ◃∙
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
-        apd-helper {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
+        transp-over-∙ {F = λ x → f (right x) == H (right x)} {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         ↯ (V f fₚ i j g (fun (F # i) a)) ◃∎ ∎ₛ

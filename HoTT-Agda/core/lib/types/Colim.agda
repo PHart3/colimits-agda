@@ -119,7 +119,7 @@ module _ {ℓv ℓe}  where
                   ap (λ p → ! (comp-== (==-to-CocEq (mor-to-== b)) j ((F <#> g) x)) ∙ ap f (comTri J g x) ∙' p)
                     (! (ap (λ p → comp-== p i x) (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b))))) ◃∙
                   tri-== (==-to-CocEq (mor-to-== b)) g x ◃∎
-                    =ₛ⟨ 2 & 1 & apCommSq2◃' (λ ce → tri-== ce g x) (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b))) ⟩
+                    =ₛ⟨ 2 & 1 & apCommSq2◃ (λ ce → tri-== ce g x) (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b))) ⟩
                   ap (λ p → ! p ∙ ap f (comTri J g x) ∙' comp-∼ b i x)
                     (! (ap (λ p → comp-== p j ((F <#> g) x)) (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b))))) ◃∙
                   ap (λ p → ! (comp-== (==-to-CocEq (mor-to-== b)) j ((F <#> g) x)) ∙ ap f (comTri J g x) ∙' p)

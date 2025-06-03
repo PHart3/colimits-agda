@@ -1,6 +1,0 @@
-name: create
-depend:
-  hott-core-modified
-  cos-colim
-include:
-  ./

@@ -193,36 +193,3 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
 
   CosCocEq-to-== : {K₂ : CosCocone A F T} → CosCocEq K₂ → K₁ == K₂
   CosCocEq-to-== {K₂} = ID-ind-map {b = center-CCEq} (λ K _ → K₁ == K) CosCocEq-contr idp
-
--- SIP for A-cocone morphisms
-
-module _ {ℓv ℓe ℓd ℓ ℓ₁ ℓ₂} {A : Type ℓ} {Γ : Graph ℓv ℓe} {F : CosDiag ℓd ℓ A Γ} {T₁ : Coslice ℓ₁ ℓ A} {T₂ : Coslice ℓ₂ ℓ A}
-  {K₁ : CosCocone A F T₁} {K₂ : CosCocone A F T₂} {f : ty T₁ → ty T₂} where
-
-  record CosCocMorEq (σ₁ σ₂ : CosCoc-mor-str K₁ K₂ f) : Type (lmax (lmax (lmax (lmax ℓv ℓe) ℓ₂) ℓd) ℓ) where
-    constructor coscocmoreq
-    field
-      comp-∼-∼ : (i : Obj Γ) → comp-∼ (fst σ₁) i ∼ comp-∼ (fst σ₂) i
-      comTri-∼-∼ : {i j : Obj Γ} (g : Hom Γ i j) (x : ty (F # i)) →
-        ap (λ p → ! p ∙ ap f (fst (comTri K₁ g) x) ∙' comp-∼ (fst σ₂) i x) (! (comp-∼-∼ j (fst (F <#> g) x))) ∙
-        ap (λ p → ! (comp-∼ (fst σ₁) j (fst (F <#> g) x)) ∙ ap f (fst (comTri K₁ g) x) ∙' p) (! (comp-∼-∼ i x)) ∙
-        comTri-∼ (fst σ₁) g x
-          ==
-        comTri-∼ (fst σ₂) g x
-      map-∼-∼-cos : map-∼-cos (snd σ₁) ∼ map-∼-cos (snd σ₂)
-      comp-∼-∼-cos : (i : Obj Γ) (a : A) → 
-        ap (λ p → ! p ∙ ap f (snd (comp K₁ i) a) ∙' map-∼-cos (snd σ₂) a) (! (comp-∼-∼ i (fun (F # i) a))) ∙
-        ap (λ p → ! (comp-∼ (fst σ₁) i (fun (F # i) a)) ∙ ap f (snd (comp K₁ i) a) ∙' p) (! (map-∼-∼-cos a)) ∙
-        comp-∼-cos (snd σ₁) i a
-          ==
-        comp-∼-cos (snd σ₂) i a
-      comTri-∼-∼-cos : {i j : Obj Γ} (g : Hom Γ i j) (a : A) → 
-        {!!} ∙
-        comTri-∼-cos (snd σ₁) g a
-          ==
-        comTri-∼-cos (snd σ₂) g a
-  open CosCocMorEq public
-{-
-  center-CCMEq : {σ : CosCocone-mor-str K₁ K₂ f} → CosCocMorEq σ σ
-  center-CCMEq = ?
--}
