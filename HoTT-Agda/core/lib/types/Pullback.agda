@@ -5,6 +5,7 @@ open import lib.NType
 open import lib.types.Cospan
 open import lib.types.Pointed
 open import lib.types.Sigma
+open import lib.wild-cats.Limit
 
 module lib.types.Pullback where
 
@@ -12,6 +13,7 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
 
   open Cospan D
 
+  -- standard pullback
   record Pullback : Type (lmax i (lmax j k)) where
     constructor pullback
     field
@@ -76,3 +78,24 @@ instance
     {{has-level n (Cospan.A D)}} → {{has-level n (Cospan.B D)}} → {{has-level n (Cospan.C D)}}
       → has-level n (Pullback D)
   pullback-level-instance {n = n} {{pA}} {{pB}} {{pC}} = pullback-level n pA pB pC
+
+-- abstract pullbacks
+
+module _ {i j k ℓ₁ ℓ₂} (D : Cospan {i} {j} {k}) {T : Type ℓ₁} (K : Cone-csp D T) where
+
+  open Cone-csp K
+  open Cospan D
+
+  pre-cmp-csp : (S : Type ℓ₂) → (S → T) → Cone-csp D S
+  pre-cmp-csp = λ S m → cone-csp (left ∘ m) (right ∘ m) λ x → sq (m x) 
+
+  is-pb-abs : Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) (lsucc ℓ₂))
+  is-pb-abs = (S : Type ℓ₂) → is-equiv (pre-cmp-csp S)
+
+  is-pb-abs-≃ : (p : is-pb-abs) (S : Type ℓ₂) → (S → T) ≃ Cone-csp D S
+  is-pb-abs-≃ p = λ S → (pre-cmp-csp S) , (p S)
+
+{- To do:
+ (a) Limiting cone over diagram means that induced cospan cone is abstract pullback.
+ (b) Standard pullback is abstract pullback.
+ (c) Any two abstract pullbacks are isomorphic as cospan cones. -}

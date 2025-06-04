@@ -27,3 +27,20 @@ record GraphHom {ℓv ℓe ℓv' ℓe'} (G : Graph ℓv ℓe) (G' : Graph ℓv' 
   infix 90 _<#>_
   infix 91 _#_
 open GraphHom public
+
+-- graph underlying a cospan
+
+data Triple : Type₀ where
+  lft mid rght : Triple
+
+Graph-cspan : Graph lzero lzero 
+Obj Graph-cspan = Triple
+Hom Graph-cspan lft lft = Empty
+Hom Graph-cspan lft mid = Unit
+Hom Graph-cspan lft rght = Empty
+Hom Graph-cspan mid lft = Empty
+Hom Graph-cspan mid mid = Empty
+Hom Graph-cspan mid rght = Empty
+Hom Graph-cspan rght lft = Empty
+Hom Graph-cspan rght mid = Unit
+Hom Graph-cspan rght rght = Empty

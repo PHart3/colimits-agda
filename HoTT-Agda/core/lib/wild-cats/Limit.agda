@@ -9,6 +9,8 @@ open import lib.wild-cats.Diagram-wc
 
 module lib.wild-cats.Limit where
 
+-- standard limit over a type-valued diagram
+
 module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
 
   Limit : ∀ {ℓ} → Diagram G (Type-wc ℓ) → Type (lmax (lmax ℓv ℓe) ℓ)
@@ -85,3 +87,26 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
 
     lim-to-== : {K₁ K₂ : Limit Δ} → K₁ =-lim K₂ → K₁ == K₂
     lim-to-== {K₁} = lim-ind K₁ (λ K₂ _ → K₁ == K₂) idp
+
+-- limiting cones over a diagram
+
+module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diag-cspan C}
+  {a : ob C} (K : Cone Δ a) where
+
+  open Cone
+
+  pre-cmp-con : (b : ob C) → hom C b a → Cone Δ b
+  leg (pre-cmp-con _ f) x = ⟦ C ⟧ leg K x ◻ f
+  tri (pre-cmp-con _ f) {x} {y} γ = ! (α C (D₁ Δ γ) (leg K x) f) ∙ ap (λ m → ⟦ C ⟧ m ◻ f) (tri K γ)
+
+  is-lim-wc : Type (lmax ℓc₁ ℓc₂)
+  is-lim-wc = (b : ob C) → is-equiv (pre-cmp-con b)
+
+  is-lim-≃ : (lim : is-lim-wc) (b : ob C) → hom C b a ≃ Cone Δ b
+  fst (is-lim-≃ _ b) = pre-cmp-con b
+  snd (is-lim-≃ lim b) = lim b
+
+-- pullback square
+
+is-pb-wc : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diag-cspan C} {a : ob C} (K : Cone Δ a) → Type (lmax ℓc₁ ℓc₂)
+is-pb-wc = is-lim-wc {G = Graph-cspan}
