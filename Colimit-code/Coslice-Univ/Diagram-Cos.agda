@@ -46,56 +46,28 @@ open CosCocone public
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₂} {Γ : Graph ℓv ℓe} {F : CosDiag ℓ₁ ℓ₂ A Γ} where
 
+  open MapsCos A
+
   -- forgetful map
   CocForg : ∀ {k} {C : Coslice k ℓ₂ A} → CosCocone A F C → Cocone (DiagForg A Γ F) (ty C)
   comp (CocForg (K & _)) i = fst (K i)
   comTri (CocForg (_ & r)) {y = j} {x = i} g = fst (r g)
 
   -- canonical post-composition function on cocones
-  PostComp-cos : ∀ {k k'} {C : Coslice k ℓ₂ A} {D : Coslice k' ℓ₂ A} → CosCocone A F C → (< A > C *→ D) → CosCocone A F D
+  PostComp-cos : ∀ {k k'} {C : Coslice k ℓ₂ A} {D : Coslice k' ℓ₂ A} → CosCocone A F C → (C *→ D) → CosCocone A F D
   comp (PostComp-cos K (f , fₚ)) i = f ∘ (fst (comp K i)) , λ a → ap f (snd (comp K i) a) ∙ fₚ a 
   comTri (PostComp-cos K (f , fₚ)) {y = j} {x = i} g =
     (λ x → ap f (fst (comTri K g) x)) , λ a →
       !-ap-ap-∘-ap-∙ f (fst (comp K j)) (snd (F <#> g) a) (fst (comTri K g) (fun (F # i) a)) ∙
       ap (λ p → p ∙ fₚ a) (ap (ap f) (snd (comTri K g) a))
 
-  module _ {k₁ k₂} {C₁ : Coslice k₁ ℓ₂ A} {C₂ : Coslice k₂ ℓ₂ A} (K₁ : CosCocone A F C₁) (K₂ : CosCocone A F C₂) where
+  -- another form of post-comp on cocones
+  RWhisk-coscoc : ∀ {k k'} {C : Coslice k ℓ₂ A} {D : Coslice k' ℓ₂ A} → CosCocone A F C → (C *→ D) → CosCocone A F D
+  comp (RWhisk-coscoc K f) i = f ∘* comp K i
+  comTri (RWhisk-coscoc K f) {y = j} {x = i} g = *→-assoc f (comp K j) (F <#> g) ∼∘-cos (post-∘*-∼ f (comTri K g))
 
-    record CosCoc-mor-data {f : ty C₁ → ty C₂} (σ : Cocone-mor-str (CocForg K₁) (CocForg K₂) f)
-      : Type (lmax (lmax (lmax ℓv ℓe) ℓ₂) k₂)
-      where
-        constructor coscocmordata
-        field
-          map-∼-cos : f ∘ fun C₁ ∼ fun C₂ 
-          comp-∼-cos : (i : Obj Γ) (a : A) → 
-            ! (comp-∼ σ i (fun (F # i) a)) ∙ ap f (snd (comp K₁ i) a) ∙' map-∼-cos a == snd (comp K₂ i) a
-          comTri-∼-cos : {i j : Obj Γ} (g : Hom Γ i j) (a : A) → 
-            ap (λ p → ! p ∙ ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a) (! (comTri-∼ σ g (fun (F # i) a))) ∙
-            ap (λ p →
-                ! (p ∙ ap f (fst (comTri K₁ g) (fun (F # i) a)) ∙' comp-∼ σ i (fun (F # i) a)) ∙
-                ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙
-                snd (comp K₂ j) a)
-              (hmtpy-nat-! (comp-∼ σ j) (snd (F <#> g) a)) ∙
-            ap (λ p →
-                  ! ((ap (λ z → fst (comp K₂ j) z) (snd (F <#> g) a) ∙ p ∙ ! (ap (λ z → (f ∘ fst (comp K₁ j)) z) (snd (F <#> g) a))) ∙
-                  ap f (fst (comTri K₁ g) (fun (F # i) a)) ∙'
-                  comp-∼ σ i (fun (F # i) a)) ∙
-                  ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙
-                  snd (comp K₂ j) a)
-                (!-∙-∙'-rot (ap f (snd (comp K₁ j) a)) (map-∼-cos a) (comp-∼-cos j a)) ∙
-             rearrange-red f (fst (comp K₁ j)) (fst (comp K₂ j))
-               (comp-∼ σ i (fun (F # i) a))
-               (fst (comTri K₁ g) (fun (F # i) a))
-               (map-∼-cos a)
-               (snd (F <#> g) a)
-               (snd (comp K₁ j) a)
-               (snd (comp K₂ j) a) ∙
-             ap (λ p →  ! (comp-∼ σ i (fun (F # i) a)) ∙ ap f p ∙' map-∼-cos a) (snd (comTri K₁ g) a) ∙
-             comp-∼-cos i a
-              ==
-            snd (comTri K₂ g) a
-    open CosCoc-mor-data public
-
-    -- coslice cocone morphisms built from ordinary cocone morphisms
-    CosCoc-mor-str : (f : ty C₁ → ty C₂) →  Type (lmax (lmax (lmax (lmax ℓv ℓe) ℓ₁) ℓ₂) k₂)
-    CosCoc-mor-str f = Σ (Cocone-mor-str (CocForg K₁) (CocForg K₂) f) CosCoc-mor-data
+  -- stand-alone lemma for proof of pullback stability in coslice of Type
+  pstcomp-coscoc-mor : ∀ {k₁ k₂} {C₁ : Coslice k₁ ℓ₂ A} {C₂ : Coslice k₂ ℓ₂ A} {K₁ : CosCocone A F C₁} {K₂ : CosCocone A F C₂}
+    (f : C₁ *→ C₂) → PostComp-cos K₁ f == K₂ → Cocone-mor-str (CocForg K₁) (CocForg K₂) (fst f)
+  comp-∼ (pstcomp-coscoc-mor f idp) _ _ = idp
+  comTri-∼ (pstcomp-coscoc-mor f idp) _ _ = idp

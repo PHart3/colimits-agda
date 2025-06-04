@@ -10,7 +10,7 @@ open import Diagram-Cos
 
 module SIP-Cos where
 
--- SIP for A-maps
+-- SIP for A-maps (or maps under A)
 
 module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A > X *→ Y} where
 
@@ -27,32 +27,50 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A >
 
   open MapsCos A
 
-  UndFunHomContr : is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
-  UndFunHomContr = equiv-preserves-level lemma {{UndFunHomContr-aux }}
-    where
-      lemma :
-        Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g))
-          (λ (h , K) → Σ ((a : A) → h (fun X a) == fun Y a) (λ p → ((a : A) → ! (K (fun X a)) ∙ (snd f a) == p a)))
-          ≃
-        Σ (X *→ Y) (λ g → < X > f ∼ g)
-      lemma =
-        equiv
-          (λ ((g , K) , (p , H)) → (g , (λ a → p a)) , ((λ x → K x) , (λ a → H a)))
-          (λ ((h , p) , (H , K)) → (h , H) , (p , K))
-          (λ ((h , p) , (H , K)) → idp)
-          λ ((g , K) , (p , H)) → idp
+  abstract
+    UndFunHomContr : is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
+    UndFunHomContr = equiv-preserves-level lemma {{UndFunHomContr-aux }}
+      where
+        lemma :
+          Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g))
+            (λ (h , K) → Σ ((a : A) → h (fun X a) == fun Y a) (λ p → ((a : A) → ! (K (fun X a)) ∙ (snd f a) == p a)))
+            ≃
+          Σ (X *→ Y) (λ g → < X > f ∼ g)
+        lemma =
+          equiv
+            (λ ((g , K) , (p , H)) → (g , (λ a → p a)) , ((λ x → K x) , (λ a → H a)))
+            (λ ((h , p) , (H , K)) → (h , H) , (p , K))
+            (λ ((h , p) , (H , K)) → idp)
+            λ ((g , K) , (p , H)) → idp
 
-  UndFunEq : {g : X *→ Y} → (< X > f ∼ g) → f == g
-  UndFunEq {g} = ID-ind-map {b = (λ _ → idp) , (λ _ → idp)} (λ g _ → f == g) UndFunHomContr idp
+  UndFun-ind : ∀ {k} (P : (g : X *→ Y) → (< X > f ∼ g → Type k))
+    → P f ((λ _ → idp) , (λ _ → idp)) → {g : X *→ Y} (p : < X > f ∼ g) → P g p
+  UndFun-ind P = ID-ind-map {b = (λ _ → idp) , (λ _ → idp)} P UndFunHomContr
 
+  UndFun∼-to-== : {g : X *→ Y} → (< X > f ∼ g) → f == g
+  UndFun∼-to-== {g} = UndFun-ind (λ g _ → f == g) idp
+
+  UndFun∼-β : UndFun∼-to-== ((λ _ → idp) , (λ _ → idp)) == idp
+  UndFun∼-β = ID-ind-map-β (λ g _ → f == g) UndFunHomContr idp
+
+module _ {i j k l} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A} where
+
+  open MapsCos A
+
+  -- Our definition of right whiskering was correct.
+  rwhisk-cos-pres : {f : < A > X *→ Y} {h₁ h₂ : Z *→ X} (H : < Z > h₁ ∼ h₂)
+    → UndFun∼-to-== (post-∘*-∼ f H) == ap (λ m → f ∘* m) (UndFun∼-to-== H)
+  rwhisk-cos-pres {f} {h₁} = UndFun-ind {f = h₁} (λ h₂ H → UndFun∼-to-== (post-∘*-∼ f H) == ap (λ m → f ∘* m) (UndFun∼-to-== H))
+    (UndFun∼-β ∙ ap (ap (λ m → f ∘* m)) (! (UndFun∼-β)))
+  
 -- SIP for A-cocones
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} where
 
   long-path-red : {x y : A} (p : x == y) {z : B} (q₁ : g y == z) (q₂ : f y  == z)
     {w : B} (P : f x == w) {v : B} (C : w == v)
-    → ! ((ap g p ∙ (q₁ ∙ ! q₂) ∙ ! (ap f p)) ∙ P ∙ C) ∙ ap g p ∙ q₁ == ! C ∙ ! P ∙ ap f p ∙ q₂
-  long-path-red idp q₁ q₂ P idp = !-∙-!-rid-∙-rid P q₁ q₂ 
+    → ! ((ap g p ∙ (q₁ ∙ ! q₂) ∙ ! (ap f p)) ∙ P ∙' C) ∙ ap g p ∙ q₁ == ! C ∙ ! P ∙ ap f p ∙ q₂
+  long-path-red idp q₁ q₂ P idp = !-∙-!-rid-∙-rid P q₁ q₂
 
 module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) (K₁ : CosCocone A F T) where
 
@@ -61,29 +79,33 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
     field W : (i : Obj Γ) → fst (comp K₁ i) ∼ fst (comp K₂ i)
     field u : (i : Obj Γ) (a : A) → ! (W i (fun (F # i) a)) ∙ snd (comp K₁ i) a == snd (comp K₂ i) a    
     Ξ : (i j : Obj Γ) (g : Hom Γ i j) (a : A) →
-      ! (! (W j (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙
+      ! (! (W j (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙' W i (fun (F # i) a)) ∙
       ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a
         =-=
       snd (comp K₂ i) a
     Ξ i j g a =
-      ! (! (W j (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙
+      ! (! (W j (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙' W i (fun (F # i) a)) ∙
       ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙
       snd (comp K₂ j) a
-        =⟪ ap (λ p → ! (p ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙ ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a)
+        =⟪ ap (λ p → ! (p ∙ fst (comTri K₁ g) (fun (F # i) a) ∙' W i (fun (F # i) a)) ∙ ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a)
              (hmtpy-nat-rev (W j) (snd (F <#> g) a) (snd (comp K₁ j) a)) ⟫
       ! ((ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙
          ((! (W j (fun (F # j) a)) ∙ snd (comp K₁ j) a) ∙ ! (snd (comp K₁ j) a)) ∙
          ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
-        fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙
-      ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a
+        fst (comTri K₁ g) (fun (F # i) a) ∙'
+        W i (fun (F # i) a)) ∙
+      ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙
+      snd (comp K₂ j) a
         =⟪ ap (λ p →
                 ! ((ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
-                  fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙
+                  fst (comTri K₁ g) (fun (F # i) a) ∙' W i (fun (F # i) a)) ∙
                 ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a)
            (u j a) ⟫
       ! ((ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ (snd (comp K₂ j) a ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
-        fst (comTri K₁ g) (fun (F # i) a) ∙ W i (fun (F # i) a)) ∙
-      ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a
+        fst (comTri K₁ g) (fun (F # i) a) ∙'
+        W i (fun (F # i) a)) ∙
+      ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙
+      snd (comp K₂ j) a
         =⟪ long-path-red (snd (F <#> g) a) (snd (comp K₂ j) a) (snd (comp K₁ j) a) (fst (comTri K₁ g) (fun (F # i) a)) (W i (fun (F # i) a)) ⟫
       ! (W i (fun (F # i) a)) ∙ ! (fst (comTri K₁ g) (fun (F # i) a)) ∙ ap (fst (comp K₁ j)) (snd (F <#> g) a) ∙ snd (comp K₁ j) a
         =⟪ ap (λ p → ! (W i (fun (F # i) a)) ∙ p) (snd (comTri K₁ g) a) ⟫
@@ -92,23 +114,22 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
       snd (comp K₂ i) a ∎∎
     field
       Λ : {i j : Obj Γ} (g : Hom Γ i j) →
-        Σ ((x : ty (F # i)) → ! (W j (fst (F <#> g) x)) ∙ fst (comTri K₁ g) x ∙ W i x == fst (comTri K₂ g) x)
+        Σ ((x : ty (F # i)) → ! (W j (fst (F <#> g) x)) ∙ fst (comTri K₁ g) x ∙' W i x == fst (comTri K₂ g) x)
           (λ R → ((a : A) →
             ! (ap (λ p → ! p ∙ ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a) (R (fun (F # i) a))) ◃∙ Ξ i j g a =ₛ snd (comTri K₂ g) a ◃∎))
         
   open CosCocEq public
 
   center-CCEq : CosCocEq K₁
-  W center-CCEq = λ i x → idp
-  u center-CCEq = λ i a → idp
+  W center-CCEq = λ _ _ → idp
+  u center-CCEq = λ _ _ → idp
   Λ center-CCEq {i} {j} g =
-    (λ x → ∙-unit-r (fst (comTri K₁ g) x)) , (λ a → =ₛ-in (lemma a (snd (F <#> g) a) (snd (comp K₁ j) a) (snd (comTri K₁ g) a)))
+    (λ _ → idp) , (λ a → =ₛ-in (lemma a (snd (F <#> g) a) (snd (comp K₁ j) a) (snd (comTri K₁ g) a)))
     where
       lemma : (a : A) → {w : ty (F # j)} (σ₁ : fst (F <#> g) (fun (F # i) a) == w) {z : ty T} (σ₂ : fst (comp K₁ j) w == z)
         {v : fst (comp K₁ i) (fun (F # i) a) == z} (τ : ! (fst (comTri K₁ g) (fun (F # i) a)) ∙ ap (fst (comp K₁ j)) σ₁ ∙ σ₂ == v) →
-        ! (ap (λ p → ! p ∙ ap (fst (comp K₁ j)) σ₁ ∙ σ₂) (∙-unit-r (fst (comTri K₁ g) (fun (F # i) a)))) ∙
-        ap (λ p → ! (p ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ idp) ∙ ap (fst (comp K₁ j)) σ₁ ∙ σ₂)
-        (hmtpy-nat-rev (λ x → idp) σ₁ σ₂) ∙
+        ap (λ p → ! (p ∙ fst (comTri K₁ g) (fun (F # i) a)) ∙ ap (fst (comp K₁ j)) σ₁ ∙ σ₂)
+          (hmtpy-nat-rev (λ _ → idp) σ₁ σ₂) ∙
         long-path-red σ₁ σ₂ σ₂ (fst (comTri K₁ g) (fun (F # i) a)) idp ∙
         ap (λ q → q) τ ∙ idp
           ==
@@ -116,8 +137,8 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
       lemma a idp idp idp = lemma2 (fst (comTri K₁ g) (fun (F # i) a))
         where
           lemma2 : {t : ty T} (U : fst (< A > comp K₁ j ∘ F <#> g) (fun (F # i) a) == t)
-            → ! (ap (λ p → ! p ∙ idp) (∙-unit-r U)) ∙ long-path-red {f = fst (comp K₁ j)} {g = fst (comp K₁ j)} idp idp idp U idp ∙ idp == idp
-          lemma2 idp = idp
+            → !-∙-!-rid-∙-rid U idp idp ∙ idp == idp
+          lemma2 idp = idp 
 
   open MapsCos A
 
@@ -126,36 +147,36 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
     Σ ((i : Obj Γ) → (Σ (F # i *→  T) (λ g →  < F # i > comp K₁ i ∼ g)))
       (λ H → ((i j : Obj Γ) (g : Hom Γ i j) →
         Σ (Σ (fst (fst (H j)) ∘ fst (F <#> g) ∼ fst (fst (H i)))
-            (λ K → (x : ty (F # i)) → ! (fst (snd (H j)) (fst (F <#> g) x)) ∙ fst (comTri K₁ g) x ∙ fst (snd (H i)) x == K x))
+            (λ K → (x : ty (F # i)) → ! (fst (snd (H j)) (fst (F <#> g) x)) ∙ fst (comTri K₁ g) x ∙' fst (snd (H i)) x == K x))
           (λ (K , R) →
-            Σ ((a : A) → ! (K (fun (F # i) a)) ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a  == snd (fst (H i)) a)
+            Σ ((a : A) → ! (K (fun (F # i) a)) ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a == snd (fst (H i)) a)
               (λ J → ((a : A) →
                 ! (ap (λ p → ! p ∙ ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a) (R (fun (F # i) a))) ∙ ↯ (ϕ H i j g a) == J a)))))
     module CCEq-Σ where
       ϕ : (H : _) (i j : Obj Γ) (g : Hom Γ i j) (a : A) →
-        ! (! (fst (snd (H j)) (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
+        ! (! (fst (snd (H j)) (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙' fst (snd (H i)) (fun (F # i) a)) ∙
         ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a
           =-=
         snd (fst (H i)) a
       ϕ H i j g a =
-        ! (! (fst (snd (H j)) (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
+        ! (! (fst (snd (H j)) (fst (F <#> g) (fun (F # i) a))) ∙ fst (comTri K₁ g) (fun (F # i) a) ∙' fst (snd (H i)) (fun (F # i) a)) ∙
         ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a
           =⟪ ap (λ p →
-                 ! (p ∙  fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
+                 ! (p ∙  fst (comTri K₁ g) (fun (F # i) a) ∙' fst (snd (H i)) (fun (F # i) a)) ∙
                  ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a)
                (hmtpy-nat-rev (fst (snd (H j))) (snd (F <#> g) a) (snd (comp K₁ j) a)) ⟫
         ! ((ap (fst (fst (H j))) (snd (F <#> g) a) ∙
            ((! (fst (snd (H j)) (fun (F # j) a)) ∙ snd (comp K₁ j) a) ∙ ! (snd (comp K₁ j) a)) ∙
            ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
-          fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
+          fst (comTri K₁ g) (fun (F # i) a) ∙' fst (snd (H i)) (fun (F # i) a)) ∙
         ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a
           =⟪ ap (λ p →
                ! ((ap (fst (fst (H j))) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
-                 fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
+                 fst (comTri K₁ g) (fun (F # i) a) ∙' fst (snd (H i)) (fun (F # i) a)) ∙
                ap (fst (fst (H j))) (snd (F <#> g) a) ∙ snd (fst (H j)) a)
              (snd (snd (H j)) a) ⟫
         ! ((ap (fst (fst (H j))) (snd (F <#> g) a) ∙ (snd (fst (H j)) a ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
-          fst (comTri K₁ g) (fun (F # i) a) ∙ fst (snd (H i)) (fun (F # i) a)) ∙
+          fst (comTri K₁ g) (fun (F # i) a) ∙' fst (snd (H i)) (fun (F # i) a)) ∙
         ap (fst (fst (H j))) (snd (F <#> g) a) ∙
         snd (fst (H j)) a
           =⟪ long-path-red (snd (F <#> g) a) (snd (fst (H j)) a) (snd (comp K₁ j) a) (fst (comTri K₁ g) (fun (F # i) a))
@@ -172,7 +193,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
       equiv-preserves-level ((Σ-contr-red (Π-level (λ _ → UndFunHomContr)))⁻¹)
         {{Π-level
           (λ i → (Π-level (λ j → (Π-level (λ g →
-            equiv-preserves-level ((Σ-contr-red (funhom-contr {f = λ z → (fst (comTri K₁ g) z) ∙ idp}))⁻¹)
+            equiv-preserves-level ((Σ-contr-red (funhom-contr {f = fst (comTri K₁ g)}))⁻¹)
             {{funhom-contr {f = λ a → ↯ (CCEq-Σ.ϕ (λ i → (comp K₁ i , (λ x → idp) , (λ a → idp))) i j g a)}}})))))}}
 
   CosCocEq-≃ : CosCocEq-tot ≃ Σ (CosCocone A F T) (λ K₂ → CosCocEq K₂)
@@ -193,3 +214,49 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
 
   CosCocEq-to-== : {K₂ : CosCocone A F T} → CosCocEq K₂ → K₁ == K₂
   CosCocEq-to-== {K₂} = ID-ind-map {b = center-CCEq} (λ K _ → K₁ == K) CosCocEq-contr idp
+
+module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : CosDiag ℓd ℓ A Γ}
+  {T₁ : Coslice ℓc₁ ℓ A} {T₂ : Coslice ℓc₂ ℓ A} {K : CosCocone A F T₁} where
+
+  -- equality between two defs of post-comp function on coslice cocones
+
+  abstract
+    PostComp-CCEq : (f : < A > T₁ *→ T₂) → CosCocEq F T₂ (PostComp-cos K f) (RWhisk-coscoc K f)
+    W (PostComp-CCEq f) _ _ = idp
+    u (PostComp-CCEq f) _ _ = idp
+    fst (Λ (PostComp-CCEq f) g) _ = idp
+    snd (Λ (PostComp-CCEq f) {i} {j} g) a = =ₛ-in (lemma (snd (F <#> g) a) (fst (comTri K g) (fun (F # i) a)) (snd (comp K j) a) (snd (comTri K g) a) (snd f a))
+      where abstract
+        lemma : {x₁ x₂ : ty (F # j)} {y₁ y₂ : ty T₁} {r : y₁ == y₂} {z : ty T₂}
+          (p₁ : x₁ == x₂) (p₃ : fst (comp K j) x₁ == y₁) (p₅ : fst (comp K j) x₂ == y₂) (p₂ : ! p₃ ∙ ap (fst (comp K j)) p₁ ∙ p₅ == r) (p₄ : fst f y₂ == z) →
+          ap (λ p →
+              ! (p ∙ ap (fst f) p₃) ∙
+              ap (fst f ∘ fst (comp K j)) p₁ ∙
+              ap (fst f) p₅ ∙ p₄)
+            (hmtpy-nat-rev (λ _ → idp) p₁ (ap (fst f) p₅ ∙ p₄)) ∙
+          long-path-red p₁ (ap (fst f) p₅ ∙ p₄)
+            (ap (fst f) p₅ ∙ p₄)
+            (ap (fst f) p₃) idp ∙
+          ap (λ q → q) (!-ap-ap-∘-ap-∙ (fst f) (fst (comp K j)) p₁ p₃ ∙
+          ap (λ p → p ∙ p₄) (ap (ap (fst f)) p₂)) ∙ idp
+            ==
+          (ap (λ p → p ∙ ap (fst f ∘ fst (comp K j)) p₁ ∙ ap (fst f) p₅ ∙ p₄)
+            (!-∙ idp (ap (fst f) p₃)) ∙
+          ∙-assoc (! (ap (fst f) p₃)) idp
+            (ap (fst f ∘ fst (comp K j)) p₁ ∙ ap (fst f) p₅ ∙ p₄)) ∙
+          ap (_∙_ (! (ap (fst f) p₃)))
+            (ap (λ p → p ∙ ap (fst f) p₅ ∙ p₄)
+              (ap-∘ (fst f) (fst (comp K j)) p₁) ∙
+            ! (ap-ap-∙-∙ (fst f) (fst (comp K j)) p₁ p₅ p₄)) ∙
+          ap (λ p → p ∙ ap (fst f) (ap (fst (comp K j)) p₁ ∙ p₅) ∙ p₄)
+            (!-ap (fst f) p₃) ∙
+          ! (∙-assoc (ap (fst f) (! p₃))
+              (ap (fst f) (ap (fst (comp K j)) p₁ ∙ p₅)) p₄) ∙
+          ap (λ p → p ∙ p₄)
+            (∙-ap (fst f) (! p₃) (ap (fst (comp K j)) p₁ ∙ p₅)) ∙
+          ap (λ p → ap (fst f) p ∙ p₄) p₂
+        lemma idp idp idp idp idp = idp
+
+  abstract
+    CosPostComp-eq : PostComp-cos {D = T₂} K ∼ RWhisk-coscoc K
+    CosPostComp-eq f = CosCocEq-to-== F T₂ _ (PostComp-CCEq f)

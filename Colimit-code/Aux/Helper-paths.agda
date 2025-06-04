@@ -26,7 +26,7 @@ module _ {ℓ} {A : Type ℓ} where
   db-neg-rid-db q idp = neg-rid-trip-inv q idp
 
   !-∙-!-rid-∙-rid : {x y w z : A} (p : x == y) (q : w == z) (r : x == z)
-    → ! (((q ∙ ! r) ∙ idp) ∙ p ∙ idp) ∙ q == ! p ∙ r
+    → ! (((q ∙ ! r) ∙ idp) ∙ p) ∙ q == ! p ∙ r
   !-∙-!-rid-∙-rid idp q r = db-neg-rid-db q r
 
   unit3-r-!-inv-! : {a b : A} (p : a == b) → ! (((p ∙ idp) ∙ idp) ∙ idp) ∙ p == idp
@@ -89,5 +89,5 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type �
     (q₀ : a₀ == a₁) (q₁ : h a₁ == b₀) (q₂ : g a₁ == c₁) → 
     ! ((ap g q₀ ∙ (q₂ ∙ ! p₂ ∙ ! (ap f q₁)) ∙ ! (ap (f ∘ h) q₀)) ∙ ap f p₁ ∙' p₀) ∙ ap g q₀ ∙ q₂
       ==
-    ! p₀ ∙ ap f (! p₁ ∙ ap h q₀ ∙ q₁) ∙' p₂
+    ! p₀ ∙ ap f (! p₁ ∙ ap h q₀ ∙ q₁) ∙ p₂
   rearrange-red idp idp idp idp idp q₂ = unit3-r-!-inv-! q₂

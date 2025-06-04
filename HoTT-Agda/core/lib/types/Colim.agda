@@ -37,6 +37,10 @@ module _ {ℓv ℓe}  where
 
   open ColimElim public
 
+  -- trees
+  is-tree : Graph ℓv ℓe → Type lzero
+  is-tree Γ = is-contr (Colim (ConsDiag Γ Unit))
+
   module _ {Γ : Graph ℓv ℓe} where
 
     ColimMapEq : ∀ {ℓd ℓ} {D : Diag ℓd Γ} {V : Type ℓ} (h₁ h₂ : Colim D → V)
@@ -63,10 +67,13 @@ module _ {ℓv ℓe}  where
 
     open ColimRec public 
 
+  colimR-coc : ∀ {ℓ} {Γ : Graph ℓv ℓe} {ℓd} {D : Diag ℓd Γ} {V : Type ℓ} (J : Cocone D V) → Colim D → V
+  colimR-coc J = colimR (comp J) (λ i j g x → comTri J g x)
+
   module ColimitMap {Γ : Graph ℓv ℓe} {ℓd₁ ℓd₂} {F : Diag ℓd₁ Γ} {G : Diag ℓd₂ Γ} (M : DiagMor F G) where
 
     private
-      module M = ColimRec {D = F} {V = Colim G} (λ i → (cin i) ∘ (nat M i))
+      module M = ColimRec {D = F} {V = Colim G} (λ i → cin i ∘ nat M i)
         (λ i j g x →  ! (ap (cin j) (comSq M g x)) ∙ (cglue {i = i} {j = j} g (nat M i x)))
 
     ColMap : Colim F → Colim G
@@ -96,58 +103,27 @@ module _ {ℓv ℓe}  where
       can-coc-is-contr : (K : Cocone F D) → is-contr (Σ (E → D) (λ f → PostComp J D f == K))
       can-coc-is-contr K = equiv-is-contr-map (ζ D) K
 
-      pstcomp-coc-mor-≃ : (K : Cocone F D) (f : E → D) → (PostComp J D f == K) ≃ Cocone-mor-str J K f
-      pstcomp-coc-mor-≃ _ f = equiv ==-to-mor mor-to-== rtrip1 rtrip2
+      pstcomp-coc-mor-≃-aux : (K : Cocone F D) (f : E → D) → (CocEq (PostComp J D f) K) ≃ Cocone-mor-str J K f
+      pstcomp-coc-mor-≃-aux _ f = equiv ==-to-mor mor-to-== rtrip1 rtrip2
 
         where
-          ==-to-mor : {L : Cocone F D} → PostComp J D f == L → Cocone-mor-str J L f
-          comp-∼ (==-to-mor e) = comp-== (==-to-CocEq e)
-          comTri-∼ (==-to-mor e) = tri-== (==-to-CocEq e) 
+          ==-to-mor : {L : Cocone F D} → CocEq (PostComp J D f) L → Cocone-mor-str J L f
+          comp-∼ (==-to-mor e) = comp-== e
+          comTri-∼ (==-to-mor e) = tri-== e
 
-          mor-to-== : {L : Cocone F D} → Cocone-mor-str J L f →  PostComp J D f == L
-          mor-to-== m = CocEq-to-== (coceq (comp-∼ m) (comTri-∼ m))
+          mor-to-== : {L : Cocone F D} → Cocone-mor-str J L f →  CocEq (PostComp J D f) L
+          mor-to-== m = coceq (comp-∼ m) (comTri-∼ m)
 
           abstract
           
             rtrip1 : {L : Cocone F D} (b : Cocone-mor-str J L f) → ==-to-mor (mor-to-== b) == b
-            rtrip1 {L} b = CocMorEq-to-==
-              (cocmoreq
-                (λ i x → ap (λ p → comp-== p i x) (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b))))
-                λ {i} {j} g x → =ₛ-out $
-                  ap (λ p → ! p ∙ ap f (comTri J g x) ∙' comp-∼ b i x)
-                    (! (ap (λ p → comp-== p j ((F <#> g) x)) (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b))))) ◃∙
-                  ap (λ p → ! (comp-== (==-to-CocEq (mor-to-== b)) j ((F <#> g) x)) ∙ ap f (comTri J g x) ∙' p)
-                    (! (ap (λ p → comp-== p i x) (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b))))) ◃∙
-                  tri-== (==-to-CocEq (mor-to-== b)) g x ◃∎
-                    =ₛ⟨ 2 & 1 & apCommSq2◃ (λ ce → tri-== ce g x) (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b))) ⟩
-                  ap (λ p → ! p ∙ ap f (comTri J g x) ∙' comp-∼ b i x)
-                    (! (ap (λ p → comp-== p j ((F <#> g) x)) (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b))))) ◃∙
-                  ap (λ p → ! (comp-== (==-to-CocEq (mor-to-== b)) j ((F <#> g) x)) ∙ ap f (comTri J g x) ∙' p)
-                    (! (ap (λ p → comp-== p i x) (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b))))) ◃∙
-                  ap (λ p → ! (comp-== p j ((F <#> g) x)) ∙ ap f (comTri J g x) ∙' comp-== p i x)
-                    (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b))) ◃∙
-                  comTri-∼ b g x ◃∙
-                  ! (ap (λ _ → comTri L g x) (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b)))) ◃∎
-                    =ₛ₁⟨ 0 & 3 & aux g x (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b))) ⟩
-                  idp ◃∙
-                  comTri-∼ b g x ◃∙
-                  ! (ap (λ _ → comTri L g x) (CocEq-≃.rtrip2 {K₂ = L} (coceq (comp-∼ b) (comTri-∼ b)))) ◃∎
-                    =ₛ₁⟨ ap (λ p → comTri-∼ b g x ∙ ! p) (ap-cst (comTri L g x) _) ∙ ∙-unit-r (comTri-∼ b g x) ⟩
-                  comTri-∼ b g x ◃∎ ∎ₛ)
-                  where abstract
-                    aux : ∀ {i} {j} g x {t : _}
-                      (r : t == coceq (comp-∼ b) (comTri-∼ b)) → 
-                      ap (λ p → ! p ∙ ap f (comTri J g x) ∙' comp-∼ b i x)
-                        (! (ap (λ p → comp-== p j ((F <#> g) x)) r)) ∙
-                      ap (λ p → ! (comp-== t j ((F <#> g) x)) ∙  ap f (comTri J g x) ∙' p)
-                        (! (ap (λ p → comp-== p i x) r)) ∙
-                      ap (λ p → ! (comp-== p j ((F <#> g) x)) ∙ ap f (comTri J g x) ∙' comp-== p i x) r
-                        ==
-                      idp
-                    aux {i} {j} g x idp = idp
+            rtrip1 {L} b = idp
+            
+            rtrip2 : {L : Cocone F D} (a : CocEq (PostComp J D f) L) → mor-to-== (==-to-mor a) == a
+            rtrip2 = CocEq-ind (λ L a → mor-to-== (==-to-mor a) == a) idp
 
-            rtrip2 : {L : Cocone F D} (a : PostComp J D f == L) → mor-to-== (==-to-mor a) == a
-            rtrip2 idp = CocEq-β
+      pstcomp-coc-mor-≃ : (K : Cocone F D) (f : E → D) → (PostComp J D f == K) ≃ Cocone-mor-str J K f
+      pstcomp-coc-mor-≃ K f = pstcomp-coc-mor-≃-aux K f ∘e CocEq-==-≃ ⁻¹
 
       can-coc-mor-contr : (K : Cocone F D) → is-contr (Σ (E → D) (λ f → Cocone-mor-str J K f))
       can-coc-mor-contr K = equiv-preserves-level (Σ-emap-r (pstcomp-coc-mor-≃ K)) {{can-coc-is-contr K}}

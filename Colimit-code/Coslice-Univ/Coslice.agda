@@ -57,10 +57,9 @@ module MapsCos {j} (A : Type j) where
     ap (λ p → p ∙ ap (fst h₃) (snd h₂ a) ∙ snd h₃ a) (ap-∘ (fst h₃) (fst h₂) (snd h₁ a)) ∙
     ! (ap-ap-∙-∙ (fst h₃) (fst h₂) (snd h₁ a) (snd h₂ a) (snd h₃ a))
 
-  -- post-composition
+  -- right whiskering
   post-∘*-∼ : ∀ {i k l} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A}
-    {h₁ h₂ : X *→ Y} (f : Y *→ Z)
-    → < X > h₁ ∼ h₂ → < X > f ∘* h₁ ∼ f ∘* h₂ 
+    {h₁ h₂ : X *→ Y} (f : Y *→ Z) → < X > h₁ ∼ h₂ → < X > f ∘* h₁ ∼ f ∘* h₂ 
   fst (post-∘*-∼ f H) x = ap (fst f) (fst H x)
   snd (post-∘*-∼ {X = X} {h₁ = h₁} f H) a = 
     ap (λ p → p ∙ ap (fst f) (snd h₁ a) ∙ snd f a) (!-ap (fst f) (fst H (fun X a))) ∙ 
@@ -68,7 +67,7 @@ module MapsCos {j} (A : Type j) where
     ap (λ p → p ∙ snd f a) (∙-ap (fst f) (! (fst H (fun X a))) (snd h₁ a)) ∙
     ap (λ p → ap (fst f) p ∙ snd f a) (snd H a)
 
-  -- pre-composition
+  -- left whiskering
   pre-∘*-∼ : ∀ {i k l} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A}
     {h₁ h₂ : X *→ Y} (f : Z *→ X) → < X > h₁ ∼ h₂ → < Z > h₁ ∘* f ∼ h₂ ∘* f
   fst (pre-∘*-∼ f H) x = fst H (fst f x)
@@ -78,7 +77,7 @@ module MapsCos {j} (A : Type j) where
     ∙-assoc (ap (fst h₂) (snd f a)) (! (fst H (fun X a))) (snd h₁ a)) ∙
     ap (λ p → ap (fst h₂) (snd f a) ∙ p) (snd H a)
 
-  -- concatenation
+  -- composition
   infixr 40 _∼∘-cos_
   _∼∘-cos_ : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} {h₁ h₂ h₃ : X *→ Y}
     → < X > h₁ ∼ h₂ → < X > h₂ ∼ h₃ → < X > h₁ ∼ h₃
