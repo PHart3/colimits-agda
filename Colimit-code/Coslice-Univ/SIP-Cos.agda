@@ -53,6 +53,16 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A >
   UndFun∼-β : UndFun∼-to-== ((λ _ → idp) , (λ _ → idp)) == idp
   UndFun∼-β = ID-ind-map-β (λ g _ → f == g) UndFunHomContr idp
 
+module _ {j} (A : Type j) where
+
+  open MapsCos A
+
+  -- free-forgetful adjunction
+  free-forg-cos : ∀ {ℓ₁ ℓ₂} {X : Type ℓ₁} {Y : Coslice ℓ₂ j A} → (*[ Coprod X A , inr ] *→ Y) ≃ (X → ty Y)
+  free-forg-cos {X = X} {Y} = equiv (λ m → fst m ∘ inl) (λ f → (λ { (inl x) → f x ; (inr a) → fun Y a }) , λ _ → idp)
+    (λ _ → idp)
+    (λ m → UndFun∼-to-== ((λ { (inl x) → idp ; (inr a) → ! (snd m a) }) , (λ a → ap (λ p → p ∙ idp) (!-! (snd m a)) ∙ ∙-unit-r (snd m a))))
+
 module _ {i j k l} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A} where
 
   open MapsCos A

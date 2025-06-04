@@ -1,13 +1,12 @@
 {-# OPTIONS --without-K --rewriting #-}
 
-{- Coslice categories of the universe -}
-
 open import lib.Basics
+
+{- coslices of the universe -}
 
 module Coslice where
 
 infix 60 *[_,_]
-
 record Coslice (i j : ULevel) (A : Type j) : Type (lmax (lsucc i) j) where
   constructor *[_,_]
   field
@@ -90,8 +89,8 @@ module MapsCos {j} (A : Type j) where
 
   -- identity
   cos∼id : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} (h : X *→ Y) → < X > h ∼ h
-  fst (cos∼id h) = λ x → idp
-  snd (cos∼id h) = λ a → idp
+  fst (cos∼id h) _ = idp
+  snd (cos∼id h) _ = idp
 
   -- homotopy of homotopies of A-maps
   infixr 30 <_>_∼∼_

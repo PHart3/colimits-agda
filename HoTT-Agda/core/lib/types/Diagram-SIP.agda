@@ -85,19 +85,19 @@ module _ {ℓv ℓe ℓd ℓ₁ ℓ₂} {Γ : Graph ℓv ℓe} {F : Diag ℓd Γ
 
   record CocMorEq (σ₁ σ₂ : Cocone-mor-str K₁ K₂ f) : Type (lmax (lmax ℓv ℓe) (lmax ℓd (lmax ℓ₁ ℓ₂))) where
     constructor cocmoreq
-    field comp-∼-∼ : (i : Obj Γ) → comp-∼ σ₁ i ∼ comp-∼ σ₂ i
+    field comp-∼∼ : (i : Obj Γ) → comp-∼ σ₁ i ∼ comp-∼ σ₂ i
     field
-      comTri-∼-∼ : {i j : Obj Γ} (g : Hom Γ i j) (x : F # i) →
-        ap (λ p → ! p ∙ ap f (comTri K₁ g x) ∙' comp-∼ σ₂ i x) (! (comp-∼-∼ j ((F <#> g) x))) ∙
-        ap (λ p → ! (comp-∼ σ₁ j ((F <#> g) x)) ∙ ap f (comTri K₁ g x) ∙' p) (! (comp-∼-∼ i x)) ∙
+      comTri-∼∼ : {i j : Obj Γ} (g : Hom Γ i j) (x : F # i) →
+        ap (λ p → ! p ∙ ap f (comTri K₁ g x) ∙' comp-∼ σ₂ i x) (! (comp-∼∼ j ((F <#> g) x))) ∙
+        ap (λ p → ! (comp-∼ σ₁ j ((F <#> g) x)) ∙ ap f (comTri K₁ g x) ∙' p) (! (comp-∼∼ i x)) ∙
         comTri-∼ σ₁ g x 
           ==
         comTri-∼ σ₂ g x
   open CocMorEq public
   
   center-CMEq : {σ : Cocone-mor-str K₁ K₂ f} → CocMorEq σ σ
-  comp-∼-∼ center-CMEq _ _ = idp
-  comTri-∼-∼ center-CMEq _ _ = idp
+  comp-∼∼ center-CMEq _ _ = idp
+  comTri-∼∼ center-CMEq _ _ = idp
 
   module _ {σ₁ : Cocone-mor-str K₁ K₂ f} where
 
@@ -131,12 +131,12 @@ module _ {ℓv ℓe ℓd ℓ₁ ℓ₂} {Γ : Graph ℓv ℓe} {F : Diag ℓd Γ
         ≃
       Σ (Cocone-mor-str K₁ K₂ f) (λ σ₂ → CocMorEq σ₁ σ₂)
     CocMorEq-Σ-≃ = equiv
-      (λ (comps-∼ , comTri₂-∼ , comTri₂-∼-∼) →
+      (λ (comps-∼ , comTri₂-∼ , comTri₂-∼∼) →
         (cocmorstr (fst ∘ comps-∼) (λ {i} {j} g → comTri₂-∼ ((i , j) , g))) ,
-        (cocmoreq (snd ∘ comps-∼) λ {i} {j} g → comTri₂-∼-∼ ((i , j) , g)))
-      (λ ((cocmorstr comp₂-∼ comTri₂-∼) , (cocmoreq comp₂-∼-∼ comTri₂-∼-∼)) →
-        (λ i → (comp₂-∼ i) , (comp₂-∼-∼ i)) ,
-        ((λ (_ , g) x → comTri₂-∼ g x) , (λ (_ , g) x → comTri₂-∼-∼ g x)))
+        (cocmoreq (snd ∘ comps-∼) λ {i} {j} g → comTri₂-∼∼ ((i , j) , g)))
+      (λ ((cocmorstr comp₂-∼ comTri₂-∼) , (cocmoreq comp₂-∼∼ comTri₂-∼∼)) →
+        (λ i → (comp₂-∼ i) , (comp₂-∼∼ i)) ,
+        ((λ (_ , g) x → comTri₂-∼ g x) , (λ (_ , g) x → comTri₂-∼∼ g x)))
       (λ _ → idp)
       λ _ → idp
 
