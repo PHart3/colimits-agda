@@ -66,8 +66,8 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₂} {Γ : Graph ℓv ℓe} {F : CosDiag �
   comp (RWhisk-coscoc K f) i = f ∘* comp K i
   comTri (RWhisk-coscoc K f) {y = j} {x = i} g = *→-assoc f (comp K j) (F <#> g) ∼∘-cos (post-∘*-∼ f (comTri K g))
 
-  -- stand-alone lemma for proof of pullback stability in coslice of Type
-  pstcomp-coscoc-mor : ∀ {k₁ k₂} {C₁ : Coslice k₁ ℓ₂ A} {C₂ : Coslice k₂ ℓ₂ A} {K₁ : CosCocone A F C₁} {K₂ : CosCocone A F C₂}
-    (f : C₁ *→ C₂) → PostComp-cos K₁ f == K₂ → Cocone-mor-str (CocForg K₁) (CocForg K₂) (fst f)
-  comp-∼ (pstcomp-coscoc-mor f idp) _ _ = idp
-  comTri-∼ (pstcomp-coscoc-mor f idp) _ _ = idp
+  -- small lemma for proof of pullback stability in coslice of Type
+  pstcomp-coscoc-mor-ord : ∀ {k₁ k₂} {C₁ : Coslice k₁ ℓ₂ A} {C₂ : Coslice k₂ ℓ₂ A} {K₁ : CosCocone A F C₁} {K₂ : CosCocone A F C₂}
+    (f : C₁ *→ C₂) → RWhisk-coscoc K₁ f == K₂ → Cocone-mor-str (CocForg K₁) (CocForg K₂) (fst f)
+  comp-∼ (pstcomp-coscoc-mor-ord f idp) _ _ = idp
+  comTri-∼ (pstcomp-coscoc-mor-ord f idp) _ _ = idp

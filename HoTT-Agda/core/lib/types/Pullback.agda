@@ -5,7 +5,7 @@ open import lib.NType
 open import lib.types.Cospan
 open import lib.types.Pointed
 open import lib.types.Sigma
-open import lib.wild-cats.Limit
+open import lib.wild-cats.WildCats
 
 module lib.types.Pullback where
 
@@ -81,7 +81,7 @@ instance
 
 -- abstract pullbacks
 
-module _ {i j k ℓ₁ ℓ₂} (D : Cospan {i} {j} {k}) {T : Type ℓ₁} (K : Cone-csp D T) where
+module _ {i j k ℓ₁ ℓ₂} {D : Cospan {i} {j} {k}} {T : Type ℓ₁} (K : Cone-csp D T) where
 
   open Cone-csp K
   open Cospan D
@@ -94,6 +94,11 @@ module _ {i j k ℓ₁ ℓ₂} (D : Cospan {i} {j} {k}) {T : Type ℓ₁} (K : C
 
   is-pb-abs-≃ : (p : is-pb-abs) (S : Type ℓ₂) → (S → T) ≃ Cone-csp D S
   is-pb-abs-≃ p = λ S → (pre-cmp-csp S) , (p S)
+
+module _ {ℓ} {Δ : Diag-cspan (Type-wc ℓ)} {X : Type ℓ} {K : Cone Δ X} where
+
+  lim-to-pb : is-pb-wc K → is-pb-abs {ℓ₂ = ℓ} (con-to-csp Δ K)
+  lim-to-pb pb = λ S → is-eq (pre-cmp-csp (con-to-csp Δ K) S) {!!} {!!} {!!}
 
 {- To do:
  (a) Limiting cone over diagram means that induced cospan cone is abstract pullback.

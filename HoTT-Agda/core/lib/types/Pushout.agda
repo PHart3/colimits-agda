@@ -73,7 +73,7 @@ PushoutMapEq-v2 : ∀ {i j k} {d : Span {i} {j} {k}} {l} {D : Type l} (h₁ h₂
 PushoutMapEq-v2 {d = d} h₁ h₂ p₁ p₂ = λ S →
   Pushout-elim p₁ p₂ λ c →
     from-transp (λ x → h₁ x == h₂ x) (glue c)
-    (aux h₁ h₂ (glue c) (p₁ (Span.f d c)) (p₂ (Span.g d c)) (S c))
+      (aux h₁ h₂ (glue c) (p₁ (Span.f d c)) (p₂ (Span.g d c)) (S c))
   where
     aux : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f g : A → B)
       {x y : A} (p : x == y) (p₁ : f x == g x) (p₂ : f y == g y)

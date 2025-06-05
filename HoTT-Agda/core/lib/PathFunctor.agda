@@ -216,7 +216,13 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
       ==
     ap (ap (g ∘ f)) (!-inv-r p) ∙ idp
   ap-!-∘-∙-rid-coher idp = idp
-  
+
+module _ {i j k l} {A : Type i} {B : Type j} {C : Type k} {D : Type l} (h : C → D) (g : B → C) (f : A → B) where
+
+  assoc-ap-∙ : {b₁ b₂ : B} {c : C} {d : D} (p₁ : b₁ == b₂) (p₂ : g b₂ == c) (p₃ : h c == d)
+    → ap (h ∘ g) p₁ ∙ ap h p₂ ∙ p₃ == ap h (ap g p₁ ∙ p₂) ∙ p₃
+  assoc-ap-∙ idp p₂ p₃ = idp
+
 {- ap of idf -}
 ap-idf : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ap (idf A) p == p
 ap-idf idp = idp
