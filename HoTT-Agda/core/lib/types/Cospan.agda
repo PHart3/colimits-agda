@@ -53,6 +53,10 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
       map-right : right K₂ ∘ m ∼ right K₁
       map-sq : (x : T₁) → ap f (! (map-left x)) ∙ sq K₂ (m x) ∙' ap g (map-right x) == sq K₁ x
 
+  Cone-csp-iso : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (K₁ : Cone-csp T₁) (K₂ : Cone-csp T₂)
+    → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
+  Cone-csp-iso {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₁ ≃ T₂) (λ m → Cone-csp-mor-str K₁ K₂ (–> m))
+
 open Cone-csp
 
 -- SIP for cospan cones
