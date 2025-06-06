@@ -100,8 +100,8 @@ module _ {ℓv ℓe}  where
           λ f → λ= $
             ColimMapEq _ f (λ _ _ → idp) (λ i j g x → ap (λ p → ! p ∙ ap f (cglue g x)) (cglue-βr _ _ g x) ∙ !-inv-l (ap f (cglue g x)))
 
-      can-coc-is-contr : (K : Cocone F D) → is-contr (Σ (E → D) (λ f → PostComp J D f == K))
-      can-coc-is-contr K = equiv-is-contr-map (ζ D) K
+      colim-map-is-contr : (K : Cocone F D) → is-contr (Σ (E → D) (λ f → PostComp J D f == K))
+      colim-map-is-contr K = equiv-is-contr-map (ζ D) K
 
       pstcomp-coc-mor-≃-aux : (K : Cocone F D) (f : E → D) → (CocEq (PostComp J D f) K) ≃ Cocone-mor-str J K f
       pstcomp-coc-mor-≃-aux _ f = equiv ==-to-mor mor-to-== rtrip1 rtrip2
@@ -126,10 +126,10 @@ module _ {ℓv ℓe}  where
       pstcomp-coc-mor-≃ K f = pstcomp-coc-mor-≃-aux K f ∘e CocEq-==-≃ ⁻¹
 
       can-coc-mor-contr : (K : Cocone F D) → is-contr (Σ (E → D) (λ f → Cocone-mor-str J K f))
-      can-coc-mor-contr K = equiv-preserves-level (Σ-emap-r (pstcomp-coc-mor-≃ K)) {{can-coc-is-contr K}}
+      can-coc-mor-contr K = equiv-preserves-level (Σ-emap-r (pstcomp-coc-mor-≃ K)) {{colim-map-is-contr K}}
 
       abstract
-        can-coc-mor-paths : {K : Cocone F D} {f₁ f₂ : E → D}
+        colim-mor-paths : {K : Cocone F D} {f₁ f₂ : E → D}
           (σ₁ : Cocone-mor-str J K f₁) (σ₂ : Cocone-mor-str J K f₂)
           → (f₁ , σ₁) == (f₂ , σ₂)
-        can-coc-mor-paths {K} {f₁} {f₂} σ₁ σ₂ = contr-has-all-paths {{can-coc-mor-contr K}} (f₁ , σ₁) (f₂ , σ₂)
+        colim-mor-paths {K} {f₁} {f₂} σ₁ σ₂ = contr-has-all-paths {{can-coc-mor-contr K}} (f₁ , σ₁) (f₂ , σ₂)

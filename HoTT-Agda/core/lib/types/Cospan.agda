@@ -46,18 +46,61 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
   open Cone-csp
 
   record Cone-csp-mor-str {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (K₁ : Cone-csp T₁) (K₂ : Cone-csp T₂)
-    (m : T₁ → T₂) : Type (lmax (lmax ℓ₁ ℓ₂) (lmax (lmax i j) k)) where
+    (m : T₂ → T₁) : Type (lmax (lmax ℓ₁ ℓ₂) (lmax (lmax i j) k)) where
     constructor conecspmor
     field
-      map-left : left K₂ ∘ m ∼ left K₁
-      map-right : right K₂ ∘ m ∼ right K₁
-      map-sq : (x : T₁) → ap f (! (map-left x)) ∙ sq K₂ (m x) ∙' ap g (map-right x) == sq K₁ x
+      map-left : left K₂ ∼ left K₁ ∘ m
+      map-right : right K₂ ∼ right K₁ ∘ m
+      map-sq : (x : T₂) → ap f (! (map-left x)) ∙ sq K₂ x ∙' ap g (map-right x) == sq K₁ (m x)
 
   Cone-csp-iso : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (K₁ : Cone-csp T₁) (K₂ : Cone-csp T₂)
     → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
-  Cone-csp-iso {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₁ ≃ T₂) (λ m → Cone-csp-mor-str K₁ K₂ (–> m))
+  Cone-csp-iso {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₂ ≃ T₁) (λ m → Cone-csp-mor-str K₁ K₂ (–> m))
 
 open Cone-csp
+
+module _ {i j k} {D : Cospan {i} {j} {k}} where
+
+  Cone-csp-mor : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (K₁ : Cone-csp D T₁) (K₂ : Cone-csp D T₂)
+    → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
+  Cone-csp-mor {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₂ → T₁) (Cone-csp-mor-str D K₁ K₂)
+
+  open Cospan D
+  open Cone-csp-mor-str
+
+  -- identity cospan cone morphism
+  Cone-csp-mor-id-σ : ∀ {ℓ} {T : Type ℓ} {K : Cone-csp D T} → Cone-csp-mor-str _ K K (idf T)
+  map-left Cone-csp-mor-id-σ _ = idp
+  map-right Cone-csp-mor-id-σ _ = idp
+  map-sq Cone-csp-mor-id-σ _ = idp
+
+  Cone-csp-mor-id : ∀ {ℓ} {T : Type ℓ} {K : Cone-csp D T} → Cone-csp-mor K K
+  Cone-csp-mor-id {T = T} = idf T , Cone-csp-mor-id-σ
+
+  --composite of cospan cone morphisms
+  infixr 60 _Cone-csp-mor-∘-σ_
+  _Cone-csp-mor-∘-σ_ : ∀ {ℓ₁ ℓ₂ ℓ₃} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} {T₃ : Type ℓ₃}
+    {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂} {K₃ : Cone-csp D T₃} {m₂ : T₂ → T₁} {m₁ : T₃ → T₂}
+    → Cone-csp-mor-str _ K₂ K₃ m₁ → Cone-csp-mor-str _ K₁ K₂ m₂ → Cone-csp-mor-str _ K₁ K₃ (m₂ ∘ m₁)
+  map-left (_Cone-csp-mor-∘-σ_ {m₂ = m₂} {m₁} σ₁ σ₂) = λ x → map-left σ₁ x ∙ map-left σ₂ (m₁ x) 
+  map-right (_Cone-csp-mor-∘-σ_ {m₂ = m₂} {m₁} σ₁ σ₂) = λ x → map-right σ₁ x ∙ map-right σ₂ (m₁ x)
+  map-sq (_Cone-csp-mor-∘-σ_ {K₃ = K₃} {m₂} {m₁} σ₁ σ₂) x =
+    ! (ap (λ p →  ap f (! (map-left σ₂ (m₁ x))) ∙ p ∙' ap g (map-right σ₂ (m₁ x))) (! (map-sq σ₁ x)) ∙
+      aux (map-left σ₂ (m₁ x)) (map-left σ₁ x) (map-right σ₂ (m₁ x)) (map-right σ₁ x) (sq K₃ x)) ∙
+    map-sq σ₂ (m₁ x)
+    where
+      aux : {a₁ a₂ a₃ : A} {b₁ b₂ b₃ : B}
+        (p₁ : a₁ == a₂) (p₂ : a₃ == a₁) (q₁ : b₁ == b₂) (q₂ : b₃ == b₁) (r : f a₃ == g b₃) → 
+        ap f (! p₁) ∙ (ap f (! p₂) ∙ r ∙' ap g q₂) ∙' ap g q₁
+          ==
+        ap f (! (p₂ ∙ p₁)) ∙ r ∙' ap g (q₂ ∙ q₁)
+      aux idp idp idp idp r = idp
+
+  infixr 60 _Cone-csp-mor-∘_
+  _Cone-csp-mor-∘_ : ∀ {ℓ₁ ℓ₂ ℓ₃} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} {T₃ : Type ℓ₃}
+    {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂} {K₃ : Cone-csp D T₃} →
+    Cone-csp-mor K₂ K₃ → Cone-csp-mor K₁ K₂ → Cone-csp-mor K₁ K₃
+  (μ₂ Cone-csp-mor-∘ μ₁) = (fst μ₁ ∘ fst μ₂) , (snd μ₂ Cone-csp-mor-∘-σ snd μ₁)
 
 -- SIP for cospan cones
 

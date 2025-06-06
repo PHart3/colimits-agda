@@ -16,24 +16,6 @@ record Span {i j k : ULevel} : Type (lsucc (lmax (lmax i j) k)) where
     f : C → A
     g : C → B
 
-record Span-cocone {i j k l : ULevel} (S : Span {i} {j} {k}) : Type (lmax (lsucc l) (lmax (lmax i j) k)) where
-  constructor span-cocone
-  field
-    vert-sp : Type l
-    inl-sp : Span.B S → vert-sp
-    inr-sp : Span.A S → vert-sp
-    comm-sp : inl-sp ∘ Span.g S ∼ inr-sp ∘ Span.f S
-open Span-cocone public
-
-record Span-coc-≃ {i j k l₁ l₂ : ULevel} {S : Span {i} {j} {k}} (K₁ : Span-cocone {l = l₁} S) (K₂ : Span-cocone {l = l₂} S)
-  : Type (lmax (lmax l₁ l₂) (lmax (lmax i j) k)) where
-  constructor span-coc-≃
-  field
-    eqv : vert-sp K₁ ≃ vert-sp K₂
-    comp-inl : –> eqv ∘ inl-sp K₁ ∼ inl-sp K₂
-    comp-inr : –> eqv ∘ inr-sp K₁ ∼ inr-sp K₂
-    tri : (x : Span.C S) → ap (–> eqv) (comm-sp K₁ x) == comp-inl (Span.g S x) ∙ comm-sp K₂ x ∙' ! (comp-inr (Span.f S x))
-
 private
   span=-raw : ∀ {i j k} {A A' : Type i} (p : A == A')
     {B B' : Type j} (q : B == B') {C C' : Type k} (r : C == C')
