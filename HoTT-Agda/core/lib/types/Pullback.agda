@@ -2,6 +2,8 @@
 
 open import lib.Basics
 open import lib.NType
+open import lib.Equivalence
+open import lib.types.Graph
 open import lib.types.Cospan
 open import lib.types.Pointed
 open import lib.types.Sigma
@@ -97,10 +99,14 @@ module _ {i j k ℓ₁ ℓ₂} {D : Cospan {i} {j} {k}} {T : Type ℓ₁} (K : C
 
 module _ {ℓ} {Δ : Diag-cspan (Type-wc ℓ)} {X : Type ℓ} {K : Cone Δ X} where
 
+  open Cone
+
   lim-to-pb : is-pb-wc K → is-pb-abs {ℓ₂ = ℓ} (con-to-csp Δ K)
-  lim-to-pb pb = λ S → is-eq (pre-cmp-csp (con-to-csp Δ K) S) {!!} {!!} {!!}
+  lim-to-pb pb = λ S → ∼-preserves-equiv {f₀ = –> (con-csp-diag-≃ Δ) ∘ pre-cmp-con {G = Graph-cspan} K S} {f₁ = pre-cmp-csp (con-to-csp Δ K) S}
+    (λ f → ConCspEq-to-== (concspeq (λ _ → idp) (λ _ → idp)
+      (λ x → ! (ap (ap (λ u → u x)) (!r-ap-∙ (λ m z → m (f z)) (tri K unit) (tri K unit)) ∙ ∘-ap (λ u → u x) (λ m z → m (f z)) (tri K unit ∙ ! (tri K unit))))))
+    (snd (con-csp-diag-≃ Δ ∘e is-lim-≃ {G = Graph-cspan} K pb S))
 
 {- To do:
- (a) Limiting cone over diagram means that induced cospan cone is abstract pullback.
- (b) Standard pullback is abstract pullback.
- (c) Any two abstract pullbacks are isomorphic as cospan cones. -}
+ (b) Any two abstract pullbacks are isomorphic as cospan cones.
+ (c) Standard pullback is abstract pullback.  -}

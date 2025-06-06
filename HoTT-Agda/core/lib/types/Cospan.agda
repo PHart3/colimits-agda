@@ -1,10 +1,11 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.SIP
 open import lib.types.Pi
+open import lib.types.Sigma
 open import lib.types.Graph
-open import lib.wild-cats.WildCat
-open import lib.wild-cats.Diagram-wc
+open import lib.wild-cats.WildCats
 
 module lib.types.Cospan where
 
@@ -29,6 +30,8 @@ record ⊙Cospan {i j k : ULevel} : Type (lsucc (lmax (lmax i j) k)) where
 ⊙cospan-out : ∀ {i j k} → ⊙Cospan {i} {j} {k} → Cospan {i} {j} {k}
 ⊙cospan-out (⊙cospan X Y Z f g) =
   cospan (de⊙ X) (de⊙ Y) (de⊙ Z) (fst f) (fst g)
+
+-- cones over a cospan
 
 module _ {i j k} (D : Cospan {i} {j} {k}) where
 
@@ -71,8 +74,54 @@ module _ {i j k l} {D : Cospan {i} {j} {k}} {T : Type l} where
   right-== concsp-idp _ = idp
   sq-== concsp-idp _ = idp
 
-  ==-to-CocEq : {K₁ K₂ : Cone-csp D T} → K₁ == K₂ → ConCspEq K₁ K₂
-  ==-to-CocEq idp = concsp-idp
+  ==-to-ConCspEq : {K₁ K₂ : Cone-csp D T} → K₁ == K₂ → ConCspEq K₁ K₂
+  ==-to-ConCspEq idp = concsp-idp
+
+  module _ {K₁ : Cone-csp D T} where
+
+    ConCspEq-tot-contr : is-contr $
+      Σ ((Σ (T → A) (λ left₂ → left₂ ∼ left K₁)) × (Σ (T → B) (λ right₂ → right₂ ∼ right K₁)))
+        (λ ((left₂ , left-==₂) , (right₂ , right-==₂)) →
+          Σ (f ∘ left₂ ∼ g ∘ right₂) (λ sq₂ → (x : T) → ap f (! (left-==₂ x)) ∙ sq₂ x ∙' ap g (right-==₂ x) == sq K₁ x))
+    ConCspEq-tot-contr = equiv-preserves-level
+       ((Σ-contr-red (×-level funhom-contr-to funhom-contr-to))⁻¹)
+      {{funhom-contr-to}}
+
+    ConCspEq-Σ-≃ : 
+      Σ ((Σ (T → A) (λ left₂ → left₂ ∼ left K₁)) × (Σ (T → B) (λ right₂ → right₂ ∼ right K₁)))
+        (λ ((left₂ , left-==₂) , (right₂ , right-==₂)) →
+          Σ (f ∘ left₂ ∼ g ∘ right₂) (λ sq₂ → (x : T) → ap f (! (left-==₂ x)) ∙ sq₂ x ∙' ap g (right-==₂ x) == sq K₁ x))
+        ≃
+      Σ (Cone-csp D T) (λ K₂ → ConCspEq K₁ K₂)
+    ConCspEq-Σ-≃ = equiv
+      (λ (((left₂ , left-==₂) , (right₂ , right-==₂)) , sq₂ , co) → (cone-csp left₂ right₂ sq₂) , concspeq left-==₂ right-==₂ co)
+      (λ ((cone-csp left₂ right₂ sq₂) , concspeq left-==₂ right-==₂ co) → ((left₂ , left-==₂) , (right₂ , right-==₂)) , (sq₂ , co))
+      (λ _ → idp)
+      λ _ → idp
+
+    abstract
+      ConCspEq-contr : is-contr (Σ (Cone-csp D T) (λ K₂ → ConCspEq K₁ K₂))
+      ConCspEq-contr = equiv-preserves-level ConCspEq-Σ-≃ {{ConCspEq-tot-contr}}
+
+    ConCspEq-ind : ∀ {k} (P : (K₂ : Cone-csp D T) → (ConCspEq K₁ K₂ → Type k))
+      → P K₁ concsp-idp → {K₂ : Cone-csp D T} (p : ConCspEq K₁ K₂) → P K₂ p
+    ConCspEq-ind P = ID-ind-map {b = concsp-idp} P ConCspEq-contr
+
+    ConCspEq-to-== : {K₂ : Cone-csp D T} → ConCspEq K₁ K₂ → K₁ == K₂
+    ConCspEq-to-== = ConCspEq-ind (λ K _ → K₁ == K) idp
+
+    ConCspEq-β : ConCspEq-to-== concsp-idp == idp
+    ConCspEq-β = ID-ind-map-β (λ K _ → K₁ == K) ConCspEq-contr idp
+
+    ConCspEq-==-≃ : {K₂ : Cone-csp D T} → ConCspEq K₁ K₂ ≃ (K₁ == K₂)
+    ConCspEq-==-≃ = equiv ConCspEq-to-== ==-to-ConCspEq rtrip1 rtrip2
+      module ConCspEq-≃ where
+      
+        rtrip1 : {K₂ : Cone-csp D T} (b : K₁ == K₂) → ConCspEq-to-== (==-to-ConCspEq b) == b
+        rtrip1 idp = ConCspEq-β
+
+        rtrip2 : {K₂ : Cone-csp D T} (a : ConCspEq K₁ K₂) → ==-to-ConCspEq (ConCspEq-to-== a) == a
+        rtrip2 = ConCspEq-ind (λ K₂ a → ==-to-ConCspEq (ConCspEq-to-== a) == a) (ap ==-to-ConCspEq ConCspEq-β)
 
 -- translating between diagrams over graphs and cospans
 
@@ -100,3 +149,25 @@ module _ {ℓ} (Δ : Diag-cspan (Type-wc ℓ)) where
     tri (csp-to-con x) {rght} {lft} ()
     tri (csp-to-con x) {lft} {rght} ()
     tri (csp-to-con x) {rght} {rght} ()
+
+    con-csp-diag-≃ : Cone Δ T ≃ Cone-csp diag-to-csp T
+    con-csp-diag-≃ = equiv con-to-csp csp-to-con
+      (λ K → ConCspEq-to-== (concspeq (λ _ → idp) (λ _ → idp) (λ x → ! (ap (λ h → app= h x) (!-! (λ= (sq K))) ∙ app=-β (sq K) x))))
+      λ K → con-to-== Graph-cspan (rtrip K)
+      where
+        rtrip : (K : Cone Δ T) → csp-to-con (con-to-csp K) =-con K
+        fst (rtrip K) lft = idp
+        fst (rtrip K) mid = tri K unit
+        fst (rtrip K) rght = idp
+        snd (rtrip K) {lft} {mid} unit = ∙'-unit-l (tri K unit)
+        snd (rtrip K) {rght} {mid} unit =
+          ap (λ p → ! p ∙' tri K unit) (! ( λ=-η (tri K unit ∙ ! (tri K unit)))) ∙
+          aux (tri K unit) (tri K unit)
+          where
+            aux : ∀ {i} {Z : Type i} {x y z : Z} (p₁ : x == y) (p₂ : z == y)
+              → ! (p₁ ∙ ! p₂) ∙' p₁ == p₂
+            aux idp idp = idp
+        snd (rtrip K) {lft} {lft} ()
+        snd (rtrip K) {rght} {lft} ()
+        snd (rtrip K) {lft} {rght} ()
+        snd (rtrip K) {rght} {rght} ()
