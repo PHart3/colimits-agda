@@ -540,6 +540,9 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H 
   hmtpy-nat-! : {x y : A} (p : x == y) → ! (H x) == ap g p ∙ ! (H y) ∙ ! (ap f p)
   hmtpy-nat-! {x} idp = ! (∙-unit-r (! (H x)))
 
+  hmtpy-nat-!-∙' : {x y : A} (p : x == y) → ! (H x) == ap g p ∙ ! (H y) ∙' ! (ap f p)
+  hmtpy-nat-!-∙' idp = idp
+
   hmtpy-nat-!◃ : {x y : A} (p : x == y) → ! (H x) ◃∎ =ₛ ap g p ◃∙ ! (H y) ◃∙ ! (ap f p) ◃∎
   hmtpy-nat-!◃ {x} idp = =ₛ-in (! (∙-unit-r (! (H x))))
 

@@ -17,9 +17,14 @@ module _ {ℓv ℓe : ULevel} where
   open Diagram public
 
   Diagram-hom : ∀ {ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} (T : ob C)
+    → Diagram G C → Diagram G (Type-wc ℓc₂)
+  D₀ (Diagram-hom {C = C} T Δ) x = hom C T (D₀ Δ x)
+  D₁ (Diagram-hom {C = C} T Δ) f m = ⟦ C ⟧ D₁ Δ f ◻ m
+
+  Diagram-hom-op : ∀ {ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} (T : ob C)
     → Diagram G C → Diagram (Graph-op G) (Type-wc ℓc₂)
-  D₀ (Diagram-hom {C = C} T Δ) x = hom C (D₀ Δ x) T
-  D₁ (Diagram-hom {C = C} T Δ) f m = ⟦ C ⟧ m ◻ D₁ Δ f
+  D₀ (Diagram-hom-op {C = C} T Δ) x = hom C (D₀ Δ x) T
+  D₁ (Diagram-hom-op {C = C} T Δ) f m = ⟦ C ⟧ m ◻ D₁ Δ f
 
   F-diag : ∀ {ℓc₁ ℓc₂ ℓd₁ ℓd₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} {D : WildCat {ℓd₁} {ℓd₂}}
     (F : Functor-wc C D) → Diagram G C → Diagram G D

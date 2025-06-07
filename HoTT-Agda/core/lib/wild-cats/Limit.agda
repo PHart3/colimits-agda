@@ -90,7 +90,7 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
 
 -- limiting cones over a diagram
 
-module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diag-cspan C}
+module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C}
   {a : ob C} (K : Cone Δ a) where
 
   open Cone
@@ -99,7 +99,7 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
   leg (pre-cmp-con _ f) x = ⟦ C ⟧ leg K x ◻ f
   tri (pre-cmp-con _ f) {x} {y} γ = ! (α C (D₁ Δ γ) (leg K x) f) ∙ ap (λ m → ⟦ C ⟧ m ◻ f) (tri K γ)
 
-  is-lim-wc : Type (lmax ℓc₁ ℓc₂)
+  is-lim-wc : Type (lmax (lmax (lmax ℓv ℓe) ℓc₁) ℓc₂)
   is-lim-wc = (b : ob C) → is-equiv (pre-cmp-con b)
 
   is-lim-≃ : (lim : is-lim-wc) (b : ob C) → hom C b a ≃ Cone Δ b

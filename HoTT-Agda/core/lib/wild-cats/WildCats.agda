@@ -13,4 +13,5 @@ open import lib.wild-cats.Ladj-colim public
 open import lib.wild-cats.Limit public
 open import lib.wild-cats.Limit-map public
 open import lib.wild-cats.Ptd-wc public
+open import lib.wild-cats.Radj-lim public
 open import lib.wild-cats.WildCat public

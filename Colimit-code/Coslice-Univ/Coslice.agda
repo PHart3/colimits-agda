@@ -30,7 +30,7 @@ infixr 30 [_,_]_∼_
 [_,_]_∼_ :  ∀ {i j k} (A : Type j) (X : Coslice i j A) {Y : Coslice k j A} →
   < A > X *→ Y → < A > X *→ Y → Type (lmax (lmax i k) j)    
 [ A , *[ X , f ] ] ( h₁ , p₁ )∼( h₂ , p₂ ) =
-  Σ ((x : X) → h₁ x == h₂ x) (λ H → ((a : A) →  (! (H (f a)) ∙ (p₁ a) == p₂ a)))
+  Σ ((x : X) → h₁ x == h₂ x) (λ H → ((a : A) →  (! (H (f a)) ∙ p₁ a == p₂ a)))
 
 module MapsCos {j} (A : Type j) where
 

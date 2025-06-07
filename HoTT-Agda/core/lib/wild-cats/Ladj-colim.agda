@@ -28,9 +28,9 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
       Cocone-adj-eqv = 
         Cocone Δ (obj R y)
           ≃⟨ cocone-wc-Σ ⟩
-        Limit (Diagram-hom (obj R y) Δ)
-          ≃⟨ (adj-lim-map-eqv adj) ⁻¹ ⟩
-        Limit (Diagram-hom y (F-diag L Δ))
+        Limit (Diagram-hom-op (obj R y) Δ)
+          ≃⟨ (adj-lim-map-eqv-op adj) ⁻¹ ⟩
+        Limit (Diagram-hom-op y (F-diag L Δ))
           ≃⟨ cocone-wc-Σ ⁻¹ ⟩
         Cocone (F-diag L Δ) y ≃∎
 
