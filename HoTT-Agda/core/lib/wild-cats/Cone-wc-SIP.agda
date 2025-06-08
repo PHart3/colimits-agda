@@ -25,7 +25,7 @@ module _ {ℓv ℓe : ULevel} {G : Graph ℓv ℓe}
   fst (=-con-id K) _ = idp
   snd (=-con-id K) _ = idp
 
-module _ {ℓv ℓe : ULevel} (G : Graph ℓv ℓe)
+module _ {ℓv ℓe : ULevel} {G : Graph ℓv ℓe}
   {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T : ob C}  where
 
   module _ (K₁ : Cone Δ T) where

@@ -12,13 +12,12 @@ module lib.wild-cats.Radj-lim where
 
 module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {j₂}}
   {ℓv ℓe} {G : Graph ℓv ℓe} {Δ : Diagram G D}
-  {L : Functor-wc C D} {R : Functor-wc D C} {adj : Adjunction L R}
   {d : ob D} {K : Cone Δ d} (lim : is-lim-wc K) where
 
-  private adj₀ = iso adj
-
-  hom-to-lim-R : {x : ob C} → hom C x (obj R d) ≃ Cone (F-diag R Δ) x
-  hom-to-lim-R {x} = Cone-adj-eqv ∘e is-lim-≃  K lim (obj L x) ∘e adj₀ ⁻¹
+  hom-to-lim-R : {L : Functor-wc C D} {R : Functor-wc D C} (adj : Adjunction L R) {x : ob C}
+    → hom C x (obj R d) ≃ Cone (F-diag R Δ) x
+  hom-to-lim-R {L} {R} adj {x} = let adj₀ = iso adj in
+    Cone-adj-eqv ∘e is-lim-≃  K lim (obj L x) ∘e adj₀ ⁻¹
     where
       Cone-adj-eqv : Cone Δ (obj L x) ≃ Cone (F-diag R Δ) x
       Cone-adj-eqv =

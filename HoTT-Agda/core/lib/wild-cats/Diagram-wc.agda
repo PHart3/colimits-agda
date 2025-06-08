@@ -83,6 +83,7 @@ module _ {ℓv ℓe : ULevel} where
       field
         leg : (x : Obj G) → hom C T (D₀ Δ x)
         tri : {x y : Obj G} (f : Hom G x y) → ⟦ C ⟧ D₁ Δ f ◻ leg x == leg y
+    open Cone
 
     cone-wc-Σ : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T : ob C} →
       Cone Δ T ≃ Σ ((i : Obj G) → hom C T (D₀ Δ i))
@@ -90,6 +91,12 @@ module _ {ℓv ℓe : ULevel} where
     cone-wc-Σ =
       equiv (λ (cone leg tri) → leg , tri) (λ (leg , tri) → cone leg tri)
         (λ (leg , tri) → idp) λ (cone leg tri) → idp
+  
+    F-con : ∀ {ℓc₁ ℓc₂ ℓd₁ ℓd₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T : ob C}
+      {D :  WildCat {ℓd₁} {ℓd₂}} (F : Functor-wc C D)
+      → Cone Δ T → Cone (F-diag F Δ) (obj F T)
+    leg (F-con {Δ = Δ} F K) x = arr F (leg K x)
+    tri (F-con {Δ = Δ} F K) {x} f = ! (comp F (leg K x) (D₁ Δ f)) ∙ ap (arr F) (tri K f)
 
 Diag-cspan : ∀ {ℓc₁ ℓc₂} → WildCat {ℓc₁} {ℓc₂} → Type (lmax ℓc₁ ℓc₂)
 Diag-cspan C = Diagram Graph-cspan C

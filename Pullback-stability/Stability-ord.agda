@@ -8,7 +8,9 @@ open import lib.types.Graph
 open import lib.types.Diagram
 open import Path-alg
 
-module Stability where
+-- pullback stability for ordinary colimits
+
+module Stability-ord where
 
 module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} (F : Diag ℓd Γ) where
 
@@ -173,7 +175,7 @@ module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} (F : Diag ℓd Γ) where
           pullback= pb-csp (cglue g x) idp (∙-unit-r-!-inv-r-ap (cglue g x) h) ◃∎
           =ₛ₁⟨ lemma-aux h (cglue g x) ⟩
           idp ◃∎ ∎ₛ
-          where
+          where abstract
             lemma-aux : (p₁ : k (cin j ((F <#> g) x)) == f y) {v : Colim F} (p₂ : cin j ((F <#> g) x) == v)
               → ! (ap can-map (ap (λ x₃ → cin j (pullback ((F <#> g) x) y x₃))
                 (! (∙-unit-r p₁) ∙ ∙-unit-r-!-inv-r-ap p₂ p₁)) ∙

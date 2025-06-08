@@ -57,9 +57,13 @@ module _ {j} (A : Type j) where
 
   open MapsCos A
 
+  cos-map-promote : ∀ {ℓ₁ ℓ₂} {X : Type ℓ₁} {Y : Coslice ℓ₂ j A} (f : X → ty Y) → Coprod X A → ty Y
+  cos-map-promote f (inl x) = f x
+  cos-map-promote {Y = Y} f (inr a) = fun Y a
+
   -- free-forgetful isomorphism  
   free-forg-cos : ∀ {ℓ₁ ℓ₂} {X : Type ℓ₁} {Y : Coslice ℓ₂ j A} → (*[ Coprod X A , inr ] *→ Y) ≃ (X → ty Y)
-  free-forg-cos {X = X} {Y} = equiv (λ m → fst m ∘ inl) (λ f → (λ { (inl x) → f x ; (inr a) → fun Y a }) , λ _ → idp)
+  free-forg-cos {X = X} {Y} = equiv (λ m → fst m ∘ inl) (λ f → cos-map-promote {X = X} {Y = Y} f , λ _ → idp)
     (λ _ → idp)
     (λ m → UndFun∼-to-== ((λ { (inl x) → idp ; (inr a) → ! (snd m a) }) , (λ a → ap (λ p → p ∙ idp) (!-! (snd m a)) ∙ ∙-unit-r (snd m a))))
 
