@@ -200,7 +200,7 @@ module _ {ℓ} (Δ : Diag-cspan (Type-wc ℓ)) where
     con-csp-diag-≃ : Cone Δ T ≃ Cone-csp diag-to-csp T
     con-csp-diag-≃ = equiv con-to-csp csp-to-con
       (λ K → ConCspEq-to-== (concspeq (λ _ → idp) (λ _ → idp) (λ x → ! (ap (λ h → app= h x) (!-! (λ= (sq K))) ∙ app=-β (sq K) x))))
-      λ K → con-to-== Graph-cspan (rtrip K)
+      λ K → con-to-== (rtrip K)
       where
         rtrip : (K : Cone Δ T) → csp-to-con (con-to-csp K) =-con K
         fst (rtrip K) lft = idp

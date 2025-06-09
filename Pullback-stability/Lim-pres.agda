@@ -3,7 +3,6 @@
 open import lib.Basics
 open import lib.types.Graph
 open import lib.wild-cats.WildCats
-open import Coslice
 open import Cos-wc
 open import SIP-Cos
 

@@ -3,12 +3,13 @@
 open import lib.Basics
 open import lib.types.Lift
 open import lib.wild-cats.WildCats
-open import Coslice
 open import SIP-Cos
 
 -- coslice universe as wild category
   
 module Cos-wc where
+
+open import Coslice public
 
 module _ {j} (A : Type j) where
 
