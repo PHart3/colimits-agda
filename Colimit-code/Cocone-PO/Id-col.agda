@@ -6,8 +6,6 @@ open import lib.types.Graph
 open import lib.types.Diagram
 open import lib.types.Colim
 
-{- formation of A-cocone structure on pushout -}
-
 module Id-col where
 
 module id-colim {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
@@ -50,7 +48,13 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} (A : Type ℓ) (tr : is-tree Γ)
   open id-colim Γ A
 
   tree-colcons : Colim (ConsDiag Γ A) ≃ A
-  tree-colcons = {!!} ∘e colim-×-1
+  tree-colcons = ((fst , ×-contr-r tr)) ∘e colim-×-1
 
-  tree-[id] : is-equiv [id]
-  tree-[id] = ∼-preserves-equiv {f₀ = fst ∘ –> colim-×-1} {!!} (snd tree-colcons)
+  -- colimit of constant diagram over tree
+  abstract
+    tree-[id] : is-equiv [id]
+    tree-[id] = ∼-preserves-equiv {f₀ = fst ∘ –> colim-×-1}
+      (ColimMapEq _ _ (λ _ _ → idp) (λ _ _ g a →
+        ap (λ p → ! p ∙ ap [id] (cglue g a)) (ap-∘ fst (–> colim-×-1) (cglue g a) ∙ ap (ap fst) (cglue-βr _ _ g a)) ∙
+        ap2 (λ p₁ p₂ → ! p₁ ∙ p₂) (∘-ap fst (a ,_) (cglue g unit) ∙ ap-cst a (cglue g unit)) (id-βr g a)))
+      (snd tree-colcons)
