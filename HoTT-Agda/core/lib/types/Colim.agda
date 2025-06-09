@@ -46,10 +46,18 @@ module _ {ℓv ℓe}  where
     ColimMapEq : ∀ {ℓd ℓ} {D : Diag ℓd Γ} {V : Type ℓ} (h₁ h₂ : Colim D → V)
       (H : (i : Obj Γ) → h₁ ∘ cin i ∼ h₂ ∘ cin i)
       → ((i j : Obj Γ) (g : Hom Γ i j) (x : D # i)
-        → ! (ap h₁ (cglue g x)) ∙ H j ((D <#> g) x) ∙ ap h₂ (cglue g x)  == H i x )
+        → ! (ap h₁ (cglue g x)) ∙ H j ((D <#> g) x) ∙ ap h₂ (cglue g x) == H i x)
       → h₁ ∼ h₂
     ColimMapEq {D = D} h₁ h₂ H = λ S → colimE H
-      (λ i j g x → from-transp (λ x → h₁ x == h₂ x) (cglue g x) (transp-pth (cglue g x) (H j ((D <#> g) x)) ∙ (S i j g x))) 
+      (λ i j g x → from-transp (λ x → h₁ x == h₂ x) (cglue g x) (transp-pth (cglue g x) (H j ((D <#> g) x)) ∙ (S i j g x)))
+    
+    ColimMapEq' : ∀ {ℓd ℓ} {D : Diag ℓd Γ} {V : Type ℓ} (h₁ h₂ : Colim D → V)
+      (H : (i : Obj Γ) → h₁ ∘ cin i ∼ h₂ ∘ cin i)
+      → ((i j : Obj Γ) (g : Hom Γ i j) (x : D # i)
+        → ! (ap h₁ (cglue g x)) ∙ H j ((D <#> g) x) ∙' ap h₂ (cglue g x) == H i x)
+      → h₁ ∼ h₂
+    ColimMapEq' {D = D} h₁ h₂ H T = ColimMapEq h₁ h₂ H
+      (λ i j g x → ap (λ q → ! (ap h₁ (cglue g x)) ∙ q) (! (∙'=∙ (H j ((D <#> g) x)) _)) ∙ T i j g x)
 
     module ColimRec {ℓd ℓ} {D : Diag ℓd Γ} {V : Type ℓ}
       (cin* : (i : Obj Γ) → (D # i) → V)
