@@ -53,6 +53,176 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
       =⟨ ap-cst _ _ ⟩
     idp =∎
 
+module _ {i j k : ULevel} where
+
+  csp≃-to-pb : {C₁ C₂ : Cospan {i} {j} {k}} → Cospan-eqv C₁ C₂ → Pullback C₁ → Pullback C₂
+  Pullback.a (csp≃-to-pb E (pullback a b h)) = –> (csp-eA E) a
+  Pullback.b (csp≃-to-pb E (pullback a b h)) = –> (csp-eB E) b
+  Pullback.h (csp≃-to-pb E (pullback a b h)) = csp-nat-f E a ∙ ap (–> (csp-eC E)) h ∙ csp-nat-g E b 
+
+  -- cospan equivalence induces equivalence of pullbacks
+  csp-to-pb-eqv : {C₁ C₂ : Cospan {i} {j} {k}} → Cospan-eqv C₁ C₂ → Pullback C₁ ≃ Pullback C₂
+  csp-to-pb-eqv {C₁} {C₂} E = equiv (csp≃-to-pb E) (csp≃-to-pb (csp-eqv-inv E)) rtrip1 rtrip2
+    where abstract
+    
+      rtrip1 : (x : Pullback C₂) → csp≃-to-pb E (csp≃-to-pb (csp-eqv-inv E) x) == x
+      rtrip1 (pullback a b h) = pullback= C₂ (is-equiv.f-g (snd (csp-eA E)) a) (is-equiv.f-g (snd (csp-eB E)) b) $
+        ap (λ p → (csp-nat-f E (<– (csp-eA E) a) ∙ p ∙ csp-nat-g E (<– (csp-eB E) b)) ∙ ap (Cospan.g C₂) (is-equiv.f-g (snd (csp-eB E)) b))
+          (ap2 (λ p₁ p₂ →
+            ap (–> (csp-eC E))
+              ((! (is-equiv.g-f (snd (csp-eC E)) (Cospan.f C₁ (<– (csp-eA E) a))) ∙
+                ap (<– (csp-eC E)) (! (csp-nat-f E (<– (csp-eA E) a))) ∙ p₁) ∙
+              ap (<– (csp-eC E)) h ∙ ! p₂ ∙ ap (<– (csp-eC E)) (! (csp-nat-g E (<– (csp-eB E) b))) ∙
+              is-equiv.g-f (snd (csp-eC E)) (Cospan.g C₁ (<– (csp-eB E) b))))
+            (ap-∘ (<– (csp-eC E)) (Cospan.f C₂) (is-equiv.f-g (snd (csp-eA E)) a))
+            (ap-∘ (<– (csp-eC E)) (Cospan.g C₂) (is-equiv.f-g (snd (csp-eB E)) b)) ∙
+          aux1 (–> (csp-eC E)) (<– (csp-eC E)) (is-equiv.f-g (snd (csp-eC E)))
+            (is-equiv.g-f (snd (csp-eC E)) (Cospan.f C₁ (<– (csp-eA E) a)))
+            (csp-nat-f E (<– (csp-eA E) a))
+            (ap (Cospan.f C₂) (is-equiv.f-g (snd (csp-eA E)) a))
+            h
+            (ap (Cospan.g C₂) (is-equiv.f-g (snd (csp-eB E)) b))
+            (csp-nat-g E (<– (csp-eB E) b))
+            (is-equiv.g-f (snd (csp-eC E)) (Cospan.g C₁ (<– (csp-eB E) b)))) ∙
+        ap2 (λ p₁ p₂ →
+            (csp-nat-f E (<– (csp-eA E) a) ∙
+            (! p₁ ∙
+            is-equiv.f-g (snd (csp-eC E)) (–> (csp-eC E) (Cospan.f C₁ (<– (csp-eA E) a))) ∙
+            ! (csp-nat-f E (<– (csp-eA E) a)) ∙
+            ap (Cospan.f C₂) (is-equiv.f-g (snd (csp-eA E)) a) ∙ h ∙
+            ! (ap (Cospan.g C₂) (is-equiv.f-g (snd (csp-eB E)) b)) ∙
+            ! (csp-nat-g E (<– (csp-eB E) b)) ∙
+            ! p₂ ∙'
+            ap (–> (csp-eC E)) (is-equiv.g-f (snd (csp-eC E)) (Cospan.g C₁ (<– (csp-eB E) b)))) ∙
+            csp-nat-g E (<– (csp-eB E) b)) ∙
+            ap (Cospan.g C₂) (is-equiv.f-g (snd (csp-eB E)) b))
+          (is-equiv.adj (snd (csp-eC E)) (Cospan.f C₁ (<– (csp-eA E) a)))
+          (! (is-equiv.adj (snd (csp-eC E)) (Cospan.g C₁ (<– (csp-eB E) b)))) ∙
+        aux2
+          (csp-nat-f E (<– (csp-eA E) a))
+          (is-equiv.f-g (snd (csp-eC E)) (–> (csp-eC E) (Cospan.f C₁ (<– (csp-eA E) a))))
+          (ap (Cospan.f C₂) (is-equiv.f-g (snd (csp-eA E)) a))
+          h
+          (ap (Cospan.g C₂) (is-equiv.f-g (snd (csp-eB E)) b))
+          (csp-nat-g E (<– (csp-eB E) b))
+          (ap (–> (csp-eC E)) (is-equiv.g-f (snd (csp-eC E)) (Cospan.g C₁ (<– (csp-eB E) b))))
+        where
+        
+          aux1 : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (f₁ : T₁ → T₂) (f₂ : T₂ → T₁) (H : f₁ ∘ f₂ ∼ idf T₂)
+            {x₁ x₂ : T₁} {y₁ y₂ y₃ y₄ y₅ y₆ : T₂}
+            (p₁ : f₂ y₂ == x₁) (p₂ : y₁ == y₂)
+            (p₃ : y₁ == y₃) (p₄ : y₃ == y₄)
+            (p₅ : y₅ == y₄) (p₆ : y₆ == y₅) (p₇ : f₂ y₆ == x₂) →
+            ap f₁ (((! p₁ ∙ ap f₂ (! p₂) ∙ ap f₂ p₃) ∙ ap f₂ p₄ ∙ ! (ap f₂ p₅) ∙ ap f₂ (! p₆) ∙ p₇))
+              ==
+            ! (ap f₁ p₁) ∙ H y₂ ∙ ! p₂ ∙ p₃ ∙ p₄ ∙ ! p₅ ∙ ! p₆ ∙ ! (H y₆) ∙' ap f₁ p₇
+          aux1 _ _ H {y₁ = y₁} idp idp idp idp idp idp idp = ! (!-inv-r (H y₁))
+
+          aux2 : ∀ {ℓ} {T : Type ℓ} {y₁ y₂ y₃ y₄ y₅ y₆ y₇ y₈ : T}
+            (p₁ : y₁ == y₂) (p₂ : y₃ == y₂)
+            (p₃ : y₁ == y₄) (p₄ : y₄ == y₅)
+            (p₅ : y₆ == y₅) (p₆ : y₇ == y₆) (p₇ : y₈ == y₇) → 
+            (p₁ ∙ (! p₂ ∙ p₂ ∙ ! p₁ ∙ p₃ ∙ p₄ ∙ ! p₅ ∙ ! p₆ ∙ ! p₇ ∙' p₇) ∙ p₆) ∙ p₅
+              ==
+            p₃ ∙ p₄
+          aux2 idp idp idp idp idp idp idp = idp
+          
+      rtrip2 : (x : Pullback C₁) → csp≃-to-pb (csp-eqv-inv E) (csp≃-to-pb E x) == x
+      rtrip2 (pullback a b h) = pullback= C₁ (is-equiv.g-f (snd (csp-eA E)) a) (is-equiv.g-f (snd (csp-eB E)) b) $
+        ap5 (λ p₁ p₂ q r₁ r₂ →
+            ((r₁ ∙
+              ap (<– (csp-eC E)) p₁ ∙
+              ap (<– (csp-eC E) ∘ Cospan.f C₂) (is-equiv.f-g (snd (csp-eA E)) (–> (csp-eA E) a))) ∙
+            q ∙
+            ! (ap (<– (csp-eC E) ∘ Cospan.g C₂) (is-equiv.f-g (snd (csp-eB E)) (–> (csp-eB E) b))) ∙
+            ap (<– (csp-eC E)) p₂ ∙
+            r₂) ∙
+            ap (Cospan.g C₁) (is-equiv.g-f (snd (csp-eB E)) b))
+          (hmtpy-nat-!-∙' (csp-nat-f E) (is-equiv.g-f (snd (csp-eA E)) a))
+          (hmtpy-nat-!-∙' (csp-nat-g E) (is-equiv.g-f (snd (csp-eB E)) b))
+          (ap-∙∙ (<– (csp-eC E)) (csp-nat-f E a) (ap (–> (csp-eC E)) h) (csp-nat-g E b) ∙
+          ap (λ p → ap (<– (csp-eC E)) (csp-nat-f E a) ∙ p ∙ ap (<– (csp-eC E)) (csp-nat-g E b))
+            (∘-ap (<– (csp-eC E)) (–> (csp-eC E)) h ∙
+            apeq-rev (is-equiv.g-f (snd (csp-eC E))) h))
+          (hmtpy-nat-!-∙' (is-equiv.g-f (snd (csp-eC E))) (ap (Cospan.f C₁) (is-equiv.g-f (snd (csp-eA E)) a)))
+          (apCommSq2' (is-equiv.g-f (snd (csp-eC E))) (ap (Cospan.g C₁) (is-equiv.g-f (snd (csp-eB E)) b))) ∙        
+        ap2 (λ p₁ p₂ →
+            (((ap (λ z → z) (ap (Cospan.f C₁) (is-equiv.g-f (snd (csp-eA E)) a)) ∙
+            ! (is-equiv.g-f (snd (csp-eC E)) (Cospan.f C₁ a)) ∙'
+            ! (ap (λ z → <– (csp-eC E) (–> (csp-eC E) z)) (ap (Cospan.f C₁) (is-equiv.g-f (snd (csp-eA E)) a)))) ∙
+            ap (<– (csp-eC E))
+              (ap (–> (csp-eC E) ∘ Cospan.f C₁) (is-equiv.g-f (snd (csp-eA E)) a) ∙
+              ! (csp-nat-f E a) ∙'
+              ! (ap (Cospan.f C₂ ∘ –> (csp-eA E)) (is-equiv.g-f (snd (csp-eA E)) a))) ∙
+            ap (<– (csp-eC E) ∘ Cospan.f C₂) p₁) ∙
+            (ap (<– (csp-eC E)) (csp-nat-f E a) ∙
+            (is-equiv.g-f (snd (csp-eC E)) (Cospan.f C₁ a) ∙ ap (λ z → z) h ∙ ! (is-equiv.g-f (snd (csp-eC E)) (Cospan.g C₁ b))) ∙
+            ap (<– (csp-eC E)) (csp-nat-g E b)) ∙
+            ! (ap (<– (csp-eC E) ∘ Cospan.g C₂) p₂) ∙
+            ap (<– (csp-eC E))
+              (ap (Cospan.g C₂ ∘ –> (csp-eB E)) (is-equiv.g-f (snd (csp-eB E)) b) ∙
+              ! (csp-nat-g E b) ∙'
+              ! (ap (–> (csp-eC E) ∘ Cospan.g C₁) (is-equiv.g-f (snd (csp-eB E)) b))) ∙
+            ap (λ z → <– (csp-eC E) (–> (csp-eC E) z)) (ap (Cospan.g C₁) (is-equiv.g-f (snd (csp-eB E)) b)) ∙
+            is-equiv.g-f (snd (csp-eC E)) (Cospan.g C₁ b) ∙'
+            ! (ap (λ z → z) (ap (Cospan.g C₁) (is-equiv.g-f (snd (csp-eB E)) b)))) ∙
+            ap (Cospan.g C₁) (is-equiv.g-f (snd (csp-eB E)) b))
+          (! (is-equiv.adj (snd (csp-eA E)) a) )
+          (! (is-equiv.adj (snd (csp-eB E)) b)) ∙
+        aux
+          (is-equiv.g-f (snd (csp-eA E)) a)
+          h
+          (is-equiv.g-f (snd (csp-eC E)) (Cospan.f C₁ a))
+          (csp-nat-f E a)
+          (is-equiv.g-f (snd (csp-eC E)) (Cospan.g C₁ b))
+          (csp-nat-g E b)
+          (is-equiv.g-f (snd (csp-eB E)) b)
+        where
+          aux : {x₁ x₂ : Cospan.A C₁} {w₁ w₂ : Cospan.B C₁}
+            (p₁ : x₁ == x₂) (p₂ : Cospan.f C₁ x₂ == Cospan.g C₁ w₂) (p₃ : _ == Cospan.f C₁ x₂)
+            (p₄ : Cospan.f C₂ (fst (csp-eA E) x₂) == (–> (csp-eC E) ∘ Cospan.f C₁) x₂)
+            (p₅ : is-equiv.g (snd (csp-eC E)) (fst (csp-eC E) (Cospan.g C₁ _)) == Cospan.g C₁ _)
+            (p₆ : fst (csp-eC E) (Cospan.g C₁ _) == Cospan.g C₂ (fst (csp-eB E) _))
+            (p₇ : w₁ == w₂) → 
+            (((ap (λ z → z) (ap (Cospan.f C₁) p₁) ∙
+            ! p₃ ∙'
+            ! (ap (λ z → <– (csp-eC E) (–> (csp-eC E) z)) (ap (Cospan.f C₁) p₁))) ∙
+            ap (<– (csp-eC E))
+              (ap (–> (csp-eC E) ∘ Cospan.f C₁) p₁ ∙
+              ! p₄ ∙'
+              ! (ap (Cospan.f C₂ ∘ –> (csp-eA E)) p₁)) ∙
+            ap (<– (csp-eC E) ∘ Cospan.f C₂) (ap (–> (csp-eA E)) p₁)) ∙
+            (ap (<– (csp-eC E)) p₄ ∙
+            (p₃ ∙
+            ap (λ z → z) p₂ ∙ ! p₅) ∙
+            ap (<– (csp-eC E)) p₆) ∙
+            ! (ap (<– (csp-eC E) ∘ Cospan.g C₂) (ap (–> (csp-eB E)) p₇)) ∙
+            ap (<– (csp-eC E))
+              (ap (Cospan.g C₂ ∘ –> (csp-eB E)) p₇ ∙
+              ! p₆ ∙'
+              ! (ap (–> (csp-eC E) ∘ Cospan.g C₁) p₇)) ∙
+            ap (λ z → <– (csp-eC E) (–> (csp-eC E) z)) (ap (Cospan.g C₁) p₇) ∙
+            p₅ ∙'
+            ! (ap (λ z → z) (ap (Cospan.g C₁) p₇))) ∙
+            ap (Cospan.g C₁) p₇
+              ==
+            ap (Cospan.f C₁) p₁ ∙ p₂
+          aux idp p₂ p₃ p₄ p₅ p₆ idp = lemma (<– (csp-eC E)) p₂ p₃ p₄ p₅ p₆
+            where
+              lemma : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (f : T₁ → T₂)
+                {x₁ x₂ x₃ x₄ : T₁} {y₁ y₂ : T₂}
+                (r₁ : y₁ == y₂) (r₂ : f x₂ == y₁) (r₃ : x₁ == x₂) (r₄ : f x₃ == y₂) (r₅ : x₃ == x₄) →
+                ((! r₂ ∙ ap f (! r₃) ∙ idp) ∙
+                (ap f r₃ ∙ (r₂ ∙ ap (λ z → z) r₁ ∙ ! r₄) ∙ ap f r₅) ∙
+                ap f (! r₅) ∙ r₄) ∙ idp
+                  ==
+                r₁
+              lemma {T₂ = T₂} _ idp r₂ idp r₄ idp = lemma-aux r₂ r₄
+                where
+                  lemma-aux : {x y z : T₂} (s : x == y) (q : z == y)
+                    → ((! s ∙ idp) ∙ ((s ∙ ! q) ∙ idp) ∙ q) ∙ idp == idp
+                  lemma-aux idp idp = idp
+        
 module _ {i j k} (D : ⊙Cospan {i} {j} {k}) where
 
   ⊙Pullback : Ptd (lmax i (lmax j k))

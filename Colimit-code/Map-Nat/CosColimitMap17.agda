@@ -22,7 +22,7 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
 
   open Maps
 
-  colim-contr : is-contr-map (PostComp-cos {D = Cos P₂ left} (ColCoC F))
+  colim-contr : is-contr-map (PostComp-cos {D = Cos P₂ left} (ColCoC-cos F))
   colim-contr = equiv-is-contr-map (CanMap-eqv-v1 F (Cos P₂ left))
 
   K-diag-𝕕-eq : (Recc.recCosCoc F (Cos P₂ left)) K-diag == 𝕕
@@ -30,5 +30,5 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
     ap fst
       (contr-has-all-paths {{colim-contr K-diag}}
       ((Recc.recCosCoc F (Cos P₂ left)) K-diag , LRfunEq K-diag)
-      (𝕕 , CosCocEq-to-== F (Cos P₂ left) (PostComp-cos (ColCoC F) 𝕕) (fib-inhab δ)))
+      (𝕕 , CosCocEq-to-== F (Cos P₂ left) (PostComp-cos (ColCoC-cos F) 𝕕) (fib-inhab δ)))
 

@@ -36,7 +36,7 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
         transp-over-∙ {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         transp-pth (cglue g (fun (F # i) a)) idp ◃∙
-        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ◃∙
+        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC-cos (f , fₚ)) g (fun (F # i) a)) ◃∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a)) ◃∎
           =ₛ
         inv-canc-cmp f right (ap ψ (cglue g a)) (! (glue (cin j (idf A a)))) (fₚ a) ◃∎
@@ -54,7 +54,7 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
         transp-over-∙ {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         transp-pth (cglue g (fun (F # i) a)) idp ◃∙
-        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ◃∙
+        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC-cos (f , fₚ)) g (fun (F # i) a)) ◃∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a)) ◃∎
           =ₛ₁⟨ 3 & 7 & ζ₁ (cglue g a) (snd (F <#> g) a) (cglue g (fun (F # i) a)) (ψ-βr g a) (recc-βr K g (fun (F # i) a)) (ap f (! (glue (cin j a))) ∙ fₚ a) ⟩
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
@@ -89,7 +89,7 @@ module Constr3 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
        ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ∙
        transp-over-∙ {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ∙
        (transp-pth (cglue g (fun (F # i) a)) idp ∙
-       ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
+       ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC-cos (f , fₚ)) g (fun (F # i) a)) ∙
        cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a)))) ◃∎
          =ₛ
        ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ◃∙

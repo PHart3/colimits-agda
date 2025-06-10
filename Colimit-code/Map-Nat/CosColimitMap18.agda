@@ -210,7 +210,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
       NatSq2-Λ-coher idp idp idp idp τ₁₀ τ₁₃ τ₁₄ idp = =ₛ-in (NatSq2-Λ-coher-aux τ₁₀ τ₁₃ τ₁₄)
 
     abstract
-      CosColim-NatSq2 : CosCocEq F T (Map-to-Lim-map F (f , fₚ) K-diag) (Diag-to-Lim-map δ (PostComp-cos ColCoC (f , fₚ)))
+      CosColim-NatSq2 : CosCocEq F T (Map-to-Lim-map F (f , fₚ) K-diag) (Diag-to-Lim-map δ (PostComp-cos ColCoC-cos (f , fₚ)))
       W CosColim-NatSq2 i x = idp
       u CosColim-NatSq2 i a = ap-∘-∙-∙ f (right ∘ cin i) (snd (nat δ i) a) (! (glue (cin i a)))
       Λ CosColim-NatSq2 {i} {j} g =
@@ -223,5 +223,5 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
           E₃ (λ x → ! (glue x)) (cglue g a) (ψ₂-βr g a) (λ x → idp) ∙
           ∙-unit-r (! (glue (cin i a))))
 
-    CosColim-NatSq2-eq : Map-to-Lim-map F (f , fₚ) K-diag == Diag-to-Lim-map δ (PostComp-cos ColCoC (f , fₚ))
+    CosColim-NatSq2-eq : Map-to-Lim-map F (f , fₚ) K-diag == Diag-to-Lim-map δ (PostComp-cos ColCoC-cos (f , fₚ))
     CosColim-NatSq2-eq = CosCocEq-to-== F T (Map-to-Lim-map F (f , fₚ) K-diag) (CosColim-NatSq2)

@@ -217,7 +217,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
         transp-over-∙ {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         (transp-pth (cglue g (fun (F # i) a)) idp ∙
-        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
+        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC-cos (f , fₚ)) g (fun (F # i) a)) ∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a))) ◃∎ 
       Right-rw₂ =
         seq-! (transpEq-◃ idp) ∙∙ apd-comp-ap {γ = RfunEq (f , fₚ)} (cglue g a) ◃∙
@@ -243,7 +243,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
         transp-over-∙ {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         (transp-pth (cglue g (fun (F # i) a)) idp ∙
-        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
+        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC-cos (f , fₚ)) g (fun (F # i) a)) ∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a))) ◃∎ ∎ₛ
 
     abstract
@@ -291,7 +291,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ◃∙
         transp-over-∙ {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ◃∙
         (transp-pth (cglue g (fun (F # i) a)) idp ∙
-        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
+        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC-cos (f , fₚ)) g (fun (F # i) a)) ∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a))) ◃∎
           =ₛ
         (! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ∙
@@ -312,7 +312,7 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ap (λ p → transport (λ x → f (right x) == H (right x)) p idp) (ψ-βr g a) ∙
         transp-over-∙ {γ = RfunEq (f , fₚ)} (! (ap (cin j) (snd (F <#> g) a))) ∙
         (transp-pth (cglue g (fun (F # i) a)) idp ∙
-        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC (f , fₚ)) g (fun (F # i) a)) ∙
+        ap (_∙_ (! (ap (f ∘ right) (cglue g (fun (F # i) a))))) (recc-βr (PostComp-cos ColCoC-cos (f , fₚ)) g (fun (F # i) a)) ∙
         cmp-inv-l {f = right} {g = f} (cglue g (fun (F # i) a)))) ◃∎
       Right-rw1a = =ₛ-in idp      
 

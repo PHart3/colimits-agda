@@ -18,6 +18,31 @@ record Cospan {i j k : ULevel} : Type (lsucc (lmax (lmax i j) k)) where
     f : A → C
     g : B → C
 
+record Cospan-eqv {i₁ i₂ j₁ j₂ k₁ k₂ : ULevel} (C₁ : Cospan {i₁} {j₁} {k₁}) (C₂ : Cospan {i₂} {j₂} {k₂})
+  : Type (lmax (lmax (lmax i₁ j₁) k₁) (lmax (lmax i₂ j₂) k₂)) where
+  constructor cospaneqv
+  field
+    csp-eA : Cospan.A C₁ ≃ Cospan.A C₂
+    csp-eB : Cospan.B C₁ ≃ Cospan.B C₂
+    csp-eC : Cospan.C C₁ ≃ Cospan.C C₂
+    csp-nat-f : Cospan.f C₂ ∘ –> csp-eA ∼ –> csp-eC ∘ Cospan.f C₁
+    csp-nat-g : –> csp-eC ∘ Cospan.g C₁ ∼ Cospan.g C₂ ∘ –> csp-eB
+open Cospan-eqv public
+
+csp-eqv-inv : ∀ {i₁ i₂ j₁ j₂ k₁ k₂ : ULevel} {C₁ : Cospan {i₁} {j₁} {k₁}} {C₂ : Cospan {i₂} {j₂} {k₂}}
+  → Cospan-eqv C₁ C₂ → Cospan-eqv C₂ C₁
+csp-eA (csp-eqv-inv E) = (csp-eA E) ⁻¹
+csp-eB (csp-eqv-inv E) = (csp-eB E) ⁻¹
+csp-eC (csp-eqv-inv E) = (csp-eC E) ⁻¹
+csp-nat-f (csp-eqv-inv {C₁ = C₁} {C₂} E) x = 
+  ! (is-equiv.g-f (snd (csp-eC E)) (Cospan.f C₁ (<– (csp-eA E) x))) ∙
+  ap (<– (csp-eC E)) (! (csp-nat-f E (<– (csp-eA E) x))) ∙
+  ap (<– (csp-eC E) ∘ Cospan.f C₂) (is-equiv.f-g (snd (csp-eA E)) x)
+csp-nat-g (csp-eqv-inv {C₁ = C₁} {C₂} E) x = 
+  ! (ap (<– (csp-eC E) ∘ Cospan.g C₂) (is-equiv.f-g (snd (csp-eB E)) x)) ∙
+  ap (<– (csp-eC E)) (! (csp-nat-g E (<– (csp-eB E) x))) ∙
+  is-equiv.g-f (snd (csp-eC E)) ((Cospan.g C₁) (<– (csp-eB E) x))
+
 record ⊙Cospan {i j k : ULevel} : Type (lsucc (lmax (lmax i j) k)) where
   constructor ⊙cospan
   field

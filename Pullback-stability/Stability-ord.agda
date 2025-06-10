@@ -184,5 +184,6 @@ module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} (F : Diag ℓd Γ) where
               (ap (pullback (cin j ((F <#> g) x)) y) (! (∙-unit-r p₁) ∙ ∙-unit-r p₁))
 
     -- statement of equivalence
-    can-map-equiv : is-equiv can-map
-    can-map-equiv = is-eq can-map can-map-inv (λ (pullback a b h) → rinv-cur a b h) linv
+    abstract
+      can-map-equiv : is-equiv can-map
+      can-map-equiv = is-eq can-map can-map-inv (λ (pullback a b h) → rinv-cur a b h) linv

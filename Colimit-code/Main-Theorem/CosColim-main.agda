@@ -8,5 +8,5 @@ module CosColim-main where
   by presenting the expected natural isomorphism. This amounts to combining two files.  
 -}
 
-open import CosColim-Iso  -- shows that the canonical post-comp map is an equivalence
-open import CosColim-Adjunction  -- shows that post-comp fits into the two naturality squares
+open import CosColim-Iso public  -- shows that the canonical post-comp map is an equivalence
+open import CosColim-Adjunction public  -- shows that post-comp fits into the two naturality squares

@@ -18,7 +18,7 @@ module _ {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag
   module _ {ℓc} (T : Coslice ℓc ℓ A) (f : P → ty T) (fₚ : (a : A) → f (left a)  == fun T a) where
 
     κ : CosCocone A F T
-    κ = PostComp-cos ColCoC (f , fₚ)
+    κ = PostComp-cos ColCoC-cos (f , fₚ)
 
     Ω : ! (fst (comTri κ g) (fun (F # i) a)) ∙ snd (< A > comp κ j ∘ F <#> g) a =-= snd (comp κ i) a
     Ω =
