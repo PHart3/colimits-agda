@@ -14,8 +14,7 @@ module CosColimitMap04 where
 
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} (h : B → C) {k : A → B} where
 
-  !-!-ap-idp-!-inv : {a₁ a₂ : A} (p₂ : a₁ == a₂) {b : B} (p₃ : k a₂ == b) {c : C} (p₁ : c == h (k a₂))
-    →
+  !-!-ap-idp-!-inv : {a₁ a₂ : A} (p₂ : a₁ == a₂) {b : B} (p₃ : k a₂ == b) {c : C} (p₁ : c == h (k a₂)) →
     ! (p₁ ∙ ap h (! (! (! (ap k (! p₂ ∙ idp)) ∙ p₃) ∙ ap k p₂ ∙ idp)))
       =-=
     ! (ap h p₃) ∙ ! p₁ ∙ p₁ ∙ ! p₁
@@ -33,8 +32,7 @@ module ConstrMap5 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
 
     ψ₂-free-aux3 : {x : P₂} (γ : x == right (cin j (fun (G # j) a)))
       {κ : x == x} (ρ : κ == γ ∙ ! γ)
-      {z : Colim ForgG} (m₂ : cin j (fun (G # j) a) == z) {w : ty (G # j)} (σ : w == fun (G # j) a)
-      →
+      {z : Colim ForgG} (m₂ : cin j (fun (G # j) a) == z) {w : ty (G # j)} (σ : w == fun (G # j) a) →
       ! (γ ∙ ap right (! (! (! (ap (cin j) (! σ ∙ idp)) ∙ m₂) ∙ ap (cin j) σ ∙ idp)))
         =-=
       ! (ap right m₂) ∙ ! γ ∙ κ
@@ -42,24 +40,21 @@ module ConstrMap5 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
 
     ψ₂-free-aux2 : {x : Colim (ConsDiag Γ A)} (q : cin j a == x)
       {κ : left a == left ([id] x)} (ρ : κ == glue (cin j a) ∙ ap right (ap ψ₂ q) ∙ ! (glue x))
-      {z : Colim ForgG} (m₂ : cin j (fun (G # j) a) == z) {w : ty (G # j)} (σ : w == fun (G # j) a) 
-      →
+      {z : Colim ForgG} (m₂ : cin j (fun (G # j) a) == z) {w : ty (G # j)} (σ : w == fun (G # j) a) →
       ! (glue {d = SpCos₂} x ∙ ap right (! (! (! (ap (cin j) (! σ ∙ idp)) ∙ m₂) ∙ ap (cin j) σ ∙ ap ψ₂ q)))
         =-=
       ! (ap right m₂) ∙ ! (glue (cin j a)) ∙ κ
     ψ₂-free-aux2 idp ρ m₂ σ = ψ₂-free-aux3 (glue (cin j a)) ρ m₂ σ
 
     ψ₂-free-aux : {x : Colim (ConsDiag Γ A)} (q : cin j a == x) {w₁ w₂ : ty (G # j)} (m₁ : w₁ == fun (G # j) a)
-      {z : Colim ForgG} (m₂ : cin j w₁ == z) (σ : w₂ == fun (G # j) a)
-      →
+      {z : Colim ForgG} (m₂ : cin j w₁ == z) (σ : w₂ == fun (G # j) a) →
       ! (glue {d = SpCos₂} x ∙ ap right (! (! (! (ap (cin j) (m₁ ∙ ! σ ∙ idp)) ∙ m₂) ∙ ap (cin j) σ ∙ ap ψ₂ q)))
         =-=
       ! (ap right (! (ap (cin j) m₁) ∙ m₂)) ∙ ! (glue (cin j a)) ∙ ap left (ap [id] q)
     ψ₂-free-aux q idp m₂ σ = ψ₂-free-aux2 q (apCommSq-cmp left right glue q) m₂ σ
     
     ψ₂-free : (q : cin j a == cin i a) {e : ty (F # j)} (s : e == fun (F # j) a) {x₁ x₂ : ty (G # i)} (d : x₁ == x₂)
-      (m : fst (G <#> g) x₂ == fun (G # j) a)
-      →
+      (m : fst (G <#> g) x₂ == fun (G # j) a) →
       ! (glue {d = SpCos₂} (cin i a) ∙
         ap right
           (! (! (! (ap (cin j) (ap (fst (G <#> g)) d ∙ m ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) s))) ∙ cglue g x₁) ∙
@@ -68,16 +63,14 @@ module ConstrMap5 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       ap (right ∘ cin i) d ∙ ! (ap right (! (ap (cin j) m) ∙ cglue g x₂)) ∙ ! (glue (cin j a)) ∙ ap left (ap [id] q)
     ψ₂-free q idp {x₂ = x₂} idp m = ψ₂-free-aux q m (cglue g x₂) (snd (nat δ j) a)
 
-    ψ₂-red-aux3 : {x : P₂} (p : x == right (cin j (fun (G # j) a)))
-      →
+    ψ₂-red-aux3 : {x : P₂} (p : x == right (cin j (fun (G # j) a))) →
       ap ! (∙-unit-r p) ∙ ! (ap (λ q → q) (∙-unit-r (! p))) ∙ idp
         ==
       ↯ (ψ₂-free-aux3 p (! (!-inv-r p)) idp idp)
     ψ₂-red-aux3 idp = idp
 
     ψ₂-red-aux2 : {x : Colim (ConsDiag Γ A)} (q : cin j a == x) {w : ty (G # j)} (σ : w == fun (G # j) a)
-      {m₂ : cin j (fun (G # j) a) == ψ₂ x} (τ : ap ψ₂ q == m₂)
-      → 
+      {m₂ : cin j (fun (G # j) a) == ψ₂ x} (τ : ap ψ₂ q == m₂) → 
       ap ! (ap (λ p → glue x ∙ ap right (! p)) (ap (λ p → ! (! (ap (cin j) (! σ ∙ idp)) ∙ m₂) ∙ ap (cin j) σ ∙ p) τ)) ◃∙
       ap ! (ap (λ p → glue x ∙ ap right (! p)) (ap-!-!-!-!-rid (cin j) σ idp m₂ m₂)) ◃∙
       ap ! (ap (λ p → glue x ∙ ap right (! p)) (!-inv-l m₂)) ◃∙
@@ -89,8 +82,7 @@ module ConstrMap5 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
     ψ₂-red-aux2 idp idp idp = =ₛ-in (ψ₂-red-aux3 (glue (cin j a)))
 
     ψ₂-red-aux : {w₁ w₂ : ty (G # j)} (m₁ : w₁ == fun (G # j) a) (m₂ : cin j w₁ == ψ₂ (cin i a))
-      (σ : w₂ == fun (G # j) a) (τ : ap ψ₂ (cglue g a) == ! (ap (cin j) m₁) ∙ m₂)
-      →
+      (σ : w₂ == fun (G # j) a) (τ : ap ψ₂ (cglue g a) == ! (ap (cin j) m₁) ∙ m₂) →
       ap ! (ap (λ p → glue (cin i a) ∙ ap right (! p)) (ap (λ p → ! (! (ap (cin j) (m₁ ∙ ! σ ∙ idp)) ∙ m₂) ∙ ap (cin j) σ ∙ p) τ)) ◃∙
       ap ! (ap (λ p → glue (cin i a) ∙ ap right (! p)) (ap-!-!-!-!-rid (cin j) σ m₁ m₂ m₂)) ◃∙
       ap ! (ap (λ p → glue (cin i a) ∙ ap right (! p)) (!-inv-l m₂)) ◃∙

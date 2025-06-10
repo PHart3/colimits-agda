@@ -17,9 +17,6 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type �
     → ap h (ap f p₁ ∙ p₂) ∙ s == ap (h ∘ f) p₁ ∙ ap h p₂ ∙ s
   ap-∘-∙-∙ idp p₂ = idp
 
-  ap-∘-rid : {x y : A} (p : x == y) → ap h (ap f p) ∙ idp == ap (h ∘ f) p
-  ap-∘-rid idp = idp
-
 module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag ℓd ℓ A Γ) {T : Coslice ℓc₁ ℓ A} {U : Coslice ℓc₂ ℓ A}
   (φ : < A > T *→ U) where
 
@@ -60,14 +57,14 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
       (p₁ : right (cin j (fst (F <#> g) (fun (F # i) a))) == x)
       (p₂ : fst (F <#> g) (fun (F # i) a) == y) (p₃ : right (cin j y) == z) {u : ty T}
       (p₄ : f z == u) {v : ty U} (p₅ : φ₁ u == v)  →
-      ! (ap (λ p → ! p ∙ ap (φ₁ ∘ f ∘ right ∘ cin j) p₂ ∙ ap (φ₁ ∘ f) p₃ ∙ ap φ₁ p₄ ∙ p₅) (ap-∘-rid φ₁ f p₁)) ◃∙
-      ap (λ p →  ! (p ∙ ap φ₁ (ap f p₁) ∙ idp) ∙ ap (φ₁ ∘ f ∘ right ∘ cin j) p₂ ∙ ap (φ₁ ∘ f) p₃ ∙ ap φ₁ p₄ ∙ p₅)
+      ! (ap (λ p → ! p ∙ ap (φ₁ ∘ f ∘ right ∘ cin j) p₂ ∙ ap (φ₁ ∘ f) p₃ ∙ ap φ₁ p₄ ∙ p₅) (∘-ap φ₁ f p₁)) ◃∙
+      ap (λ p →  ! (p ∙ ap φ₁ (ap f p₁)) ∙ ap (φ₁ ∘ f ∘ right ∘ cin j) p₂ ∙ ap (φ₁ ∘ f) p₃ ∙ ap φ₁ p₄ ∙ p₅)
         (hmtpy-nat-rev {f = φ₁ ∘ f ∘ right ∘ cin j} (λ x → idp) p₂  (ap φ₁ (ap f p₃ ∙ p₄) ∙ p₅)) ◃∙
       ap (λ p →  (! ((ap (λ z → (φ₁ ∘ f ∘ right ∘ cin j) z) p₂ ∙ (p ∙ ! (ap φ₁ (ap f p₃ ∙ p₄) ∙ p₅)) ∙
           ! (ap (φ₁ ∘ f ∘ right ∘ cin j) p₂)) ∙
-          ap φ₁ (ap f p₁) ∙ idp) ∙ ap (φ₁ ∘ f ∘ right ∘ cin j) p₂ ∙
+          ap φ₁ (ap f p₁)) ∙ ap (φ₁ ∘ f ∘ right ∘ cin j) p₂ ∙
           ap (φ₁ ∘ f) p₃ ∙ ap φ₁ p₄ ∙ p₅))
-        (ap-∘-∙-∙ φ₁ f p₃ p₄)  ◃∙
+        (ap-∘-∙-∙ φ₁ f p₃ p₄) ◃∙
       long-path-red p₂ (ap (φ₁ ∘ f) p₃ ∙ ap φ₁ p₄ ∙ p₅) (ap φ₁ (ap f p₃ ∙ p₄) ∙ p₅) (ap φ₁ (ap f p₁)) idp ◃∎
         =ₛ
       ↯ (NatSq-1-Λ-aux g a p₁ p₂ p₃ p₄ p₅) ◃∎
@@ -95,13 +92,13 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
     CosColim-NatSq1 : CosCocEq F U (Map-to-Lim-map (PostComp-cos ColCoC (f , fₚ))) (PostComp-cos ColCoC (φ ∘* (f , fₚ)))
     W CosColim-NatSq1 = λ i x → idp
     u CosColim-NatSq1 = λ i a → ap-∘-∙-∙ φ₁ f (! (glue (cin i a))) (fₚ a)  
-    Λ CosColim-NatSq1 {i} {j} g = (λ x → ap-∘-rid φ₁ f (fst (comTri ColCoC g) x)) , λ a → lemma a
+    Λ CosColim-NatSq1 {i} {j} g = (λ x → ∘-ap φ₁ f (fst (comTri ColCoC g) x)) , λ a → lemma a
       where
         lemma : (a : A) → 
           ! (ap (λ p → ! p ∙  ap (φ₁ ∘ f ∘ fst (comp ColCoC j)) (snd (F <#> g) a) ∙
                 ap (φ₁ ∘ f) (snd (comp ColCoC j) a) ∙ snd (φ ∘* f , fₚ) a)
-              (ap-∘-rid φ₁ f (ap right (cglue g (fun (F # i) a))))) ◃∙
-          ap (λ p → ! (p ∙ ap φ₁ (ap f (fst (comTri ColCoC g) (fun (F # i) a))) ∙ idp) ∙
+              (∘-ap φ₁ f (ap right (cglue g (fun (F # i) a))))) ◃∙
+          ap (λ p → ! (p ∙ ap φ₁ (ap f (fst (comTri ColCoC g) (fun (F # i) a)))) ∙
               ap (φ₁ ∘ f ∘ fst (comp ColCoC j)) (snd (F <#> g) a) ∙
               ap (φ₁ ∘ f) (snd (comp ColCoC j) a) ∙
               snd (φ ∘* f , fₚ) a)
@@ -110,7 +107,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
           ap (λ p → ! ((ap (φ₁ ∘ f ∘ fst (comp ColCoC j)) (snd (F <#> g) a) ∙
               (p ∙ ! (snd (φ ∘* f ∘ fst (comp ColCoC j) , (λ a₁ → ap f (snd (comp ColCoC j) a₁) ∙ fₚ a₁)) a)) ∙
               ! (ap (fst (φ ∘* f ∘ fst (comp ColCoC j) , (λ a₁ → ap f (snd (comp ColCoC j) a₁) ∙ fₚ a₁))) (snd (F <#> g) a))) ∙
-              ap φ₁ (ap f (fst (comTri ColCoC g) (fun (F # i) a))) ∙ idp) ∙
+              ap φ₁ (ap f (fst (comTri ColCoC g) (fun (F # i) a)))) ∙
               ap (φ₁ ∘ f ∘ fst (comp ColCoC j)) (snd (F <#> g) a) ∙
               ap (φ₁ ∘ f) (snd (comp ColCoC j) a) ∙ snd (φ ∘* f , fₚ) a)
             (ap-∘-∙-∙ φ₁ f (! (glue (cin j a))) (fₚ a)) ◃∙
@@ -129,10 +126,10 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
           (!-ap-ap-∘-ap-∙ (φ₁ ∘ f) (fst (comp ColCoC j)) (snd (F <#> g) a) (fst (comTri ColCoC g) (fun (F # i) a)) ∙
           ap (λ p → p ∙ snd (φ ∘* f , fₚ) a) (ap (ap (φ₁ ∘ f)) (snd (comTri ColCoC g) a))) ◃∎
         lemma a =
-          ! (ap (λ p → ! p ∙  ap (φ₁ ∘ f ∘ fst (comp ColCoC j)) (snd (F <#> g) a) ∙
+          ! (ap (λ p → ! p ∙ ap (φ₁ ∘ f ∘ fst (comp ColCoC j)) (snd (F <#> g) a) ∙
                 ap (φ₁ ∘ f) (snd (comp ColCoC j) a) ∙ snd (φ ∘* f , fₚ) a)
-              (ap-∘-rid φ₁ f (ap right (cglue g (fun (F # i) a))))) ◃∙
-          ap (λ p → ! (p ∙ ap φ₁ (ap f (fst (comTri ColCoC g) (fun (F # i) a))) ∙ idp) ∙
+              (∘-ap φ₁ f (ap right (cglue g (fun (F # i) a))))) ◃∙
+          ap (λ p → ! (p ∙ ap φ₁ (ap f (fst (comTri ColCoC g) (fun (F # i) a)))) ∙
               ap (φ₁ ∘ f ∘ fst (comp ColCoC j)) (snd (F <#> g) a) ∙
               ap (φ₁ ∘ f) (snd (comp ColCoC j) a) ∙
               snd (φ ∘* f , fₚ) a)
@@ -141,7 +138,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
           ap (λ p → ! ((ap (φ₁ ∘ f ∘ fst (comp ColCoC j)) (snd (F <#> g) a) ∙
               (p ∙ ! (snd (φ ∘* f ∘ fst (comp ColCoC j) , (λ a₁ → ap f (snd (comp ColCoC j) a₁) ∙ fₚ a₁)) a)) ∙
               ! (ap (fst (φ ∘* f ∘ fst (comp ColCoC j) , (λ a₁ → ap f (snd (comp ColCoC j) a₁) ∙ fₚ a₁))) (snd (F <#> g) a))) ∙
-              ap φ₁ (ap f (fst (comTri ColCoC g) (fun (F # i) a))) ∙ idp) ∙
+              ap φ₁ (ap f (fst (comTri ColCoC g) (fun (F # i) a)))) ∙
               ap (φ₁ ∘ f ∘ fst (comp ColCoC j)) (snd (F <#> g) a) ∙
               ap (φ₁ ∘ f) (snd (comp ColCoC j) a) ∙ snd (φ ∘* f , fₚ) a)
             (ap-∘-∙-∙ φ₁ f (! (glue (cin j a))) (fₚ a)) ◃∙

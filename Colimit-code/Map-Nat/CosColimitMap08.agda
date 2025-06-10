@@ -40,11 +40,10 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type �
 
   long-coher3 : {a₁ a₂ : A} (p₄ : a₁ == a₂) {c₁ c₂ c₃ c₄ : C} (p₁ : c₁ == f₁ (f₂ a₁))
     (p₂ : f₁ (f₂ a₁) == c₃) (p₃ : c₂ == f₁ (f₂ a₂)) (p₅ : c₁ == c₄) →
-    ! ((p₁ ∙ (p₂ ∙ ! p₂) ∙ ! p₁) ∙ p₅ ∙ idp) ∙ p₁ ∙ ap (f₁ ∘ f₂) p₄ ∙ ! p₃
+    ! ((p₁ ∙ (p₂ ∙ ! p₂) ∙ ! p₁) ∙ p₅) ∙ p₁ ∙ ap (f₁ ∘ f₂) p₄ ∙ ! p₃
       =-=
     ! (! p₁ ∙ p₅) ∙ ! (p₃ ∙ ap f₁ (! (ap f₂ p₄)))
-  long-coher3 idp idp idp p₂ p₃ =
-    ap (λ p → ! p ∙ ! p₂) (∙-unit-r p₃) ◃∙ ap (λ p → ! p₃ ∙ ! p) (! (∙-unit-r p₂)) ◃∎ 
+  long-coher3 idp idp idp p₂ p₃ = ap (λ p → ! p₃ ∙ ! p) (! (∙-unit-r p₂)) ◃∎ 
 
 module ConstrMap9 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : CosDiag ℓF ℓ A Γ} {G : CosDiag ℓG ℓ A Γ} (δ : CosDiagMor A F G) where
 
@@ -62,16 +61,14 @@ module ConstrMap9 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
           ==
         right (cin j (fst (nat δ j) (fst (F <#> g) (fun (F # i) a)))))
       (ρ : idp == d₂ ∙ idp) →
-      ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ ap 𝕕₀ (ap right c) ∙ idp) ∙ ! d₂)
+      ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ ap 𝕕₀ (ap right c)) ∙ ! d₂)
         (ap ! ρ ∙ ap ! (∙-unit-r d₂)) ∙
       !-∙-!-rid-∙-rid (ap 𝕕₀ (ap (right {d = SpCos₁}) c)) (! d₂) idp ∙
       ap (λ q → q) (!-ap-∙-s 𝕕₀ (ap right c)) ∙
       ap2-!-!-rid2 𝕕₀ c idp ∙
       ap (λ p → ! (ap (𝕕₀ ∘ right) c) ∙ ! p) ρ
         ==
-      ap (λ p → ! (p ∙ idp) ∙ ! d₂)
-        (∘-ap 𝕕₀ (right {d = SpCos₁}) c) ∙
-      ap (λ p → ! p ∙ ! d₂) (∙-unit-r (ap (right ∘ δ₀) c)) ∙
+      ap (λ p → ! p ∙ ! d₂) (∘-ap 𝕕₀ (right {d = SpCos₁}) c) ∙
       ap (λ p → ! (ap (right ∘ δ₀) c) ∙ ! p) (! (∙-unit-r d₂))
     𝕕-red-aux idp d₂ ρ = loop-!-!-unit-r d₂ idp ρ
 
@@ -80,7 +77,7 @@ module ConstrMap9 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       {y : P₁} (d₃ : y == right (cin j z)) (d₂ : 𝕕₀ y == right (cin j x))
       (ρ : ap 𝕕₀ d₃ == d₂ ∙ ap right (! (ap (cin j) d₁))) →
       ap (λ p → ! ((ap (right ∘ cin j ∘ (fst (nat δ j))) d₄ ∙ (p ∙ ! (ap 𝕕₀ (! d₃) ∙ idp)) ∙
-           ! (ap (𝕕₀ ∘ right ∘ cin j) d₄)) ∙ ap 𝕕₀ (ap right (cglue g (fun (F # i) a))) ∙ idp) ∙
+           ! (ap (𝕕₀ ∘ right ∘ cin j) d₄)) ∙ ap 𝕕₀ (ap right (cglue g (fun (F # i) a)))) ∙
            ap (right ∘ cin j ∘ (fst (nat δ j))) d₄ ∙ ap (right ∘ cin j) d₁ ∙ ! d₂)
          (ap-inv-rid 𝕕₀ d₃ ∙ ap ! ρ ∙ !-!-ap-∘ (cin j) right d₁ d₂) ◃∙
       long-path-red d₄ (ap (right ∘ cin j) d₁ ∙ ! d₂)
@@ -94,7 +91,7 @@ module ConstrMap9 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
         =ₛ
       ap (λ p →
            ! ((ap (right ∘ cin j ∘ fst (nat δ j)) d₄ ∙
-             ((ap 𝕕₀ (! d₃) ∙ idp) ∙ ! (ap 𝕕₀ (! d₃) ∙ idp)) ∙ ! (ap (right ∘ δ₀ ∘ cin j) d₄)) ∙ p ∙ idp) ∙
+             ((ap 𝕕₀ (! d₃) ∙ idp) ∙ ! (ap 𝕕₀ (! d₃) ∙ idp)) ∙ ! (ap (right ∘ δ₀ ∘ cin j) d₄)) ∙ p) ∙
            ap (right ∘ cin j ∘ fst (nat δ j)) d₄ ∙
            ap (right ∘ cin j) d₁ ∙ ! d₂) (∘-ap 𝕕₀ right (cglue g (fun (F # i) a))) ◃∙
       ↯ (long-coher3 (right {d = SpCos₂}) (cin j) d₁ (ap (right ∘ cin j ∘ fst (nat δ j)) d₄)
@@ -126,13 +123,13 @@ module ConstrMap9 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
     δ₀-red-aux : {z : ty (F # j)} (s : z == fun (F # j) a)
       {x : Colim ForgF} (c : cin j z == x) →
       ! (ap (λ p → ! p ∙ ap (right ∘ cin j ∘ fst (nat δ j)) s ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
-          (∙-unit-r (ap 𝕕₀ (ap right c)) ∙ ∘-ap 𝕕₀ right c ∙ ap-∘ right δ₀ c ∙ idp)) ∙
-      ap (λ p → ! (p ∙ ap 𝕕₀ (ap right c) ∙ idp) ∙
+          (∘-ap 𝕕₀ right c ∙ ap-∘ right δ₀ c ∙ idp)) ∙
+      ap (λ p → ! (p ∙ ap 𝕕₀ (ap right c)) ∙
            ap (right ∘ cin j ∘ fst (nat δ j)) s ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
          (hmtpy-nat-rev (λ x → idp) s (ap 𝕕₀ (! (glue (cin j a))) ∙ idp)) ∙
       ap (λ p → ! ((ap (right ∘ cin j ∘ fst (nat δ j)) s ∙
            ((ap 𝕕₀ (! (glue (cin j a))) ∙ idp) ∙ ! (ap 𝕕₀ (! (glue (cin j a))) ∙ idp)) ∙
-           ! (ap (right ∘ δ₀ ∘ cin j) s)) ∙ p ∙ idp) ∙
+           ! (ap (right ∘ δ₀ ∘ cin j) s)) ∙ p) ∙
            ap (right ∘ cin j ∘ fst (nat δ j)) s ∙
            ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
          (∘-ap 𝕕₀ right c) ∙
@@ -156,17 +153,16 @@ module ConstrMap9 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       ! (ap (λ p → ! p ∙ ap (right ∘ cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙
             ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
             (
-            ∙-unit-r (ap 𝕕₀ (ap right (cglue g (fun (F # i) a)))) ∙
             ∘-ap 𝕕₀ right (cglue g (fun (F # i) a)) ∙
             ap-∘ right δ₀ (cglue g (fun (F # i) a)) ∙
             ap (ap right) τ)) ◃∙
-      ap (λ p → ! (p ∙ ap 𝕕₀ (ap right (cglue g (fun (F # i) a))) ∙ idp) ∙
+      ap (λ p → ! (p ∙ ap 𝕕₀ (ap right (cglue g (fun (F # i) a)))) ∙
            ap (right ∘ cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
          (hmtpy-nat-rev (λ x → idp) (snd (F <#> g) a) (ap 𝕕₀ (! (glue (cin j a))) ∙ idp)) ◃∙
       ap (λ p → ! ((ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙
            ((ap 𝕕₀ (! (glue {d = SpCos₁} (cin j a))) ∙ idp) ∙
            ! (ap 𝕕₀ (! (glue {d = SpCos₁} (cin j a))) ∙ idp)) ∙
-           ! (ap (right ∘ δ₀ ∘ cin j) (snd (F <#> g) a))) ∙ p ∙ idp) ∙
+           ! (ap (right ∘ δ₀ ∘ cin j) (snd (F <#> g) a))) ∙ p) ∙
            ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙
            ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue {d = SpCos₂} (cin j a)))
          (∘-ap 𝕕₀ right (cglue g (fun (F # i) a))) ◃∙

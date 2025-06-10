@@ -10,6 +10,7 @@ open import CC-Equiv-RLR-4
 open import CosColimitMap00
 open import CosColimitMap18
 open import CosColimitPstCmp
+open import CosColimitPreCmp-def
 open import CosColimitPreCmp
 
 module CosColim-Adjunction where
@@ -27,14 +28,14 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
   open Maps
 
--- The first naturality square, arising from post-composition with the coslice map
+  -- the first naturality square, arising from post-composition with the coslice map
 
   AdjSq-PostCmp : ∀ {ℓd ℓc₁ ℓc₂} (F : CosDiag ℓd ℓ A Γ) {T : Coslice ℓc₁ ℓ A} {U : Coslice ℓc₂ ℓ A}
     (φ : T *→ U) (f* : (Cos (P F) left) *→ T)
     → Map-to-Lim-map F φ (PostComp-cos (ColCoC F) f*) == PostComp-cos (ColCoC F) (φ ∘* f*)
   AdjSq-PostCmp F φ (f , fₚ) = CosColim-NatSq1-eq F φ f fₚ 
 
--- The second naturality square, arising from pre-composition with the diagram map
+  -- the second naturality square, arising from pre-composition with the diagram map
 
   module _ {ℓF ℓG} {F : CosDiag ℓF ℓ A Γ} {G : CosDiag ℓG ℓ A Γ} (δ : CosDiagMor A F G) where
 
@@ -43,5 +44,5 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
     open ConstrMap19 δ
 
     AdjSq-PreCmp : ∀ {ℓc} {T : Coslice ℓc ℓ A} (f* : (Cos P₂ left) *→ T)
-      → Diag-to-Lim-map (PostComp-cos (ColCoC G) f*) == PostComp-cos (ColCoC F) (f* ∘* 𝕕)
+      → Diag-to-Lim-map δ (PostComp-cos (ColCoC G) f*) == PostComp-cos (ColCoC F) (f* ∘* 𝕕)
     AdjSq-PreCmp f* = NatSq-PreCmp δ f*

@@ -6,11 +6,11 @@ open import lib.types.Span
 open import Coslice
 open import Diagram-Cos
 open import Cocone-po
-open import Cocone-po-switch
 open import AuxPaths-v2
 open import SIP-Cos
 open import lib.types.Colim
 open import CC-Equiv-LRL-2
+open import Cocone-switch
 
 module CC-Equiv-LRL-3 where
 
@@ -58,19 +58,17 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
     PathSeq1 =
       ω-ap-inv ∙∙
       (! (apd-concat-pres {F = λ x → ! (ap f (glue x)) ∙ fₚ ([id] x)} {G = σ (comp K) (comTri K)} (cglue g a)) ◃∙
-      transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)))
+      transpEq-◃ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)))
 
     abstract
 
-      Reduce1 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {Q : ψ (cin j a) == ψ x}
-        →
+      Reduce1 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {Q : ψ (cin j a) == ψ x} →
         (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ ! (ap (fun T) (ap [id] p)) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ ap (reccForg K) Q
           ==
         ! (ap (f ∘ right) (ap ψ p)) ∙ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)) ∙ ap (reccForg K) Q
       Reduce1 idp {Q = Q} = ! (∙-assoc (! (ap f (glue (cin j a))) ∙ fₚ a) (! (ap f (! (glue (cin j a))) ∙ fₚ a)) (ap (reccForg K) Q))
     
-      CommSq1 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {Q : ψ (cin j a) == ψ x} (R : ap ψ p == Q)
-        →
+      CommSq1 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {Q : ψ (cin j a) == ψ x} (R : ap ψ p == Q) →
         ! (ap (λ p → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ p) (H₁ p (! (ap f (! (glue (cin j a))) ∙ fₚ a)) R)) ◃∙
         ! (apd-concat-pres {F = λ x → ! (ap f (glue x)) ∙ fₚ ([id] x)} {G = σ (comp K) (comTri K)} p)  ◃∙
         O₁ (((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))) p R ◃∎
@@ -78,23 +76,21 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         Reduce1 p {Q = Q} ◃∎
       CommSq1 idp idp = =ₛ-in (lemma (glue (cin j a)) (fₚ a))
           where
-            lemma : {x : P} (r : left a == x) {y : ty T} (s : f (left a) == y) 
-              →
+            lemma : {x : P} (r : left a == x) {y : ty T} (s : f (left a) == y) →
               ! (ap (_∙_ (! (ap f r) ∙ s)) (! (∙-unit-r (! (ap f (! r) ∙ s))))) ∙ ! (∙-unit-r ((! (ap f r) ∙ s) ∙ ! (ap f (! r) ∙ s)))
                 ==
               ! (∙-assoc (! (ap f r) ∙ s) (! (ap f (! r) ∙ s)) idp)
             lemma idp idp = idp 
 
-      Reduce2 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {R : (reccForg K) (cin j (fst (F <#> g) (fun (F # i) a))) == (reccForg K) (ψ x)}
-        →
+      Reduce2 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {R : (reccForg K) (cin j (fst (F <#> g) (fun (F # i) a))) == (reccForg K) (ψ x)} →
         (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙
         ! (ap (fun T) (ap [id] p)) ∙
         ! (! R ∙ ap (f ∘ right ∘ cin j) (snd (F <#> g) a) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a))
           ==
-       ! (ap (f ∘ right) (ap ψ p)) ∙
-       ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)) ∙
-       (ap f (! (glue (cin j a))) ∙ fₚ a) ∙
-       ! (! R ∙ ap (f ∘ right ∘ cin j) (snd (F <#> g) a) ∙ ap f (! (glue (cin j a))) ∙ fₚ a)
+        ! (ap (f ∘ right) (ap ψ p)) ∙
+        ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)) ∙
+        (ap f (! (glue (cin j a))) ∙ fₚ a) ∙
+        ! (! R ∙ ap (f ∘ right ∘ cin j) (snd (F <#> g) a) ∙ ap f (! (glue (cin j a))) ∙ fₚ a)
       Reduce2 idp {R = R} =
         R2lemma
           (ap f (! (glue (cin j a))) ∙ fₚ a)
@@ -105,8 +101,7 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
             R2lemma idp u r = ap (λ p → p ∙ r) (! (∙-unit-r u))
 
       CommSq2 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {s : cin j (fst (F <#> g) (fun (F # i) a))  == ψ x}
-        {R : (reccForg K) (cin j (fst (F <#> g) (fun (F # i) a))) == (reccForg K) (ψ x)} (V : ap (reccForg K) s == R)
-        →
+        {R : (reccForg K) (cin j (fst (F <#> g) (fun (F # i) a))) == (reccForg K) (ψ x)} (V : ap (reccForg K) s == R) →
         ! (ap (λ q → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ q) (H₂ (snd (F <#> g) a) (ap f (! (glue (cin j a))) ∙ fₚ a) {p = ! (ap (fun T) (ap [id] p))} s V)) ◃∙
         Reduce1 p ◃∙ O₂ {p = ! (ap (f ∘ right) (ap ψ p))} {g = cin j} {q = ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))}
           (snd (F <#> g) a) (ap f (! (glue (cin j a))) ∙ fₚ a) s V ◃∎
@@ -114,8 +109,7 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         Reduce2 p {R = R} ◃∎
       CommSq2 idp {s = s} {R = R} idp = lemma (fₚ a) (snd (F <#> g) a) (glue (cin j a)) 
           where
-            lemma : {y : ty T} (w : f (left a) == y) {z : ty (F # j)} (t : fst (F <#> g) (fun (F # i) a) == z) (r : left a == right (cin j z))
-              →
+            lemma : {y : ty T} (w : f (left a) == y) {z : ty (F # j)} (t : fst (F <#> g) (fun (F # i) a) == z) (r : left a == right (cin j z)) →
               ! (ap (_∙_ (! (ap f r) ∙ w)) (H₂ {u = reccForg K} {g = cin j} t (ap f (! r) ∙ w) {p = idp} s idp)) ◃∙
               ! (∙-assoc (! (ap f r) ∙ w) (! (ap f (! r) ∙ w)) (ap (reccForg K) (! (ap (cin j) t) ∙ s))) ◃∙
               O₂ {p = idp} {g = cin j} t (ap f (! r) ∙ w) s idp ◃∎
@@ -139,8 +133,7 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
                       R2lemma {R = ap (reccForg K) s} idp idp (! (! (ap (reccForg K) S) ∙ idp)) ◃∎
                     lemma3 idp = =ₛ-in idp
 
-      Reduce3 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {t : ty T} (V : fun T a == t)
-        →
+      Reduce3 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {t : ty T} (V : fun T a == t) →
         (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ ! (ap (fun T) (ap [id] p)) ∙ V
           ==
         ! (ap (f ∘ right) (ap ψ p)) ∙ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ V
@@ -151,8 +144,7 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
             R3lemma idp idp w = idp
 
       CommSq3 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {R : (reccForg K) (cin j (fst (F <#> g) (fun (F # i) a))) == (reccForg K) (ψ x)}
-        {S : fun T a  == (reccForg K) (ψ x)} (E : ! (! R ∙ ap (f ∘ right ∘ cin j) (snd (F <#> g) a) ∙ ap f (! (glue (cin j a))) ∙ fₚ a) == S)
-        →
+        {S : fun T a  == (reccForg K) (ψ x)} (E : ! (! R ∙ ap (f ∘ right ∘ cin j) (snd (F <#> g) a) ∙ ap f (! (glue (cin j a))) ∙ fₚ a) == S) →
         ! (ap (λ q →  (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ q) (ap (λ q → ! (ap (fun T) (ap [id] p)) ∙ q) E)) ◃∙
         Reduce2 p {R = R} ◃∙
         ap (λ q → ! (ap (f ∘ right) (ap ψ p)) ∙ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) E ◃∎
@@ -160,15 +152,13 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         Reduce3 p S ◃∎
       CommSq3 idp {R = R} idp = lemma (glue (cin j a)) (fₚ a) (! (! R ∙ ap (f ∘ right ∘ cin j) (snd (F <#> g) a) ∙ ap f (! (glue (cin j a))) ∙ fₚ a))
         where
-          lemma : {x : P} (r : left a == x) {y : ty T} (s : f (left a) == y) {z : ty T} (w : y == z)
-            →
+          lemma : {x : P} (r : left a == x) {y : ty T} (s : f (left a) == y) {z : ty T} (w : y == z) →
             idp ◃∙ R2lemma {R = R} (ap f (! r) ∙ s) (! (ap f r) ∙ s) w ◃∙ idp ◃∎
               =ₛ
             R3lemma (! (! R ∙ ap (f ∘ right ∘ cin j) (snd (F <#> g) a) ∙ ap f (! (glue (cin j a))) ∙ fₚ a)) r s w ◃∎
           lemma idp idp w = =ₛ-in idp
 
-      Reduce4 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {z : A} (e : z == [id] x) {w : ty T} (u : w == fun T z)
-        →
+      Reduce4 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {z : A} (e : z == [id] x) {w : ty T} (u : w == fun T z) →
         (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ ! (ap (fun T) e) ∙ ! u
           ==
         ! (ap (f ∘ right) (ap ψ p)) ∙ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)) ∙
@@ -179,8 +169,7 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
             → (! (ap f r) ∙ s) ∙ q ∙ U == ((! (ap f r) ∙ s) ∙ ! (ap f (! r) ∙ s)) ∙ ((ap f (! r) ∙ s) ∙ q) ∙ U
           R4lemma idp idp q U = idp
 
-      CommSq4 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {e : a == [id] x} (K : ap [id] p == e) (u : f (right (ψ x)) == fun T a)
-        →
+      CommSq4 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) {e : a == [id] x} (K : ap [id] p == e) (u : f (right (ψ x)) == fun T a) →
         ! (ap (λ q →  (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ q) (ap (λ q → q ∙ ! u) (ap (λ q → ! (ap (fun T) q)) K))) ◃∙
         (Reduce3 p (! u) ◃∙
         (ap (λ q → ! (ap (f ∘ right) (ap ψ p)) ∙ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)) ∙ q ∙ ! u)
@@ -200,8 +189,7 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
                 → idp ◃∙ R3lemma (! u) idp S U ◃∙ ap (λ q → (S ∙ ! S) ∙ q ∙ U) (! (∙-unit-r S)) ◃∎ =ₛ R4lemma idp u idp S idp U ◃∎
               subLemma idp U = =ₛ-in idp
 
-      CommSq5 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x)
-        →
+      CommSq5 : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) →
         Reduce4 p idp (ap f (! (glue x)) ∙ fₚ ([id] x)) ◃∙
         O₅ {f = f ∘ right} ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)) p (ap f (! (glue x)) ∙ fₚ ([id] x)) ◃∎
           =ₛ
@@ -222,19 +210,19 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
           =ₛ⟨ 0 & 4 & !ₛ ω=ω-switch-ap-inv ⟩
         ω-ap-inv-switch ∙∙
         (! (apd-concat-pres {F = λ x → ! (ap f (glue x)) ∙ fₚ ([id] x)} {G = σ (comp K) (comTri K)} (cglue g a)) ◃∙
-        transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)))
+        transpEq-◃ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)))
           =ₛ⟨ 3 & 3 &  CommSq1 (cglue g a) (ψ-βr g a) ⟩
         (range 0 3 ω-ap-inv-switch) ∙∙
         (Reduce1 (cglue g a) ◃∙
-        (range 1 4 (transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)))))
+        (range 1 4 (transpEq-◃ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)))))
           =ₛ⟨ 2 & 3 & CommSq2 (cglue g a) (recc-βr K g (fun (F # i) a)) ⟩
         (range 0 2 ω-ap-inv-switch) ∙∙
         (Reduce2 (cglue g a) {R = ap f (ap right (cglue g (fun (F # i) a)))} ◃∙
-        (range 2 3 (transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)))))
+        (range 2 3 (transpEq-◃ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)))))
           =ₛ⟨ 1 & 3 & CommSq3 (cglue g a) (ap ! (snd (comTri K g) a)) ⟩ 
         (range 0 1 ω-ap-inv-switch) ∙∙
         (Reduce3 (cglue g a) (! (ap f (! (glue (cin i a))) ∙ fₚ a)) ◃∙
-        (range 3 2 (transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)))))
+        (range 3 2 (transpEq-◃ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)))))
           =ₛ⟨ 0  & 3  & CommSq4 (cglue g a) (id-βr g a) (ap f (! (glue (cin i a))) ∙ fₚ a) ⟩ 
         Reduce4 (cglue g a) idp (ap f (! (glue (cin i a))) ∙ fₚ a) ◃∙
         O₅ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)) (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a) ◃∎
@@ -249,7 +237,7 @@ module Constr4 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
           ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) (↯ ω) ◃∎
         apd-rw1 =
           apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ σ (comp K) (comTri K) x) (cglue g a) ◃∎
-            =ₛ⟨ apd-concat-fun-s (cglue g a) ⟩
+            =ₛ⟨ apd-concat-fun-◃ (cglue g a) ⟩
           apd-concat-pres (cglue g a) ◃∙
           ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) (apd-tr (σ (comp K) (comTri K)) (cglue g a)) ◃∎
             =ₛ⟨ 1 & 1 & =ₛ-in (ap (ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p)) (σ-β K g a)) ⟩

@@ -30,9 +30,9 @@ module Constr7 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
           =ₛ
         ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ ([id] (cin i a))) ∙ p) (FPrecc-βr K (cin i a)) ◃∙
         ! (apd-tr (λ z → (! (ap f (glue z)) ∙ fₚ ([id] z)) ∙ σ (comp K) (comTri K) z) (cglue g a)) ◃∙
-        ↯ (transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))) ◃∙
+        ↯ (transpEq-◃ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))) ◃∙
         ap (transport (λ z → f (right (ψ z)) == f (right (ψ z))) (cglue g a))(ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∙
-        ! (↯ (transpEq-s idp)) ◃∙
+        ! (↯ (transpEq-◃ idp)) ◃∙
         apd-tr (λ z → RfunEq (f , fₚ) (ψ z)) (cglue g a) ◃∎
       RLfunHtpy3 =
         ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ ([id] (cin i a))) ∙ p) (FPrecc-βr K (cin i a)) ◃∙
@@ -41,48 +41,48 @@ module Constr7 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ap (transport (λ z → f (right (ψ z)) == fst (RLfun (f , fₚ)) (right (ψ z))) (cglue g a))(ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∙
         apd-tr (λ z → RfunEq (f , fₚ) (ψ z)) (cglue g a) ◃∎
           =ₑ⟨ 2 & 2 &
-            (↯ (transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))) ◃∙
+            (↯ (transpEq-◃ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))) ◃∙
             ap (transport (λ z → f (right (ψ z)) == f (right (ψ z))) (cglue g a))(ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∙
-            ! (↯ (transpEq-s idp)) ◃∎)
+            ! (↯ (transpEq-◃ idp)) ◃∎)
             % =ₛ-in (=ₛ-out Mid-rw) ⟩
         ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ ([id] (cin i a))) ∙ p) (FPrecc-βr K (cin i a)) ◃∙
         ! (apd-tr (λ z → (! (ap f (glue z)) ∙ fₚ ([id] z)) ∙ σ (comp K) (comTri K) z) (cglue g a)) ◃∙
-        ↯ (transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))) ◃∙
+        ↯ (transpEq-◃ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))) ◃∙
         ap (transport (λ z → f (right (ψ z)) == f (right (ψ z))) (cglue g a))(ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∙
-        ! (↯ (transpEq-s idp))  ◃∙
+        ! (↯ (transpEq-◃ idp))  ◃∙
         apd-tr (λ z → RfunEq (f , fₚ) (ψ z)) (cglue g a) ◃∎ ∎ₛ
 
       RLfunHtpy4 :
         ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ ([id] (cin i a))) ∙ p) (FPrecc-βr K (cin i a)) ◃∙
         ! (apd-tr (λ z → (! (ap f (glue z)) ∙ fₚ ([id] z)) ∙ σ (comp K) (comTri K) z) (cglue g a)) ◃∙
-        ↯ (transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))) ◃∙
+        ↯ (transpEq-◃ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))) ◃∙
         ap (transport (λ z → f (right (ψ z)) == f (right (ψ z))) (cglue g a))(ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∙
-        ! (↯ (transpEq-s idp)) ◃∙
+        ! (↯ (transpEq-◃ idp)) ◃∙
         apd-tr (λ z → RfunEq (f , fₚ) (ψ z)) (cglue g a) ◃∎
           =ₛ ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ ([id] (cin i a))) ∙ p) (FPrecc-βr K (cin i a)) ◃∙
         ! (apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ ! (ap f (! (glue x)) ∙ fₚ ([id] x))) (cglue g a)) ◃∙
         ap (transport (λ z → f (right (ψ z)) == f (right (ψ z))) (cglue g a)) (ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∙
-        ! (↯ (transpEq-s idp)) ◃∙
+        ! (↯ (transpEq-◃ idp)) ◃∙
         apd-tr (λ z → RfunEq (f , fₚ) (ψ z)) (cglue g a) ◃∎
       RLfunHtpy4 =
         ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ ([id] (cin i a))) ∙ p) (FPrecc-βr K (cin i a)) ◃∙
         ! (apd-tr (λ z → (! (ap f (glue z)) ∙ fₚ ([id] z)) ∙ σ (comp K) (comTri K) z) (cglue g a)) ◃∙
-        ↯ (transpEq-s ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)))  ◃∙
+        ↯ (transpEq-◃ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a)))  ◃∙
         ap (transport (λ z → f (right (ψ z)) == f (right (ψ z))) (cglue g a))(ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∙
-        ! (↯ (transpEq-s idp))  ◃∙
+        ! (↯ (transpEq-◃ idp))  ◃∙
         apd-tr (λ z → RfunEq (f , fₚ) (ψ z)) (cglue g a) ◃∎
          =ₑ⟨ 1 & 2 & (! (apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ ! (ap f (! (glue x)) ∙ fₚ ([id] x))) (cglue g a)) ◃∎)  % =ₛ-in (=ₛ-out (Left-rw)) ⟩
         ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ ([id] (cin i a))) ∙ p) (FPrecc-βr K (cin i a)) ◃∙
         ! (apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ ! (ap f (! (glue x)) ∙ fₚ ([id] x))) (cglue g a))  ◃∙
         ap (transport (λ z → f (right (ψ z)) == f (right (ψ z))) (cglue g a)) (ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∙
-        ! (↯ (transpEq-s idp))  ◃∙
+        ! (↯ (transpEq-◃ idp))  ◃∙
         apd-tr (λ z → RfunEq (f , fₚ) (ψ z)) (cglue g a) ◃∎ ∎ₛ
 
       RLfunHtpy5 :
         ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ ([id] (cin i a))) ∙ p) (FPrecc-βr K (cin i a)) ◃∙
         ! (apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ ! (ap f (! (glue x)) ∙ fₚ ([id] x))) (cglue g a))  ◃∙
         ap (transport (λ z → f (right (ψ z)) == f (right (ψ z))) (cglue g a)) (ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∙
-        ! (↯ (transpEq-s idp))  ◃∙
+        ! (↯ (transpEq-◃ idp))  ◃∙
         apd-tr (λ z → RfunEq (f , fₚ) (ψ z)) (cglue g a) ◃∎
           =ₛ
         𝕣₁
@@ -90,7 +90,7 @@ module Constr7 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
         ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ ([id] (cin i a))) ∙ p) (FPrecc-βr K (cin i a)) ◃∙
         ! (apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ ! (ap f (! (glue x)) ∙ fₚ ([id] x))) (cglue g a))  ◃∙
         ap (transport (λ z → f (right (ψ z)) == f (right (ψ z))) (cglue g a)) (ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∙
-        ! (↯ (transpEq-s idp))  ◃∙
+        ! (↯ (transpEq-◃ idp))  ◃∙
         apd-tr (λ z → RfunEq (f , fₚ) (ψ z)) (cglue g a) ◃∎
           =ₑ⟨ 3 & 2 & (apd-tr-refl {f = f ∘ right} {h = ψ} (cglue g a) ◃∎) % Right-rw ⟩
         ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ ([id] (cin i a))) ∙ p) (FPrecc-βr K (cin i a)) ◃∙

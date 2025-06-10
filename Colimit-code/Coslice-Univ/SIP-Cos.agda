@@ -230,7 +230,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
   CosCocEq-to-== {K₂} = ID-ind-map {b = center-CCEq} (λ K _ → K₁ == K) CosCocEq-contr idp
 
 module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : CosDiag ℓd ℓ A Γ}
-  {T₁ : Coslice ℓc₁ ℓ A} {T₂ : Coslice ℓc₂ ℓ A} {K : CosCocone A F T₁} where
+  {T₁ : Coslice ℓc₁ ℓ A} {T₂ : Coslice ℓc₂ ℓ A} (K : CosCocone A F T₁) where
 
   -- equality between two defs of post-comp function on coslice cocones
 

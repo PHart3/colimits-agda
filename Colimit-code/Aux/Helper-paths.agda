@@ -45,17 +45,14 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} whe
 
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} (f : A → B) (g : B → C) where
 
-  ap-inv-cmp-rid : {x y : A} (p : x == y) → ap g (ap f p) ∙ idp == ap (g ∘ f) p
-  ap-inv-cmp-rid idp = idp
-
-  ap-inv-cmp-rid2 : {x y z :  A} (p₁ : x == y) (p₂ : y == z) → ap g (ap f p₁ ∙ ap f p₂) ∙ idp == ap (g ∘ f) p₁ ∙ ap (g ∘ f) p₂
-  ap-inv-cmp-rid2 idp idp = idp
+  ap-inv-cmp-rid : {x y z :  A} (p₁ : x == y) (p₂ : y == z) → ap g (ap f p₁ ∙ ap f p₂) ∙ idp == ap (g ∘ f) p₁ ∙ ap (g ∘ f) p₂
+  ap-inv-cmp-rid idp idp = idp
 
 module _ {ℓ₁ ℓ₂ ℓ₃} {B : Type ℓ₁} {C : Type ℓ₂} {E : Type ℓ₃} (g : B → C) where
 
   ap-cmp-inv-loop : (k : E → B) {x : E} {y : B} (q : y == k x) (Q : x == x)
     → ap g (q ∙ ap k Q ∙ ap k Q) ∙ idp == (ap g q ∙ ap (g ∘ k) Q) ∙ ap (g ∘ k) Q
-  ap-cmp-inv-loop k idp Q = ap-inv-cmp-rid2 k g Q Q
+  ap-cmp-inv-loop k idp Q = ap-inv-cmp-rid k g Q Q
 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {E : Type ℓ₅} (f : A → B) (g : B → C) where
 

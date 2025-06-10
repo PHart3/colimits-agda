@@ -55,7 +55,6 @@ module ConstrMap8 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
     comSq-red-aux c₁ c₂ idp d idp = ap2-E₁-coher right (cin j) c₁ d c₂
 
     abstract
-
       comSq-red :
         {y₁ y₂ : ty (G # i)} (c₃ : y₁ == y₂) (c₄ : fst (G <#> g) y₂ == fun (G # j) a)
         (c₂ : cin j (fst (G <#> g) y₂) == cin i y₂)
