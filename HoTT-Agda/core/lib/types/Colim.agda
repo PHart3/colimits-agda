@@ -49,7 +49,8 @@ module _ {ℓv ℓe}  where
         → ! (ap h₁ (cglue g x)) ∙ H j ((D <#> g) x) ∙ ap h₂ (cglue g x) == H i x)
       → h₁ ∼ h₂
     ColimMapEq {D = D} h₁ h₂ H = λ S → colimE H
-      (λ i j g x → from-transp (λ x → h₁ x == h₂ x) (cglue g x) (transp-pth (cglue g x) (H j ((D <#> g) x)) ∙ (S i j g x)))
+      (λ i j g x → from-transp (λ x → h₁ x == h₂ x) (cglue g x)
+        (transp-pth (cglue g x) (H j ((D <#> g) x)) ∙ (S i j g x)))
     
     ColimMapEq' : ∀ {ℓd ℓ} {D : Diag ℓd Γ} {V : Type ℓ} (h₁ h₂ : Colim D → V)
       (H : (i : Obj Γ) → h₁ ∘ cin i ∼ h₂ ∘ cin i)
@@ -61,8 +62,7 @@ module _ {ℓv ℓe}  where
 
     module ColimRec {ℓd ℓ} {D : Diag ℓd Γ} {V : Type ℓ}
       (cin* : (i : Obj Γ) → (D # i) → V)
-      (cglue* :  (i j : Obj Γ) (g : Hom Γ i j) (x : D # i)
-        → cin* j ((D <#> g) x) == cin* i x) where
+      (cglue* :  (i j : Obj Γ) (g : Hom Γ i j) (x : D # i) → cin* j ((D <#> g) x) == cin* i x) where
 
       private
         module M = ColimElim cin* (λ i j g x → ↓-cst-in (cglue* i j g x))
@@ -106,7 +106,8 @@ module _ {ℓv ℓe}  where
         can-coc-is-eqv = is-eq (PostComp (can-coc F) D) (λ K → colimR (comp K) λ _ _ g → comTri K g)
           (λ K → CocEq-to-== (coceq (λ _ _ → idp) (λ g x → cglue-βr (comp K) (λ _ _ g → comTri K g) g x)))
           λ f → λ= $
-            ColimMapEq _ f (λ _ _ → idp) (λ i j g x → ap (λ p → ! p ∙ ap f (cglue g x)) (cglue-βr _ _ g x) ∙ !-inv-l (ap f (cglue g x)))
+            ColimMapEq _ f (λ _ _ → idp) (λ i j g x →
+              ap (λ p → ! p ∙ ap f (cglue g x)) (cglue-βr _ _ g x) ∙ !-inv-l (ap f (cglue g x)))
 
       colim-map-is-contr : (K : Cocone F D) → is-contr (Σ (E → D) (λ f → PostComp J D f == K))
       colim-map-is-contr K = equiv-is-contr-map (ζ D) K

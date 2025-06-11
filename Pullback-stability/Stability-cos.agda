@@ -26,7 +26,7 @@ module _ {ℓ} {A : Type ℓ}  where
     {X : Coslice (lmax ℓd ℓ) ℓ A} {K : Cone Δ X} (pb : is-pb-wc K) →
     Cone-csp-iso (diag-to-csp (F-diag (Forg-funct-cos A {ℓd}) Δ))
       (Pb-con (diag-to-csp (F-diag (Forg-funct-cos A {ℓd}) Δ)))
-      (con-to-csp (F-diag (Forg-funct-cos A) Δ)
+      (con-to-csp (F-diag (Forg-funct-cos A {i = ℓd}) Δ)
         (cone (λ v z → fst (Cone.leg K v) z) (λ f → ap fst (Cone.tri K f))))
   StPb-forg-iso {ℓd} pb = StdPb-Lim-≃ (Forg-cos-lim-pres A {ℓd} pb)
 
