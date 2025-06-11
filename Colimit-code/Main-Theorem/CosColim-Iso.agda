@@ -18,12 +18,15 @@ module CosColim-Iso where
 module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
   -- a better name for the final interface
-  po-CosCol : ∀ {ℓd} → CosDiag ℓd ℓ A Γ → Set (lmax ℓ ℓd)
-  po-CosCol F = Id.Maps.P Γ A F
+  
+  po-CosCol-ty : ∀ {ℓd} → CosDiag ℓd ℓ A Γ → Set (lmax ℓ ℓd)
+  po-CosCol-ty F = Id.Maps.P Γ A F
+
+  po-CosCol : ∀ {ℓd} → CosDiag ℓd ℓ A Γ → Coslice (lmax ℓ ℓd) ℓ A
+  po-CosCol F = Cos (po-CosCol-ty F) left
 
   open MapsCos A
-  open Id Γ A
-  open Maps
+  open Id.Maps Γ A
 
   module _ {ℓd ℓc} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) where
 
@@ -40,7 +43,7 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
   -- cogap map for coslice colimits
   
-  cogap-cos : ∀ {ℓd ℓc} {F : CosDiag ℓd ℓ A Γ} {T : Coslice ℓc ℓ A} → CosCocone A F T → (Cos (po-CosCol F) left *→ T)
+  cogap-cos : ∀ {ℓd ℓc} {F : CosDiag ℓd ℓ A Γ} {T : Coslice ℓc ℓ A} → CosCocone A F T → (po-CosCol F *→ T)
   cogap-cos {F = F} {T} K = fst (contr-center (CanMap-cos-contr F T K))
 
   cogap-cos-β : ∀ {ℓd ℓc} {F : CosDiag ℓd ℓ A Γ} {T : Coslice ℓc ℓ A} (K : CosCocone A F T)
