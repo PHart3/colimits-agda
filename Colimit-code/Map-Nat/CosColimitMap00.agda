@@ -23,12 +23,12 @@ module ConstrMap {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ}
   ForgG = DiagForg A Γ G
 
   private
-    module N = ColimitMap {F = ForgF} {G = ForgG} (Δ (λ i → fst (nat δ i)) (comSq δ))
+    module N = ColimitMap {F = ForgF} {G = ForgG} (diagmor (λ i → fst (nat δ i)) (comSq δ))
 
   δ₀ : Colim ForgF → Colim ForgG
   δ₀ = N.ColMap
 
-  δ₀-βr = N.MapComp
+  δ₀-βr = N.ColMap-β
 
   ψ₁ = ψ F
 
@@ -54,49 +54,49 @@ module ConstrMap {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ}
         =⟪ transp-pth-cmpL δ₀ ψ₁ ψ₂ (cglue g a) (ap (cin j) (snd (nat δ j) a))  ⟫
       ! (ap δ₀ (ap ψ₁ (cglue g a))) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)
         =⟪ ap (λ p → ! (ap δ₀ p) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)) (ψ₁-βr g a) ⟫
-      ! (ap δ₀ (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)
-        =⟪ pre-cmp-!-!-∙ δ₀ (cin j) (snd (F <#> g) a) (cglue g (fun (F # i) a)) (ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)) ⟫
-      ! (ap δ₀ (cglue g (fun (F # i) a))) ∙ ap (cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)
-        =⟪ ap (λ p → ! p ∙ ap (cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)) (δ₀-βr g (fun (F # i) a)) ⟫
-      ! (! (ap (cin j) (comSq δ g (fun (F # i) a))) ∙ cglue g (fst (nat δ i) (fun (F # i) a))) ∙
+      ! (ap δ₀ (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (str (F # i) a))) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)
+        =⟪ pre-cmp-!-!-∙ δ₀ (cin j) (snd (F <#> g) a) (cglue g (str (F # i) a)) (ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)) ⟫
+      ! (ap δ₀ (cglue g (str (F # i) a))) ∙ ap (cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)
+        =⟪ ap (λ p → ! p ∙ ap (cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)) (δ₀-βr g (str (F # i) a)) ⟫
+      ! (! (ap (cin j) (comSq δ g (str (F # i) a))) ∙ cglue g (fst (nat δ i) (str (F # i) a))) ∙
       ap (cin j ∘ (fst (nat δ j))) (snd (F <#> g) a) ∙
       ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a) 
         =⟪ ap (λ p → ! p ∙ ap (cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a))
-             (ap (λ p → ! (ap (cin j) p) ∙ cglue g (fst (nat δ i) (fun (F # i) a))) (comSq-coher δ g a)) ⟫
+             (ap (λ p → ! (ap (cin j) p) ∙ cglue g (fst (nat δ i) (str (F # i) a))) (comSq-coher δ g a)) ⟫
       ! (! (ap (cin j)
              (ap (fst (G <#> g)) (snd (nat δ i) a) ∙ snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a)))) ∙
-         cglue g (fst (nat δ i) (fun (F # i) a))) ∙ ap (cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)
+         cglue g (fst (nat δ i) (str (F # i) a))) ∙ ap (cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a)
         =⟪ ap (λ p →
              ! (! (ap (cin j)
                     (ap (fst (G <#> g)) (snd (nat δ i) a) ∙ snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a)))) ∙
-                  cglue g (fst (nat δ i) (fun (F # i) a))) ∙
+                  cglue g (fst (nat δ i) (str (F # i) a))) ∙
              ap (cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙ p)
              (ψ₂-βr g a) ⟫
       ! (! (ap (cin j)
                (ap (fst (G <#> g)) (snd (nat δ i) a) ∙ snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a)))) ∙
-             cglue g (fst (nat δ i) (fun (F # i) a))) ∙
+             cglue g (fst (nat δ i) (str (F # i) a))) ∙
       ap (cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (cin j) (snd (nat δ j) a) ∙
-      ! (ap (cin j) (snd (G <#> g) a)) ∙ cglue g (fun (G # i) a)
+      ! (ap (cin j) (snd (G <#> g) a)) ∙ cglue g (str (G # i) a)
         =⟪ long-red-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (snd (nat δ i) a) (snd (G <#> g) a) (snd (F <#> g) a) (snd (nat δ j) a)
-             (cglue g (fst (nat δ i) (fun (F # i) a))) (cglue g (fun (G # i) a))  ⟫
-      ! (cglue g (fst (nat δ i) (fun (F # i) a))) ∙ ap (cin j ∘ fst (G <#> g)) (snd (nat δ i) a) ∙ cglue g (fun (G # i) a)
+             (cglue g (fst (nat δ i) (str (F # i) a))) (cglue g (str (G # i) a))  ⟫
+      ! (cglue g (fst (nat δ i) (str (F # i) a))) ∙ ap (cin j ∘ fst (G <#> g)) (snd (nat δ i) a) ∙ cglue g (str (G # i) a)
         =⟪ apCommSq (cin j ∘ fst (G <#> g)) (cin i) (cglue g) (snd (nat δ i) a) ⟫
       ap (cin i) (snd (nat δ i) a) ∎∎
 
     Θ :
-      ! (ap (right {d = SpCos₂}) (! (ap (cin j) (comSq δ g (fun (F # i) a))) ∙ cglue g (fst (nat δ i) (fun (F # i) a)))) ∙
+      ! (ap (right {d = SpCos₂}) (! (ap (cin j) (comSq δ g (str (F # i) a))) ∙ cglue g (fst (nat δ i) (str (F # i) a)))) ∙
       ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a))
         =-=
       ap (right ∘ cin i) (snd (nat δ i) a) ∙ ! (glue (cin i a))
     Θ =
-      ! (ap (right {d = SpCos₂}) (! (ap (cin j) (comSq δ g (fun (F # i) a))) ∙ cglue g (fst (nat δ i) (fun (F # i) a)))) ∙
+      ! (ap (right {d = SpCos₂}) (! (ap (cin j) (comSq δ g (str (F # i) a))) ∙ cglue g (fst (nat δ i) (str (F # i) a)))) ∙
       ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a))
         =⟪ ap (λ p → ! (ap (right {d = SpCos₂}) p) ∙
                 ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
-             (ap (λ p → ! (ap (cin j) p) ∙ cglue g (fst (nat δ i) (fun (F # i) a))) (comSq-coher δ g a)) ⟫
+             (ap (λ p → ! (ap (cin j) p) ∙ cglue g (fst (nat δ i) (str (F # i) a))) (comSq-coher δ g a)) ⟫
       ! (ap (right {d = SpCos₂})
           (! (ap (cin j) (ap (fst (G <#> g)) (snd (nat δ i) a) ∙ snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a)))) ∙
-          cglue g (fst (nat δ i) (fun (F # i) a)))) ∙
+          cglue g (fst (nat δ i) (str (F # i) a)))) ∙
       ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a))
         =⟪ ap (λ p →
                 ! (ap (right {d = SpCos₂}) (! (ap (cin j) (ap (fst (G <#> g)) (snd (nat δ i) a) ∙ snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙
@@ -108,20 +108,21 @@ module ConstrMap {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ}
           (! (ap (cin j)
                (ap (fst (G <#> g)) (snd (nat δ i) a) ∙ snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a)))) ∙
           ap (cin j ∘ fst (G <#> g)) (snd (nat δ i) a) ∙
-          cglue g (fun (G # i) a) ∙ ! (ap (cin i) (snd (nat δ i) a)))) ∙
+          cglue g (str (G # i) a) ∙ ! (ap (cin i) (snd (nat δ i) a)))) ∙
       ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙
       ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a))
         =⟪ long-red-ap-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right (snd (nat δ i) a) (snd (G <#> g) a) (snd (F <#> g) a)
-             (snd (nat δ j) a) (cglue g (fun (G # i) a)) (! (glue (cin j a))) ⟫
-      ap (right ∘ cin i) (snd (nat δ i) a) ∙ ! (ap right (cglue g (fun (G # i) a))) ∙ ap (right ∘ cin j) (snd (G <#> g) a) ∙ ! (glue (cin j a))
+             (snd (nat δ j) a) (cglue g (str (G # i) a)) (! (glue (cin j a))) ⟫
+      ap (right ∘ cin i) (snd (nat δ i) a) ∙ ! (ap right (cglue g (str (G # i) a))) ∙ ap (right ∘ cin j) (snd (G <#> g) a) ∙ ! (glue (cin j a))
         =⟪ ap (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p) (↯ (ε G g g a)) ⟫
       ap (right ∘ cin i) (snd (nat δ i) a) ∙ ! (glue (cin i a)) ∎∎
 
-  K-diag : CosCocone A F (Cos P₂ left)
-  fst (comp K-diag i) = right ∘ cin i ∘ (fst (nat δ i))
-  snd (comp K-diag i) a = ap (right ∘ cin i) (snd (nat δ i) a) ∙ ! (glue (cin i a))
-  fst (comTri K-diag {j} {i} g) x = ap right (! (ap (cin j) (comSq δ g x)) ∙ cglue g (fst (nat δ i) x))
-  snd (comTri K-diag g) a = ↯ (Θ g a)
+  -- map of A-diagrams induces A-cocone
+  CC-from-diagmap : CosCocone A F (Cos P₂ left)
+  fst (comp CC-from-diagmap i) = right ∘ cin i ∘ fst (nat δ i)
+  snd (comp CC-from-diagmap i) a = ap (right ∘ cin i) (snd (nat δ i) a) ∙ ! (glue (cin i a))
+  fst (comTri CC-from-diagmap {j} {i} g) x = ap right (! (ap (cin j) (comSq δ g x)) ∙ cglue g (fst (nat δ i) x))
+  snd (comTri CC-from-diagmap g) a = ↯ (Θ g a)
 
   ℂ : δ₀ ∘ ψ₁ ∼ ψ₂
   ℂ = colimE (λ i a → ap (cin i) (snd (nat δ i) a))
@@ -154,7 +155,9 @@ module ConstrMap {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ}
   𝕕-βr = PM.glue-β
 
   ForgMap =
-    colimR (λ i → right {d = SpCos₂} ∘ cin i ∘ (fst (nat δ i))) (λ i j g x → ap right (! (ap (cin j) (comSq δ g x)) ∙ cglue g (fst (nat δ i) x)))
+    colimR (λ i → right {d = SpCos₂} ∘ cin i ∘ (fst (nat δ i)))
+      (λ i j g x → ap right (! (ap (cin j) (comSq δ g x)) ∙ cglue g (fst (nat δ i) x)))
 
   FM-βr =
-    cglue-βr (λ i → right {d = SpCos₂} ∘ cin i ∘ fst (nat δ i)) (λ i j g x → ap right (! (ap (cin j) (comSq δ g x)) ∙ cglue g (fst (nat δ i) x)))
+    cglue-βr (λ i → right {d = SpCos₂} ∘ cin i ∘ fst (nat δ i))
+      (λ i j g x → ap right (! (ap (cin j) (comSq δ g x)) ∙ cglue g (fst (nat δ i) x)))

@@ -16,23 +16,23 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
   {ℓv ℓe} {G : Graph ℓv ℓe} {Δ : Diagram G C}
   {L : Functor-wc C D} {R : Functor-wc D C} {adj : Adjunction L R}
   (κ : ladj-is-2coher adj)
-  {c : ob C} {K : Cocone Δ c} (cl : is-colim K) 
+  {c : ob C} {K : Cocone-wc Δ c} (cl : is-colim K) 
   where
 
   private adj₀ = iso adj
 
-  hom-to-lim : (y : ob D) → hom D (obj L c) y ≃ Cocone (F-diag L Δ) y
+  hom-to-lim : (y : ob D) → hom D (obj L c) y ≃ Cocone-wc (F-diag L Δ) y
   hom-to-lim y = Cocone-adj-eqv ∘e is-colim-≃  K cl (obj R y) ∘e adj₀
     where
-      Cocone-adj-eqv : Cocone Δ (obj R y) ≃ Cocone (F-diag L Δ) y
+      Cocone-adj-eqv : Cocone-wc Δ (obj R y) ≃ Cocone-wc (F-diag L Δ) y
       Cocone-adj-eqv = 
-        Cocone Δ (obj R y)
+        Cocone-wc Δ (obj R y)
           ≃⟨ cocone-wc-Σ ⟩
         Limit (Diagram-hom-op (obj R y) Δ)
           ≃⟨ (adj-lim-map-eqv-op adj) ⁻¹ ⟩
         Limit (Diagram-hom-op y (F-diag L Δ))
           ≃⟨ cocone-wc-Σ ⁻¹ ⟩
-        Cocone (F-diag L Δ) y ≃∎
+        Cocone-wc (F-diag L Δ) y ≃∎
 
   module comps-eq (y : ob D) (h : hom D (obj L c) y) where
 

@@ -1,7 +1,11 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.types.Sigma
 open import lib.types.Graph
+open import lib.wild-cats.WildCat
+open import lib.wild-cats.Diagram-wc
+open import lib.wild-cats.Diagram-wc-SIP
 
 -- type-valued diagrams over graphs
 
@@ -10,20 +14,77 @@ module lib.types.Diagram where
 private variable ℓv ℓe ℓd : ULevel
 
 Diag : ∀ ℓd (Γ : Graph ℓv ℓe) → Type (lmax (lmax ℓv ℓe) (lsucc ℓd))
-Diag ℓd G = GraphHom G (TypeGr ℓd)
+Diag ℓd Γ = GraphHom Γ (TypeGr ℓd)
 
 -- constant diagram at a type
 ConsDiag : ∀ {ℓd} (Γ : Graph ℓv ℓe) (A : Type ℓd) → Diag ℓd Γ
 (ConsDiag Γ A) # _ = A
 (ConsDiag Γ A) <#> _ = idf A
 
+-- maps of diagrams
 record DiagMor {ℓd ℓd'} {Γ : Graph ℓv ℓe} (F : Diag ℓd Γ) (F' : Diag ℓd' Γ)
   : Type (lmax (lmax ℓv ℓe) (lmax ℓd ℓd')) where
-  constructor Δ
+  constructor diagmor
   field
     nat : ∀ (x : Obj Γ) → F # x → F' # x
     comSq : ∀ {x y : Obj Γ} (f : Hom Γ x y) (z : F # x) → (F' <#> f) (nat x z) == nat y ((F <#> f) z)
 open DiagMor public
+
+module _ {Γ : Graph ℓv ℓe} where
+
+  open Map-diag-ty
+
+  diagmor-to-wc : ∀ {ℓd ℓd'} {F : Diag ℓd Γ} {F' : Diag ℓd' Γ}
+    → DiagMor F F' → Map-diag-ty (Diag-from-grhom F) (Diag-from-grhom F')
+  comp (diagmor-to-wc μ) = nat μ
+  sq (diagmor-to-wc μ) = comSq μ
+
+  diagmor-from-wc : ∀ {ℓd ℓd'} {F : Diagram Γ (Type-wc ℓd)} {F' : Diagram Γ (Type-wc ℓd')}
+    → Map-diag-ty F F' → DiagMor (Diag-to-grhom F) (Diag-to-grhom F')
+  nat (diagmor-from-wc μ) = comp μ
+  comSq (diagmor-from-wc μ) = sq μ
+
+  diagmor-to-wc-eqv : ∀ {ℓd ℓd'} {F : Diag ℓd Γ} {F' : Diag ℓd' Γ}
+    → is-equiv (diagmor-to-wc {F = F} {F'})
+  diagmor-to-wc-eqv {F = F} {F'} = is-eq (diagmor-to-wc {F = F} {F'}) (diagmor-from-wc) (λ _ → idp) λ _ → idp 
+
+  diag-mor-idf : ∀ {ℓ} (F : Diag ℓ Γ) → DiagMor F F
+  diag-mor-idf F = diagmor-from-wc (diag-map-idf (Diag-from-grhom F))
+
+  infixr 80 _diag-mor-∘_
+  _diag-mor-∘_ : ∀ {ℓ₁ ℓ₂ ℓ₃} {F₁ : Diag ℓ₁ Γ} {F₂ : Diag ℓ₂ Γ} {F₃ : Diag ℓ₃ Γ}
+    → DiagMor F₂ F₃ → DiagMor F₁ F₂ → DiagMor F₁ F₃
+  μ₂ diag-mor-∘ μ₁ = diagmor-from-wc ((diagmor-to-wc μ₂) tydiag-map-∘ (diagmor-to-wc μ₁))
+
+  eqv-dmor : ∀ {ℓ₁ ℓ₂} {F₁ : Diag ℓ₁ Γ} {F₂ : Diag ℓ₂ Γ} (μ : DiagMor F₁ F₂)
+    → Type (lmax ℓv (lmax ℓ₁ ℓ₂))
+  eqv-dmor μ = (x : Obj Γ) → is-equiv (nat μ x)
+
+  infixr 70 _=-dmor_
+  _=-dmor_ : ∀ {ℓ₁ ℓ₂} {F₁ : Diag ℓ₁ Γ} {F₂ : Diag ℓ₂ Γ}
+    → DiagMor F₁ F₂ → DiagMor F₁ F₂ → Type (lmax (lmax (lmax ℓv ℓe) ℓ₁) ℓ₂)
+  μ₁ =-dmor μ₂ = (diagmor-to-wc μ₁) =-dmap (diagmor-to-wc μ₂)
+
+  module _ {ℓ₁ ℓ₂} {F₁ : Diag ℓ₁ Γ} {F₂ : Diag ℓ₂ Γ} where
+
+    =-dmor-id : (μ : DiagMor F₁ F₂) → μ =-dmor μ
+    fst (=-dmor-id μ) _ _ = idp
+    snd (=-dmor-id μ) _ _ = idp
+
+    qinv-dmor : (μ : DiagMor F₁ F₂) → Type (lmax (lmax (lmax ℓv ℓe) ℓ₁) ℓ₂)
+    qinv-dmor μ =
+      Σ (DiagMor F₂ F₁) (λ ν → (ν diag-mor-∘ μ =-dmor diag-mor-idf F₁) × (μ diag-mor-∘ ν =-dmor diag-mor-idf F₂))
+
+    dmor-to-== : {μ₁ μ₂ : DiagMor F₁ F₂} → μ₁ =-dmor μ₂ → μ₁ == μ₂
+    dmor-to-== {μ₁} {μ₂} e = equiv-is-inj diagmor-to-wc-eqv μ₁ μ₂ (dmap-to-== e)
+
+    eqv-to-qinv-dmor : {μ : DiagMor F₁ F₂} → eqv-dmor μ → qinv-dmor μ
+    eqv-to-qinv-dmor {μ} e = aux (eqv-to-qinv-dmap (diagmor-to-wc μ) e)
+      where
+        aux : qinv-dmap (diagmor-to-wc μ) → qinv-dmor μ
+        fst (aux (m , _)) = diagmor-from-wc m
+        fst (snd (aux (m , li , ri))) = li
+        snd (snd (aux (m , li , ri))) = ri
 
 -- cocones under diagrams
 
@@ -57,6 +118,14 @@ module _ {ℓ k₁ k₂} {Γ : Graph ℓv ℓe} {F : Diag ℓ Γ} {C₁ : Type k
 
   is-cocone-iso : {K₁ : Cocone F C₁} {K₂ : Cocone F C₂} → K₁ cc→ K₂ → Type (lmax k₁ k₂)
   is-cocone-iso μ = is-equiv (fst μ)
+
+  cocone-iso : (K₁ : Cocone F C₁) (K₂ : Cocone F C₂) → Type (lmax (lmax (lmax (lmax ℓv ℓe) ℓ) k₁) k₂)
+  cocone-iso K₁ K₂ = Σ (K₁ cc→ K₂) is-cocone-iso
+
+cocmor-id : ∀ {ℓ ℓc} {Γ : Graph ℓv ℓe} {F : Diag ℓ Γ} {C : Type ℓc} (K : Cocone F C) → K cc→ K
+fst (cocmor-id {C = C} K) = idf C
+comp-∼ (snd (cocmor-id K)) _ _ = idp
+comTri-∼ (snd (cocmor-id K)) g x = ap-idf (comTri K g x)
 
 infixr 60 _∘cocmor_
 _∘cocmor_ : ∀ {ℓ k₁ k₂ k₃} {Γ : Graph ℓv ℓe} {F : Diag ℓ Γ} {C₁ : Type k₁} {C₂ : Type k₂} {C₃ : Type k₃}

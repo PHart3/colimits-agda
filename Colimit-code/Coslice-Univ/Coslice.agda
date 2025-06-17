@@ -11,7 +11,7 @@ record Coslice (i j : ULevel) (A : Type j) : Type (lmax (lsucc i) j) where
   constructor *[_,_]
   field
     ty : Type i
-    fun : A → ty
+    str : A → ty
 open Coslice public
 
 Cos : ∀ {i j} {A : Type j} (X : Type i) → (A → X) → Coslice i j A
@@ -61,9 +61,9 @@ module MapsCos {j} (A : Type j) where
     {h₁ h₂ : X *→ Y} (f : Y *→ Z) → < X > h₁ ∼ h₂ → < X > f ∘* h₁ ∼ f ∘* h₂ 
   fst (post-∘*-∼ f H) x = ap (fst f) (fst H x)
   snd (post-∘*-∼ {X = X} {h₁ = h₁} f H) a = 
-    ap (λ p → p ∙ ap (fst f) (snd h₁ a) ∙ snd f a) (!-ap (fst f) (fst H (fun X a))) ∙ 
-    ! (∙-assoc (ap (fst f) (! (fst H (fun X a)))) (ap (fst f) (snd h₁ a)) (snd f a)) ∙
-    ap (λ p → p ∙ snd f a) (∙-ap (fst f) (! (fst H (fun X a))) (snd h₁ a)) ∙
+    ap (λ p → p ∙ ap (fst f) (snd h₁ a) ∙ snd f a) (!-ap (fst f) (fst H (str X a))) ∙ 
+    ! (∙-assoc (ap (fst f) (! (fst H (str X a)))) (ap (fst f) (snd h₁ a)) (snd f a)) ∙
+    ap (λ p → p ∙ snd f a) (∙-ap (fst f) (! (fst H (str X a))) (snd h₁ a)) ∙
     ap (λ p → ap (fst f) p ∙ snd f a) (snd H a)
 
   -- left whiskering
@@ -71,9 +71,9 @@ module MapsCos {j} (A : Type j) where
     {h₁ h₂ : X *→ Y} (f : Z *→ X) → < X > h₁ ∼ h₂ → < Z > h₁ ∘* f ∼ h₂ ∘* f
   fst (pre-∘*-∼ f H) x = fst H (fst f x)
   snd (pre-∘*-∼ {X = X} {Z = Z} {h₁ = h₁} {h₂} f H) a =
-    (! (∙-assoc (! (fst H (fst f (fun Z a)))) (ap (fst h₁) (snd f a)) (snd h₁ a)) ∙
+    (! (∙-assoc (! (fst H (fst f (str Z a)))) (ap (fst h₁) (snd f a)) (snd h₁ a)) ∙
     ap (λ p → p ∙ snd h₁ a) (hmtpy-nat-!-sq (fst H) (snd f a)) ∙
-    ∙-assoc (ap (fst h₂) (snd f a)) (! (fst H (fun X a))) (snd h₁ a)) ∙
+    ∙-assoc (ap (fst h₂) (snd f a)) (! (fst H (str X a))) (snd h₁ a)) ∙
     ap (λ p → ap (fst h₂) (snd f a) ∙ p) (snd H a)
 
   -- composition
@@ -83,9 +83,9 @@ module MapsCos {j} (A : Type j) where
   _∼∘-cos_ {X = X} {h₁ = h₁} (H₁ , H₂) (K₁ , K₂) =
     (λ x → H₁ x ∙ K₁ x) ,
     (λ a →
-      (ap (λ p → p ∙ snd h₁ a) (!-∙ (H₁ (fun X a)) (K₁ (fun X a))) ∙
-      ∙-assoc (! (K₁ (fun X a))) (! (H₁ (fun X a))) (snd h₁ a)) ∙
-      ap (λ p → ! (K₁ (fun X a)) ∙ p) (H₂ a) ∙ K₂ a)
+      (ap (λ p → p ∙ snd h₁ a) (!-∙ (H₁ (str X a)) (K₁ (str X a))) ∙
+      ∙-assoc (! (K₁ (str X a))) (! (H₁ (str X a))) (snd h₁ a)) ∙
+      ap (λ p → ! (K₁ (str X a)) ∙ p) (H₂ a) ∙ K₂ a)
 
   -- identity
   cos∼id : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} (h : X *→ Y) → < X > h ∼ h
@@ -97,5 +97,5 @@ module MapsCos {j} (A : Type j) where
   <_>_∼∼_ : ∀ {i k} (X : Coslice i j A) {Y : Coslice k j A} {h₁ h₂ : X *→ Y} →
     < X > h₁ ∼ h₂ → < X > h₁ ∼ h₂ → Type (lmax k (lmax i j))
   <_>_∼∼_ X {h₁ = h₁} H₁ H₂ =
-    Σ (fst H₁ ∼ fst H₂)
-      λ K → (a : A) → ap (λ p → ! p ∙ snd h₁ a) (! (K (fun X a))) ∙ snd H₁ a == snd H₂ a
+    Σ (fst H₁ ∼ fst H₂) (λ K →
+      (a : A) → ap (λ p → ! p ∙ snd h₁ a) (! (K (str X a))) ∙ snd H₁ a == snd H₂ a)

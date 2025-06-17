@@ -12,7 +12,7 @@ module lib.types.Pushout where
 module _ {i j k} where
 
   postulate  -- HIT
-    Pushout : (d : Span {i} {j} {k}) → Type (lmax (lmax i j) k)
+    Pushout : Span {i} {j} {k} → Type (lmax (lmax i j) k)
 
   module _ {d : Span} where
 
@@ -85,7 +85,7 @@ PushoutMapEq-v2 {d = d} h₁ h₂ p₁ p₂ = λ S →
 
 -- pushout of an equivalence
 
-module _ {i j k} {d : Span {i} {j} {k}} {l} {D : Type l} (ε : is-equiv (Span.f d)) where
+module _ {i j k} {d : Span {i} {j} {k}} (ε : is-equiv (Span.f d)) where
 
   po-of-equiv : Pushout d ≃ Span.B d
   po-of-equiv = equiv (Pushout-rec (Span.g d ∘ is-equiv.g ε) (idf (Span.B d)) (λ c → ap (Span.g d) (is-equiv.g-f ε c))) right

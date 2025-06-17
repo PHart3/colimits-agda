@@ -17,7 +17,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
 
   open Constr F T
 
-  module _ (f : P → ty T) (fₚ : (a : A) → f (left a) == fun T a) where
+  module _ (f : P → ty T) (fₚ : (a : A) → f (left a) == str T a) where
 
     RLfunEqFun : f ∼ fst (RLfun (f , fₚ))
     RLfunEqFun =

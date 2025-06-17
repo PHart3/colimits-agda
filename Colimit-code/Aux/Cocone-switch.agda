@@ -30,19 +30,19 @@ module CC-switch {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} {ℓd} (F
 
     κ-switch =
       H₁ (cglue g a) (! (snd (r j) a)) (ψ-βr g a) ◃∙
-      H₂ (snd (F <#> g) a) (snd (r j) a) (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a)) ◃∙
-      ap (λ p → ! (ap (fun T) (ap [id] (cglue g a))) ∙ p) (ap ! (snd (comTri K g) a)) ◃∙
-      ap (λ p → p ∙ ! (snd (r i) a)) (ap (λ p → ! (ap (fun T) p)) (id-βr g a)) ◃∎
+      H₂ (snd (F <#> g) a) (snd (r j) a) (cglue g (str (F # i) a)) (recc-βr K g (str (F # i) a)) ◃∙
+      ap (λ p → ! (ap (str T) (ap [id] (cglue g a))) ∙ p) (ap ! (snd (comTri K g) a)) ◃∙
+      ap (λ p → p ∙ ! (snd (r i) a)) (ap (λ p → ! (ap (str T) p)) (id-βr g a)) ◃∎
 
     abstract
       κ=κ-switch : κ-switch =ₛ η (comp K) (comTri K) i j g a
       κ=κ-switch =
         κ-switch
-          =ₛ⟨ 2 & 2 & rew-LR=rew-RL (ap (λ p → ! (ap (fun T) p)) (id-βr g a)) (ap ! (snd (comTri K g) a)) ⟩
+          =ₛ⟨ 2 & 2 & rew-LR=rew-RL (ap (λ p → ! (ap (str T) p)) (id-βr g a)) (ap ! (snd (comTri K g) a)) ⟩
         H₁ (cglue g a) (! (snd (r j) a)) (ψ-βr g a) ◃∙
-        H₂ (snd (F <#> g) a) (snd (r j) a) (cglue g (fun (F # i) a)) (recc-βr K g (fun (F # i) a)) ◃∙
-        ap (λ p → p ∙ ! (! (fst (comTri K g) (fun (F # i) a)) ∙ ap ((recc r (comTri K)) ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a)))
-          (ap (λ p → ! (ap (fun T) p)) (id-βr g a)) ◃∙
+        H₂ (snd (F <#> g) a) (snd (r j) a) (cglue g (str (F # i) a)) (recc-βr K g (str (F # i) a)) ◃∙
+        ap (λ p → p ∙ ! (! (fst (comTri K g) (str (F # i) a)) ∙ ap ((recc r (comTri K)) ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a)))
+          (ap (λ p → ! (ap (str T) p)) (id-βr g a)) ◃∙
         ap (λ z → z) (ap ! (snd (comTri K g) a)) ◃∎
           =ₛ₁⟨ 3 & 1 & ap-idf (ap ! (snd (comTri K g) a)) ⟩
         η (comp K) (comTri K) i j g a ∎ₛ

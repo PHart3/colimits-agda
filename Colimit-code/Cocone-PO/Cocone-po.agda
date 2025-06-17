@@ -33,7 +33,7 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
   module Maps {ℓd} (F : CosDiag ℓd ℓ A Γ) where
 
     μ : DiagMor (ConsDiag Γ A) (DiagForg A Γ F)
-    nat μ i = fun (F # i)
+    nat μ i = str (F # i)
     comSq μ g = snd (F <#> g)
 
     private
@@ -43,7 +43,7 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
     ψ : Colim (ConsDiag Γ A) → Colim (DiagForg A Γ F)
     ψ = N.ColMap
 
-    ψ-βr = N.MapComp
+    ψ-βr = N.ColMap-β
 
     -- The tip of the cocone is the pushout of the two preceding arrows.
 
@@ -54,17 +54,17 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
     -- cocone structure on pushout
     ColCoC-cos : CosCocone A F (Cos P left)
     comp ColCoC-cos i = right ∘ cin i , λ a → ! (glue (cin i a))
-    comTri ColCoC-cos g =  (λ x → ap right (cglue g x)) ,  λ a → ↯ (ε g a)
-      module _ where
+    comTri ColCoC-cos g = (λ x → ap right (cglue g x)) ,  λ a → ↯ (ε g a)
+      module _ where  -- see ../Aux/AuxPaths.agda for defs of E₁ and E₃
       ε : ∀ {i j} (g : Hom Γ i j) (a : A) →
-        ! (ap right (cglue g (fun (F # i) a))) ∙ ap (right ∘ cin j) (snd (F <#> g) a) ∙ ! (glue (cin j a)) =-= ! (glue (cin i a))
+        ! (ap right (cglue g (str (F # i) a))) ∙ ap (right ∘ cin j) (snd (F <#> g) a) ∙ ! (glue (cin j a)) =-= ! (glue (cin i a))
       ε {i} {j} g a =
-        ! (ap right  (cglue g (fun (F # i) a))) ∙ (ap (right ∘ cin j) (snd (F <#> g) a)) ∙ (! (glue (cin j a)))
+        ! (ap right  (cglue g (str (F # i) a))) ∙ (ap (right ∘ cin j) (snd (F <#> g) a)) ∙ (! (glue (cin j a)))
           =⟪ E₁ (snd (F <#> g) a) (! (glue (cin j a))) ⟫
-        ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ idp
-          =⟪ ! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ p)
+        ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (str (F # i) a))) ∙ ! (glue (cin j a)) ∙ idp
+          =⟪ ! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (str (F # i) a))) ∙ ! (glue (cin j a)) ∙ p)
                  (ap (ap left) (id-βr g a))) ⟫
-        ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a)) ∙ ap left (ap [id] (cglue g a))
+        ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (str (F # i) a))) ∙ ! (glue (cin j a)) ∙ ap left (ap [id] (cglue g a))
           =⟪ E₃ (λ x → ! (glue x)) (cglue g a) (ψ-βr g a) (λ x → idp) ⟫
         ! (glue (cin i a)) ∙ idp
           =⟪ ∙-unit-r (! (glue (cin i a))) ⟫
@@ -82,39 +82,39 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
       recc-βr C g x = cglue-βr (comp (CocForg C)) (λ i j g → fst (comTri C g)) g x
 
       recCosCoc : CosCocone A F T → (< A > (Cos P left) *→ T)
-      fst (recCosCoc (r & K)) = Pushout-rec (fun T) recc σ
+      fst (recCosCoc (r & K)) = Pushout-rec (str T) recc σ
         module _ where
           recc : Colim (DiagForg A Γ F) → ty T
           recc = reccForg (r & K)
 
-          σ : (x : Colim (ConsDiag Γ A)) → fun T ([id] x) == recc (ψ x)
+          σ : (x : Colim (ConsDiag Γ A)) → str T ([id] x) == recc (ψ x)
           σ =
             colimE (λ i a → ! (snd (r i) a))
-              (λ i j g a → from-transp-g (λ z → fun T ([id] z) == recc (ψ z)) (cglue g a) (↯ (η i j g a)))
+              (λ i j g a → from-transp-g (λ z → str T ([id] z) == recc (ψ z)) (cglue g a) (↯ (η i j g a)))
             module _ where
               η : (i j : Obj Γ) (g : Hom Γ i j) (a : A) →
-                transport (λ z → fun T ([id] z) == recc (ψ z)) (cglue g a) (! (snd (r j) a)) =-= ! (snd (r i) a)
+                transport (λ z → str T ([id] z) == recc (ψ z)) (cglue g a) (! (snd (r j) a)) =-= ! (snd (r i) a)
               η i j g a =
-                transport (λ z →  fun T ([id] z) == recc (ψ z)) (cglue g a) (! (snd (r j) a))
+                transport (λ z →  str T ([id] z) == recc (ψ z)) (cglue g a) (! (snd (r j) a))
                   =⟪ H₁ (cglue g a) (! (snd (r j) a)) (ψ-βr g a) ⟫
-                ! (ap (fun T) (ap [id] (cglue g a))) ∙ (! (snd (r j) a)) ∙ ap recc (! (ap (cin j) (snd (F <#> g) a)) ∙ (cglue g (fun (F # i) a)))
-                  =⟪ H₂ (snd (F <#> g) a) (snd (r j) a) (cglue g (fun (F # i) a)) (recc-βr (r & K) g (fun (F # i) a)) ⟫
-                ! (ap (fun T) (ap [id] (cglue g a))) ∙ ! (! (fst (K g) (fun (F # i) a)) ∙ ap (recc ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a))
-                  =⟪ ap (λ p → p ∙ ! (! (fst (K g) (fun (F # i) a)) ∙ ap (recc ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a)))
-                       (ap (λ p → ! (ap (fun T) p)) (id-βr g a)) ⟫
-                ! (! (fst (K g) (fun (F # i) a)) ∙ ap (recc ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a))
+                ! (ap (str T) (ap [id] (cglue g a))) ∙ (! (snd (r j) a)) ∙ ap recc (! (ap (cin j) (snd (F <#> g) a)) ∙ (cglue g (str (F # i) a)))
+                  =⟪ H₂ (snd (F <#> g) a) (snd (r j) a) (cglue g (str (F # i) a)) (recc-βr (r & K) g (str (F # i) a)) ⟫
+                ! (ap (str T) (ap [id] (cglue g a))) ∙ ! (! (fst (K g) (str (F # i) a)) ∙ ap (recc ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a))
+                  =⟪ ap (λ p → p ∙ ! (! (fst (K g) (str (F # i) a)) ∙ ap (recc ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a)))
+                       (ap (λ p → ! (ap (str T) p)) (id-βr g a)) ⟫
+                ! (! (fst (K g) (str (F # i) a)) ∙ ap (recc ∘ cin j) (snd (F <#> g) a) ∙ (snd (r j) a))
                   =⟪ ap ! (snd (K g) a) ⟫
                 ! (snd (r i) a) ∎∎
       snd (recCosCoc x) a = idp
 
-      FPrecc-βr = λ (C : CosCocone A F T) → PushoutRec.glue-β {d = SpCos} (fun T) (recc (comp C) (comTri C)) (σ (comp C) (comTri C))
+      FPrecc-βr = λ (C : CosCocone A F T) → PushoutRec.glue-β {d = SpCos} (str T) (recc (comp C) (comTri C)) (σ (comp C) (comTri C))
 
       abstract
         σ-β : (C : CosCocone A F T) → ∀ {i j} g a → apd-tr (σ (comp C) (comTri C)) (cglue g a) == ↯ (η (comp C) (comTri C) i j g a)
         σ-β C {i} {j} g a =
           apd-to-tr
-            (λ x → fun T ([id] x) == recc (comp C) (comTri C) (ψ x)) (σ (comp C) (comTri C)) (cglue g a)
+            (λ x → str T ([id] x) == recc (comp C) (comTri C) (ψ x)) (σ (comp C) (comTri C)) (cglue g a)
             (↯ (η (comp C) (comTri C) i j g a))
             (cglue-β (λ i → (λ a → ! (snd (comp C i) a)))
-              (λ i → (λ j → ( λ g → (λ a →  from-transp-g (λ z → fun T ([id] z) == recc (comp C) (comTri C) (ψ z))
+              (λ i → (λ j → ( λ g → (λ a →  from-transp-g (λ z → str T ([id] z) == recc (comp C) (comTri C) (ψ z))
                 (cglue g a) (↯ (η (comp C) (comTri C) i j g a)))))) g a)

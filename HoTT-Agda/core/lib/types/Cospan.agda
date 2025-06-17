@@ -18,30 +18,35 @@ record Cospan {i j k : ULevel} : Type (lsucc (lmax (lmax i j) k)) where
     f : A → C
     g : B → C
 
-record Cospan-eqv {i₁ i₂ j₁ j₂ k₁ k₂ : ULevel} (C₁ : Cospan {i₁} {j₁} {k₁}) (C₂ : Cospan {i₂} {j₂} {k₂})
+record Cospan-mor {i₁ i₂ j₁ j₂ k₁ k₂ : ULevel} (C₁ : Cospan {i₁} {j₁} {k₁}) (C₂ : Cospan {i₂} {j₂} {k₂})
   : Type (lmax (lmax (lmax i₁ j₁) k₁) (lmax (lmax i₂ j₂) k₂)) where
-  constructor cospaneqv
+  constructor cospanmor
   field
-    csp-eA : Cospan.A C₁ ≃ Cospan.A C₂
-    csp-eB : Cospan.B C₁ ≃ Cospan.B C₂
-    csp-eC : Cospan.C C₁ ≃ Cospan.C C₂
-    csp-nat-f : Cospan.f C₂ ∘ –> csp-eA ∼ –> csp-eC ∘ Cospan.f C₁
-    csp-nat-g : –> csp-eC ∘ Cospan.g C₁ ∼ Cospan.g C₂ ∘ –> csp-eB
-open Cospan-eqv public
+    cspm-A : Cospan.A C₁ → Cospan.A C₂
+    cspm-B : Cospan.B C₁ → Cospan.B C₂
+    cspm-C : Cospan.C C₁ → Cospan.C C₂
+    cspm-nat-f : Cospan.f C₂ ∘ cspm-A ∼ cspm-C ∘ Cospan.f C₁
+    cspm-nat-g : cspm-C ∘ Cospan.g C₁ ∼ Cospan.g C₂ ∘ cspm-B
+open Cospan-mor public
 
-csp-eqv-inv : ∀ {i₁ i₂ j₁ j₂ k₁ k₂ : ULevel} {C₁ : Cospan {i₁} {j₁} {k₁}} {C₂ : Cospan {i₂} {j₂} {k₂}}
+Cospan-eqv : ∀ {i₁ i₂ j₁ j₂ k₁ k₂ : ULevel} (C₁ : Cospan {i₁} {j₁} {k₁}) (C₂ : Cospan {i₂} {j₂} {k₂})
+  → Type (lmax (lmax (lmax (lmax (lmax i₁ i₂) j₁) j₂) k₁) k₂)
+Cospan-eqv C₁ C₂ = Σ (Cospan-mor C₁ C₂) (λ μ → is-equiv (cspm-A μ) × is-equiv (cspm-B μ) × (is-equiv (cspm-C μ)))
+
+csp-eqv-rev : ∀ {i₁ i₂ j₁ j₂ k₁ k₂ : ULevel} {C₁ : Cospan {i₁} {j₁} {k₁}} {C₂ : Cospan {i₂} {j₂} {k₂}}
   → Cospan-eqv C₁ C₂ → Cospan-eqv C₂ C₁
-csp-eA (csp-eqv-inv E) = (csp-eA E) ⁻¹
-csp-eB (csp-eqv-inv E) = (csp-eB E) ⁻¹
-csp-eC (csp-eqv-inv E) = (csp-eC E) ⁻¹
-csp-nat-f (csp-eqv-inv {C₁ = C₁} {C₂} E) x = 
-  ! (is-equiv.g-f (snd (csp-eC E)) (Cospan.f C₁ (<– (csp-eA E) x))) ∙
-  ap (<– (csp-eC E)) (! (csp-nat-f E (<– (csp-eA E) x))) ∙
-  ap (<– (csp-eC E) ∘ Cospan.f C₂) (is-equiv.f-g (snd (csp-eA E)) x)
-csp-nat-g (csp-eqv-inv {C₁ = C₁} {C₂} E) x = 
-  ! (ap (<– (csp-eC E) ∘ Cospan.g C₂) (is-equiv.f-g (snd (csp-eB E)) x)) ∙
-  ap (<– (csp-eC E)) (! (csp-nat-g E (<– (csp-eB E) x))) ∙
-  is-equiv.g-f (snd (csp-eC E)) ((Cospan.g C₁) (<– (csp-eB E) x))
+cspm-A (fst (csp-eqv-rev {C₁ = C₁} {C₂} (E , eA , eB , eC))) = is-equiv.g eA
+cspm-B (fst (csp-eqv-rev {C₁ = C₁} {C₂} (E , eA , eB , eC))) = is-equiv.g eB
+cspm-C (fst (csp-eqv-rev {C₁ = C₁} {C₂} (E , eA , eB , eC))) = is-equiv.g eC
+cspm-nat-f (fst (csp-eqv-rev {C₁ = C₁} {C₂} (E , eA , eB , eC))) x = 
+  ! (is-equiv.g-f eC (Cospan.f C₁ (is-equiv.g eA x))) ∙
+  ap (is-equiv.g eC) (! (cspm-nat-f E (is-equiv.g eA x))) ∙
+  ap (is-equiv.g eC ∘ Cospan.f C₂) (is-equiv.f-g eA x)
+cspm-nat-g (fst (csp-eqv-rev {C₁ = C₁} {C₂} (E , eA , eB , eC))) x = 
+  ! (ap (is-equiv.g eC ∘ Cospan.g C₂) (is-equiv.f-g eB x)) ∙
+  ap (is-equiv.g eC) (! (cspm-nat-g E (is-equiv.g eB x))) ∙
+  is-equiv.g-f eC ((Cospan.g C₁) (is-equiv.g eB x))
+snd (csp-eqv-rev {C₁ = C₁} {C₂} (E , eA , eB , eC)) = is-equiv-inverse eA , is-equiv-inverse eB , is-equiv-inverse eC
 
 record ⊙Cospan {i j k : ULevel} : Type (lsucc (lmax (lmax i j) k)) where
   constructor ⊙cospan
@@ -202,16 +207,15 @@ module _ {ℓ} (Δ : Diag-cspan (Type-wc ℓ)) where
   diag-to-csp : Cospan
   diag-to-csp = cospan (D₀ Δ lft) (D₀ Δ rght) (D₀ Δ mid) (D₁ Δ unit) (D₁ Δ unit)
 
-  open Cone
-
+  open Cone-wc
   module _ {T : Type ℓ} where
 
-    con-to-csp : Cone Δ T → Cone-csp diag-to-csp T
+    con-to-csp : Cone-wc Δ T → Cone-csp diag-to-csp T
     left (con-to-csp K) = leg K lft
     right (con-to-csp K) = leg K rght
     sq (con-to-csp K) = app= (tri K {lft} unit ∙ ! (tri K {rght} unit))
     
-    csp-to-con : Cone-csp diag-to-csp T → Cone Δ T
+    csp-to-con : Cone-csp diag-to-csp T → Cone-wc Δ T
     leg (csp-to-con K) lft = left K 
     leg (csp-to-con K) mid = D₁ Δ unit ∘ left K
     leg (csp-to-con K) rght = right K
@@ -222,12 +226,12 @@ module _ {ℓ} (Δ : Diag-cspan (Type-wc ℓ)) where
     tri (csp-to-con x) {lft} {rght} ()
     tri (csp-to-con x) {rght} {rght} ()
 
-    con-csp-diag-≃ : Cone Δ T ≃ Cone-csp diag-to-csp T
+    con-csp-diag-≃ : Cone-wc Δ T ≃ Cone-csp diag-to-csp T
     con-csp-diag-≃ = equiv con-to-csp csp-to-con
       (λ K → ConCspEq-to-== (concspeq (λ _ → idp) (λ _ → idp) (λ x → ! (ap (λ h → app= h x) (!-! (λ= (sq K))) ∙ app=-β (sq K) x))))
       λ K → con-to-== (rtrip K)
       where
-        rtrip : (K : Cone Δ T) → csp-to-con (con-to-csp K) =-con K
+        rtrip : (K : Cone-wc Δ T) → csp-to-con (con-to-csp K) =-con K
         fst (rtrip K) lft = idp
         fst (rtrip K) mid = tri K unit
         fst (rtrip K) rght = idp

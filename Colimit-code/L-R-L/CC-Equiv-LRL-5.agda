@@ -17,13 +17,13 @@ module Constr6 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
   open Constr5 F T
 
-  𝕣 : (f* : < A > Cos P left *→ T) (i : Obj Γ) (a : A)
-    →  (! (ap (fst f*) (glue (cin i a))) ∙ snd f* a) ∙ ap (fst (RLfun f*)) (glue (cin i a)) =-= idp
+  𝕣 : (f* : < A > Cos P left *→ T) (i : Obj Γ) (a : A) →
+    (! (ap (fst f*) (glue (cin i a))) ∙ snd f* a) ∙ ap (fst (RLfun f*)) (glue (cin i a)) =-= idp
   𝕣 (f , fₚ) i a =
     ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) (FPrecc-βr (PostComp-cos ColCoC-cos (f , fₚ)) (cin i a)) ◃∙
     ap-inv-canc f (glue (cin i a)) (fₚ a) ◃∎
 
-  module DiagCoher6 (i j : Obj Γ) (f : P → ty T) (fₚ : (a : A) → f (left a)  == fun T a) (g : Hom Γ i j) (a : A) where
+  module DiagCoher6 (i j : Obj Γ) (f : P → ty T) (fₚ : (a : A) → f (left a)  == str T a) (g : Hom Γ i j) (a : A) where
 
     𝕣₁ : (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ ap (fst (RLfun (f , fₚ))) (glue (cin i a)) =-= idp
     𝕣₁ = 𝕣 (f , fₚ) i a
@@ -35,8 +35,7 @@ module Constr6 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
     abstract
     
-      RL-transfer : {x : Colim (ConsDiag Γ A)} (p : cin j a == x)
-        →
+      RL-transfer : {x : Colim (ConsDiag Γ A)} (p : cin j a == x) →
         ! (apd-tr (λ x → (! (ap f (glue x)) ∙ fₚ ([id] x)) ∙ ! (ap f (! (glue x)) ∙ fₚ ([id] x))) p)  ◃∙
         ap (transport (λ z → f (right (ψ z)) == f (right (ψ z))) p) (ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∙
         apd-tr-refl {f = f ∘ right} {h = ψ} p ◃∎
@@ -115,7 +114,7 @@ module Constr6 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
           (ap (λ p → (! (ap f (glue (cin j a))) ∙ fₚ a) ∙ p) (FPrecc-βr K (cin j a))) ◃∙
         ap (transport (λ z → f (right (ψ z)) == fst (RLfun (f , fₚ)) (right (ψ z))) (cglue g a))(ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∙
         apd-tr (λ z → RfunEq (f , fₚ) (ψ z)) (cglue g a) ◃∎
-          =ₑ⟨ 2 & 2 & (idp ◃∎)
+          =ₑ⟨ 2 & 2 & idp ◃∎
             % =ₛ-in
               (!-inv-l
                 (ap (transport (λ z → f (right (ψ z)) == fst (RLfun (f , fₚ)) (right (ψ z))) (cglue g a))

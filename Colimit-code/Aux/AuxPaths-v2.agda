@@ -51,21 +51,20 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type �
 
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {g : B → A} {f : A → C}  where
 
-  Δ-red : {t u : B} (v : t == u) {c : C} (R : f (g t) == c) {d : C} (σ : f (g u) == d) {z : A} (D : g t == z)
-    {W : f z == f (g u)} (τ : W == ! (ap f (! (ap g v) ∙ D)))
-    → W ∙ σ ∙ ! (! R ∙ (ap (f ∘ g) v) ∙ σ) == ! (ap f D) ∙ R
-  Δ-red idp idp idp idp idp = idp
+  ∙-∙-!-!-∙-ap-∘-∙ : {t u : B} (v : t == u) {c : C} (R : f (g t) == c) {d : C} (σ : f (g u) == d) {z : A} (D : g t == z)
+    {W : f z == f (g u)} (τ : W == ! (ap f (! (ap g v) ∙ D))) →
+    W ∙ σ ∙ ! (! R ∙ (ap (f ∘ g) v) ∙ σ) == ! (ap f D) ∙ R
+  ∙-∙-!-!-∙-ap-∘-∙ idp idp idp idp idp = idp
 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {h : D → A} {g : A → B} {f : B → C} where
 
   abstract
     𝕐 : {c d : D} (Q : c == d) {x : A} (R₁ : h c == x) {z : B} (S : g (h d) == z) {p : h d == x}
-      (R₂ : p == ! (ap h Q) ∙ R₁) {w : C} (fₚ : f z == w)
-      →
+      (R₂ : p == ! (ap h Q) ∙ R₁) {w : C} (fₚ : f z == w)  →
       ! (ap (λ q → ! (ap (f ∘ g) p) ∙ (ap f S ∙ fₚ) ∙ q) (ap ! (ap (λ q → q ∙ fₚ) (ap (ap f) (E₂-v2 {p = p} R₂ S))))) ∙
       ! (ap (λ q → ! (ap (f ∘ g) p) ∙ (ap f S ∙ fₚ) ∙ q) (ap ! (ap (λ q → q ∙ fₚ) (ap (ap f) (E₁-v2 {g = h} {R = R₁} Q))))) ∙
       ! (ap (λ q → ! (ap (f ∘ g) p) ∙ (ap f S ∙ fₚ) ∙ q) (ap ! (!-ap-ap-∘-ap-∙ f (g ∘ h) Q (ap g R₁)))) ∙
-      Δ-red Q (ap f (ap g R₁)) (ap f S ∙ fₚ) R₁ (ap (λ q → ! (ap (f ∘ g) q)) R₂) ∙ cmp-inv-l {f = g} {g = f} R₁
+      ∙-∙-!-!-∙-ap-∘-∙ Q (ap f (ap g R₁)) (ap f S ∙ fₚ) R₁ (ap (λ q → ! (ap (f ∘ g) q)) R₂) ∙ cmp-inv-l {f = g} {g = f} R₁
         ==
       inv-canc-cmp f g p S fₚ
     𝕐 idp idp idp idp idp = idp 
@@ -74,8 +73,8 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂
   {τ : A → B} {h : C → A} {v : C → D} {u : D → B} {f : B → E} where
 
   abstract
-    𝕏 : {x y : C} (p : x == y) {S : h x == h y} (T : ap h p == S) (r : (z : C) →  u (v z) == τ (h z)) {k : A → E} (fₚ : f ∘ τ ∼ k)
-      →
+    𝕏 : {x y : C} (p : x == y) {S : h x == h y} (T : ap h p == S)
+      (r : (z : C) →  u (v z) == τ (h z)) {k : A → E} (fₚ : f ∘ τ ∼ k) →
       ! (ap (λ q → ! (ap (f ∘ u) (ap v p)) ∙ q ∙ ap k S ∙ ! (ap f (r y) ∙ fₚ (h y)))
           (O₄ {f = f ∘ u} {h = v} {u = k} (λ z → ap f (r z) ∙ fₚ (h z)) p T)) ∙
       ! (ap (λ q → ! (ap (f ∘ u) (ap v p)) ∙ (ap f (r x) ∙ fₚ (h x)) ∙ ap k S ∙ q)

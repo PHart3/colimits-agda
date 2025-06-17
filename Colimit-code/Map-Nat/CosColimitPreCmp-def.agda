@@ -39,20 +39,20 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
     λ {j} {i} g → (λ x → ! (ap (fst (comp₁ j)) (comSq δ g x)) ∙ fst (comTri₁ g) (fst (nat δ i) x)) , λ a → ↯ (V g a)
       where
         V : {j i : Obj Γ} (g : Hom Γ i j) (a : A) →
-          ! (! (ap (fst (comp₁ j)) (comSq δ g (fun (F # i) a))) ∙ fst (comTri₁ g) (fst (nat δ i) (fun (F # i) a))) ∙
+          ! (! (ap (fst (comp₁ j)) (comSq δ g (str (F # i) a))) ∙ fst (comTri₁ g) (fst (nat δ i) (str (F # i) a))) ∙
           snd (< A > < A > comp₁ j ∘ nat δ j ∘ F <#> g) a
             =-=
           snd (< A > comp₁ i ∘ nat δ i) a
         V {j} {i} g a =
-          ! (! (ap (fst (comp₁ j)) (comSq δ g (fun (F # i) a))) ∙ fst (comTri₁ g) (fst (nat δ i) (fun (F # i) a))) ∙
+          ! (! (ap (fst (comp₁ j)) (comSq δ g (str (F # i) a))) ∙ fst (comTri₁ g) (fst (nat δ i) (str (F # i) a))) ∙
           snd (< A > < A > comp₁ j ∘ nat δ j ∘ F <#> g) a
-            =⟪ !-!-∙-pth (ap (fst (comp₁ j)) (comSq δ g (fun (F # i) a))) (fst (comTri₁ g) (fst (nat δ i) (fun (F # i) a))) ⟫
-          ! (fst (comTri₁ g) (fst (nat δ i) (fun (F # i) a))) ∙
-          ap (fst (comp₁ j)) (comSq δ g (fun (F # i) a)) ∙
+            =⟪ !-!-∙-pth (ap (fst (comp₁ j)) (comSq δ g (str (F # i) a))) (fst (comTri₁ g) (fst (nat δ i) (str (F # i) a))) ⟫
+          ! (fst (comTri₁ g) (fst (nat δ i) (str (F # i) a))) ∙
+          ap (fst (comp₁ j)) (comSq δ g (str (F # i) a)) ∙
           snd (< A > < A > comp₁ j ∘ nat δ j ∘ F <#> g) a
-            =⟪ ap (λ p → ! (fst (comTri₁ g) (fst (nat δ i) (fun (F # i) a))) ∙ ap (fst (comp₁ j)) p ∙
+            =⟪ ap (λ p → ! (fst (comTri₁ g) (fst (nat δ i) (str (F # i) a))) ∙ ap (fst (comp₁ j)) p ∙
                  snd (< A > < A > comp₁ j ∘ nat δ j ∘ F <#> g) a) (comSq-coher δ g a) ⟫
-          ! (fst (comTri₁ g) (fst (nat δ i) (fun (F # i) a))) ∙
+          ! (fst (comTri₁ g) (fst (nat δ i) (str (F # i) a))) ∙
           ap (fst (comp₁ j)) (ap (fst (G <#> g)) (snd (nat δ i) a) ∙
           snd (G <#> g) a ∙
           ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a))) ∙
@@ -61,16 +61,16 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
                    ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a))) ∙ snd (< A > < A > comp₁ j ∘ nat δ j ∘ F <#> g) a)
                  (hmtpy-nat-! (fst (comTri₁ g)) (snd (nat δ i) a)) ⟫
           (ap (λ z → fst (comp₁ i) z) (snd (nat δ i) a) ∙
-          ! (fst (comTri₁ g) (fun (G # i) a)) ∙
+          ! (fst (comTri₁ g) (str (G # i) a)) ∙
           ! (ap (λ z → fst (< A > comp₁ j ∘ G <#> g) z) (snd (nat δ i) a))) ∙
           ap (fst (comp₁ j))
             (ap (fst (G <#> g)) (snd (nat δ i) a) ∙ snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a))) ∙
           snd (< A > < A > comp₁ j ∘ nat δ j ∘ F <#> g) a
             =⟪ long-path-red-ya  (fst (comp₁ j)) (fst (G <#> g)) (fst (nat δ j)) (ap (fst (comp₁ i)) (snd (nat δ i) a))
-                 (snd (nat δ i) a) (! (fst (comTri₁ g) (fun (G # i) a)))
+                 (snd (nat δ i) a) (! (fst (comTri₁ g) (str (G # i) a)))
                  (snd (G <#> g) a) (snd (F <#> g) a) (snd (nat δ j) a) (snd (comp₁ j) a) ⟫
           ap (fst (comp₁ i)) (snd (nat δ i) a) ∙
-          ! (fst (comTri₁ g) (fun (G # i) a)) ∙
+          ! (fst (comTri₁ g) (str (G # i) a)) ∙
           snd (< A > comp₁ j ∘ G <#> g) a
             =⟪ ap (λ p → ap (fst (comp₁ i)) (snd (nat δ i) a) ∙ p) (snd (comTri₁ g) a) ⟫
           snd (< A > comp₁ i ∘ nat δ i) a ∎∎

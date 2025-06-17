@@ -21,7 +21,7 @@ module _ {j} (A : Type j) where
   _◻_ (Coslice-wc i) g f = g ∘* f
   ρ (Coslice-wc i) f = idp
   lamb (Coslice-wc i) f = UndFun∼-to-== ((λ _ → idp) , (λ a → ! (∙-unit-r (snd f a)) ∙ ap (λ p → p ∙ idp) (! (ap-idf (snd f a)))))
-  α (Coslice-wc i) h g f = UndFun∼-to-== ((λ _ → idp) , (λ a → assoc-ap-∙ (fst h) (fst g) (fst f) (snd f a) (snd g a) (snd h a)))
+  α (Coslice-wc i) h g f = UndFun∼-to-== (*→-assoc h g f)
 
   Forg-funct-cos : ∀ {i} → Functor-wc (Coslice-wc (lmax i j)) (Type-wc (lmax i j))
   obj Forg-funct-cos = ty

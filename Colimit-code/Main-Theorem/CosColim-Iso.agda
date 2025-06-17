@@ -1,10 +1,12 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
 open import lib.Basics
+open import lib.wild-cats.Diagram-wc
 open import lib.Equivalence2
 open import lib.types.Pushout
 open import lib.types.Colim
 open import Coslice
+open import Cos-wc
 open import Diagram-Cos
 open import Cocone-po
 open import SIP-Cos
@@ -37,13 +39,15 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
       CanMap-cos-eqv : is-equiv (RWhisk-coscoc {D = T} (ColCoC-cos F))
       CanMap-cos-eqv = ∼-preserves-equiv (CosPostComp-eq (ColCoC-cos F)) CanMap-eqv-v1
-      
-      CanMap-cos-contr : is-contr-map (RWhisk-coscoc {D = T} (ColCoC-cos F))
-      CanMap-cos-contr = equiv-is-contr-map (CanMap-cos-eqv)
+
+  abstract
+    CanMap-cos-contr : ∀ {ℓd ℓc} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) → is-contr-map (RWhisk-coscoc {D = T} (ColCoC-cos F))
+    CanMap-cos-contr F T = equiv-is-contr-map (CanMap-cos-eqv F T)
 
   -- cogap map for coslice colimits
   
-  cogap-cos : ∀ {ℓd ℓc} {F : CosDiag ℓd ℓ A Γ} {T : Coslice ℓc ℓ A} → CosCocone A F T → (po-CosCol F *→ T)
+  cogap-cos : ∀ {ℓd ℓc} {F : CosDiag ℓd ℓ A Γ} {T : Coslice ℓc ℓ A}
+    → CosCocone A F T → (po-CosCol F *→ T)
   cogap-cos {F = F} {T} K = fst (contr-center (CanMap-cos-contr F T K))
 
   cogap-cos-β : ∀ {ℓd ℓc} {F : CosDiag ℓd ℓ A Γ} {T : Coslice ℓc ℓ A} (K : CosCocone A F T)

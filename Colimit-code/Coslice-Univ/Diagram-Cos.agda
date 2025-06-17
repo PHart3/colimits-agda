@@ -30,7 +30,7 @@ record CosDiagMor {Γ : Graph ℓv ℓe} {ℓ₁ ℓ₂ ℓ₃} (A : Type ℓ₁
     nat : ∀ (i : Obj Γ) → < A > F # i *→ F' # i
     comSq : ∀ {i j : Obj Γ} (g : Hom Γ i j) (z : ty (F # i)) → fst (F' <#> g) (fst (nat i) z) == fst (nat j) (fst (F <#> g) z)
     comSq-coher : {i j : Obj Γ} (g : Hom Γ i j) (a : A) →
-      comSq g (fun (F # i) a)
+      comSq g (str (F # i) a)
         ==
       ap (fst (F' <#> g)) (snd (nat i) a) ∙ snd (F' <#> g) a ∙ ! (snd (nat j) a) ∙ ! (ap (fst (nat j)) (snd (F <#> g) a))
 open CosDiagMor public
@@ -58,7 +58,7 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₂} {Γ : Graph ℓv ℓe} {F : CosDiag �
   comp (PostComp-cos K (f , fₚ)) i = f ∘ (fst (comp K i)) , λ a → ap f (snd (comp K i) a) ∙ fₚ a 
   comTri (PostComp-cos K (f , fₚ)) {y = j} {x = i} g =
     (λ x → ap f (fst (comTri K g) x)) , λ a →
-      !-ap-ap-∘-ap-∙ f (fst (comp K j)) (snd (F <#> g) a) (fst (comTri K g) (fun (F # i) a)) ∙
+      !-ap-ap-∘-ap-∙ f (fst (comp K j)) (snd (F <#> g) a) (fst (comTri K g) (str (F # i) a)) ∙
       ap (λ p → p ∙ fₚ a) (ap (ap f) (snd (comTri K g) a))
 
   -- another form of post-comp on cocones

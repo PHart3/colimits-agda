@@ -9,26 +9,36 @@ open import lib.wild-cats.Diagram-wc
 
 module lib.wild-cats.Cone-wc-SIP where
 
-open Cone
+open Cone-wc
 
 module _ {ℓv ℓe : ULevel} {G : Graph ℓv ℓe}
   {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T : ob C} where
 
   infixr 80 _=-con_
-  _=-con_ : Cone Δ T → Cone Δ T → Type (lmax (lmax ℓv ℓe) ℓc₂)
+  _=-con_ : Cone-wc Δ T → Cone-wc Δ T → Type (lmax (lmax ℓv ℓe) ℓc₂)
   K₁ =-con K₂ =
     Σ ((x : Obj G) → leg K₁ x == leg K₂ x)
       (λ H → {x y : Obj G} (f : Hom G x y) → 
         tri K₁ f ∙' H y == ap (λ m → ⟦ C ⟧ D₁ Δ f ◻ m) (H x) ∙ tri K₂ f)
 
-  =-con-id : (K : Cone Δ T) → K =-con K
+  infixr 80 _=-con-◃_
+  _=-con-◃_ : Cone-wc Δ T → Cone-wc Δ T → Type (lmax (lmax ℓv ℓe) ℓc₂)
+  K₁ =-con-◃ K₂ =
+    Σ ((x : Obj G) → leg K₁ x == leg K₂ x)
+      (λ H → {x y : Obj G} (f : Hom G x y) → 
+        tri K₁ f ◃∙ H y ◃∎ =ₛ ap (λ m → ⟦ C ⟧ D₁ Δ f ◻ m) (H x) ◃∙ tri K₂ f ◃∎)
+
+  =-con-id : (K : Cone-wc Δ T) → K =-con K
   fst (=-con-id K) _ = idp
   snd (=-con-id K) _ = idp
+
+  con-from-== : {K₁ K₂ : Cone-wc Δ T} → K₁ == K₂ → K₁ =-con K₂
+  con-from-== {K₁} idp = =-con-id K₁
 
 module _ {ℓv ℓe : ULevel} {G : Graph ℓv ℓe}
   {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T : ob C}  where
 
-  module _ (K₁ : Cone Δ T) where
+  module _ (K₁ : Cone-wc Δ T) where
   
     con-contr-aux :
       is-contr $
@@ -51,7 +61,7 @@ module _ {ℓv ℓe : ULevel} {G : Graph ℓv ℓe}
           {{funhom-contr}}
 
     abstract
-      con-contr : is-contr (Σ (Cone Δ T) (λ K₂ → K₁ =-con K₂))
+      con-contr : is-contr (Σ (Cone-wc Δ T) (λ K₂ → K₁ =-con K₂))
       con-contr = equiv-preserves-level lemma {{con-contr-aux}}
         where
           lemma :
@@ -62,7 +72,7 @@ module _ {ℓv ℓe : ULevel} {G : Graph ℓv ℓe}
                 (((x , y) , f) : Σ (Obj G × Obj G) (λ (x , y) → Hom G x y)) →
                   tri K₁ f ∙' H y == ap (λ m → ⟦ C ⟧ D₁ Δ f ◻ m) (H x) ∙ tri₂ ((x , y) , f)))
               ≃
-            Σ (Cone Δ T) (λ K₂ → K₁ =-con K₂)
+            Σ (Cone-wc Δ T) (λ K₂ → K₁ =-con K₂)
           lemma = 
             equiv
               (λ ((leg₂ , H) , tri₂ , K) → 
@@ -71,10 +81,12 @@ module _ {ℓv ℓe : ULevel} {G : Graph ℓv ℓe}
               (λ ((cone leg₂ tri₂) , H , K) → idp) 
               (λ ((leg₂ , H) , tri₂ , K) → idp)
 
-    con-ind : ∀ {k} (P : (K₂ : Cone Δ T) → (K₁ =-con K₂ → Type k))
-      → P K₁ (=-con-id K₁) → {K₂ : Cone Δ T} (e : K₁ =-con K₂) → P K₂ e
+    con-ind : ∀ {k} (P : (K₂ : Cone-wc Δ T) → (K₁ =-con K₂ → Type k))
+      → P K₁ (=-con-id K₁) → {K₂ : Cone-wc Δ T} (e : K₁ =-con K₂) → P K₂ e
     con-ind P = ID-ind-map P con-contr
 
-  con-to-== : {K₁ K₂ : Cone Δ T} → K₁ =-con K₂ → K₁ == K₂
+  con-to-== : {K₁ K₂ : Cone-wc Δ T} → K₁ =-con K₂ → K₁ == K₂
   con-to-== {K₁} = con-ind K₁ (λ K₂ _ → K₁ == K₂) idp
   
+  con-to-==-◃ : {K₁ K₂ : Cone-wc Δ T} → K₁ =-con-◃ K₂ → K₁ == K₂
+  con-to-==-◃ (c , t) = con-to-== (c , (λ {x} {y} f → ∙'=∙ _ (c y) ∙ =ₛ-out (t f)))

@@ -41,10 +41,10 @@ module ConstrMap8 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
 
   module MapCoher7 {i j : Obj Γ} (g : Hom Γ i j) (a : A) where
 
-    comSq-red-aux : {y : ty (G # i)} (c₁ : fst (G <#> g) y == fun (G # j) a)
+    comSq-red-aux : {y : ty (G # i)} (c₁ : fst (G <#> g) y == str (G # j) a)
       (c₂ : cin j (fst (G <#> g) y) == cin i y)
-      {x₁ x₂ : ty (F # j)} (σ : x₁ == x₂) (d : fst (nat δ j) x₂ == fun (G # j) a)
-      {x₃ : P₂} (γ : x₃ == right (cin j (fun (G # j) a))) → 
+      {x₁ x₂ : ty (F # j)} (σ : x₁ == x₂) (d : fst (nat δ j) x₂ == str (G # j) a)
+      {x₃ : P₂} (γ : x₃ == right (cin j (str (G # j) a))) → 
       long-red-ap5-rid (right {d = SpCos₂}) {f₄ = fst (G <#> g)} {f₅ = cin i} σ idp c₁ d c₂ γ ∙
       ! (ap (λ q → q) (E₁ c₁ (! γ))) ∙
       ! (long-red-ap-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right idp c₁ σ d c₂ (! γ)) ∙ idp
@@ -56,11 +56,11 @@ module ConstrMap8 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
 
     abstract
       comSq-red :
-        {y₁ y₂ : ty (G # i)} (c₃ : y₁ == y₂) (c₄ : fst (G <#> g) y₂ == fun (G # j) a)
+        {y₁ y₂ : ty (G # i)} (c₃ : y₁ == y₂) (c₄ : fst (G <#> g) y₂ == str (G # j) a)
         (c₂ : cin j (fst (G <#> g) y₂) == cin i y₂)
         {c₁ : cin j (fst (G <#> g) y₁) == cin i y₁}
         (ω : c₁ == ap (cin j ∘ fst (G <#> g)) c₃ ∙ c₂ ∙ ! (ap (λ v → cin i v) c₃))
-        {κ : fst (G <#> g) y₁ == fst (nat δ j) (fst (F <#> g) (fun (F # i) a))}
+        {κ : fst (G <#> g) y₁ == fst (nat δ j) (fst (F <#> g) (str (F # i) a))}
         (ρ : κ == ap (fst (G <#> g)) c₃ ∙ c₄ ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a))) → 
         ap (λ p → ! (! (ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a)) ∙
              ap right (! (ap (cin j) p) ∙ c₁)) ∙ ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a)))))

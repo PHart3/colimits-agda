@@ -23,11 +23,11 @@ module CC-v2-Constr {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
   open Maps F public
 
-  ε-v2 : ! (ap right (cglue g (fun (F # i) a))) ∙ ap (right {d = SpCos} ∘ cin j) (snd (F <#> g) a) ∙ ! (glue (cin j a)) =-= ! (glue (cin i a))
+  ε-v2 : ! (ap right (cglue g (str (F # i) a))) ∙ ap (right {d = SpCos} ∘ cin j) (snd (F <#> g) a) ∙ ! (glue (cin j a)) =-= ! (glue (cin i a))
   ε-v2 =
-    ! (ap right  (cglue g (fun (F # i) a))) ∙ (ap (right ∘ cin j) (snd (F <#> g) a)) ∙ (! (glue (cin j a)))
+    ! (ap right  (cglue g (str (F # i) a))) ∙ (ap (right ∘ cin j) (snd (F <#> g) a)) ∙ (! (glue (cin j a)))
       =⟪ E₁-v2 (snd (F <#> g) a) ⟫
-    ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (fun (F # i) a))) ∙ ! (glue (cin j a))
+    ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (str (F # i) a))) ∙ ! (glue (cin j a))
       =⟪ E₂-v2 (ψ-βr g a) (! (glue (cin j a))) ⟫
     ! (ap right (ap ψ (cglue g a))) ∙ ! (glue (cin j a)) ∙ idp
       =⟪ E₃-v2 {f = left} (λ x → ! (glue x)) (cglue g a) (id-βr g a) ⟫
@@ -37,7 +37,7 @@ module CC-v2-Constr {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
     →  E₁ {f = right} {g = cin j} idp q == E₂-v2 {f = right} {p = ap ψ (cglue g a)} idp q
   E-eq-helper idp = idp
 
-  E-eq : (q : (z : Colim (ConsDiag Γ A)) →  right {d = SpCos} (ψ z) == left ([id] z)) {x : ty (F # j)} (σ : x == fun (F # j) a)
+  E-eq : (q : (z : Colim (ConsDiag Γ A)) →  right {d = SpCos} (ψ z) == left ([id] z)) {x : ty (F # j)} (σ : x == str (F # j) a)
     (T₁ : ap [id] (cglue g a) == idp) (R : cin j x == ψ (cin i a)) (T₂ : ap ψ (cglue g a) == ! (ap (cin j) σ) ∙ R)
     →
     E₁ σ (q (cin j a)) ◃∙ ! (ap (λ p → ! (ap right (! (ap (cin j) σ) ∙ R)) ∙ q (cin j a) ∙ p) (ap (ap left) T₁)) ◃∙
@@ -65,4 +65,4 @@ module CC-v2-Constr {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
   abstract
     ε-Eq : ε g g a =ₛ ε-v2
-    ε-Eq = E-eq (λ z → (! (glue z))) (snd (F <#> g) a) (id-βr g a) (cglue g (fun (F # i) a)) (ψ-βr g a)
+    ε-Eq = E-eq (λ z → (! (glue z))) (snd (F <#> g) a) (id-βr g a) (cglue g (str (F # i) a)) (ψ-βr g a)

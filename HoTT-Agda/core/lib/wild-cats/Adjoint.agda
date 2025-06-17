@@ -36,9 +36,9 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
 
 
     adj-hom-limit : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} (Δ : Diagram G D) (T : ob C)
-      → Map-diag (Diagram-hom (obj L T) Δ) (Diagram-hom T (F-diag R Δ))
-    Map-diag.comp (adj-hom-limit Δ T) x = –> iso
-    Map-diag.sq (adj-hom-limit Δ T) f m = nat-cod (D₁ Δ f) m
+      → Map-diag-ty (Diagram-hom (obj L T) Δ) (Diagram-hom T (F-diag R Δ))
+    Map-diag-ty.comp (adj-hom-limit Δ T) x = –> iso
+    Map-diag-ty.sq (adj-hom-limit Δ T) f m = nat-cod (D₁ Δ f) m
 
     adj-lim-map-eqv : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} {Δ : Diagram G D} {T : ob C}
       → Limit (Diagram-hom (obj L T) Δ) ≃ Limit (Diagram-hom T (F-diag R Δ))
@@ -46,9 +46,9 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
       lim-eqv-to-eqv (adj-hom-limit Δ T) (λ _ → snd iso)
 
     adj-hom-limit-op : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} (Δ : Diagram G C) (T : ob D)
-      → Map-diag (Diagram-hom-op T (F-diag L Δ)) (Diagram-hom-op (obj R T) Δ)
-    Map-diag.comp (adj-hom-limit-op Δ T) x = –> iso
-    Map-diag.sq (adj-hom-limit-op Δ T) f m = nat-dom (D₁ Δ f) m
+      → Map-diag-ty (Diagram-hom-op T (F-diag L Δ)) (Diagram-hom-op (obj R T) Δ)
+    Map-diag-ty.comp (adj-hom-limit-op Δ T) x = –> iso
+    Map-diag-ty.sq (adj-hom-limit-op Δ T) f m = nat-dom (D₁ Δ f) m
 
     adj-lim-map-eqv-op : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} {Δ : Diagram G C} {T : ob D}
       → Limit (Diagram-hom-op T (F-diag L Δ)) ≃ Limit (Diagram-hom-op (obj R T) Δ)

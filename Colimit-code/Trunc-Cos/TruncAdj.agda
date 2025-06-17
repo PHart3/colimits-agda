@@ -15,8 +15,8 @@ module _ {j} (A : Type j) where
     -- truncation functor on coslices
 
     Trunc-cos : ∀ {i}  → (Coslice i j A) → (Coslice i j A)
-    ty (Trunc-cos *[ ty , fun ]) = Trunc n ty
-    Coslice.fun (Trunc-cos *[ ty , fun ]) a = [ fun a ]
+    ty (Trunc-cos *[ ty , str ]) = Trunc n ty
+    Coslice.str (Trunc-cos *[ ty , str ]) a = [ str a ]
 
     Trunc-cos-fmap : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A}
       → ((X *→ Y) → (Trunc-cos X *→ Trunc-cos Y))
@@ -73,7 +73,7 @@ module _ {j} (A : Type j) where
       fst two-coher-Trunc-cos x = idp
       snd two-coher-Trunc-cos a = lemma a (snd f₃ a)
         where
-          lemma : (a : A) {w : ty Z} (τ : w == fun Z a) → 
+          lemma : (a : A) {w : ty Z} (τ : w == str Z a) → 
             ap (λ q → q) ((ap (λ p₁ → p₁ ∙ ap (λ x → fst f₁ [ x ])
               (snd f₂ a) ∙ snd f₁ a)
               (hmtpy-nat-!-sq (λ x → idp) τ) ∙

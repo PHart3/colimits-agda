@@ -118,8 +118,8 @@ module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
 
     open ConstrMap6.MapCoher5 δ g a
 
-    id-free-aux4-aux2 : {x : Colim ForgF} (r : cin j (fun (F # j) a) == x)
-      (c : cin j (fun (G # j) a) == δ₀ x)
+    id-free-aux4-aux2 : {x : Colim ForgF} (r : cin j (str (F # j) a) == x)
+      (c : cin j (str (G # j) a) == δ₀ x)
       (t₂ : ap δ₀ r == ! (ap (cin j) (! (snd (nat δ j) a) ∙ idp)) ∙ c) →
       ψ₁-free-aux3 r idp ∙
       ap ! (ap (λ p → glue (cin j a) ∙ ap right (! p)) (ap (λ p → ! p ∙ ap (cin j) (snd (nat δ j) a) ∙ idp) t₂)) ∙
@@ -133,11 +133,11 @@ module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
     id-free-aux4-aux2 idp c t₂ = long-coher2 right (snd (nat δ j) a) (glue (cin j a)) c t₂ 
 
     id-free-aux4-aux-pre : {x : Colim (ConsDiag Γ A)} (q : cin j a == x)
-      (r : cin j (fun (F # j) a) == ψ₁ x)
-      (c : cin j (fun (G # j) a) == δ₀ (ψ₁ x))
+      (r : cin j (str (F # j) a) == ψ₁ x)
+      (c : cin j (str (G # j) a) == δ₀ (ψ₁ x))
       (t₂ : ap δ₀ r == ! (ap (cin j) (! (snd (nat δ j) a) ∙ idp)) ∙ c)
       {κ : left a == left ([id] x)} (ξ : κ == glue (cin j a) ∙ ap right (ap ψ₂ q) ∙ ! (glue x))
-      {z : left a == (right {d = SpCos₂} ∘ δ₀) (cin j (fun (F # j) a))}
+      {z : left a == (right {d = SpCos₂} ∘ δ₀) (cin j (str (F # j) a))}
       (α : z == glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a)))) →
       ap (λ p → ! (ap (right ∘ δ₀) r) ∙ ! p ∙ κ) α ◃∙
       ψ₁-free-aux2 q r ξ ◃∙
@@ -185,8 +185,8 @@ module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       ap2-!5-rid right σ c γ₂ ∙ idp
     id-free-aux4-aux-post-aux γ₁ idp c γ₂ α t₂ = id-free-aux4-aux-post-aux2 γ₁ γ₂ α t₂
 
-    id-free-aux4-aux-post : {x : Colim ForgF} (r : cin j (fun (F # j) a) == x)
-      (c : cin j (fun (G # j) a) == δ₀ x)
+    id-free-aux4-aux-post : {x : Colim ForgF} (r : cin j (str (F # j) a) == x)
+      (c : cin j (str (G # j) a) == δ₀ x)
       (t₂ : ap δ₀ r == ! (ap (cin j) (! (snd (nat δ j) a) ∙ idp)) ∙ c) →
       ap2-!-!-rid 𝕕₀ {f₂ = right {d = SpCos₁}} r (glue (cin j a)) ∙
       ap (λ p → ! (ap (right ∘ δ₀) r) ∙ ! p ∙ idp) (𝕕-βr (cin j a)) ∙
@@ -206,8 +206,8 @@ module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
     id-free-aux4-aux-post idp c t₂ =
       id-free-aux4-aux-post-aux (glue {d = SpCos₁} (cin j a)) (snd (nat δ j) a) c (glue {d = SpCos₂} (cin j a)) (𝕕-βr (cin j a)) t₂
 
-    id-free-aux4 : (r : cin j (fun (F # j) a) == ψ₁ (cin i a))
-      (c : cin j (fun (G # j) a) == δ₀ (ψ₁ (cin i a)))
+    id-free-aux4 : (r : cin j (str (F # j) a) == ψ₁ (cin i a))
+      (c : cin j (str (G # j) a) == δ₀ (ψ₁ (cin i a)))
       (t₂ : ap δ₀ r == ! (ap (cin j) (! (snd (nat δ j) a) ∙ idp)) ∙ c)
       (ξ : idp == glue (cin j a) ∙ ap right (ap ψ₂ (cglue g a)) ∙ ! (glue (cin i a))) →
       ap2-!-!-rid 𝕕₀ {f₂ = right {d = SpCos₁}} r (glue (cin j a)) ◃∙
@@ -253,14 +253,14 @@ module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
 
     module _ {a' : A} {m m' : a == a'} where
 
-      pre-loop : (ρ : m == m') {e : ty (F # j)} (s : e == fun (F # j) a)
+      pre-loop : (ρ : m == m') {e : ty (F # j)} (s : e == str (F # j) a)
         {x : Colim ForgF} (d : cin j e == x) →  
         ap 𝕕₀ (! (ap right (! (ap (cin j) s) ∙ d)) ∙ ! (glue (cin j a)) ∙ ap left m) ∙ idp
           ==
         ap 𝕕₀ (! (ap right (! (ap (cin j) s) ∙ d)) ∙ ! (glue (cin j a)) ∙ ap left m') ∙ idp
       pre-loop idp s d = idp
       
-      post-loop : (ρ : m == m') {e : ty (G # j)} (s : e == fun (G # j) a)
+      post-loop : (ρ : m == m') {e : ty (G # j)} (s : e == str (G # j) a)
         {x₁ x₂ : ty (G # i)} (v : x₁ == x₂) (d : cin j e == cin i x₂) → 
         ap (right {d = SpCos₂} ∘ cin i) v ∙
         ! (ap right (! (ap (cin j) s) ∙ d)) ∙
@@ -271,8 +271,8 @@ module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
         ! (glue (cin j a)) ∙ ap left m
       post-loop idp s v d = idp
 
-    id-free-aux3 : {u : a == a} (ρ : u == idp) (r : cin j (fun (F # j) a) == ψ₁ (cin i a))
-      (c : cin j (fun (G # j) a) == δ₀ (ψ₁ (cin i a)))
+    id-free-aux3 : {u : a == a} (ρ : u == idp) (r : cin j (str (F # j) a) == ψ₁ (cin i a))
+      (c : cin j (str (G # j) a) == δ₀ (ψ₁ (cin i a)))
       (t₂ : ap δ₀ r == ! (ap (cin j) (! (snd (nat δ j) a) ∙ idp)) ∙ c)
       (ξ : ap left u == glue (cin j a) ∙ ap right (ap ψ₂ (cglue g a)) ∙ ! (glue (cin i a))) → 
       ap3-!-! 𝕕₀ {f₂ = right} u r (glue (cin j a)) ∙
@@ -292,8 +292,8 @@ module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       post-loop ρ idp idp c
     id-free-aux3 idp r c t₂ ξ = =ₛ-out (id-free-aux4 r c t₂ ξ)
 
-    id-free-aux2 : (ρ : ap [id] (cglue g a) == idp) (r : cin j (fun (F # j) a) == cin i (fun (F # i) a))
-      {x : ty (G # j)} (e : x == fun (G # j) a) (c : cin j x == cin i (fst (nat δ i) (fun (F # i) a)))
+    id-free-aux2 : (ρ : ap [id] (cglue g a) == idp) (r : cin j (str (F # j) a) == cin i (str (F # i) a))
+      {x : ty (G # j)} (e : x == str (G # j) a) (c : cin j x == cin i (fst (nat δ i) (str (F # i) a)))
       (t₂ : ap δ₀ r == ! (ap (cin j) (e ∙ ! (snd (nat δ j) a) ∙ idp)) ∙ c) → 
       ap4-!-!-!-rid 𝕕₀ {f₂ = right} {f₃ = cin j} idp r (ap [id] (cglue g a)) (glue {d = SpCos₁} (cin j a)) ∙
       ap (λ p → ! (ap (right ∘ δ₀) r) ∙ ! p ∙ ap left (ap [id] (cglue g a))) (𝕕-βr (cin j a)) ∙
@@ -314,9 +314,9 @@ module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       post-loop ρ e idp c
     id-free-aux2 ρ r idp c t₂ = id-free-aux3 ρ r c t₂ (apCommSq-cmp left right glue (cglue g a)) 
 
-    id-red-aux : (ρ : ap [id] (cglue g a) == idp) (r : cin j (fun (F # j) a) == cin i (fun (F # i) a))
-      {x : ty (G # i)} (d : fst (nat δ i) (fun (F # i) a) == x) (e : fst (G <#> g) x == fun (G # j) a)
-      (t₂ : ap δ₀ r == ! (ap (cin j) (ap (fst (G <#> g)) d ∙ e ∙ ! (snd (nat δ j) a) ∙ idp)) ∙ cglue g (fst (nat δ i) (fun (F # i) a)))
+    id-red-aux : (ρ : ap [id] (cglue g a) == idp) (r : cin j (str (F # j) a) == cin i (str (F # i) a))
+      {x : ty (G # i)} (d : fst (nat δ i) (str (F # i) a) == x) (e : fst (G <#> g) x == str (G # j) a)
+      (t₂ : ap δ₀ r == ! (ap (cin j) (ap (fst (G <#> g)) d ∙ e ∙ ! (snd (nat δ j) a) ∙ idp)) ∙ cglue g (fst (nat δ i) (str (F # i) a)))
       → 
       ap4-!-!-!-rid 𝕕₀ {f₂ = right} {f₃ = cin j} idp r (ap [id] (cglue g a)) (glue {d = SpCos₁} (cin j a)) ∙
       ap (λ p → ! (ap (right ∘ δ₀) r) ∙ ! p ∙ ap left (ap [id] (cglue g a))) (𝕕-βr (cin j a)) ∙
@@ -336,14 +336,14 @@ module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
         (apCommSq2 (cin j ∘ fst (G <#> g)) (cin i) (cglue g) d) ∙
       long-red-ap5-rid right {f₃ = fst (nat δ j)} idp d e (snd (nat δ j) a) (cglue g x) (glue (cin j a)) ∙
       post-loop ρ e d (cglue g x)
-    id-red-aux ρ r idp e t₂ = id-free-aux2 ρ r e (cglue g (fst (nat δ i) (fun (F # i) a))) t₂
+    id-red-aux ρ r idp e t₂ = id-free-aux2 ρ r e (cglue g (fst (nat δ i) (str (F # i) a))) t₂
 
     abstract
       id-red : {m : a == a} (τ : ap [id] (cglue g a) == m) (ρ : m == idp)
-        {e : ty (F # j)} (s : e == fun (F # j) a) (r : cin j e == cin i (fun (F # i) a))
-        {w : fst (G <#> g) (fst (nat δ i) (fun (F # i) a)) == fst (nat δ j) e}
+        {e : ty (F # j)} (s : e == str (F # j) a) (r : cin j e == cin i (str (F # i) a))
+        {w : fst (G <#> g) (fst (nat δ i) (str (F # i) a)) == fst (nat δ j) e}
         (t₁ : w == ap (fst (G <#> g)) (snd (nat δ i) a) ∙ snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) s))
-        (t₂ : ap δ₀ r == ! (ap (cin j) w) ∙ cglue g (fst (nat δ i) (fun (F # i) a))) → 
+        (t₂ : ap δ₀ r == ! (ap (cin j) w) ∙ cglue g (fst (nat δ i) (str (F # i) a))) → 
         ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (! (ap (λ p → ! (ap right (! (ap (cin j) s) ∙ r)) ∙ ! (glue (cin j a)) ∙ p) (ap (ap left) τ))))) ◃∙
         ap4-!-!-!-rid 𝕕₀ s r (ap [id] (cglue g a)) (glue (cin j a)) ◃∙
         ap (λ p → ! (ap (right ∘ δ₀) (! (ap (cin j) s) ∙ r)) ∙ ! p ∙ ap left (ap [id] (cglue g a))) (𝕕-βr (cin j a)) ◃∙
@@ -352,10 +352,10 @@ module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
         ap ! (ap (λ p → glue (cin i a) ∙ ap right (! p)) (ap (λ p → ! p ∙ ap (cin j ∘ fst (nat δ j)) s ∙
           ap (cin j) (snd (nat δ j) a)  ∙ ap ψ₂ (cglue g a)) t₂)) ◃∙
         ap ! (ap (λ p → glue (cin i a) ∙ ap right (! p)) (ap (λ p → ! p ∙ ap (cin j ∘ fst (nat δ j)) s ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ (cglue g a))
-          (ap (λ p → ! (ap (cin j) p) ∙ cglue g (fst (nat δ i) (fun (F # i) a))) t₁))) ◃∙
+          (ap (λ p → ! (ap (cin j) p) ∙ cglue g (fst (nat δ i) (str (F # i) a))) t₁))) ◃∙
         ↯ (ψ₂-free (cglue g a) s (snd (nat δ i) a) (snd (G <#> g) a)) ◃∙
         ! (ap (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p)
-             (! (ap (λ p → ! (ap right (! (ap (cin j) (snd (G <#> g) a)) ∙ cglue g (fun (G # i) a))) ∙ ! (glue (cin j a)) ∙ p) (ap (ap left) τ)))) ◃∎
+             (! (ap (λ p → ! (ap right (! (ap (cin j) (snd (G <#> g) a)) ∙ cglue g (str (G # i) a))) ∙ ! (glue (cin j a)) ∙ p) (ap (ap left) τ)))) ◃∎
           =ₛ
         pre-loop ρ s r ◃∙
         ap2-!-!-!-rid2 𝕕₀ s r (glue (cin j a)) ◃∙
@@ -365,7 +365,7 @@ module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
           (ap-∘ right δ₀ r) ◃∙
         ap (λ p → ! (! (ap (right ∘ cin j ∘ fst (nat δ j)) s) ∙ ap right p) ∙ ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a))))) t₂ ◃∙
         ap (λ p →
-             ! (! (ap (right ∘ cin j ∘ fst (nat δ j)) s) ∙ ap right (! (ap (cin j) p) ∙ cglue g (fst (nat δ i) (fun (F # i) a)))) ∙
+             ! (! (ap (right ∘ cin j ∘ fst (nat δ j)) s) ∙ ap right (! (ap (cin j) p) ∙ cglue g (fst (nat δ i) (str (F # i) a)))) ∙
              ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a)))))
            t₁ ◃∙
         ap (λ p →
@@ -373,6 +373,6 @@ module ConstrMap7 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
                ap (right {d = SpCos₂}) (! (ap (cin j) (ap (fst (G <#> g)) (snd (nat δ i) a)∙ snd (G <#> g) a ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) s))) ∙ p)) ∙
              ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a)))))
            (apCommSq2 (cin j ∘ fst (G <#> g)) (cin i) (cglue g) (snd (nat δ i) a)) ◃∙
-        long-red-ap5-rid right s (snd (nat δ i) a) (snd (G <#> g) a) (snd (nat δ j) a) (cglue g (fun (G # i) a)) (glue (cin j a)) ◃∙
-        post-loop ρ (snd (G <#> g) a) (snd (nat δ i) a) (cglue g (fun (G # i) a)) ◃∎
+        long-red-ap5-rid right s (snd (nat δ i) a) (snd (G <#> g) a) (snd (nat δ j) a) (cglue g (str (G # i) a)) (glue (cin j a)) ◃∙
+        post-loop ρ (snd (G <#> g) a) (snd (nat δ i) a) (cglue g (str (G # i) a)) ◃∎
       id-red idp ρ idp r idp t₂ = =ₛ-in (id-red-aux ρ r (snd (nat δ i) a) (snd (G <#> g) a) t₂)

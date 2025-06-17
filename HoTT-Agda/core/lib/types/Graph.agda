@@ -25,7 +25,7 @@ record GraphHom {ℓv ℓe ℓv' ℓe'} (G : Graph ℓv ℓe) (G' : Graph ℓv' 
     _#_ : Obj G → Obj G'
     _<#>_ : ∀ {x y : Obj G} → Hom G x y → Hom G' (_#_ x) (_#_ y)
   infix 90 _<#>_
-  infix 91 _#_
+  infix 90 _#_
 open GraphHom public
 
 -- graph underlying a cospan
