@@ -143,9 +143,6 @@ is-pb-wc : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diag-cs
   → Type (lmax ℓc₁ ℓc₂)
 is-pb-wc = is-lim-wc {G = Graph-cspan}
 
-open Map-diag
-open gap-ind
-
 -- action of limit on diagram maps
 module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} {Δ₁ Δ₂ : Diagram G C}
   {a₁ a₂ : ob C} {K₁ : Cone-wc Δ₁ a₁} {K₂ : Cone-wc Δ₂ a₂} (μ : Map-diag Δ₁ Δ₂) where
@@ -158,46 +155,26 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
   {a₁ a₂ a₃ : ob C} {K₁ : Cone-wc Δ₁ a₁} {K₂ : Cone-wc Δ₂ a₂} {K₃ : Cone-wc Δ₃ a₃}
   (lim₁ : is-lim-wc K₁) (lim₂ : is-lim-wc K₂) (lim₃ : is-lim-wc K₃) where
 
-{-
-  lim-map-wc-∘ : {μ₁ : Map-diag Δ₁ Δ₂} {μ₂ : Map-diag Δ₂ Δ₃} →
-    lim-map-wc  (μ₂ diag-map-∘ μ₁) lim₃ == ⟦ C ⟧ lim-map-wc μ₂ lim₃ ◻ lim-map-wc μ₁ lim₂
-  lim-map-wc-∘ {μ₁} {μ₂} = lim-wc-homeq K₃ lim₃
-    (λ x →
-      gap-map-ind-leg K₃ lim₃ x ∙
-      α C (map-comp μ₂ x) (map-comp μ₁ x) (leg K₁ x) ∙
-      ! (ap (λ m → ⟦ C ⟧ map-comp μ₂ x ◻ m) (gap-map-ind-leg K₂ lim₂ x)) ∙ 
-      ! (α C (map-comp μ₂ x) (leg K₂ x) (lim-map-wc lim₁ lim₂ μ₁)) ∙
-      ! (ap (λ m → ⟦ C ⟧ m ◻ lim-map-wc lim₁ lim₂ μ₁) (gap-map-ind-leg K₃ lim₃ x)) ∙
-      α C (leg K₃ x) (lim-map-wc lim₂ lim₃ μ₂) (lim-map-wc lim₁ lim₂ μ₁))
-    λ g → =ₛ-out (aux g)
-    where abstract
-      aux : ∀ {x y} g → 
-        ! (α C (D₁ Δ₃ g) (leg K₃ x) (lim-map-wc lim₁ lim₃ (μ₂ diag-map-∘ μ₁))) ◃∙
-        ap (λ m → ⟦ C ⟧ m ◻ lim-map-wc lim₁ lim₃ (μ₂ diag-map-∘ μ₁)) (tri K₃ g) ◃∙
-        gap-map-ind-leg K₃ lim₃ y ◃∙
-        α C (map-comp μ₂ y) (map-comp μ₁ y) (leg K₁ y) ◃∙
-        ! (ap (λ m → ⟦ C ⟧ map-comp μ₂ y ◻ m) (gap-map-ind-leg K₂ lim₂ y)) ◃∙
-        ! (α C (map-comp μ₂ y) (leg K₂ y) (lim-map-wc lim₁ lim₂ μ₁)) ◃∙
-        ! (ap (λ m → ⟦ C ⟧ m ◻ lim-map-wc lim₁ lim₂ μ₁) (gap-map-ind-leg K₃ lim₃ y)) ◃∙
-        α C (leg K₃ y) (lim-map-wc lim₂ lim₃ μ₂) (lim-map-wc lim₁ lim₂ μ₁) ◃∎
-          =ₛ
-        ap (λ m → ⟦ C ⟧ (D₁ Δ₃ g) ◻ m)
-          (gap-map-ind-leg K₃ lim₃ x ∙
-          α C (map-comp μ₂ x) (map-comp μ₁ x) (leg K₁ x) ∙
-          ! (ap (λ m → ⟦ C ⟧ map-comp μ₂ x ◻ m) (gap-map-ind-leg K₂ lim₂ x)) ∙
-          ! (α C (map-comp μ₂ x) (leg K₂ x) (lim-map-wc lim₁ lim₂ μ₁)) ∙
-          ! (ap (λ m → ⟦ C ⟧ m ◻ lim-map-wc lim₁ lim₂ μ₁) (gap-map-ind-leg K₃ lim₃ x)) ∙
-          α C (leg K₃ x) (lim-map-wc lim₂ lim₃ μ₂) (lim-map-wc lim₁ lim₂ μ₁)) ◃∙
-        ! (α C (D₁ Δ₃ g) (leg K₃ x) (⟦ C ⟧ lim-map-wc lim₂ lim₃ μ₂ ◻ lim-map-wc lim₁ lim₂ μ₁)) ◃∙
-        ap (λ m → ⟦ C ⟧ m ◻ ⟦ C ⟧ lim-map-wc lim₂ lim₃ μ₂ ◻ lim-map-wc lim₁ lim₂ μ₁) (tri K₃ g) ◃∎
-      aux {x} {y} g =
-        ! (α C (D₁ Δ₃ g) (leg K₃ x) (lim-map-wc lim₁ lim₃ (μ₂ diag-map-∘ μ₁))) ◃∙
-        ap (λ m → ⟦ C ⟧ m ◻ lim-map-wc lim₁ lim₃ (μ₂ diag-map-∘ μ₁)) (tri K₃ g) ◃∙
-        gap-map-ind-leg K₃ lim₃ y ◃∙
-        α C (map-comp μ₂ y) (map-comp μ₁ y) (leg K₁ y) ◃∙
-        ! (ap (λ m → ⟦ C ⟧ map-comp μ₂ y ◻ m) (gap-map-ind-leg K₂ lim₂ y)) ◃∙
-        ! (α C (map-comp μ₂ y) (leg K₂ y) (lim-map-wc lim₁ lim₂ μ₁)) ◃∙
-        ! (ap (λ m → ⟦ C ⟧ m ◻ lim-map-wc lim₁ lim₂ μ₁) (gap-map-ind-leg K₃ lim₃ y)) ◃∙
-        α C (leg K₃ y) (lim-map-wc lim₂ lim₃ μ₂) (lim-map-wc lim₁ lim₂ μ₁) ◃∎
-          =ₛ⟨ {!!} ⟩
-        {!!} -}
+  abstract
+    lim-map-wc-∘ : (pent : pentagon-wc C) {μ₁ : Map-diag Δ₁ Δ₂} {μ₂ : Map-diag Δ₂ Δ₃} →
+      ⟦ C ⟧ lim-map-wc {K₁ = K₂} μ₂ lim₃ ◻ lim-map-wc {K₁ = K₁} μ₁ lim₂ == lim-map-wc {K₁ = K₁} (μ₂ diag-map-∘ μ₁) lim₃
+    lim-map-wc-∘ pent {μ₁} {μ₂} = lim-pre-cmp-inj K₃ lim₃ aux
+      where abstract
+        aux :
+          pre-cmp-con K₃ a₁ (⟦ C ⟧ lim-map-wc {K₁ = K₂} μ₂ lim₃ ◻ lim-map-wc {K₁ = K₁} μ₁ lim₂)
+            ==
+          pre-cmp-con K₃ a₁ (lim-map-wc {K₁ = K₁} (μ₂ diag-map-∘ μ₁) lim₃)
+        aux =
+          pre-cmp-con K₃ a₁ (⟦ C ⟧ lim-map-wc {K₁ = K₂} μ₂ lim₃ ◻ lim-map-wc {K₁ = K₁} μ₁ lim₂)
+            =⟨ pre-cmp-∘ pent (lim-map-wc {K₁ = K₂} μ₂ lim₃) (lim-map-wc {K₁ = K₁} μ₁ lim₂) K₃ ⟩
+          pre-cmp-con (pre-cmp-con K₃ a₂ (lim-map-wc μ₂ lim₃)) a₁ (lim-map-wc μ₁ lim₂)
+            =⟨ ap (λ V → pre-cmp-con V a₁ (lim-map-wc {K₁ = K₁} μ₁ lim₂)) (<–-inv-r (is-lim-≃ K₃ lim₃ a₂) (whisk-dmap-con μ₂ K₂)) ⟩
+          pre-cmp-con (whisk-dmap-con μ₂ K₂) a₁ (lim-map-wc μ₁ lim₂)
+            =⟨ whisk-pre-cmp-coher pent μ₂ (lim-map-wc μ₁ lim₂) K₂ ⟩
+          whisk-dmap-con μ₂ (pre-cmp-con K₂ a₁ (lim-map-wc μ₁ lim₂))
+            =⟨ ap (λ V → whisk-dmap-con μ₂ V) (<–-inv-r (is-lim-≃ K₂ lim₂ a₁) (whisk-dmap-con μ₁ K₁)) ⟩
+          whisk-dmap-con μ₂ (whisk-dmap-con μ₁ K₁)
+            =⟨ ! (whisk-diag-∘ pent μ₁ μ₂ K₁) ⟩
+          whisk-dmap-con (μ₂ diag-map-∘ μ₁) K₁
+            =⟨ ! (<–-inv-r (is-lim-≃ K₃ lim₃ a₁) (whisk-dmap-con (μ₂ diag-map-∘ μ₁) K₁)) ⟩
+          pre-cmp-con K₃ a₁ (lim-map-wc {K₁ = K₁} (μ₂ diag-map-∘ μ₁) lim₃) =∎

@@ -20,9 +20,9 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
 
   abstract
   
-    pst-cmp-assoc : {a b c : ob C} (g : hom C b c) (f : hom C a b) {Δ : Diagram G C} (K : Cocone-wc Δ a)
+    pst-cmp-∘ : {a b c : ob C} (g : hom C b c) (f : hom C a b) {Δ : Diagram G C} (K : Cocone-wc Δ a)
       → post-cmp-coc K c (⟦ C ⟧ g ◻ f) == post-cmp-coc (post-cmp-coc K b f) c g
-    pst-cmp-assoc g f {Δ} K = coc-to-==-◃ G ((λ x → α C g f (leg K x)) ,
+    pst-cmp-∘ g f {Δ} K = coc-to-==-◃ G ((λ x → α C g f (leg K x)) ,
       (λ {x} {y} γ →
         (α C (⟦ C ⟧ g ◻ f) (leg K y) (D₁ Δ γ) ∙
         ap (λ m → ⟦ C ⟧ (⟦ C ⟧ g ◻ f) ◻ m) (tri K γ)) ◃∙
@@ -61,9 +61,9 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
         (α C g (⟦ C ⟧ f ◻ leg K y) (D₁ Δ γ) ∙
         ap (λ m → ⟦ C ⟧ g ◻ m) (α C f (leg K y) (D₁ Δ γ) ∙ ap (λ m → ⟦ C ⟧ f ◻ m) (tri K γ))) ◃∎ ∎ₛ))
 
-    pre-cmp-assoc : {a b c : ob C} (g : hom C b c) (f : hom C a b) {Δ : Diagram G C} (K : Cone-wc Δ c)
+    pre-cmp-∘ : {a b c : ob C} (g : hom C b c) (f : hom C a b) {Δ : Diagram G C} (K : Cone-wc Δ c)
       → pre-cmp-con K a (⟦ C ⟧ g ◻ f) == pre-cmp-con (pre-cmp-con K b g) a f 
-    pre-cmp-assoc g f {Δ} K = con-to-==-◃ ((λ x → ! (α C (leg K x) g f)) ,
+    pre-cmp-∘ g f {Δ} K = con-to-==-◃ ((λ x → ! (α C (leg K x) g f)) ,
       λ {x} {y} γ →
         (! (α C (D₁ Δ γ) (leg K x) (⟦ C ⟧ g ◻ f)) ∙ ap (λ m → ⟦ C ⟧ m ◻ ⟦ C ⟧ g ◻ f) (tri K γ)) ◃∙
         ! (α C (leg K y) g f) ◃∎
