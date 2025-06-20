@@ -38,6 +38,7 @@ record Functor-wc {i₁ j₁ i₂ j₂} (B : WildCat {i₁} {j₁}) (C : WildCat
     comp : {a b c : ob B} (f : hom B a b) (g : hom B b c) → arr (⟦ B ⟧ g ◻ f) == ⟦ C ⟧ arr g ◻ arr f
 open Functor-wc public
 
+-- equivalence of objects induces equivalence of hom types
 module _ {i j} (C : WildCat {i} {j}) where
 
   equiv-wc : {a b : ob C} → hom C a b → Type j
@@ -59,7 +60,7 @@ module _ {i j} (C : WildCat {i} {j}) where
       (λ g → α C g <–-wc f ∙ ap (λ m → ⟦ C ⟧ g ◻ m) (! <–-wc-linv) ∙ ! (ρ C g))
       λ g → α C g f <–-wc ∙ ap (λ m → ⟦ C ⟧ g ◻ m) (! <–-wc-rinv) ∙ ! (ρ C g) 
 
-Type-wc : (i : ULevel) → WildCat {lsucc i} {i}
+Type-wc : (i : ULevel) → WildCat
 ob (Type-wc i) = Type i
 hom (Type-wc i) A B = A → B
 id₁ (Type-wc i) = idf
@@ -68,13 +69,36 @@ _◻_ (Type-wc i) g f = g ∘ f
 lamb (Type-wc i) = λ _ → idp
 α (Type-wc i) = λ _ _ _ → idp
 
--- pentagon identity and some variants
+-- triangle identity
+
+triangle-wc : ∀ {i j} (C : WildCat {i} {j}) → Type (lmax i j)
+triangle-wc C = {a b c : ob C} (g : hom C b c) (f : hom C a b)  → 
+  ap (λ m → ⟦ C ⟧ m ◻ f) (ρ C g) ∙
+  α C g (id₁ C b) f
+    ==
+  ap (λ m → ⟦ C ⟧ g ◻ m) (lamb C f)
+
+-- pentagon identity
 
 pentagon-wc : ∀ {i j} (C : WildCat {i} {j}) → Type (lmax i j)
 pentagon-wc C = {a b c d e : ob C} (k : hom C d e) (g : hom C c d) (h : hom C b c) (f : hom C a b) →
   ap (λ m → ⟦ C ⟧ m ◻ f) (α C k g h) ∙ α C k (⟦ C ⟧ g ◻ h) f ∙ ap (λ m → ⟦ C ⟧ k ◻ m) (α C g h f)
     ==
   α C (⟦ C ⟧ k ◻ g) h f ∙ α C k g (⟦ C ⟧ h ◻ f)
+
+bicat-wc : ∀ {i j} → Type (lmax (lsucc i) (lsucc j))
+bicat-wc {i} {j} = Σ (WildCat {i} {j}) (λ C → triangle-wc C × pentagon-wc C)
+
+F-α-wc : ∀ {i₁ i₂ j₁ j₂} {C₁ : WildCat {i₁} {j₁}} {C₂ : WildCat {i₂} {j₂}}
+  → Functor-wc C₁ C₂ → Type (lmax (lmax i₁ j₁) j₂)
+F-α-wc {C₁ = C₁} {C₂} F = {a b c d : ob C₁} (h : hom C₁ c d) (g : hom C₁ b c) (f : hom C₁ a b) →
+  comp F f (⟦ C₁ ⟧ h ◻ g) ∙
+  ap (λ m → ⟦ C₂ ⟧ m ◻ arr F f) (comp F g h) ∙
+  α C₂ (arr F h) (arr F g) (arr F f)
+    ==
+  ap (arr F) (α C₁ h g f) ∙
+  comp F (⟦ C₁ ⟧ g ◻ f) h ∙
+  ap (λ m → ⟦ C₂ ⟧ arr F h ◻ m) (comp F f g)
 
 module _ {i j} {C : WildCat {i} {j}} (pent : pentagon-wc C)
   {a b c d e : ob C} (k : hom C d e) (g : hom C c d) (h : hom C b c) (f : hom C a b) where
@@ -128,3 +152,28 @@ module _ {i j} {C : WildCat {i} {j}} (pent : pentagon-wc C)
           ! (α C k (⟦ C ⟧ g ◻ h) f) ◃∙ ! (ap (λ m → ⟦ C ⟧ m ◻ f) (α C k g h)) ◃∙ α C (⟦ C ⟧ k ◻ g) h f ◃∙ α C k g (⟦ C ⟧ h ◻ f) ◃∎
             =ₛ₁⟨ 1 & 1 & !-ap (λ m → ⟦ C ⟧ m ◻ f) (α C k g h) ⟩
           ! (α C k (⟦ C ⟧ g ◻ h) f) ◃∙ ap (λ m → ⟦ C ⟧ m ◻ f) (! (α C k g h)) ◃∙ α C (⟦ C ⟧ k ◻ g) h f ◃∙ α C k g (⟦ C ⟧ h ◻ f) ◃∎ ∎ₛ
+
+module _ {i₁ i₂ j₁ j₂} {C₁ : WildCat {i₁} {j₁}} {C₂ : WildCat {i₂} {j₂}} {F : Functor-wc C₁ C₂} (F-assoc : F-α-wc F)
+  {a b c d : ob C₁} (h : hom C₁ c d) (g : hom C₁ b c) (f : hom C₁ a b) where
+
+  abstract
+
+    F-α-wc◃ :
+      comp F f (⟦ C₁ ⟧ h ◻ g) ◃∙
+      ap (λ m → ⟦ C₂ ⟧ m ◻ arr F f) (comp F g h) ◃∙
+      α C₂ (arr F h) (arr F g) (arr F f) ◃∎
+        =ₛ
+      ap (arr F) (α C₁ h g f) ◃∙
+      comp F (⟦ C₁ ⟧ g ◻ f) h ◃∙
+      ap (λ m → ⟦ C₂ ⟧ arr F h ◻ m) (comp F f g) ◃∎
+    F-α-wc◃ = =ₛ-in (F-assoc h g f)
+
+    F-α-wc-rot1 :
+      ! (ap (arr F) (α C₁ h g f)) ◃∎
+        =ₛ
+      comp F (⟦ C₁ ⟧ g ◻ f) h ◃∙
+      ap (λ m → ⟦ C₂ ⟧ arr F h ◻ m) (comp F f g) ◃∙
+      ! (α C₂ (arr F h) (arr F g) (arr F f)) ◃∙
+      ! (ap (λ m → ⟦ C₂ ⟧ m ◻ arr F f) (comp F g h)) ◃∙
+      ! (comp F f (⟦ C₁ ⟧ h ◻ g)) ◃∎
+    F-α-wc-rot1 = post-rotate-in (post-rotate-in (post-rotate-in (pre-rotate'-in F-α-wc◃)))

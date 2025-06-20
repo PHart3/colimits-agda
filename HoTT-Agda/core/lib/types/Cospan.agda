@@ -6,6 +6,7 @@ open import lib.types.Pi
 open import lib.types.Sigma
 open import lib.types.Graph
 open import lib.wild-cats.WildCats
+open import lib.wild-cats.Cone-wc-SIP
 
 module lib.types.Cospan where
 
@@ -95,6 +96,11 @@ module _ {i j k} {D : Cospan {i} {j} {k}} where
     → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
   Cone-csp-mor {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₂ → T₁) (Cone-csp-mor-str D K₁ K₂)
 
+  Cone-csp-iso-mor : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂}
+    → Cone-csp-iso D K₁ K₂ → Cone-csp-mor K₁ K₂
+  fst (Cone-csp-iso-mor μ) = –> (fst μ)
+  snd (Cone-csp-iso-mor μ) = snd μ
+
   open Cospan D
   open Cone-csp-mor-str
 
@@ -131,6 +137,10 @@ module _ {i j k} {D : Cospan {i} {j} {k}} where
     {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂} {K₃ : Cone-csp D T₃} →
     Cone-csp-mor K₂ K₃ → Cone-csp-mor K₁ K₂ → Cone-csp-mor K₁ K₃
   (μ₂ Cone-csp-mor-∘ μ₁) = (fst μ₁ ∘ fst μ₂) , (snd μ₂ Cone-csp-mor-∘-σ snd μ₁)
+
+  cospan-is-qinv : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂}
+    → Cone-csp-mor K₁ K₂ → Cone-csp-mor K₂ K₁ → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
+  cospan-is-qinv μ ν = (μ Cone-csp-mor-∘ ν == Cone-csp-mor-id) × (ν Cone-csp-mor-∘ μ == Cone-csp-mor-id)
 
 -- SIP for cospan cones
 

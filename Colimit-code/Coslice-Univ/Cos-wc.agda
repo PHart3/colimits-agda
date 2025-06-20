@@ -23,6 +23,16 @@ module _ {j} (A : Type j) where
   lamb (Coslice-wc i) f = UndFun∼-to-== ((λ _ → idp) , (λ a → ! (∙-unit-r (snd f a)) ∙ ap (λ p → p ∙ idp) (! (ap-idf (snd f a)))))
   α (Coslice-wc i) h g f = UndFun∼-to-== (*→-assoc h g f)
 
+  -- 2-coherence
+
+  triangle-wc-Cos : ∀ {i} → triangle-wc (Coslice-wc i)
+  triangle-wc-Cos = prove_later where postulate prove_later : _
+
+  pentagon-wc-Cos : ∀ {i} → pentagon-wc (Coslice-wc i)
+  pentagon-wc-Cos = prove_later where postulate prove_later : _
+
+  -- forgetful functor
+
   Forg-funct-cos : ∀ {i} → Functor-wc (Coslice-wc (lmax i j)) (Type-wc (lmax i j))
   obj Forg-funct-cos = ty
   arr Forg-funct-cos f = fst f

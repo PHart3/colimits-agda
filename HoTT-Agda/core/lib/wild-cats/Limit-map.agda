@@ -8,7 +8,7 @@ open import lib.types.Graph
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Diagram-wc
 open import lib.wild-cats.Limit
-open import lib.wild-cats.Diagram-wc-SIP
+open import lib.wild-cats.Diag-ty-SIP
 
 module lib.wild-cats.Limit-map where
 
@@ -36,13 +36,13 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
       lemma {x} {y} {f} idp idp = ap-∙ (comp μ₂ y) (sq μ₁ f (fst K x)) idp
 
   lim-eqv-to-eqv : ∀ {ℓ₁ ℓ₂} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)} (μ : Map-diag-ty Δ₁ Δ₂)
-    → eqv-dmap μ → is-equiv (Limit-map μ)
-  lim-eqv-to-eqv {Δ₁ = Δ₁} {Δ₂} μ e = is-eq (Limit-map μ) (Limit-map (fst (eqv-to-qinv-dmap μ e)))
+    → eqv-dmap-ty μ → is-equiv (Limit-map μ)
+  lim-eqv-to-eqv {Δ₁ = Δ₁} {Δ₂} μ e = is-eq (Limit-map μ) (Limit-map (fst (eqv-to-qinv-dmap-ty μ e)))
     (λ b →
-      lim-map-∘ {μ₂ = μ} {μ₁ = fst (eqv-to-qinv-dmap μ e)} b ∙
-      app= (ap Limit-map (dmap-to-== (snd (snd (eqv-to-qinv-dmap μ e))))) b ∙
+      lim-map-∘ {μ₂ = μ} {μ₁ = fst (eqv-to-qinv-dmap-ty μ e)} b ∙
+      app= (ap Limit-map (dmap-ty-to-== (snd (snd (eqv-to-qinv-dmap-ty μ e))))) b ∙
       lim-map-idf {Δ = Δ₂} b)
     λ a →
-      lim-map-∘ {μ₂ = fst (eqv-to-qinv-dmap μ e)} {μ₁ = μ} a ∙
-      app= (ap Limit-map (dmap-to-== (fst (snd (eqv-to-qinv-dmap μ e))))) a ∙
+      lim-map-∘ {μ₂ = fst (eqv-to-qinv-dmap-ty μ e)} {μ₁ = μ} a ∙
+      app= (ap Limit-map (dmap-ty-to-== (fst (snd (eqv-to-qinv-dmap-ty μ e))))) a ∙
       lim-map-idf {Δ = Δ₁} a

@@ -5,7 +5,7 @@ open import lib.types.Sigma
 open import lib.types.Graph
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Diagram-wc
-open import lib.wild-cats.Diagram-wc-SIP
+open import lib.wild-cats.Diag-ty-SIP
 
 -- type-valued diagrams over graphs
 
@@ -63,7 +63,7 @@ module _ {Γ : Graph ℓv ℓe} where
   infixr 70 _=-dmor_
   _=-dmor_ : ∀ {ℓ₁ ℓ₂} {F₁ : Diag ℓ₁ Γ} {F₂ : Diag ℓ₂ Γ}
     → DiagMor F₁ F₂ → DiagMor F₁ F₂ → Type (lmax (lmax (lmax ℓv ℓe) ℓ₁) ℓ₂)
-  μ₁ =-dmor μ₂ = (diagmor-to-wc μ₁) =-dmap (diagmor-to-wc μ₂)
+  μ₁ =-dmor μ₂ = (diagmor-to-wc μ₁) =-dmap-ty (diagmor-to-wc μ₂)
 
   module _ {ℓ₁ ℓ₂} {F₁ : Diag ℓ₁ Γ} {F₂ : Diag ℓ₂ Γ} where
 
@@ -76,12 +76,12 @@ module _ {Γ : Graph ℓv ℓe} where
       Σ (DiagMor F₂ F₁) (λ ν → (ν diag-mor-∘ μ =-dmor diag-mor-idf F₁) × (μ diag-mor-∘ ν =-dmor diag-mor-idf F₂))
 
     dmor-to-== : {μ₁ μ₂ : DiagMor F₁ F₂} → μ₁ =-dmor μ₂ → μ₁ == μ₂
-    dmor-to-== {μ₁} {μ₂} e = equiv-is-inj diagmor-to-wc-eqv μ₁ μ₂ (dmap-to-== e)
+    dmor-to-== {μ₁} {μ₂} e = equiv-is-inj diagmor-to-wc-eqv μ₁ μ₂ (dmap-ty-to-== e)
 
     eqv-to-qinv-dmor : {μ : DiagMor F₁ F₂} → eqv-dmor μ → qinv-dmor μ
-    eqv-to-qinv-dmor {μ} e = aux (eqv-to-qinv-dmap (diagmor-to-wc μ) e)
+    eqv-to-qinv-dmor {μ} e = aux (eqv-to-qinv-dmap-ty (diagmor-to-wc μ) e)
       where
-        aux : qinv-dmap (diagmor-to-wc μ) → qinv-dmor μ
+        aux : qinv-dmap-ty (diagmor-to-wc μ) → qinv-dmor μ
         fst (aux (m , _)) = diagmor-from-wc m
         fst (snd (aux (m , li , ri))) = li
         snd (snd (aux (m , li , ri))) = ri

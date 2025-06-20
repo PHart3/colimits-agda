@@ -347,6 +347,17 @@ module _ {i j k ℓ} {D : Cospan {i} {j} {k}} {T₁ : Type ℓ} {T₂ : Type ℓ
   fst pb-unique = equiv (fst can-map₂) (fst can-map₁) (app= (fst= can-map-rtrip₁)) (app= (fst= can-map-rtrip₂))
   snd pb-unique = snd can-map₂
 
+  pb-unique-mor : Cone-csp-mor K₁ K₂
+  pb-unique-mor = Cone-csp-iso-mor pb-unique
+
+module pb-qinv {i j k ℓ} {D : Cospan {i} {j} {k}} {T₁ : Type ℓ} {T₂ : Type ℓ} {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂}
+  (ζ₁ : is-pb-abs {ℓ₂ = ℓ} K₁) (ζ₂ : is-pb-abs {ℓ₂ = ℓ} K₂) where
+
+  abstract
+    pb-unique-qinv : cospan-is-qinv (pb-unique-mor {K₁ = K₁} {K₂ = K₂} ζ₁ ζ₂) (pb-unique-mor {D = D} ζ₂ ζ₁)
+    fst pb-unique-qinv = limcsp-mor-paths ζ₂ _ _
+    snd pb-unique-qinv = limcsp-mor-paths ζ₁ _ _
+
 module _ {ℓ} {Δ : Diag-cspan (Type-wc ℓ)} {X : Type ℓ} {K : Cone-wc Δ X} where
 
   open Cone-wc
@@ -359,7 +370,6 @@ module _ {ℓ} {Δ : Diag-cspan (Type-wc ℓ)} {X : Type ℓ} {K : Cone-wc Δ X}
     (snd (con-csp-diag-≃ Δ ∘e is-lim-≃ {G = Graph-cspan} K pb S))
 
 -- standard pullback is abstract pullback
-
 module _ {i j k} (D : Cospan {i} {j} {k}) where
 
   open Cospan D
@@ -369,6 +379,11 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
   stdpb-is-abspb = λ S →
     is-eq (pre-cmp-csp (Pb-con D) S) (λ K x → pullback (left K x) (right K x) (sq K x)) (λ _ → idp) λ f → λ= (λ _ → idp)
 
-StdPb-Lim-≃ : ∀ {ℓ} {Δ : Diag-cspan (Type-wc ℓ)} {X : Type ℓ} {K : Cone-wc Δ X}
-  → is-pb-wc K → Cone-csp-iso _ (Pb-con (diag-to-csp Δ)) (con-to-csp Δ K)
-StdPb-Lim-≃ {Δ = Δ} ζ = pb-unique (stdpb-is-abspb (diag-to-csp Δ)) (lim-to-pb ζ)
+-- conversion between pullback squares and limiting cones
+module _ {ℓ} {Δ : Diag-cspan (Type-wc ℓ)} {X : Type ℓ} {K : Cone-wc Δ X} (ζ : is-pb-wc K) where
+
+  StdPb-Lim-≃ : Cone-csp-iso _ (Pb-con (diag-to-csp Δ)) (con-to-csp Δ K)
+  StdPb-Lim-≃ = pb-unique (stdpb-is-abspb (diag-to-csp Δ)) (lim-to-pb ζ)
+
+  Lim-StdPb-≃ : Cone-csp-iso _ (con-to-csp Δ K) (Pb-con (diag-to-csp Δ))
+  Lim-StdPb-≃ = pb-unique (lim-to-pb ζ) (stdpb-is-abspb (diag-to-csp Δ))

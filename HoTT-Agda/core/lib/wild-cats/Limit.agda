@@ -153,7 +153,7 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
 -- preservation of composition by limits
 module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} {Δ₁ Δ₂ Δ₃ : Diagram G C}
   {a₁ a₂ a₃ : ob C} {K₁ : Cone-wc Δ₁ a₁} {K₂ : Cone-wc Δ₂ a₂} {K₃ : Cone-wc Δ₃ a₃}
-  (lim₁ : is-lim-wc K₁) (lim₂ : is-lim-wc K₂) (lim₃ : is-lim-wc K₃) where
+  (lim₂ : is-lim-wc K₂) (lim₃ : is-lim-wc K₃) where
 
   abstract
     lim-map-wc-∘ : (pent : pentagon-wc C) {μ₁ : Map-diag Δ₁ Δ₂} {μ₂ : Map-diag Δ₂ Δ₃} →
