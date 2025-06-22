@@ -291,10 +291,10 @@ module _ {ℓv ℓe : ULevel} where
               ! (ap (arr F) p₆ ∙ p₇)
             aux2 idp idp p₃ idp idp idp p₇ = ap (λ p → ! p₃ ∙ p) (∙-unit-r (! p₇))
 
-    whisk-dmap-con : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ₁ Δ₂ : Diagram G C}
-      (μ : Map-diag Δ₁ Δ₂) {a : ob C} (K : Cone-wc Δ₁ a) → Cone-wc Δ₂ a
-    leg (whisk-dmap-con {C = C} μ K) x = ⟦ C ⟧ map-comp μ x ◻ leg K x
-    tri (whisk-dmap-con {C = C} {Δ₁} {Δ₂} μ K) {x} {y} f =
+    act-dmap-con : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ₁ Δ₂ : Diagram G C}
+      (μ : Map-diag Δ₁ Δ₂) {a : ob C} → Cone-wc Δ₁ a → Cone-wc Δ₂ a
+    leg (act-dmap-con {C = C} μ K) x = ⟦ C ⟧ map-comp μ x ◻ leg K x
+    tri (act-dmap-con {C = C} {Δ₁} {Δ₂} μ K) {x} {y} f =
       ! (α C (D₁ Δ₂ f) (map-comp μ x) (leg K x)) ∙
       ap (λ m → ⟦ C ⟧ m ◻ leg K x) (map-sq μ f) ∙
       α C (map-comp μ y) (D₁ Δ₁ f) (leg K x) ∙

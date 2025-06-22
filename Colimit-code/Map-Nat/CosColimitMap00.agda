@@ -111,7 +111,7 @@ module ConstrMap {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ}
           cglue g (str (G # i) a) ∙ ! (ap (cin i) (snd (nat δ i) a)))) ∙
       ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙
       ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a))
-        =⟪ long-red-ap-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right (snd (nat δ i) a) (snd (G <#> g) a) (snd (F <#> g) a)
+        =⟪ act-dmap-CC-coh (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right (snd (nat δ i) a) (snd (G <#> g) a) (snd (F <#> g) a)
              (snd (nat δ j) a) (cglue g (str (G # i) a)) (! (glue (cin j a))) ⟫
       ap (right ∘ cin i) (snd (nat δ i) a) ∙ ! (ap right (cglue g (str (G # i) a))) ∙ ap (right ∘ cin j) (snd (G <#> g) a) ∙ ! (glue (cin j a))
         =⟪ ap (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p) (↯ (ε G g g a)) ⟫

@@ -90,7 +90,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
             ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
             fst (comTri LRfun g) (str (F # i) a)) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
           (!-! (snd (comp K j) a)) ◃∙
-        long-path-red (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (str (F # i) a)) idp ◃∙
+        CCeq-coh-path (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (str (F # i) a)) idp ◃∙
         !-ap-ap-∘-ap-∙ (fst (recCosCoc K)) (fst (comp ColCoC-cos j)) (snd (F <#> g) a)  (fst (comTri ColCoC-cos g) (str (F # i) a)) ◃∙
         ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (E₁ (snd (F <#> g) a) (! (glue (cin j a))))) ◃∙
         ap (λ p → p ∙ (snd (recCosCoc K) a))
@@ -135,7 +135,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
             fst (comTri LRfun g) (str (F # i) a)) ∙
             ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
           (!-! (snd (comp K j) a)) ◃∙
-        long-path-red (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (str (F # i) a)) idp ◃∙
+        CCeq-coh-path (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (str (F # i) a)) idp ◃∙
         !-ap-ap-∘-ap-∙ (fst (recCosCoc K)) (fst (comp ColCoC-cos j)) (snd (F <#> g) a)  (fst (comTri ColCoC-cos g) (str (F # i) a)) ◃∙
         ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (E₁ (snd (F <#> g) a) (! (glue (cin j a))))) ◃∙
         ap (λ p → p ∙ (snd (recCosCoc K) a))
@@ -173,7 +173,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
             fst (comTri LRfun g) (str (F # i) a)) ∙
             ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
           (!-! (snd (comp K j) a)) ◃∙
-        long-path-red (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (str (F # i) a)) idp ◃∙
+        CCeq-coh-path (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (str (F # i) a)) idp ◃∙
         !-ap-ap-∘-ap-∙ (fst (recCosCoc K)) (fst (comp ColCoC-cos j)) (snd (F <#> g) a)  (fst (comTri ColCoC-cos g) (str (F # i) a)) ◃∙
         ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (E₁ (snd (F <#> g) a) (! (glue (cin j a))))) ◃∙
         ap (λ p → p ∙ (snd (recCosCoc K) a))
@@ -211,7 +211,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
                ! ((ap (fst (comp K j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp LRfun j) a)) ∙ ! (ap (fst (comp LRfun j)) (snd (F <#> g) a))) ∙
                fst (comTri LRfun g) (str (F # i) a)) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ snd (comp K j) a)
              (!-! (snd (comp K j) a)) ◃∙
-        long-path-red (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (str (F # i) a)) idp ◃∙
+        CCeq-coh-path (snd (F <#> g) a) (snd (comp K j) a) (snd (comp LRfun j) a) (fst (comTri LRfun g) (str (F # i) a)) idp ◃∙
         !-ap-ap-∘-ap-∙ (fst (recCosCoc K)) (fst (comp ColCoC-cos j)) (snd (F <#> g) a)  (fst (comTri ColCoC-cos g) (str (F # i) a)) ◃∙
         ap (λ p → p ∙ (snd (recCosCoc K) a)) (ap (ap (fst (recCosCoc K))) (E₁ (snd (F <#> g) a) (! (glue (cin j a))))) ◃∙
         ap (λ p → p ∙ (snd (recCosCoc K) a))
@@ -284,7 +284,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
       ! (! (ap (str T) Q) ∙ ! W)
     Ξ-Red1 Q R t C c W s =
       ap (fst (recCosCoc K)) (! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ (cglue g (str (F # i) a)))) ∙ ! (glue (cin j a)) ∙ ap left Q ∙ ap left Q) ∙ idp
-        =⟪ long-path-red2 right (fst (recCosCoc K)) (cin j) left (snd (F <#> g) a) (cglue g (str (F # i) a)) (glue (cin j a)) Q ⟫
+        =⟪ CCeq-coh-path2 right (fst (recCosCoc K)) (cin j) left (snd (F <#> g) a) (cglue g (str (F # i) a)) (glue (cin j a)) Q ⟫
       (! (ap (recc (comp K) (comTri K)) (cglue g (str (F # i) a))) ∙
       ap (recc (comp K) (comTri K) ∘ cin j) (snd (F <#> g) a) ∙
       (ap (fst (recCosCoc K)) (! (glue (cin j a))) ∙ ap (str T) Q)) ∙
@@ -323,7 +323,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
             Ξ-helper2-delay right (fst (recCosCoc K)) left (! (ap (cin j) (snd (F <#> g) a)) ∙ κ) (ap [id] (cglue g a)) R) ∙
             ap ! (H₂ {u = recc (comp K) (comTri K)} {g = cin j} (snd (F <#> g) a) R κ idp) ∙ idp
               ==
-            long-path-red2 right (fst (recCosCoc K)) (cin j) left (snd (F <#> g) a) κ (glue (cin j a)) (ap [id] (cglue g a)) ∙
+            CCeq-coh-path2 right (fst (recCosCoc K)) (cin j) left (snd (F <#> g) a) κ (glue (cin j a)) (ap [id] (cglue g a)) ∙
             ap (λ p → (! (ap (recc (comp K) (comTri K)) κ) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ p) ∙ ap (str T) (ap [id] (cglue g a))) t ∙
             ap (λ p → (! (ap (recc (comp K) (comTri K)) κ) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ p) ∙ ap (str T) (ap [id] (cglue g a))) (!-! R) ∙
             ap-dbl-inv-∙-del (str T) (ap [id] (cglue g a)) (! (ap (recc (comp K) (comTri K)) κ) ∙ ap (fst (comp K j)) (snd (F <#> g) a) ∙ R) 
@@ -335,7 +335,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
                 Ξ-helper2-delay right (fst (recCosCoc K)) left (! (ap (cin j) Z) ∙ idp) (ap [id] (cglue g a)) R) ∙
                 ap ! (H₂ Z R idp idp) ∙ idp
                   ==
-                long-path-red2 right (fst (recCosCoc K)) (cin j) left Z idp (glue (cin j a)) (ap [id] (cglue g a)) ∙
+                CCeq-coh-path2 right (fst (recCosCoc K)) (cin j) left Z idp (glue (cin j a)) (ap [id] (cglue g a)) ∙
                 ap (λ p → (ap (fst (comp K j)) Z ∙ p) ∙ ap (str T) (ap [id] (cglue g a))) t ∙
                 ap (λ p → (ap (fst (comp K j)) Z ∙ p) ∙ ap (str T) (ap [id] (cglue g a))) (!-! R) ∙
                 ap-dbl-inv-∙-del (str T) (ap [id] (cglue g a)) (ap (fst (comp K j)) Z ∙ R)

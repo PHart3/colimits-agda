@@ -38,7 +38,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
       NatSq2-Λ-coher-aux3 : {w y : ty (G # i)} (τ₁₀ : w == y)
         {z : ty (F # j)} (τ₁₃ : fst (G <#> g) y == fst (nat δ j) z) →
         ! (ap (λ p → ! p ∙ idp) (ap-∘-∘-!-∙ f right (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp) idp)) ∙
-        long-path-red {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)}
+        CCeq-coh-path {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)}
           idp idp idp (ap f (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ idp))) idp ∙
         ap (λ q → q)
           (!-ap-ap-∘-ap-∙ f (right ∘ cin j ∘ fst (nat δ j)) idp (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ idp)) ∙
@@ -50,14 +50,14 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
           ==
         !-!-∙-pth (ap (λ x → f (right (cin j x))) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) idp ∙
         ap (λ p → p ∙ ap (λ x → f (right (cin j x))) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp) ∙ idp) (hmtpy-nat-! (λ x → idp) τ₁₀) ∙
-        long-path-red-ya (λ x → f (right (cin j x))) (fst (G <#> g)) (fst (nat δ j))
+        CCeq-coh-path-ya (λ x → f (right (cin j x))) (fst (G <#> g)) (fst (nat δ j))
           (ap (λ x → f (right (cin j (fst (G <#> g) x)))) τ₁₀) τ₁₀ idp τ₁₃ idp idp idp ∙
         ap (_∙_ (ap (λ x → f (right (cin j (fst (G <#> g) x)))) τ₁₀)) (!-ap-ap-∘-ap-∙ f (λ x → right (cin j x)) τ₁₃ idp ∙ idp)
       NatSq2-Λ-coher-aux3 {w} idp τ₁₃ = lemma τ₁₃
         where
           lemma : {z : ty (G # j)} (τ : fst (G <#> g) w == z) →
             ! (ap (λ p → ! p ∙ idp) (ap-∘-∘-!-∙ f right (cin j) (τ ∙ idp) idp)) ∙
-            !-∙-!-rid-∙-rid (ap f (ap right (! (ap (cin j) (τ ∙ idp)) ∙ idp))) idp idp ∙
+            !-∙-!-rid-∙ (ap f (ap right (! (ap (cin j) (τ ∙ idp)) ∙ idp))) idp idp ∙
             ap (λ q → q)
               (!-ap-∙-s f (ap right (! (ap (cin j) (τ ∙ idp)) ∙ idp)) ∙
               ap (λ p → ap f p ∙ idp) (!-!-!-∘-rid (cin j) right τ idp idp idp ∙ idp)) ∙ idp
@@ -71,7 +71,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         {x : ty (F # j)} (τ₁₃ : fst (G <#> g) (str (G # i) a) == fst (nat δ j) x) →
         ! (ap (λ p → ! p ∙ idp)
             (ap-∘-∘-!-∙ f right (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp) (cglue g (fst (nat δ i) (str (F # i) a))))) ∙
-        long-path-red {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)} idp idp idp
+        CCeq-coh-path {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)} idp idp idp
           (ap f (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ cglue g (fst (nat δ i) (str (F # i) a))))) idp ∙
         ap (λ q → q)
           (!-ap-ap-∘-ap-∙ f (right ∘ cin j ∘ fst (nat δ j)) idp
@@ -86,7 +86,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
           (ap f (ap right (cglue g (fst (nat δ i) (str (F # i) a))))) ∙
         ap (λ p → p ∙ ap (λ x → f (right (cin j x))) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp) ∙ idp)
           (hmtpy-nat-! (λ x → ap f (ap right (cglue g x))) τ₁₀) ∙
-        long-path-red-ya (λ x → f (right (cin j x))) (fst (G <#> g)) (fst (nat δ j))
+        CCeq-coh-path-ya (λ x → f (right (cin j x))) (fst (G <#> g)) (fst (nat δ j))
           (ap (λ x → f (right (cin i x))) τ₁₀) τ₁₀ (! (ap f (ap right (cglue g (str (G # i) a))))) τ₁₃ idp idp idp ∙
         ap (_∙_ (ap (λ x → f (right (cin i x))) τ₁₀))
           (!-ap-ap-∘-ap-∙ f (λ x → right (cin j x)) τ₁₃ (ap right (cglue g (str (G # i) a))) ∙ idp)
@@ -95,7 +95,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
           (λ h H →
             ! (ap (λ p → ! p ∙ idp) (ap-∘-∘-!-∙ f right (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)
               (H (fst (nat δ i) (str (F # i) a))))) ∙
-            long-path-red {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)} idp idp idp
+            CCeq-coh-path {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)} idp idp idp
               (ap f (ap right (! (ap (cin j) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp)) ∙ H (fst (nat δ i) (str (F # i) a))))) idp ∙
             ap (λ q → q)
               (!-ap-ap-∘-ap-∙ f (right ∘ cin j ∘ fst (nat δ j)) idp
@@ -110,7 +110,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
               (ap f (ap right (H (fst (nat δ i) (str (F # i) a))))) ∙
             ap (λ p → p ∙ ap (λ x → f (right (cin j x))) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp) ∙ idp)
               (hmtpy-nat-! (λ x → ap f (ap right (H x))) τ₁₀) ∙
-            long-path-red-ya (λ x → f (right (cin j x))) (fst (G <#> g))
+            CCeq-coh-path-ya (λ x → f (right (cin j x))) (fst (G <#> g))
               (fst (nat δ j)) (ap (λ x → f (right (h x))) τ₁₀) τ₁₀
               (! (ap f (ap right (H (str (G # i) a))))) τ₁₃ idp idp idp ∙
             ap (_∙_ (ap (λ x → f (right (h x))) τ₁₀))
@@ -123,7 +123,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         {σ₁ : fst (G <#> g) (fst (nat δ i) (str (F # i) a)) == fst (nat δ j) (fst (F <#> g) (str (F # i) a))}
         (τ₁₄ : σ₁ == ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp) →
         ! (ap (λ p → ! p ∙ idp) (ap-∘-∘-!-∙ f right (cin j) σ₁ (cglue g (fst (nat δ i) (str (F # i) a))))) ∙
-        long-path-red {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)} idp idp idp
+        CCeq-coh-path {f = f ∘ right ∘ cin j ∘ fst (nat δ j)} {g = f ∘ right ∘ cin j ∘ fst (nat δ j)} idp idp idp
           (ap f (ap right (! (ap (cin j) σ₁) ∙ cglue g (fst (nat δ i) (str (F # i) a))))) idp ∙
         ap (λ q → q)
           (!-ap-ap-∘-ap-∙ f (right ∘ cin j ∘ fst (nat δ j)) idp
@@ -142,7 +142,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         ap (λ p → ! (ap f (ap right (cglue g (fst (nat δ i) (str (F # i) a))))) ∙ ap (λ x → f (right (cin j x))) p ∙ idp) τ₁₄ ∙
         ap (λ p → p ∙ ap (λ x → f (right (cin j x))) (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ idp) ∙ idp)
           (hmtpy-nat-! (λ x → ap f (ap right (cglue g x))) τ₁₀) ∙
-        long-path-red-ya (λ x → f (right (cin j x))) (fst (G <#> g)) (fst (nat δ j))
+        CCeq-coh-path-ya (λ x → f (right (cin j x))) (fst (G <#> g)) (fst (nat δ j))
           (ap (λ x → f (right (cin i x))) τ₁₀) τ₁₀
           (! (ap f (ap right (cglue g (str (G # i) a))))) τ₁₃ idp idp idp ∙
         ap (_∙_ (ap (λ x → f (right (cin i x))) τ₁₀))
@@ -168,7 +168,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
             ap (f ∘ right ∘ cin j ∘ fst (nat δ j)) τ₅ ∙
             ap (f ∘ right ∘ cin j) τ₆ ∙ ap f τ₇ ∙ τ₈)
           (ap-∘-∙-∙ f (right ∘ cin j) τ₆ τ₇) ◃∙
-        long-path-red τ₅
+        CCeq-coh-path τ₅
           (ap (f ∘ right ∘ cin j) τ₆ ∙ ap f τ₇ ∙ τ₈)
           (ap f (ap (λ x → right (cin j x)) τ₆ ∙ τ₇) ∙ τ₈)
           (ap f (ap right (! (ap (cin j) (comSq δ g (str (F # i) a))) ∙ (cglue g (fst (nat δ i) (str (F # i) a)))))) idp ◃∙
@@ -183,7 +183,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
             ap (λ p → ! (ap right (! (ap (cin j)  (ap (fst (G <#> g)) τ₁₀ ∙ τ₁₃ ∙ ! τ₆ ∙ ! (ap (fst (nat δ j)) τ₅))) ∙ p)) ∙
               ap (λ x → right (cin j (fst (nat δ j) x))) τ₅ ∙ ap (λ x → right (cin j x)) τ₆ ∙ τ₇)
             (apCommSq2 (λ x → cin j (fst (G <#> g) x)) (cin i) (cglue g) τ₁₀) ∙
-            long-red-ap-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right τ₁₀ τ₁₃ τ₅ τ₆ (cglue g (str (G # i) a)) τ₇ ∙
+            act-dmap-CC-coh (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right τ₁₀ τ₁₃ τ₅ τ₆ (cglue g (str (G # i) a)) τ₇ ∙
             ap (_∙_ (ap (λ x → right (cin i x)) τ₁₀)) τ₁)) ◃∙
         ap-∘-∙-∙ f (right ∘ cin i) τ₁₀ τ₁₁ ◃∎
           =ₛ
@@ -203,7 +203,7 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
               ap (λ x → f (right (cin j x))) τ₆ ∙
               ap f τ₇ ∙ τ₈)
             (hmtpy-nat-! (λ x → ap f (ap right (cglue g x))) τ₁₀) ∙
-        long-path-red-ya (λ x → f (right (cin j x))) (fst (G <#> g))
+        CCeq-coh-path-ya (λ x → f (right (cin j x))) (fst (G <#> g))
           (fst (nat δ j)) (ap (λ x → f (right (cin i x))) τ₁₀) τ₁₀
           (! (ap f (ap right (cglue g (str (G # i) a))))) τ₁₃ τ₅ τ₆ (ap f τ₇ ∙ τ₈) ∙
         ap (_∙_ (ap (λ x → f (right (cin i x))) τ₁₀))

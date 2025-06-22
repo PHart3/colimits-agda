@@ -10,9 +10,9 @@ open import Diagram-Cos
 
 module SIP-Cos where
 
--- SIP for A-maps (or maps under A)
-
 module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A > X *→ Y} where
+
+-- SIP for A-maps (or maps under A)
 
   UndFunHomContr-aux :
     is-contr
@@ -21,7 +21,7 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A >
   UndFunHomContr-aux =
     equiv-preserves-level
       ((Σ-contr-red
-        {P = (λ (h , K) → Σ ((a : A) → h (str X a) == str Y a) (λ p → ((a : A) → ! (K (str X a)) ∙ (snd f a) == p a)))}
+        {P = λ (h , K) → Σ ((a : A) → h (str X a) == str Y a) (λ p → ((a : A) → ! (K (str X a)) ∙ (snd f a) == p a))}
         (funhom-contr {f = fst f}))⁻¹)
       {{equiv-preserves-level ((Σ-emap-r (λ _ → app=-equiv))) {{pathfrom-is-contr (snd f)}}}}
 
@@ -29,7 +29,7 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A >
 
   abstract
     UndFunHomContr : is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
-    UndFunHomContr = equiv-preserves-level lemma {{UndFunHomContr-aux }}
+    UndFunHomContr = equiv-preserves-level lemma {{UndFunHomContr-aux}}
       where
         lemma :
           Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g))
@@ -56,6 +56,9 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A >
   UndFun∼-β : UndFun∼-to-== ((λ _ → idp) , (λ _ → idp)) == idp
   UndFun∼-β = ID-ind-map-β (λ g _ → f == g) UndFunHomContr idp
 
+  fst=-UndFun∼ : {g : X *→ Y} (p : < X > f ∼ g) → λ= (fst p) == fst= (UndFun∼-to-== p)
+  fst=-UndFun∼ {g} = UndFun-ind (λ g p → λ= (fst p) == fst= (UndFun∼-to-== p)) (! (λ=-η idp) ∙ ! (ap fst= UndFun∼-β))
+  
 module _ {j} (A : Type j) where
 
   open MapsCos A
@@ -84,10 +87,10 @@ module _ {i j k l} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {Z : Cos
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} where
 
-  long-path-red : {x y : A} (p : x == y) {z : B} (q₁ : g y == z) (q₂ : f y  == z)
-    {w : B} (P : f x == w) {v : B} (C : w == v)
-    → ! ((ap g p ∙ (q₁ ∙ ! q₂) ∙ ! (ap f p)) ∙ P ∙' C) ∙ ap g p ∙ q₁ == ! C ∙ ! P ∙ ap f p ∙ q₂
-  long-path-red idp q₁ q₂ P idp = !-∙-!-rid-∙-rid P q₁ q₂
+  CCeq-coh-path : {x y : A} (p : x == y) {z : B} (q₁ : g y == z) (q₂ : f y  == z)
+    {w : B} (q₃ : f x == w) {v : B} (c : w == v)
+    → ! ((ap g p ∙ (q₁ ∙ ! q₂) ∙ ! (ap f p)) ∙ q₃ ∙' c) ∙ ap g p ∙ q₁ == ! c ∙ ! q₃ ∙ ap f p ∙ q₂
+  CCeq-coh-path idp q₁ q₂ q₃ idp = !-∙-!-rid-∙ q₃ q₁ q₂
 
 module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : CosDiag ℓd ℓ A Γ} {T : Coslice ℓc ℓ A} where
 
@@ -125,7 +128,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
           W i (str (F # i) a)) ∙
         ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙
         snd (comp K₂ j) a
-          =⟪ long-path-red (snd (F <#> g) a) (snd (comp K₂ j) a) (snd (comp K₁ j) a) (fst (comTri K₁ g) (str (F # i) a)) (W i (str (F # i) a)) ⟫
+          =⟪ CCeq-coh-path (snd (F <#> g) a) (snd (comp K₂ j) a) (snd (comp K₁ j) a) (fst (comTri K₁ g) (str (F # i) a)) (W i (str (F # i) a)) ⟫
         ! (W i (str (F # i) a)) ∙ ! (fst (comTri K₁ g) (str (F # i) a)) ∙ ap (fst (comp K₁ j)) (snd (F <#> g) a) ∙ snd (comp K₁ j) a
           =⟪ ap (λ p → ! (W i (str (F # i) a)) ∙ p) (snd (comTri K₁ g) a) ⟫
         ! (W i (str (F # i) a)) ∙ snd (comp K₁ i) a
@@ -149,14 +152,14 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
           {v : fst (comp K₁ i) (str (F # i) a) == z} (τ : ! (fst (comTri K₁ g) (str (F # i) a)) ∙ ap (fst (comp K₁ j)) σ₁ ∙ σ₂ == v) →
           ap (λ p → ! (p ∙ fst (comTri K₁ g) (str (F # i) a)) ∙ ap (fst (comp K₁ j)) σ₁ ∙ σ₂)
             (hmtpy-nat-rev (λ _ → idp) σ₁ σ₂) ∙
-          long-path-red σ₁ σ₂ σ₂ (fst (comTri K₁ g) (str (F # i) a)) idp ∙
+          CCeq-coh-path σ₁ σ₂ σ₂ (fst (comTri K₁ g) (str (F # i) a)) idp ∙
           ap (λ q → q) τ ∙ idp
             ==
           τ
         lemma a idp idp idp = lemma2 (fst (comTri K₁ g) (str (F # i) a))
           where
             lemma2 : {t : ty T} (U : fst (< A > comp K₁ j ∘ F <#> g) (str (F # i) a) == t)
-              → !-∙-!-rid-∙-rid U idp idp ∙ idp == idp
+              → !-∙-!-rid-∙ U idp idp ∙ idp == idp
             lemma2 idp = idp 
 
     open MapsCos A
@@ -199,7 +202,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
             fst (comTri K₁ g) (str (F # i) a) ∙' fst (snd (H i)) (str (F # i) a)) ∙
           ap (fst (fst (H j))) (snd (F <#> g) a) ∙
           snd (fst (H j)) a
-            =⟪ long-path-red (snd (F <#> g) a) (snd (fst (H j)) a) (snd (comp K₁ j) a) (fst (comTri K₁ g) (str (F # i) a))
+            =⟪ CCeq-coh-path (snd (F <#> g) a) (snd (fst (H j)) a) (snd (comp K₁ j) a) (fst (comTri K₁ g) (str (F # i) a))
                  (fst (snd (H i)) (str (F # i) a)) ⟫
           ! (fst (snd (H i)) (str (F # i) a)) ∙ ! (fst (comTri K₁ g) (str (F # i) a)) ∙ ap (fst (comp K₁ j)) (snd (F <#> g) a) ∙ snd (comp K₁ j) a
             =⟪ ap (λ p → ! (fst (snd (H i)) (str (F # i) a)) ∙ p) (snd (comTri K₁ g) a) ⟫
@@ -254,7 +257,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
               ap (fst f ∘ fst (comp K j)) p₁ ∙
               ap (fst f) p₅ ∙ p₄)
             (hmtpy-nat-rev (λ _ → idp) p₁ (ap (fst f) p₅ ∙ p₄)) ∙
-          long-path-red p₁ (ap (fst f) p₅ ∙ p₄)
+          CCeq-coh-path p₁ (ap (fst f) p₅ ∙ p₄)
             (ap (fst f) p₅ ∙ p₄)
             (ap (fst f) p₃) idp ∙
           ap (λ q → q) (!-ap-ap-∘-ap-∙ (fst f) (fst (comp K j)) p₁ p₃ ∙
@@ -280,3 +283,47 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
   abstract
     CosPostComp-eq : PostComp-cos {D = T₂} K ∼ RWhisk-coscoc K
     CosPostComp-eq f = CosCocEq-to-== (PostComp-CCEq f)
+
+-- SIP for homotopies of A-homotopies
+
+module _ {j} {A : Type j} {ℓ₁ ℓ₂} {X : Coslice ℓ₁ j A} {Y : Coslice ℓ₂ j A} {h₁ h₂ : < A > X *→ Y} where
+
+  open MapsCos A
+
+  module _ {H₁ : < X > h₁ ∼ h₂} where
+  
+    ∼∼-cos-Contr-aux :
+      is-contr
+        (Σ (Σ (fst h₁ ∼ fst h₂) (λ φ → fst H₁ ∼ φ))
+          (λ (φ , K) → Σ ((a : A) → ! (φ (str X a)) ∙ snd h₁ a == snd h₂ a)
+            (λ ρ → (a : A) → ap (λ p → ! p ∙ snd h₁ a) (! (K (str X a))) ∙ snd H₁ a == ρ a)))
+    ∼∼-cos-Contr-aux =
+      equiv-preserves-level
+        ((Σ-contr-red
+          {A = Σ (fst h₁ ∼ fst h₂) (λ φ → fst H₁ ∼ φ)}
+          funhom-contr)⁻¹)
+        {{funhom-contr}}
+
+    abstract
+      ∼∼-cos-Contr : is-contr (Σ (< X > h₁ ∼ h₂) (λ H₂ → < X > H₁ ∼∼ H₂))
+      ∼∼-cos-Contr = equiv-preserves-level lemma {{∼∼-cos-Contr-aux}} 
+        where
+          lemma :
+            Σ (Σ (fst h₁ ∼ fst h₂) (λ φ → fst H₁ ∼ φ))
+              (λ (φ , K) → Σ ((a : A) → ! (φ (str X a)) ∙ snd h₁ a == snd h₂ a)
+                (λ ρ → (a : A) → ap (λ p → ! p ∙ snd h₁ a) (! (K (str X a))) ∙ snd H₁ a == ρ a))
+              ≃
+            Σ (< X > h₁ ∼ h₂) (λ H₂ → < X > H₁ ∼∼ H₂)
+          lemma =
+            equiv
+              (λ ((φ , K) , ρ , coh) → (φ , ρ) , (K , coh))
+              (λ ((φ , ρ) , (K , coh)) → (φ , K) , ρ , coh)
+              (λ _ → idp)
+              λ _ → idp
+
+    ∼∼-cos-ind : ∀ {k} (P : (H₂ : < X > h₁ ∼ h₂) → (< X > H₁ ∼∼ H₂ → Type k))
+      → P H₁ ((λ _ → idp) , (λ _ → idp)) → {H₂ : < X > h₁ ∼ h₂} (p : < X > H₁ ∼∼ H₂) → P H₂ p
+    ∼∼-cos-ind P = ID-ind-map {b = (λ _ → idp) , (λ _ → idp)} P ∼∼-cos-Contr
+
+    ∼∼-cos∼-to-== : {H₂ : < X > h₁ ∼ h₂} → (< X > H₁ ∼∼ H₂) → H₁ == H₂
+    ∼∼-cos∼-to-== {H₂} = ∼∼-cos-ind (λ H₂ _ → H₁ == H₂) idp

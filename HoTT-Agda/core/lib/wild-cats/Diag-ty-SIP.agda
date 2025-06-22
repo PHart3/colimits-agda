@@ -34,7 +34,7 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
     qinv-dmap-ty μ =
       Σ (Map-diag-ty Δ₂ Δ₁) (λ ν → (ν tydiag-map-∘ μ =-dmap-ty diag-map-idf Δ₁) × (μ tydiag-map-∘ ν =-dmap-ty diag-map-idf Δ₂))
 
-    module _ (μ₁ : Map-diag-ty Δ₁ Δ₂) where
+    module dmap-ty-contr (μ₁ : Map-diag-ty Δ₁ Δ₂) where
 
       dmap-ty-contr-aux :
         is-contr $
@@ -82,8 +82,14 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
         → P μ₁ (=-dmap-ty-id μ₁) → {μ₂ : Map-diag-ty Δ₁ Δ₂} (e : μ₁ =-dmap-ty μ₂) → P μ₂ e
       dmap-ty-ind P = ID-ind-map P dmap-ty-contr
 
+    open dmap-ty-contr
+
     dmap-ty-to-== : {μ₁ μ₂ : Map-diag-ty Δ₁ Δ₂} → μ₁ =-dmap-ty μ₂ → μ₁ == μ₂
     dmap-ty-to-== {μ₁} = dmap-ty-ind μ₁ (λ μ₂ _ → μ₁ == μ₂) idp
+
+    abstract
+      dmap-ty-β : {μ : Map-diag-ty Δ₁ Δ₂} → dmap-ty-to-== (=-dmap-ty-id μ) == idp
+      dmap-ty-β {μ} = ID-ind-map-β (λ ν _ → μ == ν) (dmap-ty-contr μ) idp
 
     eqv-to-qinv-dmap-ty : (μ : Map-diag-ty Δ₁ Δ₂) → eqv-dmap-ty μ → qinv-dmap-ty μ
     comp (fst (eqv-to-qinv-dmap-ty μ e)) x = is-equiv.g (e x)

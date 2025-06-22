@@ -146,7 +146,7 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
 
       whisk-pre-cmp-coher : {Δ₁ Δ₂ : Diagram G C} (μ : Map-diag Δ₁ Δ₂) {a b : ob C}
         (f : hom C b a) (K : Cone-wc Δ₁ a)
-        → pre-cmp-con (whisk-dmap-con μ K) b f == whisk-dmap-con μ (pre-cmp-con K b f)
+        → pre-cmp-con (act-dmap-con μ K) b f == act-dmap-con μ (pre-cmp-con K b f)
       whisk-pre-cmp-coher {Δ₁} {Δ₂} μ f K = con-to-==-◃ ((λ x → α C (map-comp μ x) (leg K x) f) ,
         (λ {x} {y} g →
           (! (α C (D₁ Δ₂ g) (⟦ C ⟧ map-comp μ x ◻ leg K x) f) ∙
@@ -266,7 +266,7 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
 
       whisk-diag-∘ : {Δ₁ Δ₂ Δ₃ : Diagram G C} (μ₁ : Map-diag Δ₁ Δ₂) (μ₂ : Map-diag Δ₂ Δ₃)
         {a : ob C} (K : Cone-wc Δ₁ a)
-        → whisk-dmap-con (μ₂ diag-map-∘ μ₁) K == whisk-dmap-con μ₂ (whisk-dmap-con μ₁ K)
+        → act-dmap-con (μ₂ diag-map-∘ μ₁) K == act-dmap-con μ₂ (act-dmap-con μ₁ K)
       whisk-diag-∘ {Δ₁} {Δ₂} {Δ₃} μ₁ μ₂ K = con-to-==-◃ ((λ x → α C (map-comp μ₂ x) (map-comp μ₁ x) (leg K x)) ,
         (λ {x} {y} f →
           (! (α C (D₁ Δ₃ f) (⟦ C ⟧ map-comp μ₂ x ◻ map-comp μ₁ x) (leg K x)) ∙

@@ -2,12 +2,15 @@
 
 open import lib.Basics
 open import lib.types.Graph
+open import lib.types.Pushout
+open import lib.types.Colim
 open import lib.wild-cats.WildCats
 open import SIP-Cos
 open import Cos-wc
 open import Diagram-Cos
 open import Cocone-po
 open import CosColim-Iso
+open import CosMap-conv
 
  {-
    We construct the A-cocone on the codomain of the pullback stability map. At
@@ -119,21 +122,304 @@ module _ {ℓ} {A : Type ℓ} where
       canmap-cos-pbs-coc : CosCocone A diag-pbs-cos τ
       comp canmap-cos-pbs-coc i = lim-map-wc {K₁ = snd (T i)}
         (map-diag pbs-coc-dmap-comp pbs-coc-dmap-sq) pb
-      comTri canmap-cos-pbs-coc {j} {i} g = skip
-        where postulate skip : _ {- UndFun∼-from-==
+      comTri canmap-cos-pbs-coc {j} {i} g = {!!} {- UndFun∼-from-==
         (lim-map-wc-∘ {K₁ = snd (T i)} {K₂ = snd (T j)} {K₃ = PbStb-cos-con}
           (pb-comp j) pb (pentagon-wc-Cos A)
           {map-diag (pb-comp-dmap-comp g) (pb-comp-dmap-sq g)} {map-diag pbs-coc-dmap-comp pbs-coc-dmap-sq} ∙
-        ap (λ (d : Map-diag (pb-comp-cos i) pb-csp-cos) → lim-map-wc {K₁ = snd (T i)} {K₂ = PbStb-cos-con} d pb) aux)
+        ap (λ (d : Map-diag (pb-comp-cos i) pb-csp-cos) →
+            lim-map-wc {K₁ = snd (T i)} {K₂ = PbStb-cos-con} d pb)
+          aux) -}
         where abstract
-          aux :
+          aux : {!!} {-
             map-diag {C = Coslice-wc A (lmax ℓ ℓd)} pbs-coc-dmap-comp (pbs-coc-dmap-sq {j})
               diag-map-∘
             map-diag {C = Coslice-wc A (lmax ℓ ℓd)} (pb-comp-dmap-comp g) (pb-comp-dmap-sq {i} {j} g)
             ==
-            map-diag {C = Coslice-wc A (lmax ℓ ℓd)} pbs-coc-dmap-comp (pbs-coc-dmap-sq {i})
-          aux = ? -}
+            map-diag {C = Coslice-wc A (lmax ℓ ℓd)} pbs-coc-dmap-comp (pbs-coc-dmap-sq {i}) -}
+          aux = {!!} {- dmap-to-==
+                  {μ₁ =
+                    map-diag {C = Coslice-wc A (lmax ℓ ℓd)} pbs-coc-dmap-comp (pbs-coc-dmap-sq {j})
+                      diag-map-∘
+                    map-diag {C = Coslice-wc A (lmax ℓ ℓd)} (pb-comp-dmap-comp g) (pb-comp-dmap-sq {i} {j} g)}
+                  {μ₂ = map-diag {C = Coslice-wc A (lmax ℓ ℓd)} pbs-coc-dmap-comp (pbs-coc-dmap-sq {i})}
+                (aux-comp , aux-sq) -}
+            where
+            
+              aux-comp : ∀ t → pbs-coc-dmap-comp t ∘* pb-comp-dmap-comp g t == pbs-coc-dmap-comp t
+              aux-comp lft = UndFun∼-to-== (comTri (ColCoC-cos Δ) g)
+              aux-comp mid = idp
+              aux-comp rght = idp
 
-      -- cogap map for this cocone
+              abstract
+                aux-sq : ∀ {t₁ t₂ : Triple} (γ : Hom Graph-cspan t₁ t₂) →
+                  (! (UndFun∼-to-==
+                       (*→-assoc (D₁ pb-csp-cos γ) (pbs-coc-dmap-comp t₁) (pb-comp-dmap-comp g t₁))) ∙
+                    ap (λ m → m ∘* pb-comp-dmap-comp g t₁) (pbs-coc-dmap-sq γ) ∙
+                  UndFun∼-to-==
+                    (*→-assoc (pbs-coc-dmap-comp t₂) (D₁ (pb-comp-cos j) γ) (pb-comp-dmap-comp g t₁)) ∙
+                  ap (λ m → pbs-coc-dmap-comp t₂ ∘* m) (pb-comp-dmap-sq g γ) ∙
+                    ! (UndFun∼-to-==
+                        (*→-assoc (pbs-coc-dmap-comp t₂) (pb-comp-dmap-comp g t₂)
+                          (D₁ (pb-comp-cos i) γ)))) ∙'
+                  ap (λ m → m ∘* D₁ (pb-comp-cos i) γ) (aux-comp t₂)
+                    ==
+                  ap (λ m → D₁ pb-csp-cos γ ∘* m) (aux-comp t₁) ∙
+                  pbs-coc-dmap-sq γ
+                aux-sq {lft} {lft} ()
+                aux-sq {lft} {mid} unit = {!!}
+                  where 
+                    lemma : (μⱼ : Δ # j *→ po-CosCol Δ) (μᵢ : Δ # i *→ po-CosCol Δ)
+                      (q : < Δ # i > f ∘* μⱼ ∘* Δ <#> g ∼ f ∘* μᵢ) →
+                      UndFun∼-to-== (
+                        ∼!-cos (*→-assoc f μⱼ (Δ <#> g))
+                          ∼∘-cos
+                        pre-∘*-∼ (Δ <#> g) (lunit-∘* (f ∘* μⱼ))
+                          ∼∘-cos
+                        *→-assoc (idd Z) (f ∘* μⱼ) (Δ <#> g)
+                          ∼∘-cos
+                        post-∘*-∼ (idd Z) (*→-assoc f μⱼ (Δ <#> g))
+                          ∼∘-cos
+                        post-∘*-∼ (idd Z) q
+                          ∼∘-cos
+                        post-∘*-∼ (idd Z) (lunit-∘* (f ∘* μᵢ))
+                          ∼∘-cos
+                        ∼!-cos (*→-assoc (idd Z) (idd Z) (f ∘* μᵢ)))
+                        ==
+                      UndFun∼-to-== (q ∼∘-cos lunit-∘* (f ∘* μᵢ))
+                    lemma μⱼ μᵢ q = {!!} {- ap UndFun∼-to-== (∼∼-cos∼-to-==
+                      ((λ x → ap (λ p → p ∙ idp) (ap-idf (fst q x))) ,
+                      λ _ → aux)) -}
+                      where abstract
+                        -- r₁ = snd μⱼ a
+                        -- r₂ = snd μᵢ a
+                        -- q₁ = (fst q (str (D₀ Δ-wc i) a))
+                        -- q₂ = (snd (D₁ Δ-wc g) a)
+                        -- q₃ = (snd q a)
+                        -- q₄ = snd f a
+                        lemma-aux : {a : A} {x₁ : ty Z} {x₂ x₃ : ty (Δ # j)}
+                          {x₄ x₅ x₆ : ty (po-CosCol Δ)}
+                          (r₁ : fst μⱼ x₃ == x₄) (r₂ : x₅ == x₄) 
+                          (q₁ : fst f (fst μⱼ x₂) == fst f x₅)
+                          (q₂ : x₂ == x₃)
+                          (s : fst f x₄ == x₁)
+                          (q₃ : ! q₁ ∙ ap (fst f) (ap (fst μⱼ) q₂ ∙ r₁) ∙ s == ap (fst f) r₂ ∙ s) →
+                          ap (λ p → ! p ∙ ap (fst f) (ap (fst μⱼ) q₂ ∙ r₁) ∙ s)
+                            (! (ap (λ p → p ∙ idp) (ap-idf q₁))) ∙
+                          (ap (λ p → p ∙ ap (fst f) (ap (fst μⱼ) q₂ ∙ r₁) ∙ s)
+                            (!-∙ idp (ap (λ x → x) q₁ ∙ idp)) ∙
+                          ∙-assoc (! (ap (λ x → x) q₁ ∙ idp)) idp
+                            (ap (fst f) (ap (fst μⱼ) q₂ ∙ r₁) ∙ s)) ∙
+                          ap (_∙_ (! (ap (λ x → x) q₁ ∙ idp)))
+                            (ap (λ z → z) (!
+                              (ap (λ p → p ∙ ap (fst f) r₁ ∙ s)
+                                (ap-∘ (fst f) (fst μⱼ) q₂) ∙
+                              ! (ap-ap-∙-∙ (fst f) (fst μⱼ) q₂ r₁ s))) ∙
+                              idp) ∙
+                            (ap (λ p → p ∙ ap (λ z → fst f (fst μⱼ z))
+                                q₂ ∙ ap (fst f) r₁ ∙ s)
+                              (!-∙ idp (ap (λ x → x) q₁ ∙ idp)) ∙
+                            ∙-assoc (! (ap (λ x → x) q₁ ∙ idp)) idp
+                              (ap (λ z → fst f (fst μⱼ z)) q₂ ∙
+                              ap (fst f) r₁ ∙
+                              s)) ∙
+                            ap (_∙_ (! (ap (λ x → x) q₁ ∙ idp)))
+                              ((ap (λ p → p ∙ ap (fst f) r₁ ∙ s)
+                                 (hmtpy-nat-!-sq (λ _ → idp) q₂) ∙
+                                 ∙-assoc (ap (λ z → fst f (fst μⱼ z)) q₂) idp
+                                   (ap (fst f) r₁ ∙ s)) ∙
+                              ap (_∙_ (ap (λ z → fst f (fst μⱼ z)) q₂))
+                                (! (∙-unit-r (ap (fst f) r₁ ∙ s)) ∙
+                                ap (λ p → p ∙ idp) (! (ap-idf (ap (fst f) r₁ ∙ s))))) ∙
+                            (ap (λ p → p ∙
+                                ap (λ x → fst f (fst μⱼ x)) q₂ ∙
+                                ap (λ x → x) (ap (fst f) r₁ ∙ s) ∙ idp)
+                              (!-∙ idp (ap (λ x → x) q₁ ∙ idp)) ∙
+                            ∙-assoc (! (ap (λ x → x) q₁ ∙ idp)) idp
+                              (ap (λ x → fst f (fst μⱼ x)) q₂ ∙
+                            ap (λ x → x) (ap (fst f) r₁ ∙ s) ∙ idp)) ∙
+                            ap (_∙_ (! (ap (λ x → x) q₁ ∙ idp)))
+                              (ap (λ p → p ∙ ap (λ x → x) (ap (fst f) r₁ ∙ s) ∙ idp)
+                                (ap-∘ (λ x → x) (λ x → fst f (fst μⱼ x)) q₂) ∙
+                              ! (ap-ap-∙-∙ (λ x → x) (λ x → fst f (fst μⱼ x)) q₂
+                                  (ap (fst f) r₁ ∙ s) idp)) ∙
+                            (ap (λ p → p ∙
+                                  ap (λ x → x)
+                                    (ap (λ x → fst f (fst μⱼ x)) q₂ ∙
+                                    ap (fst f) r₁ ∙ s) ∙ idp)
+                              (!-∙ idp (ap (λ x → x) q₁ ∙ idp)) ∙
+                            ∙-assoc (! (ap (λ x → x) q₁ ∙ idp)) idp
+                              (ap (λ x → x)
+                                (ap (λ x → fst f (fst μⱼ x)) q₂ ∙
+                                ap (fst f) r₁ ∙ s) ∙ idp)) ∙
+                            ap (_∙_ (! (ap (λ x → x) q₁ ∙ idp)))
+                              (ap (λ p → ap (λ x → x) p ∙ idp)
+                                (ap (λ p → p ∙ ap (fst f) r₁ ∙ s)
+                                  (ap-∘ (fst f) (fst μⱼ) q₂) ∙
+                                ! (ap-ap-∙-∙ (fst f) (fst μⱼ) q₂ r₁ s))) ∙
+                            (ap (λ p → p ∙
+                                ap (λ x → x)
+                                  (ap (fst f) (ap (fst μⱼ) q₂ ∙ r₁) ∙ s) ∙ idp)
+                              (!-∙ (ap (λ x → x) q₁) idp) ∙ idp) ∙
+                            ap (λ z → z)
+                              (ap (λ p → p ∙
+                                  ap (λ x → x)
+                                    (ap (fst f) (ap (fst μⱼ) q₂ ∙ r₁) ∙ s) ∙ idp)
+                                (!-ap (λ x → x) q₁) ∙
+                              ! (∙-assoc (ap (λ x → x) (! q₁))
+                                  (ap (λ x → x)
+                                    (ap (fst f) (ap (fst μⱼ) q₂ ∙ r₁) ∙
+                                    s)) idp) ∙
+                              ap (λ p → p ∙ idp)
+                                (∙-ap (λ x → x) (! q₁)
+                                  (ap (fst f) (ap (fst μⱼ) q₂ ∙ r₁) ∙ s)) ∙
+                              ap (λ p → ap (λ x → x) p ∙ idp) q₃) ∙
+                              ap (λ z → z)
+                                (ap (λ p → ap (λ x → x) p ∙ idp)
+                                  (! (∙-unit-r (ap (fst f) r₂ ∙ s)) ∙
+                                  ap (λ p → p ∙ idp) (! (ap-idf (ap (fst f) r₂ ∙ s))))) ∙
+                              ap (λ z → z)
+                                (! (ap (λ p → p ∙ idp)
+                                     (ap-∘ (λ x → x) (λ x → x) (ap (fst f) r₂ ∙ s)) ∙
+                                     ! (ap-ap-∙-∙ (λ x → x) (λ x → x)
+                                       (ap (fst f) r₂ ∙ s) idp idp))) ∙ idp
+                            ==
+                          (ap (λ p → p ∙ ap (fst f) (ap (fst μⱼ) q₂ ∙ r₁) ∙ s)
+                            (!-∙ q₁ idp) ∙ idp) ∙
+                          ap (λ z → z) q₃ ∙
+                          ! (∙-unit-r (ap (fst f) r₂ ∙ s)) ∙
+                          ap (λ p → p ∙ idp) (! (ap-idf (ap (fst f) r₂ ∙ s)))
+                        lemma-aux idp idp q₁ idp idp q₃ = lemma-aux2 q₁ q₃
+                          where abstract
+                            lemma-aux2 : {v₁ v₂ : ty Z} (r : v₁ == v₂)
+                              {c : v₂ == v₁} (s : ! r ∙ idp == c) →
+                              ap (λ p → ! p ∙ idp) (! (ap (λ p → p ∙ idp) (ap-idf r))) ∙
+                              (ap (λ p → p ∙ idp) (!-∙ idp (ap (λ x → x) r ∙ idp)) ∙
+                              ∙-assoc (! (ap (λ x → x) r ∙ idp)) idp idp) ∙
+                              (ap (λ p → p ∙ idp) (!-∙ idp (ap (λ x → x) r ∙ idp)) ∙
+                              ∙-assoc (! (ap (λ x → x) r ∙ idp)) idp idp) ∙
+                              (ap (λ p → p ∙ idp) (!-∙ idp (ap (λ x → x) r ∙ idp)) ∙
+                              ∙-assoc (! (ap (λ x → x) r ∙ idp)) idp idp) ∙
+                              (ap (λ p → p ∙ idp) (!-∙ idp (ap (λ x → x) r ∙ idp)) ∙
+                              ∙-assoc (! (ap (λ x → x) r ∙ idp)) idp idp) ∙
+                              (ap (λ p → p ∙ idp) (!-∙ (ap (λ x → x) r) idp) ∙ idp) ∙
+                              ap (λ z → z)
+                                (ap (λ p → p ∙ idp) (!-ap (λ x → x) r) ∙
+                                ! (∙-assoc (ap (λ x → x) (! r)) idp idp) ∙
+                                ap (λ p → p ∙ idp) (∙-ap (λ x → x) (! r) idp) ∙
+                                ap (λ p → ap (λ x → x) p ∙ idp) s) ∙ idp
+                                ==
+                              (ap (λ p → p ∙ idp) (!-∙ r idp) ∙ idp) ∙
+                              ap (λ z → z) s ∙
+                              ! (∙-unit-r (ap (λ x → x) c) ∙ ap-idf c) ∙ idp
+                            lemma-aux2 idp idp = idp
+                    {- =ₛ-out $
+                  ! (UndFun∼-to-== (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g))) ◃∙
+                  ap (λ m → m ∘* Δ <#> g) (lunit (f ∘* comp (ColCoC-cos Δ) j)) ◃∙
+                  UndFun∼-to-== (*→-assoc (idd Z) (f ∘* comp (ColCoC-cos Δ) j) (Δ <#> g)) ◃∙
+                  ap (λ m → idd Z ∘* m)
+                    (assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g) ∙
+                    ap (λ m → f ∘* m) (UndFun∼-to-== (comTri (ColCoC-cos Δ) g)) ∙
+                    lunit (f ∘* comp (ColCoC-cos Δ) i)) ◃∙
+                  ! (UndFun∼-to-== (*→-assoc (idd Z) (idd Z) (f ∘* comp (ColCoC-cos Δ) i))) ◃∎
+                    =ₛ₁⟨ 4 & 1 & !cos-conv (*→-assoc (idd Z) (idd Z) (f ∘* comp (ColCoC-cos Δ) i)) ⟩
+                  ! (UndFun∼-to-== (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g))) ◃∙
+                  ap (λ m → m ∘* Δ <#> g) (lunit (f ∘* comp (ColCoC-cos Δ) j)) ◃∙
+                  UndFun∼-to-== (*→-assoc (idd Z) (f ∘* comp (ColCoC-cos Δ) j) (Δ <#> g)) ◃∙
+                  ap (λ m → idd Z ∘* m)
+                    (assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g) ∙
+                    ap (λ m → f ∘* m) (UndFun∼-to-== (comTri (ColCoC-cos Δ) g)) ∙
+                    lunit (f ∘* comp (ColCoC-cos Δ) i)) ◃∙
+                  UndFun∼-to-== (∼!-cos (*→-assoc (idd Z) (idd Z) (f ∘* comp (ColCoC-cos Δ) i))) ◃∎
+                    =ₛ₁⟨ 1 & 1 & whisk-cos-conv-r (lunit-∘* (f ∘* comp (ColCoC-cos Δ) j)) ⟩
+                  ! (UndFun∼-to-== (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g))) ◃∙
+                  UndFun∼-to-== (pre-∘*-∼ (Δ <#> g) (lunit-∘* (f ∘* comp (ColCoC-cos Δ) j))) ◃∙
+                  UndFun∼-to-== (*→-assoc (idd Z) (f ∘* comp (ColCoC-cos Δ) j) (Δ <#> g)) ◃∙
+                  ap (λ m → idd Z ∘* m)
+                    (assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g) ∙
+                    ap (λ m → f ∘* m) (UndFun∼-to-== (comTri (ColCoC-cos Δ) g)) ∙
+                    lunit (f ∘* comp (ColCoC-cos Δ) i)) ◃∙
+                  UndFun∼-to-== (∼!-cos (*→-assoc (idd Z) (idd Z) (f ∘* comp (ColCoC-cos Δ) i))) ◃∎
+                    =ₛ₁⟨ 0 & 1 & !cos-conv (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g)) ⟩
+                  UndFun∼-to-== (∼!-cos (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g))) ◃∙
+                  UndFun∼-to-== (pre-∘*-∼ (Δ <#> g) (lunit-∘* (f ∘* comp (ColCoC-cos Δ) j))) ◃∙
+                  UndFun∼-to-== (*→-assoc (idd Z) (f ∘* comp (ColCoC-cos Δ) j) (Δ <#> g)) ◃∙
+                  ap (λ m → idd Z ∘* m)
+                    (assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g) ∙
+                    ap (λ m → f ∘* m) (UndFun∼-to-== (comTri (ColCoC-cos Δ) g)) ∙
+                    lunit (f ∘* comp (ColCoC-cos Δ) i)) ◃∙
+                  UndFun∼-to-== (∼!-cos (*→-assoc (idd Z) (idd Z) (f ∘* comp (ColCoC-cos Δ) i))) ◃∎
+                    =ₛ⟨ 3 & 1 & ap-seq-∙ (λ m → idd Z ∘* m)
+                      (assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g) ◃∙
+                      ap (λ m → f ∘* m) (UndFun∼-to-== (comTri (ColCoC-cos Δ) g)) ◃∙
+                      lunit (f ∘* comp (ColCoC-cos Δ) i) ◃∎) ⟩
+                  UndFun∼-to-== (∼!-cos (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g))) ◃∙
+                  UndFun∼-to-== (pre-∘*-∼ (Δ <#> g) (lunit-∘* (f ∘* comp (ColCoC-cos Δ) j))) ◃∙
+                  UndFun∼-to-== (*→-assoc (idd Z) (f ∘* comp (ColCoC-cos Δ) j) (Δ <#> g)) ◃∙
+                  ap (λ m → idd Z ∘* m) (assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g)) ◃∙
+                  ap (λ m → idd Z ∘* m) (ap (λ m → f ∘* m) (UndFun∼-to-== (comTri (ColCoC-cos Δ) g))) ◃∙
+                  ap (λ m → idd Z ∘* m) (lunit (f ∘* comp (ColCoC-cos Δ) i)) ◃∙
+                  UndFun∼-to-== (∼!-cos (*→-assoc (idd Z) (idd Z) (f ∘* comp (ColCoC-cos Δ) i))) ◃∎
+                    =ₛ₁⟨ 5 & 1 & whisk-cos-conv-l (lunit-∘* (f ∘* comp (ColCoC-cos Δ) i)) ⟩
+                  UndFun∼-to-== (∼!-cos (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g))) ◃∙
+                  UndFun∼-to-== (pre-∘*-∼ (Δ <#> g) (lunit-∘* (f ∘* comp (ColCoC-cos Δ) j))) ◃∙
+                  UndFun∼-to-== (*→-assoc (idd Z) (f ∘* comp (ColCoC-cos Δ) j) (Δ <#> g)) ◃∙
+                  ap (λ m → idd Z ∘* m) (assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g)) ◃∙
+                  ap (λ m → idd Z ∘* m) (ap (λ m → f ∘* m) (UndFun∼-to-== (comTri (ColCoC-cos Δ) g))) ◃∙
+                  UndFun∼-to-== (post-∘*-∼ (idd Z) (lunit-∘* (f ∘* comp (ColCoC-cos Δ) i))) ◃∙
+                  UndFun∼-to-== (∼!-cos (*→-assoc (idd Z) (idd Z) (f ∘* comp (ColCoC-cos Δ) i))) ◃∎
+                    =ₛ₁⟨ 3 & 1 & whisk-cos-conv-l (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g)) ⟩
+                  UndFun∼-to-== (∼!-cos (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g))) ◃∙
+                  UndFun∼-to-== (pre-∘*-∼ (Δ <#> g) (lunit-∘* (f ∘* comp (ColCoC-cos Δ) j))) ◃∙
+                  UndFun∼-to-== (*→-assoc (idd Z) (f ∘* comp (ColCoC-cos Δ) j) (Δ <#> g)) ◃∙
+                  UndFun∼-to-== (post-∘*-∼ (idd Z) (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g))) ◃∙
+                  ap (λ m → idd Z ∘* m) (ap (λ m → f ∘* m) (UndFun∼-to-== (comTri (ColCoC-cos Δ) g))) ◃∙
+                  UndFun∼-to-== (post-∘*-∼ (idd Z) (lunit-∘* (f ∘* comp (ColCoC-cos Δ) i))) ◃∙
+                  UndFun∼-to-== (∼!-cos (*→-assoc (idd Z) (idd Z) (f ∘* comp (ColCoC-cos Δ) i))) ◃∎
+                    =ₛ₁⟨ 4 & 1 &
+                      ap (ap (λ m → idd Z ∘* m)) (whisk-cos-conv-l (comTri (ColCoC-cos Δ) g)) ∙
+                      whisk-cos-conv-l (post-∘*-∼ f (comTri (ColCoC-cos Δ) g)) ⟩
+                  UndFun∼-to-== (∼!-cos (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g))) ◃∙
+                  UndFun∼-to-== (pre-∘*-∼ (Δ <#> g) (lunit-∘* (f ∘* comp (ColCoC-cos Δ) j))) ◃∙
+                  UndFun∼-to-== (*→-assoc (idd Z) (f ∘* comp (ColCoC-cos Δ) j) (Δ <#> g)) ◃∙
+                  UndFun∼-to-== (post-∘*-∼ (idd Z) (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g))) ◃∙
+                  UndFun∼-to-== (post-∘*-∼ (idd Z) (post-∘*-∼ f (comTri (ColCoC-cos Δ) g))) ◃∙
+                  UndFun∼-to-== (post-∘*-∼ (idd Z) (lunit-∘* (f ∘* comp (ColCoC-cos Δ) i))) ◃∙
+                  UndFun∼-to-== (∼!-cos (*→-assoc (idd Z) (idd Z) (f ∘* comp (ColCoC-cos Δ) i))) ◃∎
+                    =ₛ⟨ cos∘-conv-sept ⟩
+                  UndFun∼-to-== (
+                    ∼!-cos (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g))
+                      ∼∘-cos
+                    pre-∘*-∼ (Δ <#> g) (lunit-∘* (f ∘* comp (ColCoC-cos Δ) j))
+                      ∼∘-cos
+                    *→-assoc (idd Z) (f ∘* comp (ColCoC-cos Δ) j) (Δ <#> g)
+                      ∼∘-cos
+                    post-∘*-∼ (idd Z) (*→-assoc f (comp (ColCoC-cos Δ) j) (Δ <#> g))
+                      ∼∘-cos
+                    post-∘*-∼ (idd Z) (post-∘*-∼ f (comTri (ColCoC-cos Δ) g))
+                      ∼∘-cos
+                    post-∘*-∼ (idd Z) (lunit-∘* (f ∘* comp (ColCoC-cos Δ) i))
+                      ∼∘-cos
+                    ∼!-cos (*→-assoc (idd Z) (idd Z) (f ∘* comp (ColCoC-cos Δ) i))) ◃∎
+                    =ₛ₁⟨ lemma (comp (ColCoC-cos Δ) j) (comp (ColCoC-cos Δ) i)
+                           (post-∘*-∼ f (comTri (ColCoC-cos Δ) g)) ⟩
+                  UndFun∼-to-==
+                    (post-∘*-∼ f (comTri (ColCoC-cos Δ) g) ∼∘-cos lunit-∘* (f ∘* comp (ColCoC-cos Δ) i)) ◃∎
+                    =ₛ⟨ cos∘-conv
+                          (post-∘*-∼ f (comTri (ColCoC-cos Δ) g))
+                          (lunit-∘* (f ∘* comp (ColCoC-cos Δ) i)) ⟩
+                  UndFun∼-to-== (post-∘*-∼ f (comTri (ColCoC-cos Δ) g)) ◃∙
+                  UndFun∼-to-== (lunit-∘* (f ∘* comp (ColCoC-cos Δ) i)) ◃∎
+                    =ₛ₁⟨ 0 & 1 & ! (whisk-cos-conv-l (comTri (ColCoC-cos Δ) g)) ⟩
+                  ap (λ m → f ∘* m) (UndFun∼-to-== (comTri (ColCoC-cos Δ) g)) ◃∙
+                  lunit (f ∘* comp (ColCoC-cos Δ) i) ◃∎ ∎ₛ -}
+                aux-sq {lft} {rght} ()
+                aux-sq {mid} {lft} ()
+                aux-sq {mid} {mid} ()
+                aux-sq {mid} {rght} ()
+                aux-sq {rght} {lft} ()
+                aux-sq {rght} {mid} unit = {!aux-rm!}
+                aux-sq {rght} {rght} ()
+
+      -- cogap map for this cocone (i.e., the pullback stability map for the coslice universe)
       cogap-pbstb-cos : po-CosCol diag-pbs-cos *→ τ
       cogap-pbstb-cos = cogap-cos canmap-cos-pbs-coc

@@ -63,7 +63,7 @@ module ConstrMap9 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       (ρ : idp == d₂ ∙ idp) →
       ap (λ p → ! (((p ∙ idp) ∙ idp) ∙ ap 𝕕₀ (ap right c)) ∙ ! d₂)
         (ap ! ρ ∙ ap ! (∙-unit-r d₂)) ∙
-      !-∙-!-rid-∙-rid (ap 𝕕₀ (ap (right {d = SpCos₁}) c)) (! d₂) idp ∙
+      !-∙-!-rid-∙ (ap 𝕕₀ (ap (right {d = SpCos₁}) c)) (! d₂) idp ∙
       ap (λ q → q) (!-ap-∙-s 𝕕₀ (ap right c)) ∙
       ap2-!-!-rid2 𝕕₀ c idp ∙
       ap (λ p → ! (ap (𝕕₀ ∘ right) c) ∙ ! p) ρ
@@ -80,7 +80,7 @@ module ConstrMap9 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
            ! (ap (𝕕₀ ∘ right ∘ cin j) d₄)) ∙ ap 𝕕₀ (ap right (cglue g (str (F # i) a)))) ∙
            ap (right ∘ cin j ∘ (fst (nat δ j))) d₄ ∙ ap (right ∘ cin j) d₁ ∙ ! d₂)
          (ap-inv-rid 𝕕₀ d₃ ∙ ap ! ρ ∙ !-!-ap-∘ (cin j) right d₁ d₂) ◃∙
-      long-path-red d₄ (ap (right ∘ cin j) d₁ ∙ ! d₂)
+      CCeq-coh-path d₄ (ap (right ∘ cin j) d₁ ∙ ! d₂)
         (ap 𝕕₀ (! d₃) ∙ idp)
         (ap 𝕕₀ (ap right (cglue g (str (F # i) a)))) idp ◃∙
       ap (λ q → q) (!-ap-ap-∘-ap-∙ 𝕕₀ (right ∘ cin j) d₄ (ap right (cglue g (str (F # i) a)))) ◃∙

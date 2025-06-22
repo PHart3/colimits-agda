@@ -47,7 +47,7 @@ module ConstrMap8 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       {x₃ : P₂} (γ : x₃ == right (cin j (str (G # j) a))) → 
       long-red-ap5-rid (right {d = SpCos₂}) {f₄ = fst (G <#> g)} {f₅ = cin i} σ idp c₁ d c₂ γ ∙
       ! (ap (λ q → q) (E₁ c₁ (! γ))) ∙
-      ! (long-red-ap-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right idp c₁ σ d c₂ (! γ)) ∙ idp
+      ! (act-dmap-CC-coh (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right idp c₁ σ d c₂ (! γ)) ∙ idp
         ==
       ↯ (ap2-!5-2 right (cin j) (c₂ ∙ idp)
           (ap (cin j) (c₁ ∙ ! d ∙ ! (ap (fst (nat δ j)) σ))) d
@@ -73,7 +73,7 @@ module ConstrMap8 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
         long-red-ap5-rid right (snd (F <#> g) a) c₃ c₄ (snd (nat δ j) a)  c₂ (glue (cin j a)) ◃∙
         idp ◃∙
         ! (ap (λ p → ap (right ∘ cin i) c₃ ∙ p)  (E₁ c₄ (! (glue (cin j a))))) ◃∙
-        ! (long-red-ap-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right  c₃ c₄ (snd (F <#> g) a)
+        ! (act-dmap-CC-coh (cin j) (fst (nat δ j)) (fst (G <#> g)) (cin i) right  c₃ c₄ (snd (F <#> g) a)
             (snd (nat δ j) a) c₂ (! (glue (cin j a)))) ◃∙
         ! (ap (λ p → ! (ap right (! (ap (cin j) (ap (fst (G <#> g)) c₃ ∙
                 c₄ ∙ ! (snd (nat δ j) a) ∙ ! (ap (fst (nat δ j)) (snd (F <#> g) a)))) ∙ p)) ∙

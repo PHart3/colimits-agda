@@ -148,7 +148,7 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
   {a₁ a₂ : ob C} {K₁ : Cone-wc Δ₁ a₁} {K₂ : Cone-wc Δ₂ a₂} (μ : Map-diag Δ₁ Δ₂) where
 
   lim-map-wc : is-lim-wc K₂ → hom C a₁ a₂
-  lim-map-wc lim₂ = gap-map-wc K₂ lim₂ (whisk-dmap-con μ K₁)
+  lim-map-wc lim₂ = gap-map-wc K₂ lim₂ (act-dmap-con μ K₁)
 
 -- preservation of composition by limits
 module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} {Δ₁ Δ₂ Δ₃ : Diagram G C}
@@ -168,13 +168,13 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
           pre-cmp-con K₃ a₁ (⟦ C ⟧ lim-map-wc {K₁ = K₂} μ₂ lim₃ ◻ lim-map-wc {K₁ = K₁} μ₁ lim₂)
             =⟨ pre-cmp-∘ pent (lim-map-wc {K₁ = K₂} μ₂ lim₃) (lim-map-wc {K₁ = K₁} μ₁ lim₂) K₃ ⟩
           pre-cmp-con (pre-cmp-con K₃ a₂ (lim-map-wc μ₂ lim₃)) a₁ (lim-map-wc μ₁ lim₂)
-            =⟨ ap (λ V → pre-cmp-con V a₁ (lim-map-wc {K₁ = K₁} μ₁ lim₂)) (<–-inv-r (is-lim-≃ K₃ lim₃ a₂) (whisk-dmap-con μ₂ K₂)) ⟩
-          pre-cmp-con (whisk-dmap-con μ₂ K₂) a₁ (lim-map-wc μ₁ lim₂)
+            =⟨ ap (λ V → pre-cmp-con V a₁ (lim-map-wc {K₁ = K₁} μ₁ lim₂)) (<–-inv-r (is-lim-≃ K₃ lim₃ a₂) (act-dmap-con μ₂ K₂)) ⟩
+          pre-cmp-con (act-dmap-con μ₂ K₂) a₁ (lim-map-wc μ₁ lim₂)
             =⟨ whisk-pre-cmp-coher pent μ₂ (lim-map-wc μ₁ lim₂) K₂ ⟩
-          whisk-dmap-con μ₂ (pre-cmp-con K₂ a₁ (lim-map-wc μ₁ lim₂))
-            =⟨ ap (λ V → whisk-dmap-con μ₂ V) (<–-inv-r (is-lim-≃ K₂ lim₂ a₁) (whisk-dmap-con μ₁ K₁)) ⟩
-          whisk-dmap-con μ₂ (whisk-dmap-con μ₁ K₁)
+          act-dmap-con μ₂ (pre-cmp-con K₂ a₁ (lim-map-wc μ₁ lim₂))
+            =⟨ ap (λ V → act-dmap-con μ₂ V) (<–-inv-r (is-lim-≃ K₂ lim₂ a₁) (act-dmap-con μ₁ K₁)) ⟩
+          act-dmap-con μ₂ (act-dmap-con μ₁ K₁)
             =⟨ ! (whisk-diag-∘ pent μ₁ μ₂ K₁) ⟩
-          whisk-dmap-con (μ₂ diag-map-∘ μ₁) K₁
-            =⟨ ! (<–-inv-r (is-lim-≃ K₃ lim₃ a₁) (whisk-dmap-con (μ₂ diag-map-∘ μ₁) K₁)) ⟩
+          act-dmap-con (μ₂ diag-map-∘ μ₁) K₁
+            =⟨ ! (<–-inv-r (is-lim-≃ K₃ lim₃ a₁) (act-dmap-con (μ₂ diag-map-∘ μ₁) K₁)) ⟩
           pre-cmp-con K₃ a₁ (lim-map-wc {K₁ = K₁} (μ₂ diag-map-∘ μ₁) lim₃) =∎

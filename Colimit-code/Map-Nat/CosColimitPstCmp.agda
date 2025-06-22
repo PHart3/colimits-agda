@@ -29,6 +29,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
   φ₁ = fst φ
   φ₂ = snd φ
 
+  -- action of Lim on A-maps
   Map-to-Lim-map : CosCocone A F T →  CosCocone A F U
   comp (Map-to-Lim-map (comp₁ & comTri₁)) = λ i → φ ∘* comp₁ i
   comTri (Map-to-Lim-map (comp₁ & comTri₁)) {j} {i} =
@@ -65,7 +66,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
           ap φ₁ (ap f p₁)) ∙ ap (φ₁ ∘ f ∘ right ∘ cin j) p₂ ∙
           ap (φ₁ ∘ f) p₃ ∙ ap φ₁ p₄ ∙ p₅))
         (ap-∘-∙-∙ φ₁ f p₃ p₄) ◃∙
-      long-path-red p₂ (ap (φ₁ ∘ f) p₃ ∙ ap φ₁ p₄ ∙ p₅) (ap φ₁ (ap f p₃ ∙ p₄) ∙ p₅) (ap φ₁ (ap f p₁)) idp ◃∎
+      CCeq-coh-path p₂ (ap (φ₁ ∘ f) p₃ ∙ ap φ₁ p₄ ∙ p₅) (ap φ₁ (ap f p₃ ∙ p₄) ∙ p₅) (ap φ₁ (ap f p₁)) idp ◃∎
         =ₛ
       ↯ (NatSq-1-Λ-aux g a p₁ p₂ p₃ p₄ p₅) ◃∎
     NatSq-1-Λ-red g a idp idp idp idp idp = =ₛ-in idp 
@@ -111,7 +112,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
               ap (φ₁ ∘ f ∘ fst (comp ColCoC-cos j)) (snd (F <#> g) a) ∙
               ap (φ₁ ∘ f) (snd (comp ColCoC-cos j) a) ∙ snd (φ ∘* f , fₚ) a)
             (ap-∘-∙-∙ φ₁ f (! (glue (cin j a))) (fₚ a)) ◃∙
-          long-path-red (snd (F <#> g) a)
+          CCeq-coh-path (snd (F <#> g) a)
             (ap (φ₁ ∘ f) (! (glue (cin j a))) ∙ ap (fst φ) (fₚ a) ∙ snd φ a)
             (ap (fst φ) (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ snd φ a)
             (ap φ₁ (ap f (ap right (cglue g (str (F # i) a))))) idp ◃∙
@@ -142,7 +143,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
               ap (φ₁ ∘ f ∘ fst (comp ColCoC-cos j)) (snd (F <#> g) a) ∙
               ap (φ₁ ∘ f) (snd (comp ColCoC-cos j) a) ∙ snd (φ ∘* f , fₚ) a)
             (ap-∘-∙-∙ φ₁ f (! (glue (cin j a))) (fₚ a)) ◃∙
-          long-path-red (snd (F <#> g) a)
+          CCeq-coh-path (snd (F <#> g) a)
             (ap (φ₁ ∘ f) (! (glue (cin j a))) ∙ ap (fst φ) (fₚ a) ∙ snd φ a)
             (ap (fst φ) (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ snd φ a)
             (ap φ₁ (ap f (ap right (cglue g (str (F # i) a))))) idp ◃∙

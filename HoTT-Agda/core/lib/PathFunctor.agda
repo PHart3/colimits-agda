@@ -291,13 +291,12 @@ module _ {i j} {A : Type i} {B : Type j} where
     → h ∙ ap g p == ap f p ∙ transport (λ a → f a == g a) p h
   ap-transp f g p@idp h = ∙-unit-r h
 
-  ap-transp-idp : (f : A → B)
-    {a₀ a₁ : A} (p : a₀ == a₁)
-    → ap-transp f f p idp ◃∙
-      ap (ap f p ∙_) (transp-idp f p) ◃∙
-      ∙-unit-r (ap f p) ◃∎
+  ap-transp-idp : (f : A → B) {a₀ a₁ : A} (p : a₀ == a₁) →
+    ap-transp f f p idp ◃∙
+    ap (ap f p ∙_) (transp-idp f p) ◃∙
+    ∙-unit-r (ap f p) ◃∎
       =ₛ
-      []
+    []
   ap-transp-idp f p@idp = =ₛ-in idp
 
 {- for functions with two arguments -}
@@ -419,15 +418,14 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
 
 module _ {i j} {A : Type i} {B : Type j} (b : B) where
 
-  ap-cst : {x y : A} (p : x == y)
-    → ap (cst b) p == idp
+  ap-cst : {x y : A} (p : x == y) → ap (cst b) p == idp
   ap-cst idp = idp
 
-  ap-cst-coh : {x y z : A} (p : x == y) (q : y == z)
-    → ap-cst (p ∙ q) ◃∎
+  ap-cst-coh : {x y z : A} (p : x == y) (q : y == z) →
+    ap-cst (p ∙ q) ◃∎
       =ₛ
-      ap-∙ (cst b) p q ◃∙
-      ap2 _∙_ (ap-cst p) (ap-cst q) ◃∎
+    ap-∙ (cst b) p q ◃∙
+    ap2 _∙_ (ap-cst p) (ap-cst q) ◃∎
   ap-cst-coh idp idp = =ₛ-in idp
 
 {- Naturality of homotopies -}

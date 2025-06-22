@@ -57,8 +57,9 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : 
     → ! (! (ap f (ap h p₁ ∙ p₂ ∙ ! p₃  ∙ ! (ap g p₄))) ∙ p₅) ∙ ap (f ∘ g) p₄ ∙ ap f p₃ ∙ ! (ap f p₂) ∙ p₆ == ! p₅ ∙ ap (f ∘ h) p₁ ∙ p₆
   long-red-!-∙ p₁ p₂ idp p₃ p₅ p₆ = ap-∘-!-!-rid-rid h f p₁ p₃ p₂ p₅ p₆
 
-  long-red-ap-!-∙ : ∀ {ℓ₅} {H : Type ℓ₅} (k : C → B) (m : B → H) {c₁ c₂ : C} (p₁ : c₁ == c₂) {a : A} (p₂ : h c₂ == a) {d₁ d₂ : D}
-    (p₄ : d₁ == d₂) (p₃ : g d₂ == a) {e : H} (p₅ : f (h c₂) == k c₂) (p₆ : m (f a) == e)
-    → ! (ap m (! (ap f (ap h p₁ ∙ p₂ ∙ ! p₃  ∙ ! (ap g p₄))) ∙ ap (f ∘ h) p₁ ∙ p₅ ∙ ! (ap k p₁))) ∙ ap (m ∘ f ∘ g) p₄ ∙ ap (m ∘ f) p₃ ∙ p₆ ==
-      ap (m ∘ k) p₁ ∙ ! (ap m p₅) ∙ ap (m ∘ f) p₂ ∙ p₆
-  long-red-ap-!-∙ k m p₁ p₂ idp p₃ p₅ p₆ = !-!-!-∘-∘-∘-rid f h k m p₁ p₂ p₃ p₆ p₅
+  act-dmap-CC-coh : ∀ {ℓ₅} {H : Type ℓ₅} (k : C → B) (m : B → H) {c₁ c₂ : C} (p₁ : c₁ == c₂) {a : A} (p₂ : h c₂ == a) {d₁ d₂ : D}
+    (p₄ : d₁ == d₂) (p₃ : g d₂ == a) {e : H} (p₅ : f (h c₂) == k c₂) (p₆ : m (f a) == e) →
+    ! (ap m (! (ap f (ap h p₁ ∙ p₂ ∙ ! p₃  ∙ ! (ap g p₄))) ∙ ap (f ∘ h) p₁ ∙ p₅ ∙ ! (ap k p₁))) ∙ ap (m ∘ f ∘ g) p₄ ∙ ap (m ∘ f) p₃ ∙ p₆
+      ==
+    ap (m ∘ k) p₁ ∙ ! (ap m p₅) ∙ ap (m ∘ f) p₂ ∙ p₆
+  act-dmap-CC-coh k m p₁ p₂ idp p₃ p₅ p₆ = !-!-!-∘-∘-∘-rid f h k m p₁ p₂ p₃ p₆ p₅
