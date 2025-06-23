@@ -105,9 +105,14 @@ record Cocone-mor-str {ℓ k₁ k₂} {Γ : Graph ℓv ℓe} {F : Diag ℓ Γ} {
     comp-∼ : (i : Obj Γ) → f ∘ comp K₁ i ∼ comp K₂ i
     comTri-∼ : {i j : Obj Γ} (g : Hom Γ i j) (x : F # i) →
       ! (comp-∼ j ((F <#> g) x)) ∙ ap f (comTri K₁ g x) ∙' comp-∼ i x == comTri K₂ g x
+      
   comTri-∼-rot : {i j : Obj Γ} (g : Hom Γ i j) (x : F # i) →
     ap f (comTri K₁ g x) == comp-∼ j ((F <#> g) x) ∙ comTri K₂ g x ∙' ! (comp-∼ i x)
   comTri-∼-rot {i} {j} g x = !-∙-∙'-rot (ap f (comTri K₁ g x)) (comp-∼ i x) (comTri-∼ g x)
+  
+  comTri-∼-rot2 : {i j : Obj Γ} (g : Hom Γ i j) (x : F # i) →
+    ap f (comTri K₁ g x) ∙ comp-∼ i x == comp-∼ j ((F <#> g) x) ∙ comTri K₂ g x
+  comTri-∼-rot2 {i} {j} g x = !-∙-∙'-rot-sq (ap f (comTri K₁ g x)) (comp-∼ i x) (comTri-∼ g x)
 open Cocone-mor-str public
 
 module _ {ℓ k₁ k₂} {Γ : Graph ℓv ℓe} {F : Diag ℓ Γ} {C₁ : Type k₁} {C₂ : Type k₂} where

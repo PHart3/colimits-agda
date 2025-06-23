@@ -84,6 +84,15 @@ module _ {ℓv ℓe : ULevel} where
         tri : {y x : Obj G} (f : Hom G x y) → ⟦ C ⟧ leg y ◻ D₁ Δ f == leg x
     open Cocone-wc public
 
+    post-cmp-coc : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {a : ob C}
+      (K : Cocone-wc Δ a) (b : ob C) → hom C a b → Cocone-wc Δ b
+    leg (post-cmp-coc {C = C} K _ f) x = ⟦ C ⟧ f ◻ leg K x
+    tri (post-cmp-coc {C = C} {D} K _ f) {y} {x} γ = α C f (leg K y) (D₁ D γ) ∙ ap (λ m → ⟦ C ⟧ f ◻ m) (tri K γ)
+
+    Coc-wc-mor : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T₁ T₂ : ob C}
+      → Cocone-wc Δ T₁ → Cocone-wc Δ T₂ → Type (lmax (lmax (lmax ℓv ℓe) ℓc₁) ℓc₂)
+    Coc-wc-mor {C = C} {T₁ = T₁} {T₂} K₁ K₂ = Σ (hom C T₁ T₂) (λ f → post-cmp-coc K₁ _ f == K₂)
+
     cocone-wc-Σ : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T : ob C} →
       Cocone-wc Δ T ≃ Σ ((i : Obj G) → hom C (D₀ Δ i) T)
                      (λ leg → ∀ {x y} (f : Hom G y x) → ⟦ C ⟧ leg x ◻ D₁ Δ f == leg y)

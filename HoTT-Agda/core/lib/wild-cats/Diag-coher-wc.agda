@@ -5,7 +5,6 @@ open import lib.types.Graph
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Diagram-wc
 open import lib.wild-cats.Cone-wc-SIP
-open import lib.wild-cats.Colim-wc
 open import lib.wild-cats.Cocone-wc-SIP
 
 module lib.wild-cats.Diag-coher-wc where

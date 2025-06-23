@@ -38,12 +38,17 @@ record Functor-wc {i₁ j₁ i₂ j₂} (B : WildCat {i₁} {j₁}) (C : WildCat
     comp : {a b c : ob B} (f : hom B a b) (g : hom B b c) → arr (⟦ B ⟧ g ◻ f) == ⟦ C ⟧ arr g ◻ arr f
 open Functor-wc public
 
--- equivalence of objects induces equivalence of hom types
+-- (non-coherent) equivalences
 module _ {i j} (C : WildCat {i} {j}) where
 
   equiv-wc : {a b : ob C} → hom C a b → Type j
   equiv-wc {a} {b} f = Σ (hom C b a) (λ g → (id₁ C a == ⟦ C ⟧ g ◻ f) × (id₁ C b == ⟦ C ⟧ f ◻ g))
-  
+
+  -- 3-for-2
+  equiv-wc-3f2 : {!!}
+  equiv-wc-3f2 = {!!}
+
+  -- equivalence of objects induces equivalence of hom types
   module _ {a b : ob C} {f : hom C a b} (e : equiv-wc f) where
 
     <–-wc : hom C b a

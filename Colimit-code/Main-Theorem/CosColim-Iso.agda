@@ -45,8 +45,8 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
     open CM-eqv
 
-    ColCoc-is-colim : ∀ {ℓd} (Δ : Diagram Γ (Coslice-wc A (lmax ℓ ℓd))) → is-colim (CosCoc-to-wc (ColCoC-cos (CosDiag-from-wc Δ)))
-    ColCoc-is-colim Δ = CosCol-to-wc (CanMap-cos-eqv (CosDiag-from-wc Δ))
+    ColCoc-is-colim : ∀ {ℓd} (Δ : Diagram Γ (Coslice-wc A (lmax ℓ ℓd))) → is-colim (CosCoc-to-wc (ColCoC-cos (Diag-to-grhom Δ)))
+    ColCoc-is-colim Δ = CosCol-to-wc (CanMap-cos-eqv (Diag-to-grhom Δ))
 
     CanMap-cos-contr : ∀ {ℓd ℓc} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) → is-contr-map (RWhisk-coscoc {D = T} (ColCoC-cos F))
     CanMap-cos-contr F T = equiv-is-contr-map (CanMap-cos-eqv F T)
