@@ -56,6 +56,13 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A >
   UndFun∼-β : UndFun∼-to-== ((λ _ → idp) , (λ _ → idp)) == idp
   UndFun∼-β = ID-ind-map-β (λ g _ → f == g) UndFunHomContr idp
 
+  UndFun-∼-==-≃ : {g : X *→ Y} → (f == g) ≃ (< X > f ∼ g)
+  UndFun-∼-==-≃ = equiv UndFun∼-from-== UndFun∼-to-==
+    (UndFun-ind (λ g H → UndFun∼-from-== (UndFun∼-to-== H) == H) (ap UndFun∼-from-== UndFun∼-β)) aux
+    where
+      aux : ∀ {g} (e : f == g) → UndFun∼-to-== (UndFun∼-from-== e) == e
+      aux idp = UndFun∼-β
+
   fst=-UndFun∼ : {g : X *→ Y} (p : < X > f ∼ g) → λ= (fst p) == fst= (UndFun∼-to-== p)
   fst=-UndFun∼ {g} = UndFun-ind (λ g p → λ= (fst p) == fst= (UndFun∼-to-== p)) (! (λ=-η idp) ∙ ! (ap fst= UndFun∼-β))
   
@@ -102,7 +109,8 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
       field u : (i : Obj Γ) (a : A) → ! (W i (str (F # i) a)) ∙ snd (comp K₁ i) a == snd (comp K₂ i) a    
       Ξ : (i j : Obj Γ) (g : Hom Γ i j) (a : A) →
         ! (! (W j (fst (F <#> g) (str (F # i) a))) ∙ fst (comTri K₁ g) (str (F # i) a) ∙' W i (str (F # i) a)) ∙
-        ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a
+        ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙
+        snd (comp K₂ j) a
           =-=
         snd (comp K₂ i) a
       Ξ i j g a =

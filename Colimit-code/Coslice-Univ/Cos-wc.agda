@@ -24,6 +24,30 @@ module _ {j} (A : Type j) where
   lamb (Coslice-wc i) f = UndFun∼-to-== (lunit-∘* f)
   α (Coslice-wc i) h g f = UndFun∼-to-== (*→-assoc h g f)
 
+  iso-cos : ∀ {i} {X Y : ob (Coslice-wc i)} (f : hom (Coslice-wc i) X Y) → Type i
+  iso-cos f = is-equiv (fst f)
+
+  -- isomorphism implies equivalence
+  iso-to-eqv-cos : ∀ {i} {X Y : ob (Coslice-wc i)} {f : hom (Coslice-wc i) X Y} → iso-cos f → equiv-wc (Coslice-wc i) f
+  fst (iso-to-eqv-cos {X = X} {f = f} iso) = (is-equiv.g iso) , λ a → ap (is-equiv.g iso) (! (snd f a)) ∙ is-equiv.g-f iso (str X a)
+  fst (snd (iso-to-eqv-cos {X = X} {f = f} iso)) = UndFun∼-to-== ((λ x → ! (is-equiv.g-f iso x)) , λ a →
+    ∙-unit-r (! (! (is-equiv.g-f iso (str X a)))) ∙
+    !-! (is-equiv.g-f iso (str X a)) ∙
+    ! (! (∙-assoc (ap (is-equiv.g iso) (snd f a)) (ap (is-equiv.g iso) (! (snd f a))) (is-equiv.g-f iso (str X a))) ∙
+      ap (λ p → p ∙ is-equiv.g-f iso (str X a)) (ap-!-inv (is-equiv.g iso) (snd f a))))
+  snd (snd (iso-to-eqv-cos {X = X} {Y} {f} iso)) = UndFun∼-to-== ((λ x → ! (is-equiv.f-g iso x)) , λ a →
+    ! (ap (λ p → p ∙ snd f a)
+        (ap-∙ (fst f) (ap (is-equiv.g iso) (! (snd f a))) (is-equiv.g-f iso (str X a)) ∙
+        ap2 _∙_
+          (∘-ap (fst f) (is-equiv.g iso) (! (snd f a)) ∙
+          hmtpy-nat-∙' (is-equiv.f-g iso) (! (snd f a)))
+          (is-equiv.adj iso (str X a))) ∙
+      aux (is-equiv.f-g iso (str Y a)) (is-equiv.f-g iso (fst f (str X a))) (snd f a)))
+      where abstract
+        aux : ∀ {ℓ} {A : Type ℓ} {x y z w : A} (p₁ : x == y) (p₂ : z == w) (p₃ : w == y)
+          → ((p₁ ∙ ap (λ z → z) (! p₃) ∙' ! p₂) ∙ p₂) ∙ p₃ == ! (! p₁) ∙ idp
+        aux idp idp p₃ = ap (λ p → p ∙ p₃) (∙-unit-r _ ∙ ap-idf (! p₃)) ∙ !-inv-l p₃
+
   -- 2-coherence
 
   abstract

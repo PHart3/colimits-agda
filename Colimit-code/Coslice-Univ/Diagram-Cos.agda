@@ -1,7 +1,7 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
 open import lib.Basics
-open import Helper-paths
+open import lib.types.Sigma
 open import Coslice
 
 module Diagram-Cos where 
@@ -44,6 +44,27 @@ record CosCocone {i j k} (A : Type j) {Γ : Graph ℓv ℓe} (F : CosDiag i j A 
     comTri : ∀ {y x : Obj Γ} (f : Hom Γ x y) → [ A , F # x ] (< A > comp y ∘ F <#> f) ∼ comp x
 open CosCocone public
 
+module _ {i j k} {A : Type j} {Γ : Graph ℓv ℓe} {F : CosDiag i j A Γ} {C : Coslice k j A} where
+
+  open MapsCos A
+
+  module _ {cmp : (x : Obj Γ) → < A > (F # x) *→ C} where
+
+    CosCoc-tri-λ= : {tri₁ tri₂ : ∀ {y x} (f : Hom Γ x y) → < F # x > (cmp y ∘* F <#> f) ∼ cmp x}
+      → (∀ {y x} (f : Hom Γ x y) → tri₁ f == tri₂ f) → ((λ {y x} f → tri₁ {y} {x} f) == (λ {y x} f → tri₂ f))
+    CosCoc-tri-λ= {tri₁ = tri₁} {tri₂} H = –>-is-inj aux-≃ (λ {y x} f → tri₁ {y} {x} f) (λ {y x} f → tri₂ {y} {x} f)
+      (λ= (λ y → λ= (λ x → λ= (λ f → H f))))
+      where
+        aux-≃ : (∀ {y x} (g : Hom Γ x y) → < F # x > (cmp y ∘* F <#> g) ∼ cmp x) ≃ (∀ y x (g : Hom Γ x y) → < F # x > (cmp y ∘* F <#> g) ∼ cmp x)
+        aux-≃ = equiv (λ f → (λ y x g → f g)) (λ f → (λ {y} {x} g → f y x g)) (λ _ → idp) λ _ → idp
+
+  CosCoc-Σ-≃ : CosCocone A F C ≃ Σ ((x : Obj Γ) → F # x *→ C) (λ comp → ∀ {y x} (f : Hom Γ x y) → < F # x > (comp y ∘* F <#> f) ∼ comp x)
+  CosCoc-Σ-≃ = equiv (λ (comp & comTri) → comp , comTri) (λ (comp , comTri) → comp & comTri) (λ _ → idp) λ _ → idp
+
+  abstract
+    CosCocone-== : {K₁ K₂ : CosCocone A F C} → (K₁ == K₂) ≃ =Σ (–> CosCoc-Σ-≃ K₁) (–> CosCoc-Σ-≃ K₂)
+    CosCocone-== {K₁} {K₂} = (=Σ-econv (–> CosCoc-Σ-≃ K₁) (–> CosCoc-Σ-≃ K₂)) ⁻¹ ∘e ap-equiv CosCoc-Σ-≃ K₁ K₂
+
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₂} {Γ : Graph ℓv ℓe} {F : CosDiag ℓ₁ ℓ₂ A Γ} where
 
   open MapsCos A
@@ -53,7 +74,7 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₂} {Γ : Graph ℓv ℓe} {F : CosDiag �
   comp (CocForg (K & _)) i = fst (K i)
   comTri (CocForg (_ & r)) {y = j} {x = i} g = fst (r g)
 
-  -- canonical post-composition function on cocones
+  -- canonical post-composition function on coslice cocones
   PostComp-cos : ∀ {k k'} {C : Coslice k ℓ₂ A} {D : Coslice k' ℓ₂ A} → CosCocone A F C → (C *→ D) → CosCocone A F D
   comp (PostComp-cos K (f , fₚ)) i = f ∘ (fst (comp K i)) , λ a → ap f (snd (comp K i) a) ∙ fₚ a 
   comTri (PostComp-cos K (f , fₚ)) {y = j} {x = i} g =
@@ -61,12 +82,15 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₂} {Γ : Graph ℓv ℓe} {F : CosDiag �
       !-ap-ap-∘-ap-∙ f (fst (comp K j)) (snd (F <#> g) a) (fst (comTri K g) (str (F # i) a)) ∙
       ap (λ p → p ∙ fₚ a) (ap (ap f) (snd (comTri K g) a))
 
-  -- another form of post-comp on cocones
+  -- a more polished form of post-comp on coslice cocones
   RWhisk-coscoc : ∀ {k k'} {C : Coslice k ℓ₂ A} {D : Coslice k' ℓ₂ A} → CosCocone A F C → (C *→ D) → CosCocone A F D
   comp (RWhisk-coscoc K f) i = f ∘* comp K i
   comTri (RWhisk-coscoc K f) {y = j} {x = i} g = *→-assoc f (comp K j) (F <#> g) ∼∘-cos (post-∘*-∼ f (comTri K g))
 
-  -- small lemma for proof of pullback stability in coslice of Type
+  -- colimiting cocone
+  is-colim-cos : ∀ {k} {C : Coslice k ℓ₂ A} (K : CosCocone A F C) → Agda.Primitive.Setω
+  is-colim-cos K = ∀ {k'} (D : Coslice k' ℓ₂ A) → is-equiv (RWhisk-coscoc {D = D} K)
+
   pstcomp-coscoc-mor-ord : ∀ {k₁ k₂} {C₁ : Coslice k₁ ℓ₂ A} {C₂ : Coslice k₂ ℓ₂ A} {K₁ : CosCocone A F C₁} {K₂ : CosCocone A F C₂}
     (f : C₁ *→ C₂) → RWhisk-coscoc K₁ f == K₂ → Cocone-mor-str (CocForg K₁) (CocForg K₂) (fst f)
   comp-∼ (pstcomp-coscoc-mor-ord f idp) _ _ = idp

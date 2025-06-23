@@ -1,7 +1,7 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
 open import lib.Basics
-open import lib.wild-cats.Diagram-wc
+open import lib.wild-cats.WildCats
 open import lib.Equivalence2
 open import lib.types.Pushout
 open import lib.types.Colim
@@ -10,6 +10,7 @@ open import Cos-wc
 open import Diagram-Cos
 open import Cocone-po
 open import SIP-Cos
+open import CC-conversion
 open import CC-Equiv-LRL-7
 open import CC-Equiv-RLR-4
 
@@ -30,7 +31,7 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
   open MapsCos A
   open Id.Maps Γ A
 
-  module _ {ℓd ℓc} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) where
+  module CM-eqv {ℓd ℓc} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) where
 
     abstract
 
@@ -41,6 +42,12 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
       CanMap-cos-eqv = ∼-preserves-equiv (CosPostComp-eq (ColCoC-cos F)) CanMap-eqv-v1
 
   abstract
+
+    open CM-eqv
+
+    ColCoc-is-colim : ∀ {ℓd} (Δ : Diagram Γ (Coslice-wc A (lmax ℓ ℓd))) → is-colim (CosCoc-to-wc (ColCoC-cos (CosDiag-from-wc Δ)))
+    ColCoc-is-colim Δ = CosCol-to-wc (CanMap-cos-eqv (CosDiag-from-wc Δ))
+
     CanMap-cos-contr : ∀ {ℓd ℓc} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) → is-contr-map (RWhisk-coscoc {D = T} (ColCoC-cos F))
     CanMap-cos-contr F T = equiv-is-contr-map (CanMap-cos-eqv F T)
 

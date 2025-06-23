@@ -71,7 +71,7 @@ module _ {ℓv ℓe : ULevel} (G : Graph ℓv ℓe)
           lemma = 
             equiv
               (λ ((leg₂ , H) , tri₂ , K) → 
-                cocone leg₂ (λ {x} {y} f → tri₂ ((x , y) , f)) , H , λ {x} {y} f → K ((x , y) , f))
+                cocone leg₂ (λ {y} {x} f → tri₂ ((x , y) , f)) , H , λ {x} {y} f → K ((x , y) , f))
               (λ ((cocone leg₂ tri₂) , H , K) → (leg₂ , H) , (λ (_ , f) → tri₂ f) , (λ (_ , f) → K f))
               (λ ((cocone leg₂ tri₂) , H , K) → idp) 
               (λ ((leg₂ , H) , tri₂ , K) → idp)

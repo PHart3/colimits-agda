@@ -210,7 +210,7 @@ module _ {i j k l} {D : Cospan {i} {j} {k}} {T : Type l} where
         rtrip2 : {K₂ : Cone-csp D T} (a : ConCspEq K₁ K₂) → ==-to-ConCspEq (ConCspEq-to-== a) == a
         rtrip2 = ConCspEq-ind (λ K₂ a → ==-to-ConCspEq (ConCspEq-to-== a) == a) (ap ==-to-ConCspEq ConCspEq-β)
 
--- translating between diagrams over graphs and cospans
+-- translating between type-valued diagrams over graphs and cospans
 
 module _ {ℓ} (Δ : Diag-cspan (Type-wc ℓ)) where
 
@@ -257,3 +257,13 @@ module _ {ℓ} (Δ : Diag-cspan (Type-wc ℓ)) where
         snd (rtrip K) {rght} {lft} ()
         snd (rtrip K) {lft} {rght} ()
         snd (rtrip K) {rght} {rght} ()
+
+open Map-diag-ty
+diag-to-csp-mor : ∀ {ℓ₁ ℓ₂} {Δ₁ : Diag-cspan (Type-wc ℓ₁)} {Δ₂ : Diag-cspan (Type-wc ℓ₂)}
+  → Map-diag-ty Δ₁ Δ₂ → Cospan-mor (diag-to-csp Δ₁) (diag-to-csp Δ₂)
+cspm-A (diag-to-csp-mor μ) = comp μ lft 
+cspm-B (diag-to-csp-mor μ) = comp μ rght
+cspm-C (diag-to-csp-mor μ) = comp μ mid
+cspm-nat-f (diag-to-csp-mor μ) = sq μ unit
+cspm-nat-g (diag-to-csp-mor μ) = λ x → ! (sq μ unit x)
+

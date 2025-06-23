@@ -81,7 +81,7 @@ module _ {ℓv ℓe : ULevel} where
       constructor cocone
       field
         leg : (x : Obj G) → hom C (D₀ Δ x) T
-        tri : {x y : Obj G} (f : Hom G x y) → ⟦ C ⟧ leg y ◻ D₁ Δ f == leg x
+        tri : {y x : Obj G} (f : Hom G x y) → ⟦ C ⟧ leg y ◻ D₁ Δ f == leg x
     open Cocone-wc public
 
     cocone-wc-Σ : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T : ob C} →

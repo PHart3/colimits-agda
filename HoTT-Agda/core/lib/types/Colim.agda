@@ -152,11 +152,11 @@ module _ {Γ : Graph ℓv ℓe} where
     fst ColMap-from-deqv = ColMap (diagmor (λ i → –> (es i)) λ {i} {j} g z → ap (–> (es j) ∘ F <#> g) (<–-inv-l (es i) z))
     snd ColMap-from-deqv = ColMap-deqv (λ i → snd (es i))
 
-module _ {Γ : Graph ℓv ℓe} {ℓd ℓ₁ ℓ₂ : ULevel} {F : Diag ℓd Γ} {D : Type ℓ₁} {E : Type ℓ₂} {J : Cocone F E} (ζ : is-colim J) where
+module _ {Γ : Graph ℓv ℓe} {ℓd ℓ₁ ℓ₂ : ULevel} {F : Diag ℓd Γ} {D : Type ℓ₁} {E : Type ℓ₂} {J : Cocone F E} (ζ : is-colim-ty J) where
 
   abstract
-    can-coc-is-eqv : is-equiv (PostComp (can-coc F) D)
-    can-coc-is-eqv = is-eq (PostComp (can-coc F) D) (λ K → colimR (comp K) λ _ _ g → comTri K g)
+    can-coc-is-eqv-ext : is-equiv (PostComp (can-coc F) D)
+    can-coc-is-eqv-ext = is-eq (PostComp (can-coc F) D) (λ K → colimR (comp K) λ _ _ g → comTri K g)
       (λ K → CocEq-to-== (coceq (λ _ _ → idp) (λ g x → cglue-βr (comp K) (λ _ _ g → comTri K g) g x)))
       λ f → λ= $
         ColimMapEq _ f (λ _ _ → idp) (λ i j g x →
@@ -173,7 +173,7 @@ module _ {Γ : Graph ℓv ℓe} {ℓd ℓ₁ ℓ₂ : ULevel} {F : Diag ℓd Γ}
       comp-∼ (==-to-mor e) = comp-== e
       comTri-∼ (==-to-mor e) = tri-== e
 
-      mor-to-== : {L : Cocone F D} → Cocone-mor-str J L f →  CocEq (PostComp J D f) L
+      mor-to-== : {L : Cocone F D} → Cocone-mor-str J L f → CocEq (PostComp J D f) L
       mor-to-== m = coceq (comp-∼ m) (comTri-∼ m)
 
       abstract
@@ -197,7 +197,7 @@ module _ {Γ : Graph ℓv ℓe} {ℓd ℓ₁ ℓ₂ : ULevel} {F : Diag ℓd Γ}
     colim-mor-paths {K} {f₁} {f₂} σ₁ σ₂ = contr-has-all-paths {{cocmor-contr K}} (f₁ , σ₁) (f₂ , σ₂)
 
 module _ {Γ : Graph ℓv ℓe} {ℓd ℓ₁ ℓ₂ : ULevel} {F : Diag ℓd Γ} {E₁ : Type ℓ₁} {E₂ : Type ℓ₂}
-  {J₁ : Cocone F E₁} {J₂ : Cocone F E₂} (ζ₁ : is-colim J₁) (ζ₂ : is-colim J₂) where
+  {J₁ : Cocone F E₁} {J₂ : Cocone F E₂} (ζ₁ : is-colim-ty J₁) (ζ₂ : is-colim-ty J₂) where
 
   private
 

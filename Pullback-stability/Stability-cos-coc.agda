@@ -13,8 +13,8 @@ open import CosMap-conv
 open import CosColim-Iso
 
  {-
-   We construct the A-cocone on the codomain of the pullback stability map. At
-   the moment, the fact that this map is an equivalence is only proved on paper.
+   We construct the A-cocone on the codomain of the pullback stability map. We do not
+   prove here that this map is an equivalence. This fact is only proved on paper.
  -} 
 
 module Stability-cos-coc where

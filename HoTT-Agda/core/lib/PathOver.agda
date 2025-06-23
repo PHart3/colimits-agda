@@ -374,7 +374,7 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
     apd-to-hnat-ap! h {x} idp idp = idp-ap-!-!-∙-∙'-coher h (K x)
 
 {-
-  A coordinate definition of homotopy of pointed functions.
+  An extensional definition of homotopy of pointed functions.
   We also call such a homotopy "unfolded." 
 -}
 

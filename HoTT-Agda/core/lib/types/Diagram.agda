@@ -171,5 +171,5 @@ module _ {ℓ₁} {Γ : Graph ℓv ℓe} {F : Diag ℓd Γ} {C : Type ℓ₁} wh
   comTri (PostComp K _ f) g z = ap f (comTri K g z)
 
   -- colimiting cocone in the wild category of types
-  is-colim : Cocone F C → Agda.Primitive.Setω
-  is-colim K = ∀ {ℓ₂} (D : Type ℓ₂) → is-equiv (PostComp K D)
+  is-colim-ty : Cocone F C → Agda.Primitive.Setω
+  is-colim-ty K = ∀ {ℓ₂} (D : Type ℓ₂) → is-equiv (PostComp K D)

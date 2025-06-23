@@ -12,7 +12,7 @@ module _ {i j} {C : WildCat {i} {j}} {ℓv ℓe} {G : Graph ℓv ℓe} {D : Diag
 
   post-cmp-coc : (b : ob C) → hom C a b → Cocone-wc D b
   leg (post-cmp-coc _ f) x = ⟦ C ⟧ f ◻ leg K x
-  tri (post-cmp-coc _ f) {x} {y} γ = α C f (leg K y) (D₁ D γ) ∙ ap (λ m → ⟦ C ⟧ f ◻ m) (tri K γ)
+  tri (post-cmp-coc _ f) {y} {x} γ = α C f (leg K y) (D₁ D γ) ∙ ap (λ m → ⟦ C ⟧ f ◻ m) (tri K γ)
 
   is-colim : Type (lmax (lmax i j) (lmax ℓv ℓe))
   is-colim = (b : ob C) → is-equiv (post-cmp-coc b)

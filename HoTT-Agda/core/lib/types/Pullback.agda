@@ -364,9 +364,11 @@ module _ {ℓ} {Δ : Diag-cspan (Type-wc ℓ)} {X : Type ℓ} {K : Cone-wc Δ X}
 
   -- limiting cone is pullback
   lim-to-pb : is-pb-wc K → is-pb-abs {ℓ₂ = ℓ} (con-to-csp Δ K)
-  lim-to-pb pb = λ S → ∼-preserves-equiv {f₀ = –> (con-csp-diag-≃ Δ) ∘ pre-cmp-con {G = Graph-cspan} K S} {f₁ = pre-cmp-csp (con-to-csp Δ K) S}
+  lim-to-pb pb = λ S → ∼-preserves-equiv
+    {f₀ = –> (con-csp-diag-≃ Δ) ∘ pre-cmp-con {G = Graph-cspan} K S} {f₁ = pre-cmp-csp (con-to-csp Δ K) S}
     (λ f → ConCspEq-to-== (concspeq (λ _ → idp) (λ _ → idp)
-      (λ x → ! (ap (ap (λ u → u x)) (!r-ap-∙ (λ m z → m (f z)) (tri K unit) (tri K unit)) ∙ ∘-ap (λ u → u x) (λ m z → m (f z)) (tri K unit ∙ ! (tri K unit))))))
+      (λ x → ! (ap (ap (λ u → u x)) (!r-ap-∙ (λ m z → m (f z)) (tri K unit) (tri K unit)) ∙
+               ∘-ap (λ u → u x) (λ m z → m (f z)) (tri K unit ∙ ! (tri K unit))))))
     (snd (con-csp-diag-≃ Δ ∘e is-lim-≃ {G = Graph-cspan} K pb S))
 
 -- standard pullback is abstract pullback
@@ -387,3 +389,25 @@ module _ {ℓ} {Δ : Diag-cspan (Type-wc ℓ)} {X : Type ℓ} {K : Cone-wc Δ X}
 
   Lim-StdPb-≃ : Cone-csp-iso _ (con-to-csp Δ K) (Pb-con (diag-to-csp Δ))
   Lim-StdPb-≃ = pb-unique (lim-to-pb ζ) (stdpb-is-abspb (diag-to-csp Δ))
+
+-- coherence between maps of standard limits and maps of pullbacks
+
+StdLim-to-StdPb : ∀ {ℓ} (Δ : Diag-cspan (Type-wc ℓ)) → Limit Δ → Pullback (diag-to-csp Δ)
+Pullback.a (StdLim-to-StdPb Δ (x , _)) = x lft
+Pullback.b (StdLim-to-StdPb Δ (x , _)) = x rght
+Pullback.h (StdLim-to-StdPb Δ (x , c)) = c {i = lft} unit ∙ ! (c {i = rght} unit)
+  
+module _ {ℓ} {Δ₁ Δ₂ : Diag-cspan (Type-wc ℓ)} (μ : Map-diag-ty Δ₁ Δ₂) where
+
+  open Map-diag-ty
+
+  lim-pb-map-cmsq : cspm-to-pb (diag-to-csp-mor μ) ∘ StdLim-to-StdPb Δ₁ ∼ StdLim-to-StdPb Δ₂ ∘ Limit-map μ
+  lim-pb-map-cmsq (x , c) = pullback= (diag-to-csp Δ₂) idp idp
+    (aux (sq μ unit (x lft)) (c {i = lft} unit) (c {i = rght} unit) (sq μ unit (x rght)))
+    where
+      aux : {x₁ x₂ x₃ : D₀ Δ₁ mid} {x₄ x₅ : D₀ Δ₂ mid}
+        (p₁ : x₄ == comp μ mid x₁) (p₂ : x₁ == x₂) (p₃ : x₃ == x₂) (p₄ : x₅ == comp μ mid x₃) →
+        (p₁ ∙ ap (comp μ mid) (p₂ ∙ ! p₃) ∙ ! p₄) ∙ idp
+          ==
+        (p₁ ∙ ap (comp μ mid) p₂) ∙ ! (p₄ ∙ ap (comp μ mid) p₃)
+      aux idp idp idp idp = idp

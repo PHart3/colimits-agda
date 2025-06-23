@@ -89,6 +89,12 @@ pentagon-wc C = {a b c d e : ob C} (k : hom C d e) (g : hom C c d) (h : hom C b 
 bicat-wc : ∀ {i j} → Type (lmax (lsucc i) (lsucc j))
 bicat-wc {i} {j} = Σ (WildCat {i} {j}) (λ C → triangle-wc C × pentagon-wc C)
 
+triangle-wc-ty : ∀ {i} → triangle-wc (Type-wc i)
+triangle-wc-ty _ _ = idp
+
+pentagon-wc-ty : ∀ {i} → pentagon-wc (Type-wc i)
+pentagon-wc-ty _ _ _ _ = idp
+
 F-α-wc : ∀ {i₁ i₂ j₁ j₂} {C₁ : WildCat {i₁} {j₁}} {C₂ : WildCat {i₂} {j₂}}
   → Functor-wc C₁ C₂ → Type (lmax (lmax i₁ j₁) j₂)
 F-α-wc {C₁ = C₁} {C₂} F = {a b c d : ob C₁} (h : hom C₁ c d) (g : hom C₁ b c) (f : hom C₁ a b) →
