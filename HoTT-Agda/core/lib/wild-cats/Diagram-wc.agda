@@ -76,6 +76,7 @@ module _ {ℓv ℓe : ULevel} where
       (μ : Map-diag-ty Δ₁ Δ₂) → Type (lmax ℓv (lmax ℓ₁ ℓ₂))
     eqv-dmap-ty μ = (x : Obj G) → is-equiv (comp μ x)
 
+    -- cocones under a diagram
     record Cocone-wc {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} (Δ : Diagram G C) (T : ob C) :
       Type (lmax (lmax ℓv ℓe) (lmax ℓc₁ ℓc₂)) where
       constructor cocone
@@ -93,12 +94,9 @@ module _ {ℓv ℓe : ULevel} where
       → Cocone-wc Δ T₁ → Cocone-wc Δ T₂ → Type (lmax (lmax (lmax ℓv ℓe) ℓc₁) ℓc₂)
     Coc-wc-mor {C = C} {T₁ = T₁} {T₂} K₁ K₂ = Σ (hom C T₁ T₂) (λ f → post-cmp-coc K₁ _ f == K₂)
 
-    cocone-wc-Σ : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T : ob C} →
-      Cocone-wc Δ T ≃ Σ ((i : Obj G) → hom C (D₀ Δ i) T)
-                     (λ leg → ∀ {x y} (f : Hom G y x) → ⟦ C ⟧ leg x ◻ D₁ Δ f == leg y)
-    cocone-wc-Σ =
-      equiv (λ (cocone leg tri) → leg , tri) (λ (leg , tri) → cocone leg tri)
-        (λ (leg , tri) → idp) λ (cocone leg tri) → idp
+    Coc-wc-iso : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T₁ T₂ : ob C}
+      → Cocone-wc Δ T₁ → Cocone-wc Δ T₂ → Type (lmax (lmax (lmax ℓv ℓe) ℓc₁) ℓc₂)
+    Coc-wc-iso {C = C} K₁ K₂ = Σ (Coc-wc-mor K₁ K₂) (λ μ → equiv-wc C (fst μ))
 
     F-coc : ∀ {ℓc₁ ℓc₂ ℓd₁ ℓd₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T : ob C}
       {D :  WildCat {ℓd₁} {ℓd₂}} (F : Functor-wc C D)
@@ -106,6 +104,14 @@ module _ {ℓv ℓe : ULevel} where
     leg (F-coc {Δ = Δ} F K) x = arr F (leg K x)
     tri (F-coc {Δ = Δ} F K) {y = y} f = ! (comp F (D₁ Δ f) (leg K y)) ∙ ap (arr F) (tri K f)
 
+    cocone-wc-Σ : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T : ob C} →
+      Cocone-wc Δ T ≃ Σ ((i : Obj G) → hom C (D₀ Δ i) T)
+                     (λ leg → ∀ {x y} (f : Hom G y x) → ⟦ C ⟧ leg x ◻ D₁ Δ f == leg y)
+    cocone-wc-Σ =
+      equiv (λ (cocone leg tri) → leg , tri) (λ (leg , tri) → cocone leg tri)
+        (λ (leg , tri) → idp) λ (cocone leg tri) → idp
+
+    -- cones over a diagram
     record Cone-wc {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} (Δ : Diagram G C) (T : ob C) :
       Type (lmax (lmax ℓv ℓe) (lmax ℓc₁ ℓc₂)) where
       constructor cone

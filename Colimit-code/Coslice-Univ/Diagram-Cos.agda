@@ -90,8 +90,3 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₂} {Γ : Graph ℓv ℓe} {F : CosDiag �
   -- colimiting cocone
   is-colim-cos : ∀ {k} {C : Coslice k ℓ₂ A} (K : CosCocone A F C) → Agda.Primitive.Setω
   is-colim-cos K = ∀ {k'} (D : Coslice k' ℓ₂ A) → is-equiv (RWhisk-coscoc {D = D} K)
-
-  pstcomp-coscoc-mor-ord : ∀ {k₁ k₂} {C₁ : Coslice k₁ ℓ₂ A} {C₂ : Coslice k₂ ℓ₂ A} {K₁ : CosCocone A F C₁} {K₂ : CosCocone A F C₂}
-    (f : C₁ *→ C₂) → RWhisk-coscoc K₁ f == K₂ → Cocone-mor-str (CocForg K₁) (CocForg K₂) (fst f)
-  comp-∼ (pstcomp-coscoc-mor-ord f idp) _ _ = idp
-  comTri-∼ (pstcomp-coscoc-mor-ord f idp) _ _ = idp

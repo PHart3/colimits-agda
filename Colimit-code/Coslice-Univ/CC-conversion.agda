@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting  #-}
 
 open import lib.Basics
+open import lib.types.Coc-conversion
 open import lib.wild-cats.WildCats
 open import lib.wild-cats.Cocone-wc-SIP
 open import Diagram-Cos
@@ -41,3 +42,26 @@ module _ {i j} {A : Type j} {Γ : Graph ℓv ℓe} {Δ : Diagram Γ (Coslice-wc 
   abstract
     CosCol-to-wc : {T : Coslice i j A} {K : CosCocone A (Diag-to-grhom Δ) T} → is-colim-cos K → is-colim (CosCoc-to-wc K)
     CosCol-to-wc ζ V = ∼-preserves-equiv (λ f → ! (CosCoc-wc-coher f)) (snd CosCoc-wc-≃ ∘ise ζ V) 
+
+module _ {i j} {A : Type j} {Γ : Graph ℓv ℓe} {Δ : Diagram Γ (Coslice-wc A (lmax i j))} where
+
+  open MapsCos A
+
+  -- forgetful functor preserves cocone morphisms
+  forg-coc-mor-cos : {T₁ T₂ : Coslice (lmax i j) j A} {K₁ : Cocone-wc Δ T₁} {K₂ : Cocone-wc Δ T₂}
+    → Coc-wc-mor K₁ K₂ → Coc-wc-mor (F-coc (Forg-funct-cos A {i}) K₁) (F-coc (Forg-funct-cos A {i}) K₂)
+  fst (forg-coc-mor-cos (f , _)) = fst f
+  snd (forg-coc-mor-cos {K₁ = K₁} (f , σ)) = ! (ap (F-coc (Forg-funct-cos A {i})) (! σ) ∙
+    coc-to-== Γ ((λ _ → idp) ,
+      (λ {x} {y} g →
+        ap-∙ fst (UndFun∼-to-== (*→-assoc f (leg K₁ y) (D₁ Δ g))) (ap (λ m → f ∘* m) (tri K₁ g)) ∙
+        ap (λ p → p ∙ ap (λ r → fst r) (ap (λ m → f ∘* m) (tri K₁ g))) (! (fst=-UndFun∼ (*→-assoc f (leg K₁ y) (D₁ Δ g))) ∙
+          ! (λ=-η idp)) ∙
+        ∘-ap fst (λ m → f ∘* m) (tri K₁ g) ∙
+        ap-∘ (λ f₁ x₁ → fst f (f₁ x₁)) (λ r → fst r) (tri K₁ g))))
+
+  abstract
+    CocForg-coh : {T : Coslice (lmax i j) j A} (K : Cocone-wc Δ T)
+      → Coc-to-wc (CocForg (CosCoc-from-wc K)) == F-coc (Forg-funct-cos A {i}) K
+    CocForg-coh K = coc-to-== Γ ((λ _ → idp) , λ g →
+      fst=-UndFun∼  (UndFun∼-from-== (tri K g)) ∙ ap (ap fst) (<–-inv-l UndFun-∼-==-≃ (tri K g)))

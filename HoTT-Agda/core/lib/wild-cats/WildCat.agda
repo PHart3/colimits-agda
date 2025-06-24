@@ -38,17 +38,12 @@ record Functor-wc {i₁ j₁ i₂ j₂} (B : WildCat {i₁} {j₁}) (C : WildCat
     comp : {a b c : ob B} (f : hom B a b) (g : hom B b c) → arr (⟦ B ⟧ g ◻ f) == ⟦ C ⟧ arr g ◻ arr f
 open Functor-wc public
 
--- (non-coherent) equivalences
 module _ {i j} (C : WildCat {i} {j}) where
 
+  -- (non-coherent) equivalences
   equiv-wc : {a b : ob C} → hom C a b → Type j
   equiv-wc {a} {b} f = Σ (hom C b a) (λ g → (id₁ C a == ⟦ C ⟧ g ◻ f) × (id₁ C b == ⟦ C ⟧ f ◻ g))
 
-  -- 3-for-2
-  equiv-wc-3f2 : {!!}
-  equiv-wc-3f2 = {!!}
-
-  -- equivalence of objects induces equivalence of hom types
   module _ {a b : ob C} {f : hom C a b} (e : equiv-wc f) where
 
     <–-wc : hom C b a
@@ -60,10 +55,35 @@ module _ {i j} (C : WildCat {i} {j}) where
     <–-wc-rinv : id₁ C b == ⟦ C ⟧ f ◻ <–-wc
     <–-wc-rinv = snd (snd e)
 
+    -- equivalence of objects induces equivalence of hom types
     hom-dom-eqv : {c : ob C} → hom C b c ≃ hom C a c
     hom-dom-eqv = equiv (λ g → ⟦ C ⟧ g ◻ f) (λ g → ⟦ C ⟧ g ◻ <–-wc)
       (λ g → α C g <–-wc f ∙ ap (λ m → ⟦ C ⟧ g ◻ m) (! <–-wc-linv) ∙ ! (ρ C g))
       λ g → α C g f <–-wc ∙ ap (λ m → ⟦ C ⟧ g ◻ m) (! <–-wc-rinv) ∙ ! (ρ C g) 
+
+  equiv-wc-∘ : {a b c : ob C} {f : hom C a b} {g : hom C b c}
+    → equiv-wc g → equiv-wc f → equiv-wc (⟦ C ⟧ g ◻ f)
+  fst (equiv-wc-∘ eg ef) = ⟦ C ⟧ <–-wc ef ◻ <–-wc eg
+  fst (snd (equiv-wc-∘ {f = f} {g} eg ef)) =
+    <–-wc-linv ef ∙
+    ap (λ m → ⟦ C ⟧ <–-wc ef ◻  m) (lamb C f) ∙
+    ap (λ m → ⟦ C ⟧ <–-wc ef ◻  ⟦ C ⟧ m ◻ f) (<–-wc-linv eg) ∙
+    ap (λ m → ⟦ C ⟧ <–-wc ef ◻ m) (α C (<–-wc eg) g f) ∙
+    ! (α C (<–-wc ef) (<–-wc eg) (⟦ C ⟧ g ◻ f))
+  snd (snd (equiv-wc-∘ {f = f} {g} eg ef)) = 
+    <–-wc-rinv eg ∙
+    ap (λ m → ⟦ C ⟧ m ◻  <–-wc eg) (ρ C g) ∙
+    ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻  m ◻ <–-wc eg) (<–-wc-rinv ef) ∙
+    α C g (⟦ C ⟧ f ◻ <–-wc ef) (<–-wc eg) ∙
+    ap (λ m → ⟦ C ⟧ g ◻ m) (α C f (<–-wc ef) (<–-wc eg)) ∙
+    ! (α C g f (⟦ C ⟧ <–-wc ef ◻ <–-wc eg)) 
+
+-- functors preserve equivalences
+F-equiv-wc : ∀ {i₁ j₁ i₂ j₂} {B : WildCat {i₁} {j₁}} {C : WildCat {i₂} {j₂}}
+  (F : Functor-wc B C) {a b : ob B} {f : hom B a b} → equiv-wc B f → equiv-wc C (arr F f)
+fst (F-equiv-wc F {f = f} (g , _)) = arr F g
+fst (snd (F-equiv-wc F {a} {f = f} (g , li , _))) = ! (id F a) ∙ ap (arr F) li ∙ comp F f g 
+snd (snd (F-equiv-wc F {b = b} {f} (g , _ , ri))) =  ! (id F b) ∙ ap (arr F) ri ∙ comp F g f
 
 Type-wc : (i : ULevel) → WildCat
 ob (Type-wc i) = Type i
@@ -74,6 +94,10 @@ _◻_ (Type-wc i) g f = g ∘ f
 lamb (Type-wc i) = λ _ → idp
 α (Type-wc i) = λ _ _ _ → idp
 
+eqv-wc-to-eqv-ty : ∀ {i} {X Y : Type i} {f : X → Y} → equiv-wc (Type-wc i) f → is-equiv f
+eqv-wc-to-eqv-ty {i} {f = f} e = is-eq f (<–-wc (Type-wc i) e)
+  (λ b → app= (! (<–-wc-rinv (Type-wc i) e)) b) λ a → app= (! (<–-wc-linv (Type-wc i) e)) a
+
 -- triangle identity
 
 triangle-wc : ∀ {i j} (C : WildCat {i} {j}) → Type (lmax i j)
@@ -83,6 +107,9 @@ triangle-wc C = {a b c : ob C} (g : hom C b c) (f : hom C a b)  →
     ==
   ap (λ m → ⟦ C ⟧ g ◻ m) (lamb C f)
 
+triangle-wc-ty : ∀ {i} → triangle-wc (Type-wc i)
+triangle-wc-ty _ _ = idp
+
 -- pentagon identity
 
 pentagon-wc : ∀ {i j} (C : WildCat {i} {j}) → Type (lmax i j)
@@ -91,14 +118,11 @@ pentagon-wc C = {a b c d e : ob C} (k : hom C d e) (g : hom C c d) (h : hom C b 
     ==
   α C (⟦ C ⟧ k ◻ g) h f ∙ α C k g (⟦ C ⟧ h ◻ f)
 
-bicat-wc : ∀ {i j} → Type (lmax (lsucc i) (lsucc j))
-bicat-wc {i} {j} = Σ (WildCat {i} {j}) (λ C → triangle-wc C × pentagon-wc C)
-
-triangle-wc-ty : ∀ {i} → triangle-wc (Type-wc i)
-triangle-wc-ty _ _ = idp
-
 pentagon-wc-ty : ∀ {i} → pentagon-wc (Type-wc i)
 pentagon-wc-ty _ _ _ _ = idp
+
+bicat-wc : ∀ {i j} → Type (lmax (lsucc i) (lsucc j))
+bicat-wc {i} {j} = Σ (WildCat {i} {j}) (λ C → triangle-wc C × pentagon-wc C)
 
 F-α-wc : ∀ {i₁ i₂ j₁ j₂} {C₁ : WildCat {i₁} {j₁}} {C₂ : WildCat {i₂} {j₂}}
   → Functor-wc C₁ C₂ → Type (lmax (lmax i₁ j₁) j₂)

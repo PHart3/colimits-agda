@@ -98,6 +98,17 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
           (α C g (⟦ C ⟧ f ◻ leg K y) (D₁ Δ γ) ∙
           ap (λ m → ⟦ C ⟧ g ◻ m) (α C f (leg K y) (D₁ Δ γ) ∙ ap (λ m → ⟦ C ⟧ f ◻ m) (tri K γ))) ◃∎ ∎ₛ))
 
+    coc-wc-mor-∘ : {Δ : Diagram G C} {T₁ T₂ T₃ : ob C}
+      {K₁ : Cocone-wc Δ T₁} {K₂ : Cocone-wc Δ T₂} {K₃ : Cocone-wc Δ T₃}
+      → Coc-wc-mor K₂ K₃ → Coc-wc-mor K₁ K₂ → Coc-wc-mor K₁ K₃
+    fst (coc-wc-mor-∘ μ₂ μ₁) = ⟦ C ⟧ fst μ₂ ◻ fst μ₁
+    snd (coc-wc-mor-∘ {T₃ = T₃} {K₁} μ₂ μ₁) =
+      pst-cmp-∘ (fst μ₂) (fst μ₁) K₁ ∙
+      ap (λ K → post-cmp-coc K T₃ (fst μ₂)) (snd μ₁) ∙
+      snd μ₂
+
+    abstract
+    
       pre-cmp-∘ : {a b c : ob C} (g : hom C b c) (f : hom C a b) {Δ : Diagram G C} (K : Cone-wc Δ c)
         → pre-cmp-con K a (⟦ C ⟧ g ◻ f) == pre-cmp-con (pre-cmp-con K b g) a f 
       pre-cmp-∘ g f {Δ} K = con-to-==-◃ ((λ x → ! (α C (leg K x) g f)) ,

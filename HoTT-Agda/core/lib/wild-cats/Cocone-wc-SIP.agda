@@ -23,6 +23,9 @@ module _ {ℓv ℓe : ULevel} {G : Graph ℓv ℓe}
   fst (=-coc-id K) _ = idp
   snd (=-coc-id K) _ = idp
 
+  coc-from-== : {K₁ K₂ : Cocone-wc Δ T} → K₁ == K₂ → K₁ =-coc K₂
+  coc-from-== {K₁} idp = =-coc-id K₁ 
+
   infixr 80 _=-coc-◃_
   _=-coc-◃_ : Cocone-wc Δ T → Cocone-wc Δ T → Type (lmax (lmax ℓv ℓe) ℓc₂)
   K₁ =-coc-◃ K₂ =

@@ -2,6 +2,8 @@
 
 open import lib.Basics
 open import lib.wild-cats.WildCats
+open import lib.wild-cats.Cocone-wc-SIP
+open import Diagram-Cos
 open import SIP-Cos
 open import CosMap-conv
 
@@ -138,4 +140,3 @@ module _ {j} (A : Type j) where
   iso (free-forg-adj-cos {i}) {a = U} {x = V} = free-forg-cos A
   nat-cod free-forg-adj-cos _ _ = idp
   nat-dom free-forg-adj-cos _ _ = idp
-
