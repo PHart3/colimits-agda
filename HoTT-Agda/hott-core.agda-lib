@@ -1,4 +1,4 @@
 name: hott-core-modified
 include:
   core
-  core/lib/Coslice-Univ
+  core/lib/coslice-univ
