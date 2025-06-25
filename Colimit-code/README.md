@@ -13,12 +13,11 @@ creates (i.e., preserves and reflects) tree-indexed colimits.
 - The `Aux/` folder contains auxiliary definitions and lemmas,
   usually formulated in an ad-hoc manner.
 
-- The `Coslice-Univ/` folder contains the basic development of coslices of Type.
+- The `CosCoc/` folder contains the basic development of diagrams and cocones in coslices of Type.
 
-  - The file `Coslice-Univ/Cocone-po.agda` contains the definition
-    of the colimiting pushout together with its A-cocone structure.
-  - This pushout and its A-cocone structure are described
-    in **Section 5.3** of the (CSL) paper.
+- The `Cocone-PO/` folder contains the definition of the colimiting pushout together with its A-cocone structure.
+
+  This pushout and its A-cocone structure are described in **Section 5.3** of the (CSL) paper.
 
 - The two homotopies making up the equivalence in **Theorem 15**
   of the paper are in `L-R-L/` and `R-L-R/`.
@@ -31,15 +30,15 @@ creates (i.e., preserves and reflects) tree-indexed colimits.
 - The `Map-Nat/` folder contains a proof that the equivalence of
   Theorem 15 is natural both in diagrams and in coslice objects.
 
-  - The file `Map-Nat/CosColimitMap00.agda` contains the definition
+  - The file `CosColimitMap00.agda` contains the definition
     of the action of our pushout construction on maps of diagrams.
     This action is defined in **Section 5.4** of the paper.
 
-  - The file `Map-Nat/CosColimitPstCmp.agda` contains the proof
+  - The file `CosColimitPstCmp.agda` contains the proof
     of **Lemma 16** of the paper. (The first naturality square, arising
     from post-composition with coslice maps.)
 
-  - The file `Map-Nat/CosColimitPreCmp.agda` contains the proof
+  - The file `CosColimitPreCmp.agda` contains the proof
     of **Lemma 17** of the paper. (The second naturality square,
     arising from pre-composition with diagram maps.)
 
