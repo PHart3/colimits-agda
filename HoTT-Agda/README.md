@@ -37,8 +37,8 @@ The main library is more or less divided into three parts.
   Type (which we also call ordinary colimits).
   It also contains new facts about homogeneous types and reformulates some of the basic theory of the Suspension type.
 - The third part is found in `lib.wild-cats` and develops wild category theory.
-  In particular, it shows that 2-coherent left adjoints between wild categories preserve colimiting cocones.
-  It also develops a lot of the theory of (co)cones.
+  In particular, it shows that 2-coherent left adjoints between wild categories preserve colimiting cocones (`Ladj-colim.agda`).
+  It also develops a lot of general theory about (co)cones.
 
 ### Homotopy (directory `theorems/homotopy/`)
 
