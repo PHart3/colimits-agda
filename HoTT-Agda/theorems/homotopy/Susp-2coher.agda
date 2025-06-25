@@ -8,7 +8,7 @@ open import lib.types.Suspension
 open import lib.types.LoopSpace
 open import lib.types.Homogeneous
 open import homotopy.SuspAdjointLoop
-open import lib.wild-cats.WildCats
+open import lib.wild-cats.Ladj-2-coher
 
 {- the nat-dom proof makes Susp a 2-coherent left adjoint to Loop -}
 

@@ -23,7 +23,10 @@ module CC-v2-Constr {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
   open Maps F public
 
-  ε-v2 : ! (ap right (cglue g (str (F # i) a))) ∙ ap (right {d = SpCos} ∘ cin j) (snd (F <#> g) a) ∙ ! (glue (cin j a)) =-= ! (glue (cin i a))
+  ε-v2 :
+    ! (ap right (cglue g (str (F # i) a))) ∙ ap (right {d = SpCos} ∘ cin j) (snd (F <#> g) a) ∙ ! (glue (cin j a))
+      =-=
+    ! (glue (cin i a))
   ε-v2 =
     ! (ap right  (cglue g (str (F # i) a))) ∙ (ap (right ∘ cin j) (snd (F <#> g) a)) ∙ (! (glue (cin j a)))
       =⟪ E₁-v2 (snd (F <#> g) a) ⟫
@@ -38,8 +41,7 @@ module CC-v2-Constr {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
   E-eq-helper idp = idp
 
   E-eq : (q : (z : Colim (ConsDiag Γ A)) →  right {d = SpCos} (ψ z) == left ([id] z)) {x : ty (F # j)} (σ : x == str (F # j) a)
-    (T₁ : ap [id] (cglue g a) == idp) (R : cin j x == ψ (cin i a)) (T₂ : ap ψ (cglue g a) == ! (ap (cin j) σ) ∙ R)
-    →
+    (T₁ : ap [id] (cglue g a) == idp) (R : cin j x == ψ (cin i a)) (T₂ : ap ψ (cglue g a) == ! (ap (cin j) σ) ∙ R) →
     E₁ σ (q (cin j a)) ◃∙ ! (ap (λ p → ! (ap right (! (ap (cin j) σ) ∙ R)) ∙ q (cin j a) ∙ p) (ap (ap left) T₁)) ◃∙
     E₃ q (cglue g a) T₂ (λ z → idp) ◃∙
     ∙-unit-r (q (cin i a)) ◃∎
@@ -59,8 +61,12 @@ module CC-v2-Constr {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
            (E-eq-helper (q (cin j a))) ∙
         ap (λ p → E₂-v2 {f = right} {p = ap ψ (cglue g a)} idp (q (cin j a)) ∙ p) (lemma2 (cglue g a) T₁)
         where
-          lemma2 : {y : Colim (ConsDiag Γ A)} (c : (cin j a) == y) {v : a == [id] y} (t : ap [id] c == v)
-            → ! (ap (λ p → ! (ap right (ap ψ c)) ∙ q (cin j a) ∙ p) (ap (ap left) t)) ∙ E₃ q c idp (λ z → idp) ∙ ∙-unit-r (q y) == E₃-v2 q c t
+          lemma2 : {y : Colim (ConsDiag Γ A)} (c : (cin j a) == y) {v : a == [id] y} (t : ap [id] c == v) →
+            ! (ap (λ p → ! (ap right (ap ψ c)) ∙ q (cin j a) ∙ p) (ap (ap left) t)) ∙
+            E₃ q c idp (λ z → idp) ∙
+            ∙-unit-r (q y)
+              ==
+            E₃-v2 q c t
           lemma2 idp idp = idp
 
   abstract

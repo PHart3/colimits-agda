@@ -5,7 +5,7 @@ include:
   Map-Nat
   R-L-R
   Aux
-  Coslice-Univ
+  CosCoc
   Cocone-PO
   Main-Theorem
   Create
