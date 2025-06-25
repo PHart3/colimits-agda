@@ -10,15 +10,17 @@
   A stripped-down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
   with specific additions and local changes for general lemmas used in our development of colimits.
 
-  In addition, it includes wild category theory, centered on 2-coherent left adjoints. We prove that such adjoints preserve
-  colimits (over graphs). Moreover, we prove that the Suspension functor is a 2-coherent left adjoint to Loop-space, for which
-  we develop some new properties of homogeneous types. As a result, we get a formal proof that Suspension preserves colimits.
+  In addition, it includes wild category theory, centered on (co)limits and 2-coherent left adjoints. We prove that such adjoints
+  preserve colimits (over graphs). Moreover, we prove that the Suspension functor is a 2-coherent left adjoint to Loop-space, for
+  which we develop some new properties of homogeneous types. As a result, we get a formal proof that Suspension preserves colimits.
 
   See `HoTT-Agda/README.md` for the license of the work inside this directory.
 
 - `Colimit-code/`
 
-  Our formalization of our construction of an A-colimit.
+  Our formalization of our construction of an A-colimit
+  as well as the fact that the forgetful functor creates
+  tree-indexed colimits.
 
   See `Colimit-code/README.md` for details and for the
   license of the work inside this directory.
@@ -26,7 +28,9 @@
 - `Pullback-stability/`
 
   Our formalization of pullback stability (or universality)
-  for all ordinary colimits.
+  for all ordinary colimits as well as the construction
+  of the coslice cocone that induces the pullback stability
+  map in the coslice category of types.
 
   See `Pullback-stability/README.md`
   for details and for the license of the work inside this

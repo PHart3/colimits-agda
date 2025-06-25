@@ -5,6 +5,9 @@ of an A-colimit. Specifically, it shows that it's the left adjoint
 to the constant diagram functor by presenting the expected natural
 isomorphism.
 
+It also contains a proof of the corollary that the forgetful functor
+creates (i.e., preserves and reflects) tree-indexed colimits.
+
 ## Organization
 
 - The `Aux/` folder contains auxiliary definitions and lemmas,
@@ -43,17 +46,23 @@ isomorphism.
 - The `Main-Theorem/` folder gathers all data of the desired
   adjunction from `L-R-L/`, `R-L-R/`, and `Map-Nat/`.
 
+- The `Create/` folder contains the proof of **Theorem 18** of the paper,
+  which states that the forgetful functor creates all tree-indexed colimits.
+
 ## Naming of Individual Files
 
 In `L-R-L/`, `R-L-R/`, and `Map-Nat/`, Agda files are artificially
-broken into many fragments with numeric suffixes in order to type
-check the entire development in a reasonable amount of time.
+broken into many fragments with numeric suffixes so that Agda can
+manage the type checking.
 
 ## Manual Type-Checking
 
 1. Install Agda 2.6.3 or 2.6.4.
 2. Add `cos-colim.agda-lib` and `../HoTT-Agda/hott-core.agda-lib` to your Agda libraries file.
-3. Type check the file `Main-Theorem/CosColim-main.agda`.
+3. Type check the files
+ - `Main-Theorem/CosColim-main.agda`
+ - `Create/Tree-preserve.agda`
+ - `Create/Tree-reflect.agda`
 
 ## License
 
