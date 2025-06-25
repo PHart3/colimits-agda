@@ -12,7 +12,7 @@ module lib.types.Pushout where
 module _ {i j k} where
 
   postulate  -- HIT
-    Pushout : (d : Span {i} {j} {k}) → Type (lmax (lmax i j) k)
+    Pushout : Span {i} {j} {k} → Type (lmax (lmax i j) k)
 
   module _ {d : Span} where
 
@@ -62,36 +62,59 @@ PushoutMapEq : ∀ {i j k} {d : Span {i} {j} {k}} {l} {D : Type l} (h₁ h₂ : 
   → (p₁ : h₁ ∘ left ∼ h₂ ∘ left) (p₂ : h₁ ∘ right ∼ h₂ ∘ right)
   → ((c : Span.C d) → (! (ap h₁ (glue c)) ∙ p₁ (Span.f d c)) ∙ ap h₂ (glue c) == p₂ (Span.g d c))
   → h₁ ∼ h₂
-PushoutMapEq {d = d} h₁ h₂ p₁ p₂ =
-  λ S → Pushout-elim p₁ p₂ λ c →
-    from-transp (λ x → h₁ x == h₂ x) (glue c)
-    (transp-pth-l (glue c) (p₁ (Span.f d c)) ∙ S c)
-
-module _ {ℓ} {A : Type ℓ} where
-
-  !-∙→= : {x y : A} (p : x == y) (q : x == y) → ! p ∙ q == idp → p == q
-  !-∙→= idp q e = ! e
-
-module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f g : A → B) where
-
-  transp-pth-reord : {x y : A} (p : x == y) (p₁ : f x == g x) (p₂ : f y == g y)
-    → ! p₁ ∙ ap f p ∙ p₂ == ap g p → transport (λ z → f z == g z) p p₁ == p₂
-  transp-pth-reord idp p₁ p₂ = !-∙→= p₁ p₂
+PushoutMapEq {d = d} h₁ h₂ p₁ p₂ = λ S →
+  Pushout-elim p₁ p₂
+    λ c → from-transp (λ x → h₁ x == h₂ x) (glue c) (transp-pth-l (glue c) (p₁ (Span.f d c)) ∙ S c)
 
 PushoutMapEq-v2 : ∀ {i j k} {d : Span {i} {j} {k}} {l} {D : Type l} (h₁ h₂ : Pushout d → D)
   → (p₁ : h₁ ∘ left ∼ h₂ ∘ left) (p₂ : h₁ ∘ right ∼ h₂ ∘ right)
   → ((c : Span.C d) → ! (p₁ (Span.f d c)) ∙ ap h₁ (glue c) ∙ p₂ (Span.g d c) == ap h₂ (glue c))
   → h₁ ∼ h₂
-PushoutMapEq-v2 {d = d} h₁ h₂ p₁ p₂ =
-  λ S → Pushout-elim p₁ p₂ λ c →
+PushoutMapEq-v2 {d = d} h₁ h₂ p₁ p₂ = λ S →
+  Pushout-elim p₁ p₂ λ c →
     from-transp (λ x → h₁ x == h₂ x) (glue c)
-    (transp-pth-reord h₁ h₂ (glue c) (p₁ (Span.f d c)) (p₂ (Span.g d c)) (S c))
+      (aux h₁ h₂ (glue c) (p₁ (Span.f d c)) (p₂ (Span.g d c)) (S c))
+  where
+    aux : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f g : A → B)
+      {x y : A} (p : x == y) (p₁ : f x == g x) (p₂ : f y == g y)
+      → ! p₁ ∙ ap f p ∙ p₂ == ap g p → transport (λ z → f z == g z) p p₁ == p₂
+    aux _ _ idp p₁ p₂ = aux2 p₁ p₂
+      where
+        aux2 : ∀ {ℓ} {A : Type ℓ} {x y : A} (p : x == y) (q : x == y) → ! p ∙ q == idp → p == q
+        aux2 idp q e = ! e
+
+-- pushout of an equivalence
+
+module _ {i j k} {d : Span {i} {j} {k}} (ε : is-equiv (Span.f d)) where
+
+  po-of-equiv : Pushout d ≃ Span.B d
+  po-of-equiv = equiv (Pushout-rec (Span.g d ∘ is-equiv.g ε) (idf (Span.B d)) (λ c → ap (Span.g d) (is-equiv.g-f ε c))) right
+    (λ _ → idp)
+    (PushoutMapEq-v2 _ (λ z → z) (λ x → ! (glue (is-equiv.g ε x)) ∙ ap left (is-equiv.f-g ε x)) (λ _ → idp) λ c →
+      ap (λ p → ! (! (glue (is-equiv.g ε (Span.f d c))) ∙ ap left (is-equiv.f-g ε (Span.f d c))) ∙ p ∙ idp)
+        (ap-∘ right _ (glue c) ∙
+        ap (ap right) (PushoutRec.glue-β (Span.g d ∘ is-equiv.g ε) (idf (Span.B d)) (λ c → ap (Span.g d) (is-equiv.g-f ε c)) c)) ∙
+       ap (λ p → ! (! (glue (is-equiv.g ε (Span.f d c))) ∙ ap left p) ∙ ap right (ap (Span.g d) (is-equiv.g-f ε c)) ∙ idp) (! (is-equiv.adj ε c)) ∙
+       (ap (λ p → ! (p ∙ ap left (ap (Span.f d) (is-equiv.g-f ε c))) ∙ ap right (ap (Span.g d) (is-equiv.g-f ε c)) ∙ idp)
+         (hmtpy-nat-!-∙' glue (is-equiv.g-f ε c)) ∙
+       aux (is-equiv.g-f ε c) (glue c)) ∙
+       ! (ap-idf (glue c)))
+       where
+         aux : {x y : Span.C d} (p₁ : x == y) (p₂ : left (Span.f d y) == (right ∘ Span.g d) y) →
+           ! ((ap (right ∘ (Span.g d)) p₁ ∙ ! p₂ ∙' ! (ap (left ∘ (Span.f d)) p₁)) ∙
+             ap left (ap (Span.f d) p₁)) ∙
+           ap right (ap (Span.g d) p₁) ∙ idp
+             ==
+           p₂
+         aux idp p₂ = ap (λ p → ! p ∙ idp) (∙-unit-r (! p₂)) ∙ ∙-unit-r (! (! p₂)) ∙ !-! p₂
 
 module PushoutMap {i₀ j₀ k₀ i₁ j₁ k₁} {span₀ : Span {i₀} {j₀} {k₀}} {span₁ : Span {i₁} {j₁} {k₁}} (span-map : SpanMap-Rev span₀ span₁)
   = PushoutRec {d = span₀} {D = Pushout span₁}
     (left ∘ SpanMap-Rev.hA span-map) (right ∘ SpanMap-Rev.hB span-map)
-    (λ x → ! (ap left (SpanMap-Rev.f-commutes span-map □$ x)) ∙ glue (SpanMap-Rev.hC span-map x) ∙
-      ap right (SpanMap-Rev.g-commutes span-map □$  x))
+    (λ x →
+      ! (ap left (SpanMap-Rev.f-commutes span-map □$ x)) ∙
+      glue (SpanMap-Rev.hC span-map x) ∙
+      ap right (SpanMap-Rev.g-commutes span-map □$ x))
 
 _⊔^[_]_/_ : ∀ {i j k} (A : Type i) (C : Type k) (B : Type j)
   (fg : (C → A) × (C → B)) → Type (lmax (lmax i j) k)

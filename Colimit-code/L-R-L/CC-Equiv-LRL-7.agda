@@ -4,9 +4,9 @@ open import lib.Basics
 open import lib.types.Pushout
 open import lib.types.Span
 open import Coslice
-open import Diagram
-open import FTID
-open import Colim
+open import Diagram-Cos
+open import SIP-Cos
+open import lib.types.Colim
 open import CC-Equiv-LRL-0
 open import CC-Equiv-LRL-5
 open import CC-Equiv-LRL-6
@@ -17,7 +17,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
 
   open Constr F T
 
-  module _ (f : P → ty T) (fₚ : (a : A) → f (left a) == fun T a) where
+  module _ (f : P → ty T) (fₚ : (a : A) → f (left a) == str T a) where
 
     RLfunEqFun : f ∼ fst (RLfun (f , fₚ))
     RLfunEqFun =
@@ -36,6 +36,6 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
     snd RLfun-∼ = RLfunEqBP
 
     RLfunEq : (f , fₚ) == RLfun (f , fₚ)
-    RLfunEq = PtFunEq (f , fₚ) RLfun-∼
+    RLfunEq = UndFun∼-to-== RLfun-∼
 
     

@@ -2,7 +2,6 @@
 
 cd /build/Colimit-code
 /dist/agda --html --library-file=/dist/libraries /build/Colimit-code/Main-Theorem/CosColim-main.agda
-
-cd /build/Pullback-stability
-/dist/agda --html --library-file=/dist/libraries /build/Pullback-stability/Stability.agda
+/dist/agda --html --library-file=/dist/libraries /build/Colimit-code/Create/Tree-preserve.agda
+/dist/agda --html --library-file=/dist/libraries /build/Colimit-code/Create/Tree-reflect.agda
 

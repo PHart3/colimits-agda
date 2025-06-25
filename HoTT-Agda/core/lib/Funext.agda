@@ -17,8 +17,7 @@ module lib.Funext {i} {A : Type i} where
 
 -- Naive non dependent function extensionality
 
-module FunextNonDep {j} {B : Type j} {f g : A → B} (h : f ∼ g)
-  where
+module FunextNonDep {j} {B : Type j} {f g : A → B} (h : f ∼ g) where
 
   private
     equiv-comp : {B C : Type j} (e : B ≃ C)
@@ -70,8 +69,7 @@ module WeakFunext {j} {P : A → Type j} (e : (x : A) → is-contr (P x)) where
 
 -- Naive dependent function extensionality
 
-module FunextDep {j} {P : A → Type j} {f g : Π A P} (h : f ∼ g)
-  where
+module FunextDep {j} {P : A → Type j} {f g : Π A P} (h : f ∼ g) where
 
   open WeakFunext
 
@@ -218,8 +216,7 @@ module _ where
 
 {- Functoriality of application and function extensionality -}
 
-module _ {j} {B : A → Type j} {f g h : Π A B}
-         (α : f ∼ g) (β : g ∼ h) where
+module _ {j} {B : A → Type j} {f g h : Π A B} (α : f ∼ g) (β : g ∼ h) where
 
   ∙-λ=-seq : λ= α ∙ λ= β =-= λ= (λ x → α x ∙ β x)
   ∙-λ=-seq =
@@ -311,8 +308,7 @@ module _ {j} {B : A → Type j} {f g h : Π A B}
         =⟨ ∘-ap (λ f → f a) app= (λ=-η (λ= α ∙ λ= β)) ⟩
       ap (λ p → app= p a) (λ=-η (λ= α ∙ λ= β)) =∎
 
-module _ {j} {B : A → Type j} {f g h k : Π A B}
-         (α : f ∼ g) (β : g ∼ h) (γ : h ∼ k) where
+module _ {j} {B : A → Type j} {f g h k : Π A B} (α : f ∼ g) (β : g ∼ h) (γ : h ∼ k) where
 
   ∙∙-λ= : λ= α ◃∙ λ= β ◃∙ λ= γ ◃∎ =ₛ λ= (λ x → α x ∙ β x ∙ γ x) ◃∎
   ∙∙-λ= =

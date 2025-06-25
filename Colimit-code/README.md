@@ -5,14 +5,18 @@ of an A-colimit. Specifically, it shows that it's the left adjoint
 to the constant diagram functor by presenting the expected natural
 isomorphism.
 
+It also contains a proof of the corollary that the forgetful functor
+creates (i.e., preserves and reflects) tree-indexed colimits.
+
 ## Organization
 
 - The `Aux/` folder contains auxiliary definitions and lemmas,
-  including the inductive definition of ordinary colimits and
-  the basic development of coslices of Type.
+  usually formulated in an ad-hoc manner.
 
-  - The file `Aux/Cocone.agda` contains the definition of
-    the colimiting pushout together with its A-cocone structure.
+- The `Coslice-Univ/` folder contains the basic development of coslices of Type.
+
+  - The file `Coslice-Univ/Cocone-po.agda` contains the definition
+    of the colimiting pushout together with its A-cocone structure.
   - This pushout and its A-cocone structure are described
     in **Section 5.3** of the (CSL) paper.
 
@@ -42,17 +46,26 @@ isomorphism.
 - The `Main-Theorem/` folder gathers all data of the desired
   adjunction from `L-R-L/`, `R-L-R/`, and `Map-Nat/`.
 
+- The `Create/` folder contains the proof of **Theorem 18** of the paper,
+  which states that the forgetful functor creates all tree-indexed colimits.
+
+- The `Trunc-Cos` folder contains a stand-alone proof of the 2-coherence of
+  the truncation functor on the coslice category of types.
+
 ## Naming of Individual Files
 
 In `L-R-L/`, `R-L-R/`, and `Map-Nat/`, Agda files are artificially
-broken into many fragments with numeric suffixes in order to type
-check the entire development in a reasonable amount of time.
+broken into many fragments with numeric suffixes so that Agda can
+manage the type checking.
 
 ## Manual Type-Checking
 
 1. Install Agda 2.6.3 or 2.6.4.
-2. Install the stripped, modified HoTT-Agda library under `../HoTT-Agda`.
-3. Type check the file `Main-Theorem/CosColim-main.agda`.
+2. Add `cos-colim.agda-lib` and `../HoTT-Agda/hott-core.agda-lib` to your Agda libraries file.
+3. Type check the files
+ - `Main-Theorem/CosColim-main.agda`
+ - `Create/Tree-preserve.agda`
+ - `Create/Tree-reflect.agda`
 
 ## License
 

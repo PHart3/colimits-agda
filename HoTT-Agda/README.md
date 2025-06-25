@@ -11,13 +11,14 @@ source code is described below.
 Setup
 -----
 
-The library is compatible with Agda 2.6.3 and 2.6.4. To use it, include at least the path to
-`hott-core.agda-lib` in your Agda library list.
+The library is compatible with Agda 2.6.3 and 2.6.4.
+To use it, include `hott-core.agda-lib` and `hott-theorems.agda-lib` to your Agda library file.
 
 Agda Options
 ------------
 
 Each Agda file should have `--without-K --rewriting` in its header.
+
 `--without-K` is for restricting pattern matching so that the uniqueness of identity proofs is not admissible.
 `--rewriting` is for the computational rules of the higher inductive types.
 
@@ -31,13 +32,13 @@ Structure of the source
 
 The main library is more or less divided into three parts.
 
-- The first part is exported in the module `lib.Basics` and contains everything needed to make the second
-  part compile.
-- The second part is found in `lib.types` and develops type formers.
-  Note that it contains new facts about homogeneous types and reformulates some of the basic theory of
-  the Suspension type.
+- The first part is exported in the module `lib.Basics` and contains everything needed to make the second part compile.
+- The second part is found in `lib.types` and develops type formers, including the inductive definition of colimits in
+  Type (which we also call ordinary colimits).
+  It also contains new facts about homogeneous types and reformulates some of the basic theory of the Suspension type.
 - The third part is found in `lib.wild-cats` and develops wild category theory.
   In particular, it shows that 2-coherent left adjoints between wild categories preserve colimiting cocones.
+  It also develops a lot of the theory of (co)cones.
 
 ### Homotopy (directory `theorems/homotopy/`)
 

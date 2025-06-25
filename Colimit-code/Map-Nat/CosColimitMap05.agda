@@ -3,11 +3,11 @@
 open import lib.Basics
 open import lib.types.Pushout
 open import Coslice
-open import Diagram
+open import Diagram-Cos
 open import Helper-paths
 open import AuxPaths
-open import Colim
-open import Cocone
+open import lib.types.Colim
+open import Cocone-po
 open import CosColimitMap00
 
 module CosColimitMap05 where
@@ -50,21 +50,21 @@ module ConstrMap6 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
 
   module MapCoher5 {i j : Obj Γ} (g : Hom Γ i j) (a : A) where
 
-    ψ₁-free-aux3 : {x : Colim ForgF} (m₂ : cin j (fun (F # j) a) == x)
+    ψ₁-free-aux3 : {x : Colim ForgF} (m₂ : cin j (str (F # j) a) == x)
       {κ : left a == left a} (ρ : κ == glue (cin j a) ∙ ! (glue (cin j a))) →
       ! (ap (right {d = SpCos₂} ∘ δ₀) m₂) ∙ ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a)))) ∙ κ
         ==
       ! (glue (cin j a) ∙ ap right (! (! (ap δ₀ m₂) ∙ ap (cin j) (snd (nat δ j) a) ∙ idp)))
     ψ₁-free-aux3 idp ρ = !-ap-!-∙ right (ap (cin j) (snd (nat δ j) a)) (glue (cin j a)) ρ
 
-    ψ₁-free-aux2 : {x : Colim (ConsDiag Γ A)} (q : cin j a == x) (m₂ : cin j (fun (F # j) a) == ψ₁ x)
+    ψ₁-free-aux2 : {x : Colim (ConsDiag Γ A)} (q : cin j a == x) (m₂ : cin j (str (F # j) a) == ψ₁ x)
       {κ : left a == left ([id] x)} (ρ : κ == glue (cin j a) ∙ ap right (ap ψ₂ q) ∙ ! (glue x)) →
       ! (ap (right {d = SpCos₂} ∘ δ₀) m₂) ∙ ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a)))) ∙ κ
         ==
       ! (glue x ∙ ap right (! (! (ap δ₀ m₂) ∙ ap (cin j) (snd (nat δ j) a) ∙ ap ψ₂ q)))
     ψ₁-free-aux2 idp m₂ ρ = ψ₁-free-aux3 m₂ ρ
 
-    ψ₁-free-aux : {x : Colim (ConsDiag Γ A)} (q : cin j a == x) {w : ty (F # j)} (m₁ : w == fun (F # j) a)
+    ψ₁-free-aux : {x : Colim (ConsDiag Γ A)} (q : cin j a == x) {w : ty (F # j)} (m₁ : w == str (F # j) a)
       (m₂ : cin j w == ψ₁ x) → 
       ! (ap (right {d = SpCos₂} ∘ δ₀) (! (ap (cin j) m₁) ∙ m₂)) ∙ ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a))))  ∙ ap left (ap [id] q)
         ==
@@ -92,7 +92,7 @@ module ConstrMap6 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       !-ap-!-∙ right (ap (cin j) (snd (nat δ j) a)) r₂ (! (!-inv-r r₂))
     ψ₁-red-aux2 idp r₂ s = ψ₁-red-aux3 (ap (cin j) (snd (nat δ j) a)) r₂ s
 
-    ψ₁-red-aux : {m₂ : cin j (fun (F # j) a) == cin j (fun (F # j) a)} (τ : idp == m₂) → 
+    ψ₁-red-aux : {m₂ : cin j (str (F # j) a) == cin j (str (F # j) a)} (τ : idp == m₂) → 
       ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (E₃ {f = left} {h = [id]} {u = right} (λ x → ! (glue x)) idp τ (λ x → idp)))) ∙
       ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (∙-unit-r (! (glue (cin j a)))))) ∙
       ap (λ q → q) (ap-inv-rid 𝕕₀ (glue (cin j a)) ∙ ap ! (𝕕-βr (cin j a))) ∙
@@ -105,7 +105,7 @@ module ConstrMap6 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
     ψ₁-red-aux idp = ψ₁-red-aux2 (glue {d = SpCos₁} (cin j a)) (glue {d = SpCos₂} (cin j a)) (𝕕-βr (cin j a)) 
 
     abstract
-      ψ₁-red : {x : Colim (ConsDiag Γ A)} (q : cin j a == x) {w : ty (F # j)} (m₁ : w == fun (F # j) a)
+      ψ₁-red : {x : Colim (ConsDiag Γ A)} (q : cin j a == x) {w : ty (F # j)} (m₁ : w == str (F # j) a)
         {m₂ : cin j w == ψ₁ x} (τ : ap ψ₁ q == ! (ap (cin j) m₁) ∙ m₂) → 
         ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (E₃ {f = left} {h = [id]} {u = right} (λ x → ! (glue x)) q τ (λ x → idp)))) ◃∙
         ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (∙-unit-r (! (glue x))))) ◃∙

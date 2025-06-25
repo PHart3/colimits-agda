@@ -6,6 +6,7 @@ open import lib.types.Pi
 open import lib.types.Paths
 open import lib.types.Unit
 open import lib.types.Empty
+open import lib.SIP
 
 module lib.Equivalence2 where
 
@@ -76,7 +77,6 @@ module _ {i j} {A : Type i} {B : Type j} where
   rcoh f (g , f-g) = Σ (∀ x → g (f x) == x)
                        (λ g-f → ∀ x → ap f (g-f x) == f-g (f x))
 
-
 module _ {i j} {A : Type i} {B : Type j} {f : A → B} (e : is-equiv f) where
 
   equiv-linv-is-contr : is-contr (linv f)
@@ -104,7 +104,6 @@ module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
       apply-unit-r : ∀ y → Σ _ (λ γ → ap (fst v) γ == _) ≃ Σ _ (λ γ → ap (fst v) γ ∙ idp == _)
       apply-unit-r y = Σ-emap-r λ γ
         → coe-equiv (ap (λ q → q == snd v (fst v y)) (! (∙-unit-r _)))
-
 
 equiv-rcoh-is-contr : ∀ {i j} {A : Type i} {B : Type j} {f : A → B}
                       (e : is-equiv f) → (v : rinv f) → is-contr (rcoh f v)
@@ -135,6 +134,13 @@ abstract
 is-equiv-prop : ∀ {i j} {A : Type i} {B : Type j}
   → SubtypeProp (A → B) (lmax i j)
 is-equiv-prop = is-equiv , λ f → is-equiv-is-prop
+
+-- 3-for-2
+3-for-2-e : ∀ {i j k} {A : Type i} {B : Type j} {C : Type k} {f₀ : A → B} {f₁ : B → C}
+  (f₂ : A → C) → f₁ ∘ f₀ ∼ f₂ → is-equiv f₀ → is-equiv f₂ → is-equiv f₁
+3-for-2-e {f₀ = f₀} {f₁ = f₁} =
+  ∼-ind (λ f₂ _ → is-equiv f₀ → is-equiv f₂ → is-equiv f₁)
+    λ e₀ e₁ → ∼-preserves-equiv {f₀ = f₁ ∘ f₀ ∘ is-equiv.g e₀} (λ x → ap f₁ (is-equiv.f-g e₀ x)) (e₁ ∘ise is-equiv-inverse e₀)
 
 ∘e-unit-r : ∀ {i} {A B : Type i} (e : A ≃ B) → (e ∘e ide A) == e
 ∘e-unit-r e = pair= idp (prop-has-all-paths _ _)

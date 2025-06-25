@@ -207,9 +207,7 @@ module _ {i j k} {A : Type i} {B : Type j} (C : B → Type k) (f : A → B) wher
   (f : C → a == a') (g : C → b == b') (r : c == c')
   → ↓-cst-in2 {q = ap f r} (ap g r)
     ==
-    ↓-ap-in (λ p → b == b' [ (λ _ → B) ↓ p ])
-            f
-            (apd (λ c → ↓-cst-in {p = f c} (g c)) r)
+    ↓-ap-in (λ p → b == b' [ (λ _ → B) ↓ p ]) f (apd (λ c → ↓-cst-in {p = f c} (g c)) r)
 ↓-cst-in2-ap {c = c} {c' = .c} f g idp = ↓-cst-in2-idp (f c) (g c)
 
 -- Dependent paths over [ap2 f p q]
@@ -340,7 +338,7 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
   module _ (K : (z : A) → f z == g z) where
 
     apd-to-hnat : {x y : A} (p : x == y) (m : ap f p == K x ∙ ap g p  ∙' ! (K y))
-      → apd K p == from-hmtpy-nat p m → hmtpy-nat-∙'-r K p == m
+      → apd K p == from-hmtpy-nat p m → hmtpy-nat-∙' K p == m
     apd-to-hnat {x} idp m q = lemma (K x) m q
       where
         lemma : {x₁ x₂ : B} (v : x₁ == x₂) (n : idp == v ∙ idp ∙' ! v)
@@ -350,9 +348,8 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
 
     apd-to-hnat-∙ : {x y z : A} (p₁ : x == y) (p₂ : y == z)
       {m₁ : ap f p₁ == K x ∙ ap g p₁  ∙' ! (K y)} {m₂ : ap f p₂ == K y ∙ ap g p₂  ∙' ! (K z)}
-      (τ₁ : hmtpy-nat-∙'-r K p₁ == m₁) (τ₂ : hmtpy-nat-∙'-r K p₂ == m₂)
-      →
-      hmtpy-nat-∙'-r K (p₁ ∙ p₂)
+      (τ₁ : hmtpy-nat-∙' K p₁ == m₁) (τ₂ : hmtpy-nat-∙' K p₂ == m₂) →
+      hmtpy-nat-∙' K (p₁ ∙ p₂)
         ==
       ↯ (ap-∙ f p₁ p₂ ◃∙
       ap (λ p → p ∙ ap f p₂) m₁ ◃∙
@@ -362,14 +359,14 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
     apd-to-hnat-∙ {x} idp idp idp idp = assoc-tri-!-coher (K x)
 
     apd-to-hnat-! : {x y : A} (p : x == y)
-      {m : ap f p == K x ∙ ap g p  ∙' ! (K y)} (τ : hmtpy-nat-∙'-r K p == m)
-      → hmtpy-nat-∙'-r K (! p) == ap-! f p ∙ ap ! m ∙ !-∙-ap-∙'-! g (K x) p (K y)
+      {m : ap f p == K x ∙ ap g p  ∙' ! (K y)} (τ : hmtpy-nat-∙' K p == m)
+      → hmtpy-nat-∙' K (! p) == ap-! f p ∙ ap ! m ∙ !-∙-ap-∙'-! g (K x) p (K y)
     apd-to-hnat-! {x} idp idp = !-∙-ap-∙'-!-coher g (K x)
 
     apd-to-hnat-ap! : ∀ {l} {C : Type l} (h : B → C) {x y : A} (p : x == y)
-      {m : ap f p == K x ∙ ap g p  ∙' ! (K y)} (τ : hmtpy-nat-∙'-r K p == m)
+      {m : ap f p == K x ∙ ap g p  ∙' ! (K y)} (τ : hmtpy-nat-∙' K p == m)
       →
-      hmtpy-nat-∙'-r (λ z → ap h (! (K z))) p
+      hmtpy-nat-∙' (λ z → ap h (! (K z))) p
         ==
       ap-∘-long h g f K p ∙
       ! (ap (λ q → ap h (! (K x)) ∙ ap h q ∙' ! (ap h (! (K y)))) m) ∙
@@ -377,7 +374,7 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
     apd-to-hnat-ap! h {x} idp idp = idp-ap-!-!-∙-∙'-coher h (K x)
 
 {-
-  A coordinate definition of homotopy of pointed functions.
+  An extensional definition of homotopy of pointed functions.
   We also call such a homotopy "unfolded." 
 -}
 

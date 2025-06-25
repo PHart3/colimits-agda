@@ -17,7 +17,6 @@ X ⊙× Y = ⊙Σ X (λ _ → Y)
 
 infixr 80 _×_ _⊙×_
 
--- XXX Do we really need two versions of [⊙fst]?
 ⊙fstᵈ : ∀ {i j} {X : Ptd i} (Y : de⊙ X → Ptd j) → ⊙Σ X Y ⊙→ X
 ⊙fstᵈ Y = fst , idp
 
@@ -172,6 +171,9 @@ instance
   Σ-level-instance {{pA}} {{pB}} = Σ-level pA (λ _ → pB)
 
 -- Equivalences in a Σ-type
+
+×-contr-r : ∀ {i j} {A : Type i} {B : Type j} → is-contr B → is-equiv (fst {A = A} {B = λ _ → B})
+×-contr-r c = is-eq fst (λ a → a , contr-center c) (λ _ → idp) λ (a , b) → pair×= idp (contr-path c _) 
 
 Σ-fmap-l : ∀ {i j k} {A : Type i} {B : Type j} (P : B → Type k)
   → (f : A → B) → (Σ A (P ∘ f) → Σ B P)
@@ -497,3 +499,7 @@ module _ {i j} {A : Type i} {P : A → Type j} where
     λ a → fst
     (=Σ-econv (contr-center c , transport P (! (contr-path c (fst a))) (snd a)) a) ((contr-path c (fst a)) ,
       from-transp-g P (contr-path c (fst a)) (transp-inv (contr-path c (fst a)) (snd a)))
+
+-- tensor-hom adjunction in Type
+×-→-adj : ∀ {i j k} {A : Type i} {B : Type j} {C : Type k} → (A × B → C) ≃ (A → B → C)
+×-→-adj = curry-equiv

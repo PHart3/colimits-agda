@@ -4,9 +4,9 @@ open import lib.Basics
 open import lib.Equivalence2
 open import lib.types.Pushout
 open import Coslice
-open import Diagram
-open import Cocone
-open import FTID-Cos
+open import Diagram-Cos
+open import Cocone-po
+open import SIP-Cos
 open import CosColim-Iso
 open import CC-Equiv-RLR-4
 open import CosColimitMap00
@@ -22,13 +22,12 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
 
   open Maps
 
-  colim-contr : is-contr-map (PostComp {D = Cos P₂ left} (ColCoC F))
-  colim-contr = equiv-is-contr-map (Colim-Iso F (Cos P₂ left))
+  colim-contr : is-contr-map (PostComp-cos {D = Cos P₂ left} (ColCoC-cos F))
+  colim-contr = equiv-is-contr-map (CM-eqv.CanMap-eqv-v1 F (Cos P₂ left))
 
-  K-diag-𝕕-eq : (Recc.recCosCoc F (Cos P₂ left)) K-diag == 𝕕
-  K-diag-𝕕-eq =
-    ap fst
-      (contr-has-all-paths {{colim-contr K-diag}}
-      ((Recc.recCosCoc F (Cos P₂ left)) K-diag , LRfunEq K-diag)
-      (𝕕 , CosCocEq-ind F (Cos P₂ left) (PostComp (ColCoC F) 𝕕) (fib-inhab δ)))
+  CC-from-diagmap-𝕕-eq : (Recc.recCosCoc F (Cos P₂ left)) CC-from-diagmap == 𝕕
+  CC-from-diagmap-𝕕-eq =
+    ap fst (contr-has-all-paths {{colim-contr CC-from-diagmap}}
+      ((Recc.recCosCoc F (Cos P₂ left)) CC-from-diagmap , LRfunEq CC-from-diagmap)
+      (𝕕 , CosCocEq-to-== (fib-inhab δ)))
 

@@ -24,7 +24,6 @@ module lib.types.Pi where
     lemma = λ f g →
       equiv-preserves-level λ=-equiv {{Π-level (λ x → has-level-apply (p x) (f x) (g x))}}
 
-
 Πi-level : ∀ {i j} {A : Type i} {B : A → Type j} {n : ℕ₋₂}
   → ((x : A) → has-level n (B x)) → has-level n ({x : A} → B x)
 Πi-level {A = A} {B} p = equiv-preserves-level e {{Π-level p}}  where
@@ -44,7 +43,6 @@ instance
   Πi-level-instance : ∀ {i j} {A : Type i} {B : A → Type j} {n : ℕ₋₂}
     → {{{x : A} → has-level n (B x)}} → has-level n ({x : A} → B x)
   Πi-level-instance {{pA}} = Πi-level (λ _ → pA)
-
 
 {- Equivalences in a Π-type -}
 Π-emap-l : ∀ {i j k} {A : Type i} {B : Type j} (P : B → Type k)
@@ -82,22 +80,6 @@ instance
           g-f : ∀ c → g (f c) == c
           g-f c = λ= (λ x → <–-inv-l (k x) (c x))
 
-{-
-favonia: This part is not used.
-
-module _ {i₀ i₁ j₀ j₁} {A₀ : Type i₀} {A₁ : Type i₁}
-         {B₀ : A₀ → Type j₀} {B₁ : A₁ → Type j₁} where
-  Π-emap : (u : A₀ ≃ A₁) (v : ∀ a → B₀ (<– u a) ≃ B₁ a) → Π A₀ B₀ ≃ Π A₁ B₁
-  Π-emap u v = Π A₀ B₀           ≃⟨ Π-emap-l _ (u ⁻¹) ⁻¹ ⟩
-               Π A₁ (B₀ ∘ <– u)  ≃⟨ Π-emap-r v ⟩
-               Π A₁ B₁           ≃∎
-
-  Π-emap' : (u : A₀ ≃ A₁) (v : ∀ a → B₀ a ≃ B₁ (–> u a)) → Π A₀ B₀ ≃ Π A₁ B₁
-  Π-emap' u v = Π A₀ B₀           ≃⟨ Π-emap-r v ⟩
-                Π A₀ (B₁ ∘ –> u)  ≃⟨ Π-emap-l _ u ⟩
-                Π A₁ B₁           ≃∎
--}
-
 
 {- Coversions between functions with implicit and explicit arguments -}
 
@@ -108,8 +90,6 @@ expose-equiv = (λ f a → f {a}) , is-eq
   (λ f {a} → f a)
   (λ _ → idp)
   (λ _ → idp)
-
-
 
 {- Dependent paths in a Π-type -}
 module _ {i j k} {A : Type i} {B : A → Type j} {C : (a : A) → B a → Type k}
@@ -182,58 +162,6 @@ module _ {i j k} {A : Type i} {B : A → Type j} {C : Type k} {x x' : A}
     ↓-cst-out (↓-cst-in {p = pair= p q} (f q))
              =⟨ ↓-cst-β (pair= p q) (f q) ⟩
     f q =∎
-
-{- favonia: these lemmas are not used anywhere
-
-{- Similar to above, with domain being the identity function. -}
-{- These lemmas were in homotopy.FunctionOver and in different conventions. -}
-
-module _ {i j} {A B : Type i} {C : Type j}
-  {u : A → C} {v : B → C} where
-
-  ↓-idf→cst-in : ∀ (p : A == B)
-    → u == v ∘ coe p
-    → u == v [ (λ x → x → C) ↓ p ]
-  ↓-idf→cst-in idp q = q
-
-  ↓-idf→cst-ua-in : ∀ (e : A ≃ B)
-    → u == v ∘ –> e
-    → u == v [ (λ x → x → C) ↓ ua e ]
-  ↓-idf→cst-ua-in e q = ↓-idf→cst-in (ua e) (q ∙ ap (v ∘_) (λ= λ a → ! (coe-β e a)))
-
-  ↓-idf→cst-in' : ∀ (p : A == B)
-    → u ∘ coe! p == v
-    → u == v [ (λ x → x → C) ↓ p ]
-  ↓-idf→cst-in' idp q = q
-
-  ↓-idf→cst-ua-in' : ∀ (e : A ≃ B)
-    → u ∘ <– e == v
-    → u == v [ (λ x → x → C) ↓ ua e ]
-  ↓-idf→cst-ua-in' e q = ↓-idf→cst-in' (ua e) (ap (u ∘_) (λ= λ a → coe!-β e a) ∙ q)
-
-module _ {i j} {A B : Type i} {C : Type j}
-  {u : C → A} {v : C → B} where
-
-  ↓-cst→idf-in : ∀ (p : A == B)
-    → coe p ∘ u == v
-    → u == v [ (λ x → C → x) ↓ p ]
-  ↓-cst→idf-in idp q = q
-
-  ↓-cst→idf-ua-in : ∀ (e : A ≃ B)
-    → –> e ∘ u == v
-    → u == v [ (λ x → C → x) ↓ ua e ]
-  ↓-cst→idf-ua-in e q = ↓-cst→idf-in (ua e) (ap (_∘ u) (λ= λ a → coe-β e a) ∙ q)
-
-  ↓-cst→idf-in' : ∀ (p : A == B)
-    → u == coe! p ∘ v
-    → u == v [ (λ x → C → x) ↓ p ]
-  ↓-cst→idf-in' idp q = q
-
-  ↓-cst→idf-ua-in' : ∀ (e : A ≃ B)
-    → u == <– e ∘ v
-    → u == v [ (λ x → C → x) ↓ ua e ]
-  ↓-cst→idf-ua-in' e q = ↓-cst→idf-in' (ua e) (q ∙ ap (_∘ v) (λ= λ a → ! (coe!-β e a)))
--}
 
 {- Dependent paths in an arrow type -}
 module _ {i j k} {A : Type i} {B : A → Type j} {C : A → Type k}
@@ -352,81 +280,3 @@ apd-∘'' g f idp idp = idp
   → transport (λ a → ∀ b → C a b) p g ==
     λ b → transport (λ a → C a b) p (g b)
 Π-transp p@idp g = idp
-
-{- 2-dimensional coherence conditions -}
-
--- lhs :
---   ∀ {i j k} {A : Type i} {B : A → Type j} {C : A → Type k} {f g : Π A B}
---   {x y : A} {p : x == y} {u : f x == g x} {v : f y == g y}
---   (k : (u ◃ apd g p) == (apd f p ▹ v))
---   (h : {a : A} → B a → C a)
---   → ap h u ◃ apd (h ∘ g) p == ap↓ h (u ◃ apd g p)
-
--- rhs :
---   ∀ {i j k} {A : Type i} {B : A → Type j} {C : A → Type k} {f g : Π A B}
---   {x y : A} {p : x == y} {u : f x == g x} {v : f y == g y}
---   (k : (u ◃ apd g p) == (apd f p ▹ v))
---   (h : {a : A} → B a → C a)
---   → ap↓ h (apd f p ▹ v) == apd (h ∘ f) p ▹ ap h v
-
--- ap↓-↓-=-in :
---   ∀ {i j k} {A : Type i} {B : A → Type j} {C : A → Type k} {f g : Π A B}
---   {x y : A} {p : x == y} {u : f x == g x} {v : f y == g y}
---   (k : (u ◃ apd g p) == (apd f p ▹ v))
---   (h : {a : A} → B a → C a)
---   → ap↓ (λ {a} → ap (h {a = a})) (↓-=-in {p = p} {u = u} {v = v} k)
---   == ↓-=-in (lhs {f = f} {g = g} k h ∙ ap (ap↓ (λ {a} → h {a = a})) k
---                                      ∙ rhs {f = f} {g = g} k h)
-
-{-
-Commutation of [ap↓ (ap h)] and [↓-swap!]. This is "just" J, but it’s not as
-easy as it seems.
--}
-
--- module Ap↓-swap! {i j k ℓ} {A : Type i} {B : Type j} {C : Type k}
---   {D : Type ℓ} (h : C → D) (f : A → C) (g : B → C)
---   {a a' : A} {p : a == a'} {b b' : B} {q : b == b'}
---   (r : f a == g b') (s : f a' == g b)
---   (t : r == s ∙ ap g q  [ (λ x → f x == g b') ↓ p ])
---   where
-
---   lhs : ap h (ap f p ∙' s) == ap (h ∘ f) p ∙' ap h s
---   lhs = ap-∙' h (ap f p) s ∙ (ap (λ u → u ∙' ap h s) (∘-ap h f p))
-
---   rhs : ap h (s ∙ ap g q) == ap h s ∙ ap (h ∘ g) q
---   rhs = ap-∙ h s (ap g q) ∙ (ap (λ u → ap h s ∙ u) (∘-ap h g q))
-
---   β : ap↓ (ap h) (↓-swap! f g r s t) ==
---               lhs ◃ ↓-swap! (h ∘ f) (h ∘ g) (ap h r) (ap h s) (ap↓ (ap h) t ▹ rhs)
---   β with a | a' | p | b | b' | q | r | s | t
---   β | a | .a | idp | b | .b | idp | r | s | t = coh r s t  where
-
---     T : {x x' : C} (r s : x == x') (t : r == s ∙ idp) → Type _
---     T r s t =
---       ap (ap h) (∙'-unit-l s ∙ ! (∙-unit-r s) ∙ ! t) ==
---       (ap-∙' h idp s ∙ idp)
---       ∙
---       (∙'-unit-l (ap h s) ∙
---       ! (∙-unit-r (ap h s)) ∙
---       !
---       (ap (ap h) t ∙'
---         (ap-∙ h s idp ∙ idp)))
-
---     coh' : {x x' : C} {r s : x == x'} (t : r == s) → T r s (t ∙ ! (∙-unit-r s))
---     coh' {r = idp} {s = .idp} idp = idp
-
---     coh : {x x' : C} (r s : x == x') (t : r == s ∙ idp) → T r s t
---     coh r s t = transport (λ t → T r s t) (coh2 t (∙-unit-r s)) (coh' (t ∙ ∙-unit-r s))  where
-
---       coh2 : ∀ {i} {A : Type i} {x y z : A} (p : x == y) (q : y == z) → (p ∙ q) ∙ ! q == p
---       coh2 idp idp = idp
-
-
--- module _ {i j k} {A : Type i} {B B' : Type j} {C : Type k} (f : A → C) (g' : B' → B) (g : B → C) where
-
---   abc : {a a' : A} {p : a == a'} {c c' : B'} {q' : c == c'} {q : g' c == g' c'}
---     (r : f a == g (g' c')) (s : f a' == g (g' c))
---     (t : q == ap g' q')
---     (α : r == s ∙ ap g q [ (λ x → f x == g (g' c')) ↓ p ])
---     → {!(↓-swap! f g r s α ▹ ?) ∙'2ᵈ ?!} == ↓-swap! f (g ∘ g') {p = p} {q = q'} r s (α ▹ ap (λ u → s ∙ u) (ap (ap g) t ∙ ∘-ap g g' q'))
---   abc = {!!}

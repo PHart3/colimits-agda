@@ -34,15 +34,26 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
 
     open Adjunction α
 
-    adj-hom-limit : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} (Δ : Diagram G C) (T : ob D)
-      → Map-diag (Diagram-hom T (F-diag L Δ)) (Diagram-hom (obj R T) Δ)
-    Map-diag.comp (adj-hom-limit Δ T) x = –> iso
-    Map-diag.sq (adj-hom-limit Δ T) f m = nat-dom (D₁ Δ f) m
 
-    adj-lim-map-eqv : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} {Δ : Diagram G C} {T : ob D}
-      → Limit (Diagram-hom T (F-diag L Δ)) ≃ Limit (Diagram-hom (obj R T) Δ)
+    adj-hom-limit : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} (Δ : Diagram G D) (T : ob C)
+      → Map-diag-ty (Diagram-hom (obj L T) Δ) (Diagram-hom T (F-diag R Δ))
+    Map-diag-ty.comp (adj-hom-limit Δ T) x = –> iso
+    Map-diag-ty.sq (adj-hom-limit Δ T) f m = nat-cod (D₁ Δ f) m
+
+    adj-lim-map-eqv : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} {Δ : Diagram G D} {T : ob C}
+      → Limit (Diagram-hom (obj L T) Δ) ≃ Limit (Diagram-hom T (F-diag R Δ))
     adj-lim-map-eqv {Δ = Δ} {T} = Limit-map (adj-hom-limit Δ T) ,
       lim-eqv-to-eqv (adj-hom-limit Δ T) (λ _ → snd iso)
+
+    adj-hom-limit-op : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} (Δ : Diagram G C) (T : ob D)
+      → Map-diag-ty (Diagram-hom-op T (F-diag L Δ)) (Diagram-hom-op (obj R T) Δ)
+    Map-diag-ty.comp (adj-hom-limit-op Δ T) x = –> iso
+    Map-diag-ty.sq (adj-hom-limit-op Δ T) f m = nat-dom (D₁ Δ f) m
+
+    adj-lim-map-eqv-op : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} {Δ : Diagram G C} {T : ob D}
+      → Limit (Diagram-hom-op T (F-diag L Δ)) ≃ Limit (Diagram-hom-op (obj R T) Δ)
+    adj-lim-map-eqv-op {Δ = Δ} {T} = Limit-map (adj-hom-limit-op Δ T) ,
+      lim-eqv-to-eqv (adj-hom-limit-op Δ T) (λ _ → snd iso)
 
     abstract
       nat-dom-exch : {x : ob D} {a b : ob C} (f : hom C a b) (v : hom D (obj L b) x) →
