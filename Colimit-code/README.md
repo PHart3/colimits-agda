@@ -49,6 +49,9 @@ creates (i.e., preserves and reflects) tree-indexed colimits.
 - The `Create/` folder contains the proof of **Theorem 18** of the paper,
   which states that the forgetful functor creates all tree-indexed colimits.
 
+- The `Trunc-Cos` folder contains a stand-alone proof of the 2-coherence of
+  the truncation functor on the coslice category of types.
+
 ## Naming of Individual Files
 
 In `L-R-L/`, `R-L-R/`, and `Map-Nat/`, Agda files are artificially
