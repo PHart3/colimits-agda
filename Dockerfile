@@ -57,7 +57,7 @@ RUN /dist/agda --library-file=/dist/libraries ./Trunc-Cos/TruncAdj.agda
 
 WORKDIR /build/Pullback-stability
 RUN /dist/agda --library-file=/dist/libraries ./Stability-ord.agda
-RUN /dist/agda --library-file=/dist/libraries ./Stability-cos-coc
+RUN /dist/agda --library-file=/dist/libraries ./Stability-cos-coc.agda
 
 ####################################################################################################
 # Execute shell script to create html files for colimit code
