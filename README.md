@@ -46,24 +46,18 @@ We have successfully tested the following Docker container on Linux but not on o
    docker build . -t colimit
    ```
 
-   The build, which uses Agda 2.6.4, type checks the whole development. The Agda code
-   is partitioned into multiple stages across files to facilitate type-checking. The
-   entire build may take over an hour. The type checking of all our Agda code takes
-   about 38 minutes on our host Ubuntu with 16 GB of RAM.
+   The build installs Agda 2.6.4 and type checks our whole development.
+   The entire build may take over an hour. The type checking of all our
+   Agda code takes about 40 minutes on our host Ubuntu with 16 GB of RAM.
 
 2. Generate HTML files:
 
    ```bash
-   mkdir -p ./html1 ./html2
-   docker run --mount type=bind,source=./html1,target=/build/Colimit-code/html \
-     --mount type=bind,source=./html2,target=/build/Pullback-stability/html \
-     colimit
+   mkdir -p ./html
+   docker run --mount type=bind,source=./html,target=/build/Colimit-code/html colimit
    ```
 
-   The HTML files will be under `html1/` and `html2/`.
-   The entry points will be
-   - `html1/CosColim-main.html`
-   - `html2/Stability.html`
+   The HTML files will be under `html`.
 
 ## Acknowledgement
 
