@@ -32,7 +32,7 @@ Structure of the source
 
 The main library is more or less divided into three parts.
 
-- The first part is exported in the module `lib.Basics` and contains everything needed to make the second part compile.
+- The first part is exported in the module `lib.Basics` and contains essential constructions.
 - The second part is found in `lib.types` and develops type formers, including the inductive definition of colimits in
   Type (which we also call ordinary colimits).
   It also contains new facts about homogeneous types and reformulates some of the basic theory of the Suspension type.
