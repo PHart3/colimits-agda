@@ -502,6 +502,12 @@ module _ {i j} {A : Type i} {B : A → Type j} where
     → apd (λ a → q a ∙' r a) p == apd q p ∙'2ᵈ apd r p
   apd∙' q r idp = ! (idp∙'2idp (q _) (r _))
 
+!ᵈ-inv-l-out : ∀ {ℓ} {A : Type ℓ} {P : A → Type ℓ}
+  {a₀ a₁ : A} {p : a₀ == a₁} {x₀ x₁ : P a₁}
+  → (q : x₀ == x₁ [ P ↓ ! p ∙ p ])
+  → x₀ == x₁
+!ᵈ-inv-l-out {p = idp} q = q
+
 module _ {i j} {A : Type i} {B : A → Type j} where
 
   {- right whiskering and vertical composition -}
