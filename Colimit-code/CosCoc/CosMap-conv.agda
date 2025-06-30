@@ -2,7 +2,6 @@
 
 open import lib.Basics
 open import Coslice
-open import Diagram-Cos
 open import SIP-Cos
 
 -- preservation of groupoid structure by UndFun∼-to-==
