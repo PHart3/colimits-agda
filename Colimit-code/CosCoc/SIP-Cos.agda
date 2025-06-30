@@ -14,11 +14,11 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A >
 
 -- SIP for A-maps (or maps under A)
 
-  UndFunHomContr-aux :
+  UndHomContr-aux :
     is-contr
       (Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g))
         (λ (h , K) → Σ ((a : A) → h (str X a) == str Y a) (λ p → ((a : A) → ! (K (str X a)) ∙ (snd f a) == p a))))
-  UndFunHomContr-aux =
+  UndHomContr-aux =
     equiv-preserves-level
       ((Σ-contr-red
         {P = λ (h , K) → Σ ((a : A) → h (str X a) == str Y a) (λ p → ((a : A) → ! (K (str X a)) ∙ (snd f a) == p a))}
@@ -28,8 +28,8 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A >
   open MapsCos A
 
   abstract
-    UndFunHomContr : is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
-    UndFunHomContr = equiv-preserves-level lemma {{UndFunHomContr-aux}}
+    UndHomContr : is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
+    UndHomContr = equiv-preserves-level lemma {{UndHomContr-aux}}
       where
         lemma :
           Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g))
@@ -45,7 +45,7 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A >
 
   UndFun-ind : ∀ {k} (P : (g : X *→ Y) → (< X > f ∼ g → Type k))
     → P f ((λ _ → idp) , (λ _ → idp)) → {g : X *→ Y} (p : < X > f ∼ g) → P g p
-  UndFun-ind P = ID-ind-map {b = (λ _ → idp) , (λ _ → idp)} P UndFunHomContr
+  UndFun-ind P = ID-ind-map {b = (λ _ → idp) , (λ _ → idp)} P UndHomContr
 
   UndFun∼-from-== : {g : X *→ Y} → f == g → < X > f ∼ g
   UndFun∼-from-== idp = (λ _ → idp) , (λ _ → idp)
@@ -54,7 +54,7 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A >
   UndFun∼-to-== {g} = UndFun-ind (λ g _ → f == g) idp
 
   UndFun∼-β : UndFun∼-to-== ((λ _ → idp) , (λ _ → idp)) == idp
-  UndFun∼-β = ID-ind-map-β (λ g _ → f == g) UndFunHomContr idp
+  UndFun∼-β = ID-ind-map-β (λ g _ → f == g) UndHomContr idp
 
   UndFun-∼-==-≃ : {g : X *→ Y} → (f == g) ≃ (< X > f ∼ g)
   UndFun-∼-==-≃ = equiv UndFun∼-from-== UndFun∼-to-==
@@ -221,7 +221,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
     abstract
       CosCocEq-tot-contr : is-contr (CosCocEq-tot)
       CosCocEq-tot-contr =
-        equiv-preserves-level ((Σ-contr-red (Π-level (λ _ → UndFunHomContr)))⁻¹)
+        equiv-preserves-level ((Σ-contr-red (Π-level (λ _ → UndHomContr)))⁻¹)
           {{Π-level
             (λ i → (Π-level (λ j → (Π-level (λ g →
               equiv-preserves-level ((Σ-contr-red (funhom-contr {f = fst (comTri K₁ g)}))⁻¹)
