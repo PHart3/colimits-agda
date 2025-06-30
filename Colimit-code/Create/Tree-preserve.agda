@@ -8,7 +8,7 @@ open import lib.types.Coc-conversion
 open import lib.wild-cats.WildCats
 open import lib.wild-cats.Diag-coher-wc
 open import Diagram-Cos
-open import SIP-Cos
+open import SIP-CosCoc
 open import CosMap-conv
 open import Id-col
 open import CosColim-Iso

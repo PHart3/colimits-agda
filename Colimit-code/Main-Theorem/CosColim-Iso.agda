@@ -9,7 +9,7 @@ open import Coslice
 open import Cos-wc
 open import Diagram-Cos
 open import Cocone-po
-open import SIP-Cos
+open import SIP-CosCoc
 open import CC-conversion
 open import CC-Equiv-LRL-7
 open import CC-Equiv-RLR-4

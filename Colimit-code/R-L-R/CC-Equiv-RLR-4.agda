@@ -4,7 +4,7 @@ open import lib.Basics
 open import Coslice
 open import Diagram-Cos
 open import lib.types.Colim
-open import SIP-Cos
+open import SIP-CosCoc
 open import CC-Equiv-RLR-3
 
 module CC-Equiv-RLR-4 where

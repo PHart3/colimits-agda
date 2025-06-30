@@ -2,7 +2,7 @@
 
 open import lib.Basics
 open import lib.SIP
-open import SIP-Cos
+open import SIP-CosCoc
 
 module AuxPaths-v2 where
 

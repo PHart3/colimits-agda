@@ -3,7 +3,7 @@
 open import lib.Basics
 open import lib.wild-cats.WildCats
 open import lib.wild-cats.Cocone-wc-SIP
-open import SIP-Cos
+open import SIP-CosMap
 open import CosMap-conv
 
 -- coslice universe as wild category

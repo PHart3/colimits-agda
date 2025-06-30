@@ -7,7 +7,7 @@ open import lib.types.Pushout
 open import lib.types.Span
 open import Coslice
 open import Diagram-Cos
-open import SIP-Cos
+open import SIP-CosCoc
 open import AuxPaths-v2
 open import CC-Equiv-LRL-0
 open import CC-v2-rewrite
