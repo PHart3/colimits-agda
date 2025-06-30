@@ -47,6 +47,7 @@ RUN echo "/build/Pullback-stability/stab.agda-lib" >> /dist/libraries
 
 WORKDIR /build/HoTT-Agda
 RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/Susp-colim.agda
+RUN /dist/agda --library-file=/dist/libraries ./theorems/modality/Modality-colim.agda
 
 WORKDIR /build/Colimit-code
 RUN /dist/agda +RTS -M4.5G -RTS --library-file=/dist/libraries ./Main-Theorem/CosColim-main.agda

@@ -15,6 +15,7 @@
   In addition, it includes wild category theory, centered on (co)limits and 2-coherent left adjoints. We prove that such adjoints
   preserve colimits (over graphs). Moreover, we prove that the Suspension functor is a 2-coherent left adjoint to Loop-space, for
   which we develop some new properties of homogeneous types. As a result, we get a formal proof that Suspension preserves colimits.
+  We also prove that modalities, viewed as functors on coslices of Type, are 2-coherent left adjoints, hence preserve colimits.
 
   See `HoTT-Agda/README.md` for the license of the work inside this directory.
 
@@ -55,11 +56,13 @@ We have successfully tested the following Docker container on Linux but not on o
 2. Generate HTML files:
 
    ```bash
-   mkdir -p ./html
-   docker run --mount type=bind,source=./html,target=/build/Colimit-code/html colimit
+   mkdir -p ./html1 ./html2
+   docker run --mount type=bind,source=./html1,target=/build/Colimit-code/html \
+     --mount type=bind,source=./html2,target=/build/HoTT-Agda/html \
+     colimit
    ```
 
-   The HTML files will be under `html`.
+   The HTML files will be under `html1/` and `html2/`.
 
 ## Acknowledgement
 
