@@ -15,6 +15,8 @@ creates (i.e., preserves and reflects) tree-indexed colimits.
 
 - The `CosCoc/` folder contains the basic development of diagrams and cocones in coslices of Type.
 
+- The `Cos-WC/` folder contains the definition of the wild coslice category of types.
+
 - The `Cocone-PO/` folder contains the definition of the colimiting pushout together with its A-cocone structure.
 
   This pushout and its A-cocone structure are described in **Section 5.3** of the (CSL) paper.
@@ -47,9 +49,10 @@ creates (i.e., preserves and reflects) tree-indexed colimits.
 
 - The `Create/` folder contains the proof of **Theorem 18** of the paper,
   which states that the forgetful functor creates all tree-indexed colimits.
+  It uses `Cos-WC/`.
 
 - The `Trunc-Cos` folder contains a stand-alone proof of the 2-coherence of
-  the truncation functor on the coslice category of types.
+  the truncation functor on the wild coslice category of types.
 
 ## Naming of Individual Files
 
