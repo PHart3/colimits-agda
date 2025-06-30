@@ -3,7 +3,6 @@
 open import lib.Basics
 open import lib.wild-cats.WildCats
 open import lib.wild-cats.Cocone-wc-SIP
-open import Diagram-Cos
 open import SIP-Cos
 open import CosMap-conv
 
