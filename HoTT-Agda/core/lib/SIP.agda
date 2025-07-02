@@ -5,12 +5,15 @@ open import lib.types.Sigma
 
 module lib.SIP where
 
--- Identity system and associated induction principle
+-- identity system and associated induction principle
 
 module _ {i j} (A : Type i) (B : A → Type j) (a : A) (b : B a) where
 
   ID-sys : Type (lmax i j)
   ID-sys = (p : Σ A B) → (a , b) == p
+
+  ID-sys-contr : ID-sys → is-contr (Σ A B)
+  has-level-apply (ID-sys-contr s) = (a , b) , s
 
   module _ {k} (P : (x : A) → (B x → Type k)) where
 

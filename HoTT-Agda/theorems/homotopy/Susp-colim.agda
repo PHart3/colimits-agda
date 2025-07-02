@@ -8,7 +8,7 @@ open import homotopy.Susp-2coher
 open import lib.wild-cats.WildCats
 open import lib.wild-cats.Ladj-colim
 
-{- Suspension preserves colimits. -}
+-- Suspension preserves colimits over graphs.
 
 module homotopy.Susp-colim where
 

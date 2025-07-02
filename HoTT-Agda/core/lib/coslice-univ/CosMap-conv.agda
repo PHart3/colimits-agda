@@ -2,11 +2,12 @@
 
 open import lib.Basics
 open import Coslice
-open import SIP-CosMap
 
 -- preservation of groupoid structure by UndFun∼-to-==
 
 module CosMap-conv {j} {A : Type j} where
+
+open import SIP-CosMap public
 
 open MapsCos A
 

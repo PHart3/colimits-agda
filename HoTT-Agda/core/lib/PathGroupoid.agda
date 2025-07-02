@@ -155,8 +155,11 @@ module _ {i} {A : Type i} where
     assoc-tri-!-mid p idp p idp (! p) ∙ idp
   assoc-tri-!-coher idp = idp
 
+  !-inv-l-assoc : {x y z : A} (p : x == y) (q : y == z) → ! p ∙ p ∙ q == q
+  !-inv-l-assoc idp idp = idp
+
   inv-rid : {x y : A} (p : x == y) → ! p ∙ p ∙ idp == idp
-  inv-rid idp = idp
+  inv-rid p = !-inv-l-assoc p idp
 
   !3-∙3 : {x y z w : A} (p : x == y) (q : z == y) (r : w == y)
     → ! ((p ∙ ! q) ∙ q ∙ ! r) ∙ p == r

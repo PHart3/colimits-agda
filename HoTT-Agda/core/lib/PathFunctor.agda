@@ -165,6 +165,9 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   ∘-ap-! : {x y : A} (p : x == y) → ap g (! (ap f p)) == ! (ap (g ∘ f) p)
   ∘-ap-! idp = idp
 
+  ap-∘-! : {x y : A} (p : x == y) → ap g (ap f (! p)) == ! (ap g (ap f p))
+  ap-∘-! idp = idp
+
   ap-∘-∘ : ∀ {l} {D : Type l} (h : D → A) {x y : D} (p : x == y)
     → ap (g ∘ f ∘ h) p == ap g (ap f (ap h p))
   ap-∘-∘ h idp = idp

@@ -1,10 +1,10 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.wild-cats.WildCat
 open import lib.types.Modality
-open import lib.wild-cats.WildCats
 open import Coslice
-open import Cos-wc
+open import CosMap-conv
 
 module modality.Mod-Cos where
 
@@ -12,6 +12,16 @@ module _ {ℓ j} (μ : Modality ℓ) (A : Type j) where
 
   open Modality μ
   open MapsCos A
+
+  -- full subcategory of μ-local types under A
+  Coslice-loc-wc : WildCat
+  ob Coslice-loc-wc = Σ (Coslice ℓ j A) (λ X → is-local (ty X))
+  hom Coslice-loc-wc X Y = fst X *→ fst Y
+  id₁ Coslice-loc-wc X = id-cos {X = fst X}
+  _◻_ Coslice-loc-wc g f = g ∘* f
+  ρ Coslice-loc-wc f = idp
+  lamb Coslice-loc-wc f = UndFun∼-to-== (lunit-∘* f)
+  α Coslice-loc-wc h g f = UndFun∼-to-== (*→-assoc h g f)
 
   -- functor on coslices induced by arbitrary modality
 
@@ -78,14 +88,46 @@ module _ {ℓ j} (μ : Modality ℓ) (A : Type j) where
   Mod-cos-hom : {X : Coslice ℓ j A} {Y : Coslice ℓ j A}
     → (Mod-cos X *→ Y) → (X *→ Y)
   fst (Mod-cos-hom f) = fst f ∘ η
-  snd (Mod-cos-hom f) a = snd f a 
+  snd (Mod-cos-hom f) a = snd f a
 
-  -- naturality of hom map
-  Mod-cos-∘-nat : {X : Coslice ℓ j A} {Y : Coslice ℓ j A} {Z : Coslice ℓ j A}
+  -- inverse of hom map
+  Mod-cos-hom-inv : {X : Coslice ℓ j A} {Y : Coslice ℓ j A}
+    → is-local (ty Y) → (X *→ Y) → (Mod-cos X *→ Y)
+  fst (Mod-cos-hom-inv p f) = ◯-rec p (fst f)
+  snd (Mod-cos-hom-inv {X} p f) a = ◯-rec-β p (fst f) (str X a) ∙ snd f a
+
+  -- extensional form of `ap Mod-cos-hom`
+  ap-Mod-cos-hom : {X : Coslice ℓ j A} {Y : Coslice ℓ j A} {h₁ h₂ : Mod-cos X *→ Y}
+    → < Mod-cos X > h₁ ∼ h₂ → < X > Mod-cos-hom h₁ ∼ Mod-cos-hom h₂
+  fst (ap-Mod-cos-hom H) x = fst H (η x) 
+  snd (ap-Mod-cos-hom H) a = snd H a
+
+  ap-Mod-cos-hom-id : {X : Coslice ℓ j A} {Y : Coslice ℓ j A} {f : Mod-cos X *→ Y}
+    → < X > ap-Mod-cos-hom (cos∼id f) ∼∼ cos∼id (Mod-cos-hom f)
+  fst ap-Mod-cos-hom-id _ = idp
+  snd ap-Mod-cos-hom-id _ = idp
+
+  abstract
+    ap-Mod-cos-coh : {X : Coslice ℓ j A} {Y : Coslice ℓ j A} {h₁ h₂ : Mod-cos X *→ Y} (H : < Mod-cos X > h₁ ∼ h₂)
+      → ap Mod-cos-hom (UndFun∼-to-== H) == UndFun∼-to-== (ap-Mod-cos-hom H)
+    ap-Mod-cos-coh {h₁ = h₁} = 
+      UndFun-ind {f = h₁} (λ h₂ H → ap Mod-cos-hom (UndFun∼-to-== H) == UndFun∼-to-== (ap-Mod-cos-hom H))
+        (ap (ap Mod-cos-hom) UndFun∼-β ∙
+        ! (ap UndFun∼-to-== (∼∼-cos∼-to-== (ap-Mod-cos-hom-id {f = h₁})) ∙ UndFun∼-β))
+
+  -- naturality of hom map in the domain
+  Mod-cos-cod : {X : Coslice ℓ j A} {Y : Coslice ℓ j A} {Z : Coslice ℓ j A}
+    (g : Y *→ Z) (h : Mod-cos X *→ Y)
+    → < X > g ∘* Mod-cos-hom h ∼ Mod-cos-hom (g ∘* h)
+  fst (Mod-cos-cod g h) _ = idp
+  snd (Mod-cos-cod g h) _ = idp
+
+  -- naturality of hom map in the domain
+  Mod-cos-dom : {X : Coslice ℓ j A} {Y : Coslice ℓ j A} {Z : Coslice ℓ j A}
     (f : Z *→ X) (h : Mod-cos X *→ Y)
     → < Z > Mod-cos-hom h ∘* f ∼ Mod-cos-hom (h ∘* Mod-cos-fmap f) 
-  fst (Mod-cos-∘-nat f h) x = ap (fst h) (! (◯-fmap-β (fst f) x))
-  snd (Mod-cos-∘-nat {X} {Y} {Z} f h) a = equal (◯-elim-β (λ _ → ◯-is-local) (λ x → η (fst f x)) (str Z a)) (snd f a) (snd h a)
+  fst (Mod-cos-dom f h) x = ap (fst h) (! (◯-fmap-β (fst f) x))
+  snd (Mod-cos-dom {X} {Y} {Z} f h) a = equal (◯-elim-β (λ _ → ◯-is-local) (λ x → η (fst f x)) (str Z a)) (snd f a) (snd h a)
     module Mod-cos-nat where
       equal : {x₁ : ty (Mod-cos X)} {x₂ x₃ : ty X} {y : ty Y}
         (p : x₁ == η x₂) (q : x₂ == x₃) (s : fst h (η x₃) == y) → 
@@ -95,18 +137,8 @@ module _ {ℓ j} (μ : Modality ℓ) (A : Type j) where
         ap (fst h) (p ∙ ap η q) ∙ s
       equal idp idp s = idp
 
-  -- extensional form of `ap Mod-cos-hom`
-  ap-Mod-cos-hom : {X : Coslice ℓ j A} {Y : Coslice ℓ j A} {h₁ h₂ : Mod-cos X *→ Y}
-    → < Mod-cos X > h₁ ∼ h₂ → < X > Mod-cos-hom h₁ ∼ Mod-cos-hom h₂
-  fst (ap-Mod-cos-hom H) x = fst H (η x) 
-  snd (ap-Mod-cos-hom H) a = snd H a
-
-  ap-Mod-cos-hom-id : {X : Coslice ℓ j A} {Y : Coslice ℓ j A}
-    (f : Mod-cos X *→ Y) → < X > ap-Mod-cos-hom (cos∼id f) ∼∼ cos∼id (Mod-cos-hom f)
-  fst (ap-Mod-cos-hom-id f) _ = idp
-  snd (ap-Mod-cos-hom-id f) _ = idp
-
   -- 2-coherence
+  
   module Mod-2coher
     {X : Coslice ℓ j A} {Y : Coslice ℓ j A} {Z : Coslice ℓ j A} {W : Coslice ℓ j A}
     (f₂ : Z *→ X) (f₃ : W *→ Z) (f₁ : Mod-cos X *→ Y) where
@@ -114,12 +146,12 @@ module _ {ℓ j} (μ : Modality ℓ) (A : Type j) where
     abstract
       two-coher-Mod-cos :
         < W >
-          pre-∘*-∼ f₃ (Mod-cos-∘-nat f₂ f₁) ∼∘-cos
-          Mod-cos-∘-nat f₃ (f₁ ∘* Mod-cos-fmap f₂) ∼∘-cos
+          pre-∘*-∼ f₃ (Mod-cos-dom f₂ f₁) ∼∘-cos
+          Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂) ∼∘-cos
           ap-Mod-cos-hom (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))
         ∼∼
           *→-assoc (Mod-cos-hom f₁) f₂ f₃ ∼∘-cos
-          Mod-cos-∘-nat (f₂ ∘* f₃) f₁ ∼∘-cos
+          Mod-cos-dom (f₂ ∘* f₃) f₁ ∼∘-cos
           ap-Mod-cos-hom (post-∘*-∼ f₁ (Mod-cos-fmap-∘ f₂ f₃))
       two-coher-Mod-cos =
         (λ x → ! (ap (λ p →
@@ -255,3 +287,43 @@ module _ {ℓ j} (μ : Modality ℓ) (A : Type j) where
     (f₂ : Z *→ X) (f₃ : W *→ Z) (f₁ : Mod-cos X *→ Y) where
 
     open Mod-2coher f₂ f₃ f₁
+
+    abstract
+      Mod-cos-is-2-coher :
+        ap (λ m → m ∘* f₃) (UndFun∼-to-== (Mod-cos-dom f₂ f₁)) ◃∙
+        UndFun∼-to-== (Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂)) ◃∙
+        ap Mod-cos-hom (UndFun∼-to-== (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
+          =ₛ
+        UndFun∼-to-== (*→-assoc (Mod-cos-hom f₁) f₂ f₃) ◃∙
+        UndFun∼-to-== (Mod-cos-dom (f₂ ∘* f₃) f₁) ◃∙
+        ap Mod-cos-hom (ap (λ m → f₁ ∘* m) (UndFun∼-to-== (Mod-cos-fmap-∘ f₂ f₃))) ◃∎
+      Mod-cos-is-2-coher = 
+        ap (λ m → m ∘* f₃) (UndFun∼-to-== (Mod-cos-dom f₂ f₁)) ◃∙
+        UndFun∼-to-== (Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂)) ◃∙
+        ap Mod-cos-hom (UndFun∼-to-== (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
+          =ₛ₁⟨ 2 & 1 & ap-Mod-cos-coh (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃)) ⟩
+        ap (λ m → m ∘* f₃) (UndFun∼-to-== (Mod-cos-dom f₂ f₁)) ◃∙
+        UndFun∼-to-== (Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂)) ◃∙
+        UndFun∼-to-== (ap-Mod-cos-hom (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
+          =ₛ₁⟨ 0 & 1 & whisk-cos-conv-r (Mod-cos-dom f₂ f₁) ⟩
+        UndFun∼-to-== (pre-∘*-∼ f₃ (Mod-cos-dom f₂ f₁)) ◃∙
+        UndFun∼-to-== (Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂)) ◃∙
+        UndFun∼-to-== (ap-Mod-cos-hom (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
+          =ₛ⟨ cos∘-conv-tri ⟩
+        UndFun∼-to-==
+          (pre-∘*-∼ f₃ (Mod-cos-dom f₂ f₁) ∼∘-cos
+          Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂) ∼∘-cos
+          ap-Mod-cos-hom (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
+          =ₛ₁⟨ ap UndFun∼-to-== (∼∼-cos∼-to-== two-coher-Mod-cos) ⟩
+        UndFun∼-to-==
+          (*→-assoc (Mod-cos-hom f₁) f₂ f₃ ∼∘-cos
+          Mod-cos-dom (f₂ ∘* f₃) f₁ ∼∘-cos
+          ap-Mod-cos-hom (post-∘*-∼ f₁ (Mod-cos-fmap-∘ f₂ f₃))) ◃∎
+          =ₛ⟨ !ₛ cos∘-conv-tri ⟩
+        UndFun∼-to-== (*→-assoc (Mod-cos-hom f₁) f₂ f₃) ◃∙
+        UndFun∼-to-== (Mod-cos-dom (f₂ ∘* f₃) f₁) ◃∙
+        UndFun∼-to-== (ap-Mod-cos-hom (post-∘*-∼ f₁ (Mod-cos-fmap-∘ f₂ f₃))) ◃∎
+          =ₛ₁⟨ 2 & 1 & ! (ap (ap Mod-cos-hom) (whisk-cos-conv-l (Mod-cos-fmap-∘ f₂ f₃)) ∙ ap-Mod-cos-coh _) ⟩
+        UndFun∼-to-== (*→-assoc (Mod-cos-hom f₁) f₂ f₃) ◃∙
+        UndFun∼-to-== (Mod-cos-dom (f₂ ∘* f₃) f₁) ◃∙
+        ap Mod-cos-hom (ap (λ m → f₁ ∘* m) (UndFun∼-to-== (Mod-cos-fmap-∘ f₂ f₃))) ◃∎ ∎ₛ
