@@ -110,6 +110,26 @@ triangle-wc C = {a b c : ob C} (g : hom C b c) (f : hom C a b)  →
 triangle-wc-ty : ∀ {i} → triangle-wc (Type-wc i)
 triangle-wc-ty _ _ = idp
 
+module _ {i j} {C : WildCat {i} {j}} (trig : triangle-wc C)
+  {a b c : ob C} (g : hom C b c) (f : hom C a b) where
+
+  abstract
+
+    triangle-wc◃ :
+      ap (λ m → ⟦ C ⟧ m ◻ f) (ρ C g) ◃∙
+      α C g (id₁ C b) f ◃∎
+        =ₛ
+      ap (λ m → ⟦ C ⟧ g ◻ m) (lamb C f) ◃∎
+    triangle-wc◃ = =ₛ-in (trig g f)
+
+    triangle-wc-rot1 :
+      ap (λ m → ⟦ C ⟧ m ◻ f) (ρ C g) ◃∙
+      α C g (id₁ C b) f ◃∙
+      ! (ap (λ m → ⟦ C ⟧ g ◻ m) (lamb C f)) ◃∎
+        =ₛ
+      []
+    triangle-wc-rot1 = post-rotate'-in triangle-wc◃
+
 -- pentagon identity
 
 pentagon-wc : ∀ {i j} (C : WildCat {i} {j}) → Type (lmax i j)

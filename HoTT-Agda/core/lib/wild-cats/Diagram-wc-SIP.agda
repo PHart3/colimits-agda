@@ -17,7 +17,7 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
 
   -- SIP for diagrams valued in an arbitrary wild category
   
-  module _ {ℓ₁ ℓ₂ ℓ} {C : WildCat {ℓ₁} {ℓ₂}}
+  module SIP-Diag {ℓ₁ ℓ₂ ℓ} {C : WildCat {ℓ₁} {ℓ₂}}
   
     -- we assume a notion of univalent equivalence in C
     (P : ∀ {a b} (f : hom C a b) → Type ℓ) (id₁-eqv : ∀ a → P (id₁ C a))

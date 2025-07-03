@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.SIP
 open import lib.Equivalence2
 open import lib.types.Sigma
 open import lib.types.Graph
@@ -64,6 +65,25 @@ module _ {i j} {C : WildCat {i} {j}} {ℓv ℓe} {G : Graph ℓv ℓe} where
         fst (eqv-pres-colim e) cl = λ b → ∼-preserves-equiv coc-wc-tri (cl b ∘ise snd (hom-dom-eqv C e))
         snd (eqv-pres-colim e) cl = λ b → 3-for-2-e (post-cmp-coc K₂ _) coc-wc-tri (snd (hom-dom-eqv C e)) (cl b)
 
-  module _ {Δ₁ Δ₂ : Diagram G C} (μ : Map-diag Δ₂ Δ₁) {a : ob C} (K : Cocone-wc Δ₁ a) where
+  -- univalent equivalences of diagrams preserve colimiting cocones in wild bicats
+  module Col-Dmap 
+    -- we assume a notion of univalent equivalence in C
+    {ℓ} (P : ∀ {a b} (f : hom C a b) → Type ℓ) {id₁-eqv : ∀ a → P (id₁ C a)}
+    (idsys : ∀ a → ID-sys _ (λ b → Σ (hom C a b) P) a (id₁ C a , id₁-eqv a)) where
 
---    colim-act-dmap : is-colim K → 
+    open SIP-Diag {G = G} {C = C} P id₁-eqv idsys
+
+    module _ (trig : triangle-wc C)
+      -- we also assume a standard property of bicategories
+      (trig-ρ : {a b c : ob C} (g : hom C b c) (f : hom C a b) →
+        ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C f) ◃∙
+        ! (α C g f (id₁ C a)) ◃∙
+        ! (ρ C (⟦ C ⟧ g ◻ f)) ◃∎
+          =ₛ
+        []) where
+
+      abstract
+        colim-act-dmap : {Δ₁ Δ₂ : Diagram G C} ((μ , _) : diag-eqv Δ₁ Δ₂)
+          → {a : ob C} (K : Cocone-wc Δ₂ a) → is-colim K → is-colim (act-dmap-coc μ K)
+        colim-act-dmap {Δ₁} = diag-ind (λ Δ₂ (μ , _) → ∀ {a} K → is-colim K → is-colim (act-dmap-coc μ K))
+          λ K cl → λ b → coe (ap is-equiv (λ= (act-dmap-coc-id trig trig-ρ K))) (cl b) 
