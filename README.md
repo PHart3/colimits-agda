@@ -54,7 +54,7 @@ We have successfully tested the following Docker container on Linux but not on o
 
    The build installs Agda 2.6.4 and type checks our whole development.
    The entire build may take over an hour. The type checking of all our
-   Agda code takes about 40 minutes on our host Ubuntu with 16 GB of RAM.
+   Agda code takes about 49 minutes on our host Ubuntu with 16 GB of RAM.
 
 2. Generate HTML files:
 
