@@ -12,7 +12,7 @@ Setup
 -----
 
 The library is compatible with Agda 2.6.3 and 2.6.4.
-To use it, include `hott-core.agda-lib` and `hott-theorems.agda-lib` in your Agda library file (along with the latter's dependencies).
+To use it, include `hott-core.agda-lib` and `hott-theorems.agda-lib` in your Agda libraries file (along with the latter's dependencies).
 
 Agda Options
 ------------
