@@ -50,7 +50,7 @@ colimits. The proof of 2-coherence relies on our work on homogeneous types.
 
 This directory contains a proof that for every modality M : Type -> Type, such as
 truncation, the induced functor on coslices is a 2-coherent left adjoint. This property
-lets us prove that M preserves colimits and construct colimits in the subcategory of
+lets us prove that M preserves colimits and construct colimits in the full subcategory of
 modal types.
 
 Citation
