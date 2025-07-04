@@ -45,22 +45,21 @@ RUN echo "/build/HoTT-Agda/hott-theorems.agda-lib" >> /dist/libraries
 RUN echo "/build/Colimit-code/cos-colim.agda-lib" >> /dist/libraries
 RUN echo "/build/Pullback-stability/stab.agda-lib" >> /dist/libraries
 
-WORKDIR /build/HoTT-Agda
-RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/Susp-colim.agda
-
 WORKDIR /build/Colimit-code
 RUN /dist/agda +RTS -M4.5G -RTS --library-file=/dist/libraries ./Main-Theorem/CosColim-main.agda
 RUN /dist/agda --library-file=/dist/libraries ./Create/Tree-preserve.agda
 RUN /dist/agda --library-file=/dist/libraries ./Create/Tree-reflect.agda
 
-RUN /dist/agda --library-file=/dist/libraries ./Trunc-Cos/TruncAdj.agda
-
 WORKDIR /build/Pullback-stability
 RUN /dist/agda --library-file=/dist/libraries ./Stability-ord.agda
 RUN /dist/agda --library-file=/dist/libraries ./Stability-cos-coc.agda
 
+WORKDIR /build/HoTT-Agda
+RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/Susp-colim.agda
+RUN /dist/agda --library-file=/dist/libraries ./theorems/modality/Mod-colim.agda
+
 ####################################################################################################
-# Execute shell script to create html files for colimit code
+# Execute shell script to create html files
 ####################################################################################################
 
 WORKDIR /build

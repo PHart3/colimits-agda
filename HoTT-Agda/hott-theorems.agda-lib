@@ -1,3 +1,5 @@
 name: hott-theorems-modified
-depend: hott-core-modified
+depend:
+  hott-core-modified
+  cos-colim
 include: theorems

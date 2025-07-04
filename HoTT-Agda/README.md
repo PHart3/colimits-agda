@@ -12,7 +12,7 @@ Setup
 -----
 
 The library is compatible with Agda 2.6.3 and 2.6.4.
-To use it, include `hott-core.agda-lib` and `hott-theorems.agda-lib` to your Agda library file.
+To use it, include `hott-core.agda-lib` and `hott-theorems.agda-lib` in your Agda libraries file (along with the latter's dependencies).
 
 Agda Options
 ------------
@@ -46,8 +46,17 @@ This directory contains a proof of the 2-coherence of the Suspension-Loop adjunc
 This property of the adjunction lets us prove that the Suspension functor preserves
 colimits. The proof of 2-coherence relies on our work on homogeneous types.
 
+### Modality (directory `theorems/modality/`)
+
+This directory contains a proof that for every modality M : Type -> Type, such as
+truncation, the induced functor on coslices is a 2-coherent left adjoint. This property
+lets us prove that M preserves colimits and construct colimits in the full subcategory of
+modal types.
+
 Citation
 --------
+
+The extension and modification of HoTT-Agda presented here is due to Perry Hart.
 
 We copy here the citation for the original HoTT-Agda library.
 
@@ -70,6 +79,8 @@ We copy here the citation for the original HoTT-Agda library.
 
 Names are roughly sorted by the amount of contributed code, with the founder Guillaume always staying on the
 top.
+
+**If using the version of HoTT-Agda presented in this repo, please cite both the original authors and Perry Hart.**
 
 License
 -------

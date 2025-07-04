@@ -11,6 +11,7 @@ module _ {ℓv ℓe : ULevel} where
 
   record Diagram {ℓc₁ ℓc₂} (G : Graph ℓv ℓe) (C : WildCat {ℓc₁} {ℓc₂}) :
     Type (lmax (lmax ℓv ℓe) (lmax ℓc₁ ℓc₂)) where
+    constructor Δ-wc
     field
       D₀ : Obj G → ob C
       D₁ : {x y : Obj G} (f : Hom G x y) → hom C (D₀ x) (D₀ y)
@@ -50,6 +51,10 @@ module _ {ℓv ℓe : ULevel} where
   open Map-diag-ty
 
   module _ {G : Graph ℓv ℓe} where
+
+    diag-map-id : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} (Δ : Diagram G C) → Map-diag Δ Δ
+    map-comp (diag-map-id {C = C} Δ) i = id₁ C (D₀ Δ i)
+    map-sq (diag-map-id {C = C} Δ) f = ! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f)
 
     infixr 80 _diag-map-∘_
     _diag-map-∘_ : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ₁ Δ₂ Δ₃ : Diagram G C}
@@ -104,9 +109,18 @@ module _ {ℓv ℓe : ULevel} where
     leg (F-coc {Δ = Δ} F K) x = arr F (leg K x)
     tri (F-coc {Δ = Δ} F K) {y = y} f = ! (comp F (D₁ Δ f) (leg K y)) ∙ ap (arr F) (tri K f)
 
+    act-dmap-coc : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ₁ Δ₂ : Diagram G C}
+      (μ : Map-diag Δ₂ Δ₁) {a : ob C} → Cocone-wc Δ₁ a → Cocone-wc Δ₂ a
+    leg (act-dmap-coc {C = C} μ K) x = ⟦ C ⟧ leg K x ◻ map-comp μ x 
+    tri (act-dmap-coc {C = C} {Δ₁} {Δ₂} μ K) {x} {y} f =
+      α C (leg K x) (map-comp μ x) (D₁ Δ₂ f) ∙
+      ap (λ m → ⟦ C ⟧ leg K x ◻ m) (! (map-sq μ f)) ∙
+      ! (α C (leg K x) (D₁ Δ₁ f)  (map-comp μ y)) ∙
+      ap (λ m → ⟦ C ⟧ m ◻ map-comp μ y) (tri K f)
+
     cocone-wc-Σ : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {T : ob C} →
       Cocone-wc Δ T ≃ Σ ((i : Obj G) → hom C (D₀ Δ i) T)
-                     (λ leg → ∀ {x y} (f : Hom G y x) → ⟦ C ⟧ leg x ◻ D₁ Δ f == leg y)
+                        (λ leg → ∀ {x y} (f : Hom G y x) → ⟦ C ⟧ leg x ◻ D₁ Δ f == leg y)
     cocone-wc-Σ =
       equiv (λ (cocone leg tri) → leg , tri) (λ (leg , tri) → cocone leg tri)
         (λ (leg , tri) → idp) λ (cocone leg tri) → idp

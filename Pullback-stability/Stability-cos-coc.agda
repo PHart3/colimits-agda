@@ -5,7 +5,7 @@ open import lib.types.Graph
 open import lib.types.Pushout
 open import lib.types.Colim
 open import lib.wild-cats.WildCats
-open import SIP-Cos
+open import SIP-CosMap
 open import Cos-wc
 open import Diagram-Cos
 open import Cocone-po

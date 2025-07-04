@@ -5,12 +5,15 @@ open import lib.types.Sigma
 
 module lib.SIP where
 
--- Identity system and associated induction principle
+-- identity system and associated induction principle
 
 module _ {i j} (A : Type i) (B : A → Type j) (a : A) (b : B a) where
 
   ID-sys : Type (lmax i j)
   ID-sys = (p : Σ A B) → (a , b) == p
+
+  ID-sys-contr : ID-sys → is-contr (Σ A B)
+  has-level-apply (ID-sys-contr s) = (a , b) , s
 
   module _ {k} (P : (x : A) → (B x → Type k)) where
 
@@ -30,22 +33,27 @@ module _ {i j} (A : Type i) (B : A → Type j) (a : A) (b : B a) where
       ID-sys-ind : has-sec {f = depEval}
       ID-sys-ind = sect (λ z x y → fib-pr-eq x y z) const-dp
 
-module _ {i j k} {A : Type i} {B : A → Type j} {a : A} {b : B a} (P : (x : A) → (B x → Type k)) where
+module _ {i j} {A : Type i} {B : A → Type j} {a : A} {b : B a} where
 
-  ID-ind : ID-sys A B a b → has-sec {f = depEval A B a b P}
-  ID-ind s = ID-sys-ind A B a b P s
+  ID-ind : ∀ {k} (P : (x : A) → (B x → Type k)) → ID-sys A B a b → has-sec {f = depEval A B a b P}
+  ID-ind P s = ID-sys-ind A B a b P s
 
-  module _ (σ : is-contr (Σ A B)) where
+  tot-cent-idsys : is-contr (Σ A B) → ID-sys A B a b
+  tot-cent-idsys σ r = ! (contr-path σ (a , b)) ∙ contr-path σ r
 
-    private
-      tot-cent : ID-sys A B a b
-      tot-cent r = ! (contr-path σ (a , b)) ∙ contr-path σ r
+  module _ {k} (P : (x : A) → (B x → Type k)) (σ : is-contr (Σ A B)) where
 
     ID-ind-map : P a b → {x : A} (d : B x) → P x d
-    ID-ind-map r {a} p = ind (ID-ind tot-cent) r a p
+    ID-ind-map r {a} p = ind (ID-ind P (tot-cent-idsys σ)) r a p
 
     ID-ind-map-β : (r : P a b) → ID-ind-map r b == r 
-    ID-ind-map-β r = ind-eq (ID-ind tot-cent) r
+    ID-ind-map-β r = ind-eq (ID-ind P (tot-cent-idsys σ)) r
+
+-- another form of univalence
+module _ {i} {A : Type i} where
+
+  ≃-tot-contr : is-contr (Σ (Type i) (λ B → A ≃ B))
+  ≃-tot-contr = equiv-preserves-level (Σ-emap-r (λ B → ua-equiv ⁻¹)) {{pathfrom-is-contr A}}
 
 -- induction principle arising from funext
 

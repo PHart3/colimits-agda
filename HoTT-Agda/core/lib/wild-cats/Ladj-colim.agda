@@ -215,7 +215,7 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
         ap (<– adj₀) (nat-dom adj (⟦ C ⟧ leg K j ◻ D₁ Δ f) h) ◃∙
         <–-inv-l adj₀ (⟦ D ⟧ h ◻ arr L (⟦ C ⟧ leg K j ◻ D₁ Δ f)) ◃∙
         ap (λ m → ⟦ D ⟧ h ◻ arr L m) (tri K f) ◃∎
-          =ₛ⟨ 1 & 6 & !ₛ (2coher-other adj κ h (leg K j) (D₁ Δ f)) ⟩
+          =ₛ⟨ 1 & 6 & !ₛ (2coher-rot2 adj h (leg K j) (D₁ Δ f) κ) ⟩
         ap (λ m → ⟦ D ⟧ m ◻ arr L (D₁ Δ f)) (leg-eq j) ◃∙
         α D h (arr L (leg K j)) (arr L (D₁ Δ f)) ◃∙
         ap (λ m → ⟦ D ⟧ h ◻ m) (! (comp L (D₁ Δ f) (leg K j))) ◃∙

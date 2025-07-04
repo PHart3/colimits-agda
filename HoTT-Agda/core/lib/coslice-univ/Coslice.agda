@@ -50,7 +50,7 @@ module MapsCos {j} (A : Type j) where
   < X > h ∼ g = [ A , X ] h ∼ g 
 
   id-cos : ∀ {i} {X : Coslice i j A} → X *→ X
-  id-cos {X = X} = (idf (ty X)) , (λ _ → idp)
+  id-cos {X = X} = idf (ty X) , (λ _ → idp)
 
   *→-assoc : ∀ {i k l ℓ} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A}
     {W : Coslice ℓ j A} (h₃ : Z *→ W) (h₂ : Y *→ Z) (h₁ : X *→ Y) →

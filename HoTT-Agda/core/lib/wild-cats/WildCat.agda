@@ -38,6 +38,15 @@ record Functor-wc {i₁ j₁ i₂ j₂} (B : WildCat {i₁} {j₁}) (C : WildCat
     comp : {a b c : ob B} (f : hom B a b) (g : hom B b c) → arr (⟦ B ⟧ g ◻ f) == ⟦ C ⟧ arr g ◻ arr f
 open Functor-wc public
 
+module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B : WildCat {i₁} {j₁}} {C : WildCat {i₂} {j₂}} {D : WildCat {i₃} {j₃}}  where
+
+  infixr 60 _∘WC_
+  _∘WC_ : (φ₂ : Functor-wc C D) (φ₁ : Functor-wc B C) → Functor-wc B D
+  obj (φ₂ ∘WC φ₁) = obj φ₂ ∘ obj φ₁
+  arr (φ₂ ∘WC φ₁) = arr φ₂ ∘ arr φ₁
+  id (φ₂ ∘WC φ₁) x = ap (arr φ₂) (id φ₁ x) ∙ id φ₂ (obj φ₁ x)
+  comp (φ₂ ∘WC φ₁) f g = ap (arr φ₂) (comp φ₁ f g) ∙ comp φ₂ (arr φ₁ f) (arr φ₁ g)
+
 module _ {i j} (C : WildCat {i} {j}) where
 
   -- (non-coherent) equivalences
@@ -109,6 +118,26 @@ triangle-wc C = {a b c : ob C} (g : hom C b c) (f : hom C a b)  →
 
 triangle-wc-ty : ∀ {i} → triangle-wc (Type-wc i)
 triangle-wc-ty _ _ = idp
+
+module _ {i j} {C : WildCat {i} {j}} (trig : triangle-wc C)
+  {a b c : ob C} (g : hom C b c) (f : hom C a b) where
+
+  abstract
+
+    triangle-wc◃ :
+      ap (λ m → ⟦ C ⟧ m ◻ f) (ρ C g) ◃∙
+      α C g (id₁ C b) f ◃∎
+        =ₛ
+      ap (λ m → ⟦ C ⟧ g ◻ m) (lamb C f) ◃∎
+    triangle-wc◃ = =ₛ-in (trig g f)
+
+    triangle-wc-rot1 :
+      ap (λ m → ⟦ C ⟧ m ◻ f) (ρ C g) ◃∙
+      α C g (id₁ C b) f ◃∙
+      ! (ap (λ m → ⟦ C ⟧ g ◻ m) (lamb C f)) ◃∎
+        =ₛ
+      []
+    triangle-wc-rot1 = post-rotate'-in triangle-wc◃
 
 -- pentagon identity
 

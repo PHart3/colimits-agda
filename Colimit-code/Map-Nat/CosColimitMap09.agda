@@ -8,7 +8,7 @@ open import lib.types.Colim
 open import Cocone-po
 open import AuxPaths
 open import Helper-paths
-open import SIP-Cos
+open import SIP-CosCoc
 open import CosColimitMap00
 open import CosColimitMap04
 

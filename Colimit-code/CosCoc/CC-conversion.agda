@@ -7,7 +7,6 @@ open import lib.wild-cats.Cocone-wc-SIP
 open import Diagram-Cos
 open import Coslice
 open import Cos-wc
-open import SIP-Cos
 open import CosMap-conv
 
 module CC-conversion where 

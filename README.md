@@ -1,7 +1,10 @@
 ## Overview
 
-  This Agda code accompanies both our CSL 2025 paper [Coslice Colimits in Homotopy Type Theory](https://doi.org/10.4230/LIPIcs.CSL.2025.46)
-  and our associated [arXiv article](https://doi.org/10.48550/arXiv.2411.15103).
+  This Agda code accompanies the following written materials by Perry Hart and Favonia:
+  - the CSL 2025 paper [Coslice Colimits in Homotopy Type Theory](https://doi.org/10.4230/LIPIcs.CSL.2025.46)
+  - the associated [arXiv article](https://doi.org/10.48550/arXiv.2411.15103)
+  - the HoTT/UF 2025 extended abstract
+    [A note on left adjoints preserving colimits in HoTT](https://hott-uf.github.io/2025/abstracts/HoTTUF_2025_paper_9.pdf)
   
   It has been checked with Agda 2.6.3 and 2.6.4.
 
@@ -15,6 +18,7 @@
   In addition, it includes wild category theory, centered on (co)limits and 2-coherent left adjoints. We prove that such adjoints
   preserve colimits (over graphs). Moreover, we prove that the Suspension functor is a 2-coherent left adjoint to Loop-space, for
   which we develop some new properties of homogeneous types. As a result, we get a formal proof that Suspension preserves colimits.
+  We also prove that modalities, viewed as functors on coslices of Type, are 2-coherent left adjoints, hence preserve colimits.
 
   See `HoTT-Agda/README.md` for the license of the work inside this directory.
 
@@ -50,16 +54,18 @@ We have successfully tested the following Docker container on Linux but not on o
 
    The build installs Agda 2.6.4 and type checks our whole development.
    The entire build may take over an hour. The type checking of all our
-   Agda code takes about 40 minutes on our host Ubuntu with 16 GB of RAM.
+   Agda code takes about 49 minutes on our host Ubuntu with 16 GB of RAM.
 
 2. Generate HTML files:
 
    ```bash
-   mkdir -p ./html
-   docker run --mount type=bind,source=./html,target=/build/Colimit-code/html colimit
+   mkdir -p ./html1 ./html2
+   docker run --mount type=bind,source=./html1,target=/build/Colimit-code/html \
+     --mount type=bind,source=./html2,target=/build/HoTT-Agda/html \
+     colimit
    ```
 
-   The HTML files will be under `html`.
+   The HTML files will be under `html1/` and `html2/`.
 
 ## Acknowledgement
 

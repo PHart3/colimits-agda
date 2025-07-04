@@ -3,7 +3,7 @@
 open import lib.Basics
 open import lib.wild-cats.WildCats
 open import lib.wild-cats.Cocone-wc-SIP
-open import SIP-Cos
+open import SIP-CosMap
 open import CosMap-conv
 
 -- coslice universe as wild category
@@ -27,6 +27,9 @@ module _ {j} (A : Type j) where
 
   iso-cos : ∀ {i} {X Y : ob (Coslice-wc i)} (f : hom (Coslice-wc i) X Y) → Type i
   iso-cos f = is-equiv (fst f)
+
+  iso-cos-id : ∀ {i} (X : ob (Coslice-wc i)) → iso-cos (id-cos {X = X})
+  iso-cos-id X = idf-is-equiv (ty X)
 
   -- isomorphism implies equivalence
   iso-to-eqv-cos : ∀ {i} {X Y : ob (Coslice-wc i)} {f : hom (Coslice-wc i) X Y} → iso-cos f → equiv-wc (Coslice-wc i) f

@@ -7,7 +7,7 @@ open import Coslice
 open import Diagram-Cos
 open import Cocone-po
 open import AuxPaths-v2
-open import SIP-Cos
+open import SIP-CosCoc
 open import lib.types.Colim
 open import CC-Equiv-LRL-2
 open import Cocone-switch

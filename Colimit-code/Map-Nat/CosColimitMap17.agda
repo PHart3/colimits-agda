@@ -6,7 +6,7 @@ open import lib.types.Pushout
 open import Coslice
 open import Diagram-Cos
 open import Cocone-po
-open import SIP-Cos
+open import SIP-CosCoc
 open import CosColim-Iso
 open import CC-Equiv-RLR-4
 open import CosColimitMap00
