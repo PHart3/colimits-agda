@@ -8,6 +8,7 @@ open import lib.wild-cats.Ladj-colim
 open import Coslice
 open import Cos-wc
 open import SIP-CosMap
+open import modality.Mod-Cos
 open import modality.Mod-Cos-adj
 
 -- Modality functor preserves colimits over graphs.
@@ -35,3 +36,7 @@ module _ {ℓ j} (μ : Modality ℓ) (A : Type j) where
     trig-ρ-Cos g f = =ₛ-in $
       ∙-unit-r (! (UndFun∼-to-== (*→-assoc g f id-cos))) ∙
       ap ! (ap UndFun∼-to-== (∼∼-cos∼-to-== ((λ _ → idp) , (λ _ → idp))) ∙ UndFun∼-β)
+
+  module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
+
+    open Col-Dmap {C = Coslice-loc-wc μ A} {G = G} (iso-cos A) (id-sys-iso-cos-loc μ A)

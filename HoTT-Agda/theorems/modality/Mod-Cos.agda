@@ -1,10 +1,14 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.SIP
 open import lib.wild-cats.WildCat
+open import lib.types.Sigma
 open import lib.types.Modality
 open import Coslice
+open import Cos-wc
 open import CosMap-conv
+open import Cos-univ
 
 module modality.Mod-Cos where
 
@@ -22,6 +26,34 @@ module _ {ℓ j} (μ : Modality ℓ) (A : Type j) where
   ρ Coslice-loc-wc f = idp
   lamb Coslice-loc-wc f = UndFun∼-to-== (lunit-∘* f)
   α Coslice-loc-wc h g f = UndFun∼-to-== (*→-assoc h g f)
+
+  module _ (X : ob Coslice-loc-wc) where
+
+    contr-iso-cos-loc-aux : is-contr $
+      Σ (Σ (Coslice ℓ j A) (λ Y₀ → Σ (fst X *→ Y₀) (iso-cos A))) (λ (Y₀ , _) → is-local (ty Y₀))
+    contr-iso-cos-loc-aux = 
+      equiv-preserves-level
+        ((Σ-contr-red {A = Σ (Coslice ℓ j A) (λ Y₀ → Σ (fst X *→ Y₀) (iso-cos A))}
+          (contr-iso-cos (fst X)))⁻¹)
+        {{inhab-prop-is-contr (snd X) {{is-local-is-prop}}}}
+
+    abstract
+      contr-iso-cos-loc : is-contr (Σ (ob Coslice-loc-wc) (λ Y → Σ (fst X *→ fst Y) (iso-cos A)))
+      contr-iso-cos-loc = equiv-preserves-level lemma {{contr-iso-cos-loc-aux}}
+        where
+          lemma :
+            Σ (Σ (Coslice ℓ j A) (λ Y₀ → Σ (fst X *→ Y₀) (iso-cos A))) (λ (Y₀ , _) → is-local (ty Y₀))
+              ≃
+            Σ (ob Coslice-loc-wc) (λ Y → Σ (fst X *→ fst Y) (iso-cos A))
+          lemma =
+            equiv
+              (λ ((Y₀ , eqv) , loc) → (Y₀ , loc) , eqv)
+              (λ ((Y₀ , loc) , eqv) → (Y₀ , eqv) , loc)
+              (λ _ → idp)
+              λ _ → idp
+
+    id-sys-iso-cos-loc : ID-sys _ (λ Y → Σ (fst X *→ fst Y) (iso-cos A)) X (id-cos , iso-cos-id A (fst X))
+    id-sys-iso-cos-loc = tot-cent-idsys contr-iso-cos-loc
 
   -- functor on coslices induced by arbitrary modality
 

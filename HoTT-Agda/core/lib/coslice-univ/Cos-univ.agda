@@ -22,20 +22,19 @@ module _ {j ℓ} {A : Type j} (X : Coslice ℓ j A) where
         ≃-tot-contr)⁻¹)
       {{funhom-contr}}
 
-  abstract
-    contr-iso-cos : is-contr (Σ (Coslice ℓ j A) (λ Y → Σ (X *→ Y) (iso-cos A)))
-    contr-iso-cos = equiv-preserves-level lemma {{contr-iso-cos-aux}}
-      where
-        lemma :
-          Σ (Σ (Type ℓ) (λ Y₀ → ty X ≃ Y₀)) (λ (Y₀ , eqv) → Σ (A → Y₀) (λ σ → –> eqv ∘ str X ∼ σ))
-            ≃
-          Σ (Coslice ℓ j A) (λ Y → Σ (X *→ Y) (iso-cos A))
-        lemma =
-          equiv
-            (λ ((Y₀ , eqv) , (σ , τ)) → *[ Y₀ , σ ] , (((–> eqv) , τ) , (snd eqv)) )
-            (λ (*[ Y₀ , σ ] , ((e₁ , τ) , e₂)) → (Y₀ , (e₁ , e₂)) , (σ , τ))
-            (λ _ → idp)
-            λ _ → idp
+  contr-iso-cos : is-contr (Σ (Coslice ℓ j A) (λ Y → Σ (X *→ Y) (iso-cos A)))
+  contr-iso-cos = equiv-preserves-level lemma {{contr-iso-cos-aux}}
+    where
+      lemma :
+        Σ (Σ (Type ℓ) (λ Y₀ → ty X ≃ Y₀)) (λ (Y₀ , eqv) → Σ (A → Y₀) (λ σ → –> eqv ∘ str X ∼ σ))
+          ≃
+        Σ (Coslice ℓ j A) (λ Y → Σ (X *→ Y) (iso-cos A))
+      lemma =
+        equiv
+          (λ ((Y₀ , eqv) , (σ , τ)) → *[ Y₀ , σ ] , (((–> eqv) , τ) , (snd eqv)) )
+          (λ (*[ Y₀ , σ ] , ((e₁ , τ) , e₂)) → (Y₀ , (e₁ , e₂)) , (σ , τ))
+          (λ _ → idp)
+          λ _ → idp
 
   id-sys-iso-cos : ID-sys _ (λ Y → Σ (X *→ Y) (iso-cos A)) X (id-cos , iso-cos-id A X)
   id-sys-iso-cos = tot-cent-idsys contr-iso-cos
