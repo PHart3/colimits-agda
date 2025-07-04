@@ -7,5 +7,5 @@ cd /build/Colimit-code
 
 cd /build/HoTT-Agda
 /dist/agda --html --library-file=/dist/libraries /build/HoTT-Agda/theorems/homotopy/Susp-colim.agda
-/dist/agda --html --library-file=/dist/libraries /build/HoTT-Agda/theorems/modality/Modality-colim.agda
+/dist/agda --html --library-file=/dist/libraries /build/HoTT-Agda/theorems/modality/Mod-colim.agda
 
