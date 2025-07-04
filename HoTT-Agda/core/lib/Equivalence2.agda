@@ -38,8 +38,7 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k}
   post∘-equiv : (C → A) ≃ (C → B)
   post∘-equiv = (_ , post∘-is-equiv (snd e))
 
-is-contr-map : ∀ {i j} {A : Type i} {B : Type j} (f : A → B)
-  → Type (lmax i j)
+is-contr-map : ∀ {i j} {A : Type i} {B : Type j} (f : A → B) → Type (lmax i j)
 is-contr-map {A = A} {B = B} f = (y : B) → is-contr (hfiber f y)
 
 equiv-is-contr-map : ∀ {i j} {A : Type i} {B : Type j} {f : A → B}
@@ -54,12 +53,10 @@ contr-map-is-equiv {f = f} cm = is-eq _
   (λ b → snd (contr-center (cm b)))
   (λ a → ap fst (contr-path (cm (f a)) (a , idp)))
 
-
 fiber=-econv : ∀ {i j} {A : Type i} {B : Type j} {h : A → B} {y : B}
   (r s : Σ A (λ x → h x == y))
   → (r == s) ≃ Σ (fst r == fst s) (λ γ → ap h γ ∙ snd s == snd r)
 fiber=-econv r s = Σ-emap-r (λ γ → !-equiv ∘e (↓-app=cst-econv ⁻¹)) ∘e ((=Σ-econv r s)⁻¹)
-
 
 module _ {i j} {A : Type i} {B : Type j} where
 

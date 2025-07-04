@@ -28,6 +28,9 @@ module _ {j} (A : Type j) where
   iso-cos : ∀ {i} {X Y : ob (Coslice-wc i)} (f : hom (Coslice-wc i) X Y) → Type i
   iso-cos f = is-equiv (fst f)
 
+  iso-cos-id : ∀ {i} (X : ob (Coslice-wc i)) → iso-cos (id-cos {X = X})
+  iso-cos-id X = idf-is-equiv (ty X)
+
   -- isomorphism implies equivalence
   iso-to-eqv-cos : ∀ {i} {X Y : ob (Coslice-wc i)} {f : hom (Coslice-wc i) X Y} → iso-cos f → equiv-wc (Coslice-wc i) f
   fst (iso-to-eqv-cos {X = X} {f = f} iso) = (is-equiv.g iso) , λ a → ap (is-equiv.g iso) (! (snd f a)) ∙ is-equiv.g-f iso (str X a)
