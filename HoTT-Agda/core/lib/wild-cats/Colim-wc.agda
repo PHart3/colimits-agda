@@ -71,7 +71,7 @@ module _ {i j} {C : WildCat {i} {j}} {ℓv ℓe} {G : Graph ℓv ℓe} where
     {ℓ} (P : ∀ {a b} (f : hom C a b) → Type ℓ) {id₁-eqv : ∀ a → P (id₁ C a)}
     (idsys : ∀ a → ID-sys _ (λ b → Σ (hom C a b) P) a (id₁ C a , id₁-eqv a)) where
 
-    open SIP-Diag {G = G} {C = C} P id₁-eqv idsys
+    open SIP-Diag {G = G} {C = C} P id₁-eqv idsys public
 
     module _ (trig : triangle-wc C)
       -- we also assume a standard property of bicategories

@@ -15,7 +15,7 @@ module modality.Mod-Cos-adj where
 
 module Mod-Adj {ℓ j} (μ : Modality ℓ) (A : Type j) where
 
-  open Modality μ
+  open Modality μ public
   open MapsCos A
 
   Mod-cos-fctr : Functor-wc (Coslice-wc A ℓ) (Coslice-loc-wc μ A)
