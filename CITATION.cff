@@ -18,7 +18,4 @@ authors:
     family-names: Hou (Favonia)
     affiliation: 'University of Minnesota, Twin Cities'
     orcid: 'https://orcid.org/0000-0002-2310-3673'
-identifiers:
-  - type: url
-    value: 'https://github.com/PHart3/colimits-agda'
-    description: The URL of the current main branch
+repository-code: 'https://github.com/PHart3/colimits-agda'
