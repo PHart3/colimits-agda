@@ -2,11 +2,15 @@ Homotopy Type Theory in Agda
 ============================
 
 This directory contains a heavily stripped-down version of Andrew Swan's [branch](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) of the
-HoTT-Agda library. It also contains a bunch of additional auxiliary lemmas, which arose
-during our development of coslice colimits. Finally, it contains a verification of the
-2-coherence of the Suspension-Loop adjunction, which itself relies on a bunch of new auxiliary
-lemmas. We prove that Suspension preserves colimits as a corollary. The structure of the
-source code is described below.
+HoTT-Agda library as well as a bunch of additional auxiliary lemmas, which arose during
+our development of coslice colimits. Also, it contains a formal proof of the 2-coherence
+of the Suspension-Loop adjunction, which itself relies on a bunch of new auxiliary lemmas.
+We prove that Suspension preserves graph-indexed colimits as a corollary. Finally, it contains
+a formal proof of the 2-coherence of modality functors on coslices of Type and, as a corollary,
+that they preserve graph-indexed colimits. As a consequence, we formally derive the construction
+of such colimits in the full subcategory of modal types.
+
+The structure of the source code is described below.
 
 Setup
 -----
