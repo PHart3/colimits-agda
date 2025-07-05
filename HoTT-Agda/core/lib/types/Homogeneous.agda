@@ -6,9 +6,9 @@ open import lib.types.LoopSpace
 open import lib.types.Paths
 open import lib.types.Sigma
 
-module lib.types.Homogeneous where
+-- strongly homogeneous types
 
--- homogeneous types satisfying a coherence condition at the basepoint
+module lib.types.Homogeneous where
 
 module _ {i} {X : Type i} where
 
@@ -18,13 +18,23 @@ module _ {i} {X : Type i} where
       constructor homog
       field
         auto : (y : X) → ⊙[ X , x ] ⊙≃ ⊙[ X , y ]
+
+    record str-homog : Type i where
+      constructor sthomog
+      field
+        auto : (y : X) → ⊙[ X , x ] ⊙≃ ⊙[ X , y ]
         homog-idf : fst (auto x) == ⊙idf ⊙[ X , x ]
-    open homogeneous public
+    open str-homog
 
-    homog-⊙Ω≃ : (y : X) → homogeneous → ⊙Ω ⊙[ X , x ] ⊙≃ ⊙Ω ⊙[ X , y ]
-    homog-⊙Ω≃ y (homog auto _) = ⊙Ω-emap (auto y)
+    -- every homogeneous structure can be promoted to a strongly homogenous one
+    homog-to-strhomog : homogeneous → str-homog
+    auto (homog-to-strhomog (homog self)) y = self y ⊙∘e (self x) ⊙⁻¹
+    homog-idf (homog-to-strhomog (homog self)) = ⊙λ= (⊙<–-inv-r (self x)) 
 
-    homog-Ω≃ : (y : X) → homogeneous → (x == x) ≃ (y == y)
+    homog-⊙Ω≃ : (y : X) → str-homog → ⊙Ω ⊙[ X , x ] ⊙≃ ⊙Ω ⊙[ X , y ]
+    homog-⊙Ω≃ y (sthomog auto _) = ⊙Ω-emap (auto y)
+
+    homog-Ω≃ : (y : X) → str-homog → (x == x) ≃ (y == y)
     homog-Ω≃ y η = ⊙≃-to-≃ (homog-⊙Ω≃ y η)
 
   {-
@@ -38,12 +48,12 @@ module _ {i} {X : Type i} where
     fst ⊙∼-eval = λ H → H z
     snd ⊙∼-eval = idp
 
-    ⊙∼-eval-sect : homogeneous (f z) → has-sect⊙ ⊙∼-eval
+    ⊙∼-eval-sect : str-homog (f z) → has-sect⊙ ⊙∼-eval
     fst (has-sect⊙.r-inv (⊙∼-eval-sect η)) p = λ x₁ → –>(homog-Ω≃ (f z) (f x₁) η) p
-    snd (has-sect⊙.r-inv (⊙∼-eval-sect (homog auto _))) =
+    snd (has-sect⊙.r-inv (⊙∼-eval-sect (sthomog auto _))) =
       λ= λ x → Ω-fmap-β∙ (fst (auto (f x))) idp ∙
         !-inv-l (snd (fst (auto (f x))))
-    has-sect⊙.sect⊙-eq (⊙∼-eval-sect (homog auto homog-idf)) =
+    has-sect⊙.sect⊙-eq (⊙∼-eval-sect (sthomog auto homog-idf)) =
       ⊙λ= (comp-to-⊙
         ((λ x → app= (ap (fst ∘ ⊙Ω-fmap) homog-idf ∙ ap fst ⊙Ω-fmap-idf) x) ,
         ↯ pathseq))
@@ -107,10 +117,10 @@ module _ {i} {X : Type i} where
             =⟪ lemma homog-idf ⟫
           idp ∎∎
 
-    ⊙∼-evalΩ-sect : homogeneous (f z) → has-sect⊙ (⊙Ω-fmap ⊙∼-eval)
+    ⊙∼-evalΩ-sect : str-homog (f z) → has-sect⊙ (⊙Ω-fmap ⊙∼-eval)
     ⊙∼-evalΩ-sect η = ⊙Ω-sect (⊙∼-eval) (⊙∼-eval-sect η)
 
-    module _ (η : homogeneous (f z)) where
+    module _ (η : str-homog (f z)) where
 
       open has-sect⊙
 
@@ -170,26 +180,28 @@ module _ {i} {X : Type i} where
                  (ap λ= (λ= K)))) ⟩
          H₁ₚ ◃∎ ∎ₛ
 
--- All loop spaces are strongly homogeneous.
+-- All loop spaces are strongly strongly homogeneous.
 
 module _ {i} {X : Type i} {x : X} where
 
   module _ {p : x == x} where
 
+    open homogeneous
+    
     loop-homog : homogeneous p
-    fst (fst (auto loop-homog q)) = λ ℓ → ℓ ∙ ! p ∙ q
-    snd (fst (auto loop-homog q)) =
-      ! (∙-assoc p (! p) q) ∙ ap (λ c → c ∙ q) (!-inv-r p)
+    fst (fst (auto loop-homog q)) ℓ = ℓ ∙ ! p ∙ q
+    snd (fst (auto loop-homog q)) = ! (∙-assoc p (! p) q) ∙ ap (λ c → c ∙ q) (!-inv-r p)
     snd (auto loop-homog q) = post∙-is-equiv (! p ∙ q)
-    homog-idf loop-homog =
-      ⊙λ= (comp-to-⊙ ((λ x₁ → ap (λ c → x₁ ∙ c) (!-inv-l p) ∙ ∙-unit-r x₁) ,
-        !-inv-l-r-unit-assoc p))
+
+    loop-homog-str : str-homog p
+    loop-homog-str = homog-to-strhomog p loop-homog
 
   ∼⊙Ωhomog∼ : ∀ {j} {Z : Ptd j} {p : x == x}
     {f g : Z ⊙→ ⊙[ x == x , p ]}
     {H₁ H₂ : fst f ∼ fst g}
     {H₁ₚ : ! (H₁ (pt Z)) ∙ snd f == snd g}
     {H₂ₚ : ! (H₂ (pt Z)) ∙ snd f == snd g}
-    →  H₁ ∼ H₂ → (H₁ , H₁ₚ) ⊙→∼ (H₂ , H₂ₚ)
-  ∼⊙Ωhomog∼ {Z = Z} {p} {f} K = ∼⊙homog∼ (loop-homog {p = fst f (pt Z)}) p K
+    → H₁ ∼ H₂ → (H₁ , H₁ₚ) ⊙→∼ (H₂ , H₂ₚ)
+  ∼⊙Ωhomog∼ {Z = Z} {p} {f} K = ∼⊙homog∼ (loop-homog-str {p = fst f (pt Z)}) p K
 
+open str-homog public
