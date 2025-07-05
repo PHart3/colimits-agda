@@ -7,8 +7,7 @@
 \#*
 
 # Ignore Agda-generated files
-html1/
-html2/
+html*
 
 # Ignore build output
 _build/
