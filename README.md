@@ -20,7 +20,9 @@
   which we develop some new properties of homogeneous types. As a result, we get a formal proof that Suspension preserves colimits.
   We also prove that modalities, viewed as functors on coslices of Type, are 2-coherent left adjoints, hence preserve colimits.
 
-  See `HoTT-Agda/README.md` for the license of the work inside this directory.
+  See `HoTT-Agda/README.md`
+  for details and for the license of the work inside this
+  directory.
 
 - `Colimit-code/`
 
