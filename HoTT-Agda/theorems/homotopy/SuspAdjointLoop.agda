@@ -202,8 +202,7 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
 
   module _ (r₀ : Susp (de⊙ Y) → de⊙ U) (h₀ : de⊙ X → de⊙ Y) where
 
-    nat-dom-aux-r : {v : Susp (de⊙ Y)} (τ : left unit == v)
-      →
+    nat-dom-aux-r : {v : Susp (de⊙ Y)} (τ : left unit == v) →
       ! (ap-∙ r₀ τ (! τ) ∙
         (ap-!-inv r₀ τ ∙ ! (cmp-inv-r (glue (pt X)))) ∙
         ! (ap (λ p → p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X))))
@@ -215,8 +214,7 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
     nat-dom-aux-r idp = ap-!-∘-∙-rid-coher r₀ (Susp-fmap h₀) (glue (pt X))
 
     nat-dom-aux-l2 : {v : Susp-fmap h₀ (left unit) == Susp-fmap h₀ (right unit)}
-      (τ : ap (Susp-fmap h₀) (glue (pt X)) == v)
-      →
+      (τ : ap (Susp-fmap h₀) (glue (pt X)) == v) →
       ! (ap (_∙_ (ap r₀ v)) (ap (λ p → ap r₀ (! p)) τ)) ∙
       ! (ap (_∙_ (ap r₀ v)) (ap-∘ r₀ (Susp-fmap h₀) (! (glue (pt X))) ∙
         ap (ap r₀) (ap-! (Susp-fmap h₀) (glue (pt X))))) ∙
@@ -250,7 +248,7 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
     ! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue x) (! (glue (pt X)))) ◃∎
   snd (nat-dom-cmp (h₀ , idp) (r₀ , idp)) =
     ap (λ p → ! (ap-∙ r₀ (glue (h₀ (pt X))) (! (glue (h₀ (pt X)))) ∙ p) ∙
-      ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp)
+        ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp)
       (assoc-4-∙
         (! (ap (_∙_ (ap r₀ (glue (h₀ (pt X))))) (ap (λ p → ap r₀ (! p)) (SuspFmap.merid-β h₀ (pt X)))))
         (! (ap (_∙_ (ap r₀ (glue (h₀ (pt X))))) (ap-∘ r₀ (Susp-fmap h₀) (! (glue (pt X))) ∙
@@ -258,10 +256,12 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
         (! (ap (λ p → ap r₀ p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (SuspFmap.merid-β h₀ (pt X))))
         (! (ap (λ p → p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (ap-∘ r₀ (Susp-fmap h₀) (glue (pt X)))))
         (! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue (pt X)) (! (glue (pt X)))))) ∙
-    ap (λ p → ! (ap-∙ r₀ (glue (h₀ (pt X))) (! (glue (h₀ (pt X)))) ∙ p ∙
-      ! (ap (λ p → p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (ap-∘ r₀ (Susp-fmap h₀) (glue (pt X)))) ∙
-      ! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue (pt X)) (! (glue (pt X))))) ∙
-        ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp) (nat-dom-aux-l r₀ h₀) ∙
+    ap (λ p →
+      ! (ap-∙ r₀ (glue (h₀ (pt X))) (! (glue (h₀ (pt X)))) ∙ p ∙
+        ! (ap (λ p → p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (ap-∘ r₀ (Susp-fmap h₀) (glue (pt X)))) ∙
+        ! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue (pt X)) (! (glue (pt X))))) ∙
+        ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp)
+      (nat-dom-aux-l r₀ h₀) ∙
     nat-dom-aux-r r₀ h₀ ((glue (h₀ (pt X))))
 
 -- adjunction with nat-dom replaced by explicit version
