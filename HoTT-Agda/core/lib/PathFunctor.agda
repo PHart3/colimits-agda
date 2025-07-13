@@ -217,7 +217,7 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   inv-canc-cmp idp idp idp = idp
 
   ap-!-∘-rid-coher : {x y : A} (p : x == y) →
-    ! (ap (λ q → (ap g (ap f p)) ∙ q) (ap-∘ (! p) ∙ ap (ap g) (ap-! f p))) ∙ idp
+    ! (ap (λ q → ap g (ap f p) ∙ q) (ap-∘ (! p) ∙ ap (ap g) (ap-! f p))) ∙ idp
       ==
     ap-!-inv g (ap f p) ∙ ! (cmp-inv-r p)
   ap-!-∘-rid-coher idp = idp
