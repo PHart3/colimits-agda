@@ -180,7 +180,7 @@ module _ {i} {X : Type i} where
                  (ap λ= (λ= K)))) ⟩
          H₁ₚ ◃∎ ∎ₛ
 
--- All loop spaces are strongly strongly homogeneous.
+-- All loop spaces are strongly homogeneous.
 
 module _ {i} {X : Type i} {x : X} where
 
