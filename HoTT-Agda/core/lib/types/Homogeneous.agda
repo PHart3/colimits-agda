@@ -81,13 +81,14 @@ module _ {i} {X : Type i} where
             !-inv-l (snd (fst (auto (f x)))))) ∙ idp
             =⟪ ap (λ p → ! p ∙ ap (λ H → H z)
                    (λ= (λ x → Ω-fmap-β∙ (fst (auto (f x))) idp ∙
-                   !-inv-l (snd (fst (auto (f x)))))) ∙ idp) (
-                 ap-∙ (λ u → u idp) (ap (fst ∘ ⊙Ω-fmap) homog-idf)
-                   (ap fst (pair= (λ= ap-idf) _))) ⟫
+                   !-inv-l (snd (fst (auto (f x)))))) ∙ idp)
+                 (ap-∙ (λ u → u idp)
+                   (ap (fst ∘ ⊙Ω-fmap) homog-idf) (ap fst (pair= (λ= ap-idf) _))) ⟫
           ! (ap (λ u → u idp) (ap (fst ∘ ⊙Ω-fmap) homog-idf) ∙
             ap (λ u → u idp) (ap fst (pair= (λ= ap-idf) _))) ∙
-          ap (λ H → H z) (λ= (λ x → Ω-fmap-β∙ (fst (auto (f x))) idp ∙
-            !-inv-l (snd (fst (auto (f x)))))) ∙ idp
+          ap (λ H → H z)
+            (λ= (λ x → Ω-fmap-β∙ (fst (auto (f x))) idp ∙
+              !-inv-l (snd (fst (auto (f x)))))) ∙ idp
             =⟪ ap (λ p → ! (ap (λ u → u idp) (ap (fst ∘ ⊙Ω-fmap)
                     homog-idf) ∙ p) ∙ ap (λ H → H z)
                     (λ= (λ x → Ω-fmap-β∙ (fst (auto (f x))) idp ∙
@@ -99,21 +100,17 @@ module _ {i} {X : Type i} where
           ap (λ H → H z) (λ= (λ x → Ω-fmap-β∙ (fst (auto (f x))) idp ∙
             !-inv-l (snd (fst (auto (f x)))))) ∙ idp
           =⟪ ap (λ p → ! (ap (λ u → u idp) (ap (fst ∘ ⊙Ω-fmap)
-               homog-idf) ∙ idp) ∙ p ∙ idp) (
+                 homog-idf) ∙ idp) ∙ p ∙ idp) (
                funext-nat-∼  z (λ x → Ω-fmap-β∙ (fst (auto (f x))) idp ∙
                !-inv-l (snd (fst (auto (f x)))))) ⟫
-          ! (ap (λ u → u idp) (ap (fst ∘ ⊙Ω-fmap)
-            homog-idf) ∙ idp) ∙
+          ! (ap (λ u → u idp) (ap (fst ∘ ⊙Ω-fmap) homog-idf) ∙ idp) ∙
           (Ω-fmap-β∙ (fst (auto (f z))) idp ∙
-            !-inv-l (snd (fst (auto (f z))))) ∙ idp
-            =⟪ ap (λ p → ! (ap (λ u → u idp) (ap (fst ∘ ⊙Ω-fmap)
-               homog-idf) ∙ idp) ∙ p ∙ idp)
-               (! (apd-tr (λ F → Ω-fmap-β∙ F idp ∙ !-inv-l (snd F))
-               (! homog-idf))) ⟫
-          ! (ap (λ u → u idp) (ap (fst ∘ ⊙Ω-fmap)
-            homog-idf) ∙ idp) ∙
-          transport (λ v → Ω-fmap v idp == idp)
-            (! homog-idf) idp ∙ idp
+          !-inv-l (snd (fst (auto (f z))))) ∙ idp
+            =⟪ ap (λ p → ! (ap (λ u → u idp)
+                 (ap (fst ∘ ⊙Ω-fmap) homog-idf) ∙ idp) ∙ p ∙ idp)
+               (! (apd-tr (λ F → Ω-fmap-β∙ F idp ∙ !-inv-l (snd F)) (! homog-idf))) ⟫
+          ! (ap (λ u → u idp) (ap (fst ∘ ⊙Ω-fmap) homog-idf) ∙ idp) ∙
+          transport (λ v → Ω-fmap v idp == idp) (! homog-idf) idp ∙ idp
             =⟪ lemma homog-idf ⟫
           idp ∎∎
 
@@ -131,14 +128,11 @@ module _ {i} {X : Type i} where
         {H₂ₚ : ! (app= H₂ z) ∙ fₚ == gₚ}
         →  H₁ == H₂ → (app= H₁ , H₁ₚ) ⊙→∼◃ (app= H₂ , H₂ₚ)
       fst (∼⊙homog= x {fₚ = idp} {H₁ = idp} {H₁ₚ = H₁ₚ} {H₂ₚ} idp) =
-        λ x₁ → app= (fst (r-inv (⊙∼-evalΩ-sect η))
-          (ap-post∙idp∘!-inv (H₁ₚ ∙ ! (H₂ₚ)))) x₁
-      snd (∼⊙homog= x {fₚ = idp} {H₁ = idp} {H₁ₚ = H₁ₚ} {H₂ₚ} idp) =
-        post↯-rotate-in (=ₛ-in (ap (ap (λ p → ! p ∙ idp))
-        (app= (ap fst (sect⊙-eq (⊙∼-evalΩ-sect η)))
-          (ap-post∙idp∘!-inv (H₁ₚ ∙ ! (H₂ₚ)))) ∙
-        <–-inv-r (ap-equiv (post∙idp∘!-is-equiv) idp idp)
-          (H₁ₚ ∙ ! (H₂ₚ))))
+        app= (fst (r-inv (⊙∼-evalΩ-sect η)) (ap-post∙idp∘!-inv (H₁ₚ ∙ ! (H₂ₚ))))
+      snd (∼⊙homog= x {fₚ = idp} {H₁ = idp} {H₁ₚ = H₁ₚ} {H₂ₚ} idp) = post↯-rotate-in $ =ₛ-in $
+        ap (ap (λ p → ! p ∙ idp))
+          (app= (ap fst (sect⊙-eq (⊙∼-evalΩ-sect η))) (ap-post∙idp∘!-inv (H₁ₚ ∙ ! (H₂ₚ)))) ∙
+        <–-inv-r (ap-equiv (post∙idp∘!-is-equiv) idp idp) (H₁ₚ ∙ ! (H₂ₚ))
 
       ∼⊙homog∼ : (x : X) {g : Z → X}
         {fₚ : f z == x} {gₚ : g z == x}
