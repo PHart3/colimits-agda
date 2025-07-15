@@ -147,7 +147,7 @@ module _ {ℓ j} (μ : Modality ℓ) (A : Type j) where
         (ap (ap Mod-cos-hom) UndFun∼-β ∙
         ! (ap UndFun∼-to-== (∼∼-cos∼-to-== (ap-Mod-cos-hom-id {f = h₁})) ∙ UndFun∼-β))
 
-  -- naturality of hom map in the domain
+  -- naturality of hom map in the codomain
   Mod-cos-cod : {X : Coslice ℓ j A} {Y : Coslice ℓ j A} {Z : Coslice ℓ j A}
     (g : Y *→ Z) (h : Mod-cos X *→ Y)
     → < X > g ∘* Mod-cos-hom h ∼ Mod-cos-hom (g ∘* h)
@@ -210,12 +210,10 @@ module _ {ℓ j} (μ : Modality ℓ) (A : Type j) where
           aux-fun : {x₁ x₂ : ty (Mod-cos X)} {z₁ z₂ : ty (Mod-cos Z)}
             (p₁ : x₁ == x₂) (p₂ : z₁ == z₂) (p₃ : fst (Mod-cos-fmap f₂) z₂ == x₂) → 
             ap (fst f₁) (! p₁) ∙
-            ap (fst f₁)
-              (p₁ ∙ ! (ap (fst (Mod-cos-fmap f₂)) p₂ ∙ p₃))
+            ap (fst f₁) (p₁ ∙ ! (ap (fst (Mod-cos-fmap f₂)) p₂ ∙ p₃))
               ==
             ap (fst f₁) (! p₃) ∙
-            ap (λ z → fst f₁ (◯-fmap (fst f₂) z))
-              (! p₂) ∙ idp
+            ap (λ z → fst f₁ (◯-fmap (fst f₂) z)) (! p₂) ∙ idp
           aux-fun idp idp p₃ = ! (∙-unit-r (ap (fst f₁) (! p₃)))
           
           abstract

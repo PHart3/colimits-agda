@@ -68,7 +68,7 @@ module _ {i} {A : Type i} {x y : A} where
   post∙idp∘!-is-equiv = (post∙-equiv idp) ∘e (!-equiv)
 
   ap-post∙idp∘!-inv : {p₁ p₂ : x == y}
-    → (! p₁ ∙ idp == ! p₂ ∙ idp) → p₁ == p₂
+    → ! p₁ ∙ idp == ! p₂ ∙ idp → p₁ == p₂
   ap-post∙idp∘!-inv {p₁} {p₂} = <– (ap-equiv (post∙idp∘!-is-equiv) p₁ p₂)
 
 module _ {i j} {A : Type i} {B : Type j} {f g : A → B} where
