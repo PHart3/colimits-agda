@@ -10,17 +10,20 @@ open import lib.wild-cats.Cocone-wc-SIP
 open import lib.wild-cats.Ladj-2-coher
 open import lib.wild-cats.Limit
 
+-- proof that 2-coherent left adjoints between wild cats preserve colimits over graphs
+
 module lib.wild-cats.Ladj-colim where
 
 module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {j₂}}
   {ℓv ℓe} {G : Graph ℓv ℓe} {Δ : Diagram G C}
   {L : Functor-wc C D} {R : Functor-wc D C} {adj : Adjunction L R}
-  (κ : ladj-is-2coher adj)
+  (κ : ladj-is-2coher adj)  -- 2-coherence assumption
   {c : ob C} {K : Cocone-wc Δ c} (cl : is-colim K) 
   where
 
   private adj₀ = iso adj
 
+  -- composite isomorphism from hom type to limit
   hom-to-lim : (y : ob D) → hom D (obj L c) y ≃ Cocone-wc (F-diag L Δ) y
   hom-to-lim y = Cocone-adj-eqv ∘e is-colim-≃  K cl (obj R y) ∘e adj₀
     where
@@ -230,6 +233,7 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
 
   open comps-eq
 
+  -- The induced cocone is colimiting because the post-composition map equals the chain of isos.
   abstract
     Ladj-prsrv-clim : is-colim {D = F-diag L Δ} (F-coc L K)
     Ladj-prsrv-clim y = ∼-preserves-equiv {f₀ = –> (hom-to-lim y)}
