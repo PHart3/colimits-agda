@@ -26,9 +26,9 @@
 
 - `Colimit-code/`
 
-  Our formalization of our construction of an A-colimit
-  as well as the fact that the forgetful functor creates
-  tree-indexed colimits.
+  The formalization of our pushout construction of coslice
+  colimits as well as the fact that the forgetful functor
+  creates tree-indexed colimits.
 
   See `Colimit-code/README.md` for details and for the
   license of the work inside this directory.
