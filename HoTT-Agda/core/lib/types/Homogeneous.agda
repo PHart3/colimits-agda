@@ -26,7 +26,7 @@ module _ {i} {X : Type i} where
         homog-idf : fst (auto x) == ⊙idf ⊙[ X , x ]
     open str-homog
 
-    -- every homogeneous structure can be promoted to a strongly homogenous one
+    -- every homogeneous structure can be promoted to a strongly homogeneous one
     homog-to-strhomog : homogeneous → str-homog
     auto (homog-to-strhomog (homog self)) y = self y ⊙∘e (self x) ⊙⁻¹
     homog-idf (homog-to-strhomog (homog self)) = ⊙λ= (⊙<–-inv-r (self x)) 
