@@ -10,7 +10,7 @@ open import lib.types.Homogeneous
 open import homotopy.SuspAdjointLoop
 open import lib.wild-cats.Ladj-2-coher
 
-{- the nat-dom proof makes Susp a 2-coherent left adjoint to Loop -}
+-- Suspension is a 2-coherent left adjoint to Loop.
 
 module homotopy.Susp-2coher where
 
