@@ -50,6 +50,18 @@ module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
     (p : (x : A) → b == c (f x))
     = PushoutRec {d = cofiber-span f} (λ _ → b) c p
 
+  cofib-eqv-contr : is-equiv f → is-contr (Cofiber f)
+  fst (has-level-apply (cofib-eqv-contr eqv)) = cfbase
+  snd (has-level-apply (cofib-eqv-contr eqv)) =
+    let
+      inv = is-equiv.g eqv
+      inv-r = is-equiv.f-g eqv
+      inv-l = is-equiv.g-f eqv
+      inv-adj = is-equiv.adj eqv
+    in
+      PushoutMapEq _ _ (λ _ → idp) (λ b → cfglue (inv b) ∙ ap right (inv-r b))
+        λ a → {!!}
+
 module _ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y) where
 
   ⊙cofiber-span : ⊙Span
