@@ -78,7 +78,7 @@ module _ {ℓv ℓe : ULevel} where
     sq (_tydiag-map-∘_ μ₂ μ₁) {i} {j} f x = sq μ₂ f (comp μ₁ i x) ∙ ap (comp μ₂ j) (sq μ₁ f x)
 
     eqv-dmap-ty : ∀ {ℓ₁ ℓ₂} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)}
-      (μ : Map-diag-ty Δ₁ Δ₂) → Type (lmax ℓv (lmax ℓ₁ ℓ₂))
+      → Map-diag-ty Δ₁ Δ₂ → Type (lmax ℓv (lmax ℓ₁ ℓ₂))
     eqv-dmap-ty μ = (x : Obj G) → is-equiv (comp μ x)
 
     -- cocones under a diagram
@@ -91,7 +91,7 @@ module _ {ℓv ℓe : ULevel} where
     open Cocone-wc public
 
     post-cmp-coc : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diagram G C} {a : ob C}
-      (K : Cocone-wc Δ a) (b : ob C) → hom C a b → Cocone-wc Δ b
+      → Cocone-wc Δ a → (b : ob C) → hom C a b → Cocone-wc Δ b
     leg (post-cmp-coc {C = C} K _ f) x = ⟦ C ⟧ f ◻ leg K x
     tri (post-cmp-coc {C = C} {D} K _ f) {y} {x} γ = α C f (leg K y) (D₁ D γ) ∙ ap (λ m → ⟦ C ⟧ f ◻ m) (tri K γ)
 
