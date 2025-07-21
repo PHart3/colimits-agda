@@ -1,10 +1,11 @@
 ## Overview
 
-  This Agda code accompanies the following written materials by Perry Hart and Favonia:
+  This Agda code accompanies the following written materials:
   - the CSL 2025 paper [Coslice Colimits in Homotopy Type Theory](https://doi.org/10.4230/LIPIcs.CSL.2025.46)
   - the associated [arXiv article](https://doi.org/10.48550/arXiv.2411.15103)
-  - the HoTT/UF 2025 extended abstract
-    [A note on left adjoints preserving colimits in HoTT](https://hott-uf.github.io/2025/abstracts/HoTTUF_2025_paper_9.pdf)
+  - the preprint
+    [On Left Adjoints Preserving Colimits in HoTT](https://phart3.github.io/2coher-preprint.pdf)
+    (based on the [HoTT/UF 2025 extended abstract](https://hott-uf.github.io/2025/abstracts/HoTTUF_2025_paper_9.pdf))
   
   It has been checked with Agda 2.6.3 and 2.6.4.
 
