@@ -17,7 +17,7 @@ creates (i.e., preserves and reflects) tree-indexed colimits.
 
 - The `Cocone-PO/` folder contains the definition of the colimiting pushout together with its A-cocone structure.
 
-  This pushout and its A-cocone structure are described in **Section 5.3** of the (CSL) paper.
+  This pushout and its A-cocone structure are described in **Section 5.3** of the (CSL 2025) paper.
 
 - The two homotopies making up the equivalence in **Theorem 15**
   of the paper are in `L-R-L/` and `R-L-R/`.
