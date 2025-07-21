@@ -70,7 +70,7 @@ record Modality ℓ : Type (lsucc ℓ) where
 
   {- equivalences preserve locality -}
 
-  -- This is the only appearence of univalence, but ...
+  -- This is the only appearance of univalence, but ...
   local-is-replete : {A B : Type ℓ} → is-local A → A ≃ B → is-local B
   local-is-replete w eq = transport is-local (ua eq) w
 

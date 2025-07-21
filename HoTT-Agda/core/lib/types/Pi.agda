@@ -81,7 +81,7 @@ instance
           g-f c = λ= (λ x → <–-inv-l (k x) (c x))
 
 
-{- Coversions between functions with implicit and explicit arguments -}
+{- Conversions between functions with implicit and explicit arguments -}
 
 expose-equiv : ∀ {i j} {A : Type i} {B : A → Type j}
   → ({x : A} → B x) ≃ ((x : A) → B x)
