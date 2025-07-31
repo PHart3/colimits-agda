@@ -86,4 +86,4 @@ module _ {i j} {C : WildCat {i} {j}} {ℓv ℓe} {G : Graph ℓv ℓe} where
         colim-act-dmap : {Δ₁ Δ₂ : Diagram G C} ((μ , _) : diag-eqv Δ₁ Δ₂)
           → {a : ob C} (K : Cocone-wc Δ₂ a) → is-colim K → is-colim (act-dmap-coc μ K)
         colim-act-dmap {Δ₁} = diag-ind (λ Δ₂ (μ , _) → ∀ {a} K → is-colim K → is-colim (act-dmap-coc μ K))
-          λ K cl → λ b → coe (ap is-equiv (λ= (act-dmap-coc-id trig trig-ρ K))) (cl b) 
+          λ K cl → λ b → coe (ap is-equiv (app= (ap post-cmp-coc (act-dmap-coc-id trig trig-ρ K)) b)) (cl b) 

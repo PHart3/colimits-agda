@@ -28,269 +28,60 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
 
     abstract
       act-dmap-coc-id : {a : ob C} {Δ : Diagram G C} (K : Cocone-wc Δ a)
-        → ∀ {b} → post-cmp-coc K b ∼ post-cmp-coc (act-dmap-coc (diag-map-id Δ) K) b
-      act-dmap-coc-id {Δ = Δ} K g = coc-to-==-◃ G ((λ x → ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x))) , λ f → !ₛ (aux f))
+        → K == act-dmap-coc (diag-map-id Δ) K
+      act-dmap-coc-id {Δ = Δ} K = coc-to-==-◃ G ((λ x → ρ C (leg K x)) , λ f → !ₛ (aux f))
         where abstract
           aux : ∀ {x} {y} (f : Hom G x y) →
-            ap (λ m → ⟦ C ⟧ m ◻ D₁ Δ f) (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K y))) ◃∙
-            (α C g (⟦ C ⟧ leg K y ◻ id₁ C (D₀ Δ y)) (D₁ Δ f) ∙
-            ap (λ m → ⟦ C ⟧ g ◻ m)
-              (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f) ∙
-              ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ∙
-              ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ∙
-              ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f))) ◃∎
+            ap (λ m → ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
+            (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f) ∙
+            ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ∙
+            ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ∙
+            ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f)) ◃∎
               =ₛ
-            (α C g (leg K y) (D₁ Δ f) ∙ ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-          aux {x} {y} f = 
-            ap (λ m → ⟦ C ⟧ m ◻ D₁ Δ f) (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K y))) ◃∙
-            (α C g (⟦ C ⟧ leg K y ◻ id₁ C (D₀ Δ y)) (D₁ Δ f) ∙
-            ap (λ m → ⟦ C ⟧ g ◻ m)
-              (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f) ∙
-              ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ∙
-              ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ∙
-              ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f))) ◃∎
-              =ₛ₁⟨ 0 & 1 & ∘-ap (λ m → ⟦ C ⟧ m ◻ D₁ Δ f) (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K y)) ⟩
-            ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            (α C g (⟦ C ⟧ leg K y ◻ id₁ C (D₀ Δ y)) (D₁ Δ f) ∙
-            ap (λ m → ⟦ C ⟧ g ◻ m)
-              (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f) ∙
-              ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ∙
-              ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ∙
-              ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f))) ◃∎
-              =ₑ⟨ 1 & 2 & (α C g (⟦ C ⟧ leg K y ◻ id₁ C (D₀ Δ y)) (D₁ Δ f) ◃∙
-                          ap (λ m → ⟦ C ⟧ g ◻ m)
-                            (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f) ∙
-                            ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ∙
-                            ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ∙
-                            ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f)) ◃∎)
+            tri K f ◃∙
+            ρ C (leg K x) ◃∎
+          aux {x} {y} f =
+            ap (λ m → ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
+            (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f) ∙
+            ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ∙
+            ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ∙
+            ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f)) ◃∎
+              =ₑ⟨ 1 & 1 &
+                (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f) ◃∙
+                ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ◃∙
+                ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ◃∙
+                ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f) ◃∎)
                 % =ₛ-in idp ⟩
-            ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            α C g (⟦ C ⟧ leg K y ◻ id₁ C (D₀ Δ y)) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m)
-              (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f) ∙
-              ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ∙
-              ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ∙
-              ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f)) ◃∎
-              =ₛ⟨ 2 & 1 & ap-seq-∙ (λ m → ⟦ C ⟧ g ◻ m)
-                            (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f) ◃∙
-                            ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ◃∙
-                            ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ◃∙
-                            ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f) ◃∎) ⟩
-            ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            α C g (⟦ C ⟧ leg K y ◻ id₁ C (D₀ Δ y)) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m)
-              (ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f)))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f)) ◃∎
-              =ₛ⟨ 1 & 1 & apCommSq2◃-rev (λ m → α C g m (D₁ Δ f)) (ρ C (leg K y)) ⟩
-            ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ m ◻ D₁ Δ f) (ρ C (leg K y))) ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m)
-              (ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f)))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f)) ◃∎
-              =ₛ₁⟨ 0 & 2 & !-inv-r (ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ m ◻ D₁ Δ f) (ρ C (leg K y))) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m)
-              (ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f)))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f)) ◃∎
-              =ₛ₁⟨ 6 & 1 & ∘-ap (λ m → ⟦ C ⟧ g ◻ m) (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m)
-              (ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f)))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f) ◃∎
-              =ₛ⟨ 6 & 1 & apCommSq◃ (λ m → ap (λ n → ⟦ C ⟧ g ◻ n) (ρ C m)) (tri K f) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m)
-              (ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f)))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ₁⟨ 4 & 1 & ∘-ap (λ m → ⟦ C ⟧ g ◻ m) (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ⟨ 4 & 1 & apCommSq◃ (λ m → α C g (leg K y) m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ! (α C g (leg K y) (⟦ C ⟧ id₁ C (D₀ Δ y) ◻ D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ◃∙
-            α C g (leg K y) (⟦ C ⟧ D₁ Δ f ◻ id₁ C (D₀ Δ x)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ⟨ 6 & 1 & apCommSq2◃-rev (λ m → α C g (leg K y) m) (ρ C (D₁ Δ f)) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ! (α C g (leg K y) (⟦ C ⟧ id₁ C (D₀ Δ y) ◻ D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (ρ C (D₁ Δ f))) ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ⟨ 4 & 1 & hnat-sq-!◃ (λ m → α C g (leg K y) m) (lamb C (D₁ Δ f)) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (lamb C (D₁ Δ f))) ◃∙
-            ! (α C g (leg K y) (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (lamb C (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (ρ C (D₁ Δ f))) ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ⟨ 7 & 1 & ap-!-!-∙◃ (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (ρ C (D₁ Δ f)) (lamb C (D₁ Δ f)) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (lamb C (D₁ Δ f))) ◃∙
-            ! (α C g (leg K y) (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (lamb C (D₁ Δ f)) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (lamb C (D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (ρ C (D₁ Δ f))) ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ₁⟨ 6 & 2 & !-inv-r (ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (lamb C (D₁ Δ f))) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (lamb C (D₁ Δ f))) ◃∙
-            ! (α C g (leg K y) (D₁ Δ f)) ◃∙
-            idp ◃∙
-            ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (ρ C (D₁ Δ f))) ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ₁⟨ 6 & 3 & !-inv-r (ap (λ m → ⟦ C ⟧ ⟦ C ⟧ g ◻ leg K y ◻ m) (ρ C (D₁ Δ f))) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (lamb C (D₁ Δ f))) ◃∙
-            ! (α C g (leg K y) (D₁ Δ f)) ◃∙
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ₁⟨ 5 & 3 & !-inv-l (α C g (leg K y) (D₁ Δ f)) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (lamb C (D₁ Δ f))) ◃∙
-            idp ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ₁⟨ 4 & 1 & ! (∘-ap-! (λ m → ⟦ C ⟧ g ◻ m) (λ m → ⟦ C ⟧ leg K y ◻ m) (lamb C (D₁ Δ f))) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (ap (λ m → ⟦ C ⟧ leg K y ◻ m) (lamb C (D₁ Δ f)))) ◃∙
-            idp ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ₁⟨ 2 & 1 & ap-∘ (λ m → ⟦ C ⟧ g ◻ m) (λ m → ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ap (λ m → ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (ap (λ m → ⟦ C ⟧ leg K y ◻ m) (lamb C (D₁ Δ f)))) ◃∙
-            idp ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ⟨ 2 & 3 & ap-seq-=ₛ (λ m → ⟦ C ⟧ g ◻ m) (triangle-wc-rot1 {C = C} trig (leg K y) (D₁ Δ f)) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            idp ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ₁⟨ 2 & 2 & ap-∘ (λ m → ⟦ C ⟧ g ◻ m) (λ m → ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ap (λ m → ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ! (ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ₁⟨ 4 & 1 & !-ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f)) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ap (λ m → ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x)))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (! (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f))) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ⟨ 2 & 3 & ap-seq-=ₛ (λ m → ⟦ C ⟧ g ◻ m) (trig-ρ (leg K y) (D₁ Δ f)) ⟩
-            idp ◃∙
-            α C g (leg K y) (D₁ Δ f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎
-              =ₛ₁⟨ 0 & 3 & idp ⟩
-            (α C g (leg K y) (D₁ Δ f) ∙ ap (λ m → ⟦ C ⟧ g ◻ m) (tri K f)) ◃∙
-            ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (leg K x)) ◃∎ ∎ₛ
+            ap (λ m → ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
+            α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f) ◃∙
+            ap (λ m → ⟦ C ⟧ leg K y ◻ m) (! (! (ρ C (D₁ Δ f)) ∙ lamb C (D₁ Δ f))) ◃∙
+            ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ◃∙
+            ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f) ◃∎
+              =ₛ⟨ 2 & 1 & ap-!-!-∙◃ (λ m → ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) (lamb C (D₁ Δ f)) ⟩
+            ap (λ m → ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
+            α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f) ◃∙
+            ! (ap (λ m → ⟦ C ⟧ leg K y ◻ m) (lamb C (D₁ Δ f))) ◃∙
+            ap (λ m → ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
+            ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ◃∙
+            ap (λ m → ⟦ C ⟧ m ◻ id₁ C (D₀ Δ x)) (tri K f) ◃∎
+              =ₛ⟨ 5 & 1 & apCommSq◃ (λ m → ρ C m) (tri K f) ⟩
+            ap (λ m → ⟦ C ⟧ m ◻ D₁ Δ f) (ρ C (leg K y)) ◃∙
+            α C (leg K y) (id₁ C (D₀ Δ y)) (D₁ Δ f) ◃∙
+            ! (ap (λ m → ⟦ C ⟧ leg K y ◻ m) (lamb C (D₁ Δ f))) ◃∙
+            ap (λ m → ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
+            ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ◃∙
+            ! (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f)) ◃∙
+            ap (λ m → m) (tri K f) ◃∙
+            ρ C (leg K x) ◃∎
+              =ₛ⟨ 0 & 3 & triangle-wc-rot1 {C = C} trig (leg K y) (D₁ Δ f) ⟩
+            ap (λ m → ⟦ C ⟧ leg K y ◻ m) (ρ C (D₁ Δ f)) ◃∙
+            ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ◃∙
+            ! (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f)) ◃∙
+            ap (λ m → m) (tri K f) ◃∙ ρ C (leg K x) ◃∎
+              =ₛ⟨ 0 & 3 & trig-ρ (leg K y) (D₁ Δ f) ⟩
+            ap (λ m → m) (tri K f) ◃∙ ρ C (leg K x) ◃∎
+              =ₛ₁⟨ 0 & 1 & ap-idf (tri K f) ⟩
+            tri K f ◃∙ ρ C (leg K x) ◃∎ ∎ₛ
 
   -- we assume a standard property of bicategories
   module _ (trig : {a b c : ob C} (g : hom C b c) (f : hom C a b) →
