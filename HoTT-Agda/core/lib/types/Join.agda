@@ -73,5 +73,3 @@ module _ {i j} (X : Ptd i) (Y : Ptd j) where
 
   _⊙*_ : Ptd _
   _⊙*_ = ⊙Pushout ⊙*-span
-
-  -- suspension in terms of join
