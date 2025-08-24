@@ -181,7 +181,7 @@ module _ {i} {X : Type i} {x : X} where
   module _ {p : x == x} where
 
     open homogeneous
-    
+
     loop-homog : homogeneous p
     fst (fst (auto loop-homog q)) ℓ = ℓ ∙ ! p ∙ q
     snd (fst (auto loop-homog q)) = ! (∙-assoc p (! p) q) ∙ ap (λ c → c ∙ q) (!-inv-r p)
@@ -198,4 +198,16 @@ module _ {i} {X : Type i} {x : X} where
     → H₁ ∼ H₂ → (H₁ , H₁ₚ) ⊙→∼ (H₂ , H₂ₚ)
   ∼⊙Ωhomog∼ {Z = Z} {p} {f} K = ∼⊙homog∼ (loop-homog-str {p = fst f (pt Z)}) p K
 
+  -- pointed function type with homogeneous codomain is homogeneous
+  open str-homog
+  ⊙→-homog-cod : ∀ {j} {Y : Ptd j} → str-homog x → str-homog {X = Y ⊙→ ⊙[ X , x ]} ⊙cst
+  fst (auto (⊙→-homog-cod {Y = Y} η) (f , fₚ)) =
+    (λ (g , gₚ) → (λ y → fst (⊙–> (auto η (f y))) (g y)) , ap (fst (⊙–> (auto η (f (pt Y))))) gₚ ∙ snd (⊙–> (auto η (f (pt Y)))) ∙ fₚ) ,
+    ⊙-comp-to-== ((λ z → snd (⊙–> (auto η (f z)))) , (!-inv-l-assoc (snd (⊙–> (auto η (f (pt Y))))) fₚ))
+  snd (auto (⊙→-homog-cod {Y = Y} η) (f , fₚ)) = is-eq _
+    (λ (g , gₚ) → (λ y → fst (⊙<– (auto η (f y))) (g y)) , (ap (fst (⊙<– (auto η (f (pt Y))))) (gₚ ∙ ! fₚ) ∙ snd (⊙<– (auto η (f (pt Y))))))
+    (λ (g , gₚ) → ⊙-comp-to-== ((λ z → fst (⊙<–-inv-r (auto η (f z))) (g z)) , {!!}))
+    λ (g , gₚ) → ⊙-comp-to-== ((λ z → fst (⊙<–-inv-l (auto η (f z))) (g z)) , {!!})
+  homog-idf (⊙→-homog-cod η) = {!!}
+ 
 open str-homog public

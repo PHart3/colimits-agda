@@ -73,3 +73,16 @@ module _ {i j} (X : Ptd i) (Y : Ptd j) where
 
   _⊙*_ : Ptd _
   _⊙*_ = ⊙Pushout ⊙*-span
+
+jmap : ∀ {i₁ i₂ j₁ j₂} {X₁ : Type i₁} {X₂ : Type i₂} {Y₁ : Type j₁} {Y₂ : Type j₂}
+  (f : X₁ → Y₁) (g : X₂ → Y₂) → X₁ * X₂ → Y₁ * Y₂
+jmap f g = Join-rec (jleft ∘ f) (jright ∘ g) λ a b → jglue (f a) (g b)
+
+jmap⊙ : ∀ {i₁ i₂ j₁ j₂} {X₁ : Ptd i₁} {X₂ : Ptd i₂} {Y₁ : Ptd j₁} {Y₂ : Ptd j₂}
+  (f : X₁ ⊙→ Y₁) (g : X₂ ⊙→ Y₂) → X₁ ⊙* X₂ ⊙→ Y₁ ⊙* Y₂
+fst (jmap⊙ f g) = jmap (fst f) (fst g)
+snd (jmap⊙ f g) = ap left (snd f)
+
+jmap⊙-un : ∀ {i j k} (X : Ptd i) {Y : Ptd j} {Z : Ptd k} (f : Y ⊙→ Z)
+  → X ⊙* Y ⊙→ X ⊙* Z
+jmap⊙-un X f = jmap⊙ (⊙idf X) f
