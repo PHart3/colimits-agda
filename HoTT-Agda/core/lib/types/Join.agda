@@ -52,17 +52,10 @@ module _ {i j} {A : Type i} {B : Type j} where
 
   JoinMapEq : ∀ {ℓ} {D : Type ℓ} {h₁ h₂ : A * B → D}
     → (p₁ : h₁ ∘ left ∼ h₂ ∘ left) (p₂ : h₁ ∘ right ∼ h₂ ∘ right)
-    → ((a : A) (b : B) → ! (ap h₁ (jglue a b)) ∙ p₁ a ∙' ap h₂ (jglue a b) == p₂ b)
+    → ((a : A) (b : B) → ! (ap h₁ (jglue a b)) ∙ p₁ a ∙ ap h₂ (jglue a b) == p₂ b)
     → h₁ ∼ h₂
-  JoinMapEq {h₁ = h₁} {h₂} p₁ p₂ g = PushoutMapEq h₁ h₂ p₁ p₂ λ c → aux c ∙ uncurry g c
-    where
-      aux : ∀ c → 
-        (! (ap h₁ (glue c)) ∙ p₁ (fst c)) ∙ ap h₂ (glue c)
-          ==
-        ! (ap h₁ (glue c)) ∙ p₁ (fst c) ∙' ap h₂ (glue c)
-      aux c =
-        ∙=∙' (! (ap h₁ (glue c)) ∙ p₁ (fst c)) (ap h₂ (glue c)) ∙
-        ∙∙'-assoc' (! (ap h₁ (glue c))) (p₁ (fst c)) (ap h₂ (glue c))
+  JoinMapEq {h₁ = h₁} {h₂} p₁ p₂ g = PushoutMapEq h₁ h₂ p₁ p₂ λ c →
+    ∙-assoc (! (ap h₁ (glue c))) (p₁ (fst c)) (ap h₂ (glue c)) ∙ uncurry g c
 
 module _ {i j} (X : Ptd i) (Y : Ptd j) where
 
