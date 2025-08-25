@@ -12,7 +12,7 @@ open import lib.wild-cats.Ladj-2-coher
 
 -- Suspension is a 2-coherent left adjoint to Loop.
 
-module homotopy.Susp-2coher where
+module homotopy.Susp.Susp-2coher where
 
 -- an ad-hoc data structure for a messy computation required by our 2-coherence proof
 

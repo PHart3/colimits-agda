@@ -10,7 +10,7 @@ open import lib.wild-cats.Ladj-colim
 
 -- Suspension preserves colimits over graphs.
 
-module homotopy.Susp-colim where
+module homotopy.Susp.Susp-colim where
 
 Susp-prsrv-colim : ∀ {i ℓv ℓe} {G : Graph ℓv ℓe} {Δ : Diagram G (Ptd-wc i)}
   {X : Ptd i} {K : Cocone-wc Δ X}→ (cl : is-colim K) → is-colim (F-coc SuspFunctor K)

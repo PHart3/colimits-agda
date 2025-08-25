@@ -8,7 +8,7 @@ open import lib.types.Bool
 open import lib.types.Suspension
 open import lib.types.Pointed
 
-module homotopy.JoinSusp where
+module homotopy.Join.JoinSusp where
 
 module _ {i} (A : Type i) where
 

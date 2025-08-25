@@ -9,7 +9,7 @@ open import lib.types.LoopSpace
 open import lib.types.Homogeneous
 open import lib.wild-cats.WildCats
 
-module homotopy.SuspAdjointLoop where
+module homotopy.Susp.SuspAdjointLoop where
 
 SuspFunctor : ∀ {i} → PtdFunctor i i
 obj SuspFunctor = ⊙Susp
