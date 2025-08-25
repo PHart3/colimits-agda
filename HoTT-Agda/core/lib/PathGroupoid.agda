@@ -158,6 +158,9 @@ module _ {i} {A : Type i} where
   !-inv-l-assoc : {x y z : A} (p : x == y) (q : y == z) → ! p ∙ p ∙ q == q
   !-inv-l-assoc idp idp = idp
 
+  !-inv-r-assoc : {x y z : A} (p : z == y) (q : x == z) → (q ∙ p) ∙ ! p == q
+  !-inv-r-assoc idp idp = idp
+
   inv-rid : {x y : A} (p : x == y) → ! p ∙ p ∙ idp == idp
   inv-rid p = !-inv-l-assoc p idp
 

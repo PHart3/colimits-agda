@@ -318,6 +318,16 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
       → snd (⊙–> ⊙e ⊙∘ ⊙<– ⊙e) == is-equiv.f-g (snd ⊙e) (pt Y)
     lemma ((f , idp) , f-ise) = ∙-unit-r _ ∙ is-equiv.adj f-ise (pt X)
 
+  ⊙<–-inv-l-pt : (⊙e : X ⊙≃ Y) →
+    ! (fst (⊙<–-inv-l ⊙e) (pt X)) ◃∙ ap (fst (⊙<– ⊙e)) (snd (⊙–> ⊙e)) ◃∙ snd (⊙<– ⊙e) ◃∎ =ₛ idp ◃∎
+  ⊙<–-inv-l-pt ⊙e = =ₛ-in (snd (⊙-to-comp (⊙<–-inv-l ⊙e)))
+
+  ⊙<–-inv-r-pt : (⊙e : X ⊙≃ Y) →
+    ap (fst (⊙–> ⊙e)) (snd (⊙<– ⊙e)) ◃∙ snd (⊙–> ⊙e) ◃∎ =ₛ fst (⊙<–-inv-r ⊙e) (pt Y) ◃∎
+  ⊙<–-inv-r-pt ⊙e =
+    pre-rotate'-out {q = idp ◃∎} (=ₛ-in (snd (⊙-to-comp (⊙<–-inv-r ⊙e)))) ∙ₛ
+    =ₛ-in (∙-unit-r (fst (⊙<–-inv-r ⊙e) (pt Y)))
+
 module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} (⊙e : X ⊙≃ Y) where
 
   post⊙∘-is-equiv : is-equiv (λ (k : Z ⊙→ X) → ⊙–> ⊙e ⊙∘ k)

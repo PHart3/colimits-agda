@@ -212,6 +212,10 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     → ap g ((! (ap f q)) ∙ p) ◃∎ =ₛ ! (ap (g ∘ f) q) ◃∙ ap g p ◃∎
   ap-cmp-rev-◃ idp = =ₛ-in idp
 
+  ap-cmp-rev-◃2 : {x y : A} (q : x == y) {z : B} (p : f x == z)
+    → ap g (ap f (! q) ∙ p) ◃∎ =ₛ ! (ap (g ∘ f) q) ◃∙ ap g p ◃∎
+  ap-cmp-rev-◃2 idp p = =ₛ-in idp
+
   inv-canc-cmp : {a b : A} (p : a == b) {z : B} (S : f a == z) {w : C} (gₚ : g z == w)
     → ! (ap (g ∘ f) p) ∙ (ap g S ∙ gₚ) ∙ ! (ap g (! (ap f p) ∙ S ∙ idp) ∙ gₚ) == idp
   inv-canc-cmp idp idp idp = idp
@@ -526,6 +530,9 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H 
 
   apeq-rev : {x y : A} (p : x == y) → ap f p == H x ∙ ap g p ∙ ! (H y)
   apeq-rev {x = x} idp = ! (!-inv-r (H x))
+
+  apeq-rev-!◃ : {x y : A} (p : x == y) → ! (ap f p) ◃∎ =ₛ H y ◃∙ ! (ap g p) ◃∙ ! (H x) ◃∎
+  apeq-rev-!◃ {x = x} idp = =ₛ-in (! (!-inv-r (H x)))
 
   apCommSq◃ : {x y : A} (p : x == y) → ap g p ◃∎ =ₛ ! (H x) ◃∙ ap f p ◃∙ H y ◃∎
   apCommSq◃ {x} idp = =ₛ-in (! (!-inv-l (H x)))
