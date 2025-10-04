@@ -7,7 +7,7 @@
     [On Left Adjoints Preserving Colimits in HoTT](https://phart3.github.io/2coher-preprint.pdf)
     (based on the [HoTT/UF 2025 extended abstract](https://hott-uf.github.io/2025/abstracts/HoTTUF_2025_paper_9.pdf))
   
-  It has been checked with Agda 2.6.3 and 2.6.4.
+  It has been checked with Agda 2.6.3 and 2.6.4.3
 
 ## Organization
 
@@ -55,7 +55,7 @@ We have successfully tested the following Docker container on Linux but not on o
    docker build . -t colimit
    ```
 
-   The build installs Agda 2.6.4 and type checks our whole development.
+   The build installs Agda 2.6.4.3 and type checks our whole development.
    The entire build may take over an hour. The type checking of all our
    Agda code takes about 49 minutes on our host Ubuntu with 16 GB of RAM.
 
