@@ -57,10 +57,10 @@ module lib.types.Pointed where
 
 module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where 
 
-  ⊙∘-assoc-comp : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
+  ⊙∘-assoc-crd : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
     → ((h ⊙∘ g) ⊙∘ f) ⊙-crd∼ (h ⊙∘ (g ⊙∘ f))
-  fst (⊙∘-assoc-comp (h , hpt) (g , gpt) (f , fpt)) = λ x → idp
-  snd (⊙∘-assoc-comp (h , hpt) (g , gpt) (f , fpt)) =
+  fst (⊙∘-assoc-crd (h , hpt) (g , gpt) (f , fpt)) = λ x → idp
+  snd (⊙∘-assoc-crd (h , hpt) (g , gpt) (f , fpt)) =
     ! (∙-assoc (ap (h ∘ g) fpt) (ap h gpt) hpt) ∙
     ap (λ p → p ∙ hpt) (ap (λ p → p ∙ ap h gpt) (ap-∘ h g fpt)) ∙
     ap (λ p → p ∙ hpt) (∙-ap h (ap g fpt) gpt)

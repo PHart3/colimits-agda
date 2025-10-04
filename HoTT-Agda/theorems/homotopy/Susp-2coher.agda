@@ -457,10 +457,10 @@ module 2-coher-cmp {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd 
 
   abstract
     2-coher-Susp-cmp : (h₁ : ⊙Susp X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →
-      !-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃) ∙⊙∼
+      !-⊙∼ (⊙∘-assoc-crd (into X Y h₁) h₂ h₃) ∙⊙∼
       ⊙∘-pre h₃ (nat-dom-cmp h₂ h₁) ∙⊙∼
       nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂) ∙⊙∼
-      ap-cmp-into W Y (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
+      ap-cmp-into W Y (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
         ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp))) ∙⊙∼
       !-⊙∼ (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)
         ⊙→∼
@@ -475,85 +475,85 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
   -- converting 2-coherence property via the SIP
   abstract
     2-coher-Susp : (h₁ : ⊙Susp X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →
-      ! (⊙-crd∼-to-== (⊙∘-assoc-comp (into X Y h₁) h₂ h₃)) ∙
+      ! (⊙-crd∼-to-== (⊙∘-assoc-crd (into X Y h₁) h₂ h₃)) ∙
       ap (λ m → m ⊙∘ h₃) (⊙-crd∼-to-== (nat-dom-cmp h₂ h₁)) ∙
       ⊙-crd∼-to-== (nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂)) ∙
       ap (into W Y)
-        (⊙-crd∼-to-== (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃)) ∙
+        (⊙-crd∼-to-== (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃)) ∙
         ap (λ m →  h₁ ⊙∘ m) (! (⊙Susp-fmap-∘ h₂ h₃))) ∙
       ! (⊙-crd∼-to-== (nat-dom-cmp (h₂ ⊙∘ h₃) h₁))
         ==
       idp
     2-coher-Susp h₁ h₂ h₃ = =ₛ-out $
-      ! (⊙-crd∼-to-== (⊙∘-assoc-comp (into X Y h₁) h₂ h₃)) ◃∙
+      ! (⊙-crd∼-to-== (⊙∘-assoc-crd (into X Y h₁) h₂ h₃)) ◃∙
       ap (λ m → m ⊙∘ h₃) (⊙-crd∼-to-== (nat-dom-cmp h₂ h₁)) ◃∙
       ⊙-crd∼-to-== (nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂)) ◃∙
       ap (into W Y)
-        (⊙-crd∼-to-== (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃)) ∙
+        (⊙-crd∼-to-== (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃)) ∙
         ap (λ m →  h₁ ⊙∘ m) (! (⊙Susp-fmap-∘ h₂ h₃))) ◃∙
       ! (⊙-crd∼-to-== (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ◃∎
-        =ₛ₁⟨ 0 & 1 & ! (!⊙-conv (⊙∘-assoc-comp (into X Y h₁) h₂ h₃)) ⟩
-      ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃)) ◃∙
+        =ₛ₁⟨ 0 & 1 & ! (!⊙-conv (⊙∘-assoc-crd (into X Y h₁) h₂ h₃)) ⟩
+      ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-crd (into X Y h₁) h₂ h₃)) ◃∙
       ap (λ m → m ⊙∘ h₃) (⊙-crd∼-to-== (nat-dom-cmp h₂ h₁)) ◃∙
       ⊙-crd∼-to-== (nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂)) ◃∙
       ap (into W Y)
-        (⊙-crd∼-to-== (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃)) ∙
+        (⊙-crd∼-to-== (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃)) ∙
         ap (λ m →  h₁ ⊙∘ m) (! (⊙Susp-fmap-∘ h₂ h₃))) ◃∙
       ! (⊙-crd∼-to-== (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ◃∎
         =ₛ₁⟨ 1 & 1 & ! (whisk⊙-conv-r (nat-dom-cmp h₂ h₁)) ⟩
-      ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃)) ◃∙
+      ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-crd (into X Y h₁) h₂ h₃)) ◃∙
       ⊙-crd∼-to-== (⊙∘-pre h₃ (nat-dom-cmp h₂ h₁)) ◃∙
       ⊙-crd∼-to-== (nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂)) ◃∙
       ap (into W Y)
-        (⊙-crd∼-to-== (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃)) ∙
+        (⊙-crd∼-to-== (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃)) ∙
         ap (λ m →  h₁ ⊙∘ m) (! (⊙Susp-fmap-∘ h₂ h₃))) ◃∙
       ! (⊙-crd∼-to-== (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ◃∎
         =ₛ₁⟨ 4 & 1 & ! (!⊙-conv (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ⟩
-      ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃)) ◃∙
+      ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-crd (into X Y h₁) h₂ h₃)) ◃∙
       ⊙-crd∼-to-== (⊙∘-pre h₃ (nat-dom-cmp h₂ h₁)) ◃∙
       ⊙-crd∼-to-== (nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂)) ◃∙
       ap (into W Y)
-        (⊙-crd∼-to-== (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃)) ∙
+        (⊙-crd∼-to-== (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃)) ∙
         ap (λ m →  h₁ ⊙∘ m) (! (⊙Susp-fmap-∘ h₂ h₃))) ◃∙
       ⊙-crd∼-to-== (!-⊙∼ (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ◃∎
         =ₛ₁⟨ 3 & 1 & ap (ap (into W Y)) (
-          ap (λ p → ⊙-crd∼-to-== (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃)) ∙ p)
+          ap (λ p → ⊙-crd∼-to-== (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃)) ∙ p)
             (ap (ap (_⊙∘_ h₁)) (! (!⊙-conv (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp))) ∙
             ! (whisk⊙-conv-l (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp)))) ∙
           ! (=ₛ-out (⊙∘-conv
-            (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃))
+            (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃))
             (⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp)))))) ⟩
-      ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃)) ◃∙
+      ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-crd (into X Y h₁) h₂ h₃)) ◃∙
       ⊙-crd∼-to-== (⊙∘-pre h₃ (nat-dom-cmp h₂ h₁)) ◃∙
       ⊙-crd∼-to-== (nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂)) ◃∙
       ap (into W Y) (⊙-crd∼-to-==
-        (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
+        (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
         ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp)))) ◃∙
       ⊙-crd∼-to-== (!-⊙∼ (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ◃∎
         =ₛ₁⟨ 3 & 1 & ap-cmp-into-agree W Y
-          (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
+          (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
           ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp))) ⟩
-      ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃)) ◃∙
+      ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-crd (into X Y h₁) h₂ h₃)) ◃∙
       ⊙-crd∼-to-== (⊙∘-pre h₃ (nat-dom-cmp h₂ h₁)) ◃∙
       ⊙-crd∼-to-== (nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂)) ◃∙
       ⊙-crd∼-to-== (ap-cmp-into W Y
-        (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
+        (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
         ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp)))) ◃∙
       ⊙-crd∼-to-== (!-⊙∼ (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ◃∎
         =ₛ⟨ ⊙∘-conv-quint
-              (!-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃))
+              (!-⊙∼ (⊙∘-assoc-crd (into X Y h₁) h₂ h₃))
               (⊙∘-pre h₃ (nat-dom-cmp h₂ h₁))
               (nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂))
               (ap-cmp-into W Y
-                (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
+                (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
                 ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp))))
               (!-⊙∼ (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ⟩
       ⊙-crd∼-to-==
-        (!-⊙∼ (⊙∘-assoc-comp (into X Y h₁) h₂ h₃) ∙⊙∼
+        (!-⊙∼ (⊙∘-assoc-crd (into X Y h₁) h₂ h₃) ∙⊙∼
         ⊙∘-pre h₃ (nat-dom-cmp h₂ h₁) ∙⊙∼
         nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂) ∙⊙∼
         ap-cmp-into W Y
-          (⊙∘-assoc-comp h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
+          (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
           ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp))) ∙⊙∼
         !-⊙∼ (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ◃∎
         =ₛ₁⟨ ap ⊙-crd∼-to-== (⊙→∼-to-== (2-coher-Susp-cmp h₁ h₂ h₃)) ⟩
