@@ -2,7 +2,6 @@
 
 open import lib.Base
 open import lib.PathGroupoid
-open import lib.Relation
 
 module lib.NType where
 
