@@ -84,7 +84,7 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
             tri K f ◃∙ ρ C (leg K x) ◃∎ ∎ₛ
 
   -- we assume a standard property of bicategories
-  module _ (trig : {a b c : ob C} (g : hom C b c) (f : hom C a b) →
+  module _ (trig-lamb : {a b c : ob C} (g : hom C b c) (f : hom C a b) →
       α C (id₁ C c) g f ◃∙ 
       ! (lamb C (⟦ C ⟧ g ◻ f)) ◃∎
         =ₛ
@@ -114,7 +114,7 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
           α C (id₁ C a) (leg K y) (D₁ Δ f) ◃∙
           ! (lamb C (⟦ C ⟧ leg K y ◻ D₁ Δ f)) ◃∙
           tri K f ◃∎
-            =ₛ⟨ 0 & 2 & trig (leg K y) (D₁ Δ f) ⟩
+            =ₛ⟨ 0 & 2 & trig-lamb (leg K y) (D₁ Δ f) ⟩
           ap (λ m → ⟦ C ⟧ m ◻ D₁ Δ f) (! (lamb C (leg K y))) ◃∙
           tri K f ◃∎ ∎ₛ))
 
