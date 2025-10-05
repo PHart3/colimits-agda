@@ -6,6 +6,7 @@ open import lib.Equivalence2
 open import lib.types.Sigma
 open import lib.types.Graph
 open import lib.wild-cats.WildCat
+open import lib.wild-cats.Bicat
 open import lib.wild-cats.Diagram-wc
 open import lib.wild-cats.Diag-coher-wc
 open import lib.wild-cats.Diagram-wc-SIP
@@ -36,22 +37,18 @@ module _ {i j} {C : WildCat {i} {j}} {ℓv ℓe} {G : Graph ℓv ℓe} where
 
     module _ {a₁ a₂ : ob C} {K₁ : Cocone-wc D a₁} {K₂ : Cocone-wc D a₂} (pent : pentagon-wc C) where
 
-      module _ (trig : {a b c : ob C} (g : hom C b c) (f : hom C a b) →
-        α C (id₁ C c) g f ◃∙
-        ! (lamb C (⟦ C ⟧ g ◻ f)) ◃∎
-          =ₛ
-        ap (λ m → ⟦ C ⟧ m ◻ f) (! (lamb C g)) ◃∎) where
+      module _ (trig : triangle-wc C) where
 
         abstract
           col-wc-unq : (cl : is-colim K₁) → is-colim K₂ → equiv-wc C (cogap-map-wc cl K₂)
           fst (col-wc-unq cl1 cl2) = cogap-map-wc cl2 K₁
           fst (snd (col-wc-unq cl1 cl2)) = equiv-is-inj (cl1 a₁) (id₁ C a₁) (⟦ C ⟧ cogap-map-wc cl2 K₁ ◻ cogap-map-wc cl1 K₂)
-            (pst-cmp-id trig K₁ ∙
+            (pst-cmp-id trig pent K₁ ∙
             ! (pst-cmp-∘ pent (cogap-map-wc cl2 K₁) (cogap-map-wc cl1 K₂) K₁ ∙
             ap (λ K → post-cmp-coc K a₁ (cogap-map-wc cl2 K₁)) (cogap-map-wc-β cl1) ∙
             cogap-map-wc-β cl2))
           snd (snd (col-wc-unq cl1 cl2)) = equiv-is-inj (cl2 a₂) (id₁ C a₂) (⟦ C ⟧ cogap-map-wc cl1 K₂ ◻ cogap-map-wc cl2 K₁)
-            (pst-cmp-id trig K₂ ∙
+            (pst-cmp-id trig pent K₂ ∙
             ! (pst-cmp-∘ pent (cogap-map-wc cl1 K₂) (cogap-map-wc cl2 K₁) K₂ ∙
             ap (λ K → post-cmp-coc K a₂ (cogap-map-wc cl1 K₂)) (cogap-map-wc-β cl2) ∙
             cogap-map-wc-β cl1))
@@ -73,17 +70,11 @@ module _ {i j} {C : WildCat {i} {j}} {ℓv ℓe} {G : Graph ℓv ℓe} where
 
     open SIP-Diag {G = G} {C = C} P id₁-eqv idsys public
 
-    module _ (trig : triangle-wc C)
-      -- we also assume a standard property of bicategories
-      (trig-ρ : {a b c : ob C} (g : hom C b c) (f : hom C a b) →
-        ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C f) ◃∙
-        ! (α C g f (id₁ C a)) ◃∙
-        ! (ρ C (⟦ C ⟧ g ◻ f)) ◃∎
-          =ₛ
-        []) where
+    module _ (trig : triangle-wc C) (pent : pentagon-wc C) where
 
       abstract
         colim-act-dmap : {Δ₁ Δ₂ : Diagram G C} ((μ , _) : diag-ueqv Δ₁ Δ₂)
           → {a : ob C} (K : Cocone-wc Δ₂ a) → is-colim K → is-colim (act-dmap-coc μ K)
         colim-act-dmap {Δ₁} = diag-ind (λ Δ₂ (μ , _) → ∀ {a} K → is-colim K → is-colim (act-dmap-coc μ K))
-          λ K cl → λ b → coe (ap is-equiv (app= (ap post-cmp-coc (act-dmap-coc-id trig trig-ρ K)) b)) (cl b) 
+          λ K cl → λ b → coe (ap is-equiv (app= (ap post-cmp-coc (act-dmap-coc-id trig pent K)) b)) (cl b) 
+

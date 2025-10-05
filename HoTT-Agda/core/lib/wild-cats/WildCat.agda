@@ -162,7 +162,6 @@ module _ {i j} {C : WildCat {i} {j}} (trig : triangle-wc C)
       ! (α C g (id₁ C b) f) ◃∎
     triangle-wc-rot2 = post-rotate-in triangle-wc◃
 
-
 -- pentagon identity
 
 pentagon-wc : ∀ {i j} (C : WildCat {i} {j}) → Type (lmax i j)

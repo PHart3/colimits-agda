@@ -6,7 +6,7 @@ open import lib.types.Pullback
 open import lib.types.Colim
 open import lib.types.Graph
 open import lib.types.Diagram
-open import Path-alg
+open import AuxPaths-pb
 
 -- pullback stability for ordinary colimits
 

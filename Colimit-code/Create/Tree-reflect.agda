@@ -40,7 +40,7 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} (tr : is-tree Γ) {A : Type ℓ}
       FrgCol = Forg-coscol-pres tr {ℓd = ℓd} Δ (CosCoc-to-wc (ColCoC-cos Δ-F)) cl-po
 
       cg-eqv : equiv-wc (Type-wc (lmax ℓ ℓd)) (cogap-map-wc FrgCol (F-coc (Forg-funct-cos A {ℓd}) K))
-      cg-eqv = col-wc-unq pentagon-wc-ty (λ _ _ → =ₛ-in idp) FrgCol cl
+      cg-eqv = col-wc-unq pentagon-wc-ty triangle-wc-ty FrgCol cl
 
       cc-mor : Coc-wc-mor (F-coc (Forg-funct-cos A {ℓd}) (CosCoc-to-wc (ColCoC-cos Δ-F))) (F-coc (Forg-funct-cos A {ℓd}) K)
       cc-mor = FCol-iso.tr-coscol-abs-mor tr {ℓd = ℓd} Δ K
@@ -61,4 +61,4 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} (tr : is-tree Γ) {A : Type ℓ}
       Forg-coscol-reflect = fst (eqv-pres-colim {C = Coslice-wc A (lmax ℓ ℓd)} (pentagon-wc-Cos A {lmax ℓ ℓd})
         (cg-PO K , cogap-map-wc-β {K = CosCoc-to-wc {i = lmax ℓ ℓd} (ColCoC-cos Δ-F)} cl-po {V = K})
         (iso-to-eqv-cos A {lmax ℓ ℓd} (eqv-wc-to-eqv-ty cc-eqv)))
-        cl-po 
+        cl-po

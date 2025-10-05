@@ -3,6 +3,7 @@
 open import lib.Basics
 open import lib.types.Graph
 open import lib.wild-cats.WildCat
+open import lib.wild-cats.Bicat
 open import lib.wild-cats.Diagram-wc
 open import lib.wild-cats.Cone-wc-SIP
 open import lib.wild-cats.Cocone-wc-SIP
@@ -17,14 +18,7 @@ open Map-diag
 
 module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁} {ℓc₂}} where
 
-  module _ (trig : triangle-wc C)
-    -- we also assume a standard property of bicategories
-    (trig-ρ : {a b c : ob C} (g : hom C b c) (f : hom C a b) →
-      ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C f) ◃∙
-      ! (α C g f (id₁ C a)) ◃∙
-      ! (ρ C (⟦ C ⟧ g ◻ f)) ◃∎
-        =ₛ
-      []) where
+  module _ (trig : triangle-wc C) (pent : pentagon-wc C) where
 
     abstract
       act-dmap-coc-id : {a : ob C} {Δ : Diagram G C} (K : Cocone-wc Δ a)
@@ -78,18 +72,10 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
             ! (α C (leg K y) (D₁ Δ f) (id₁ C (D₀ Δ x))) ◃∙
             ! (ρ C (⟦ C ⟧ leg K y ◻ D₁ Δ f)) ◃∙
             ap (λ m → m) (tri K f) ◃∙ ρ C (leg K x) ◃∎
-              =ₛ⟨ 0 & 3 & trig-ρ (leg K y) (D₁ Δ f) ⟩
+              =ₛ⟨ 0 & 3 & trig-ρ-rot1 {C = C} trig pent (leg K y) (D₁ Δ f) ⟩
             ap (λ m → m) (tri K f) ◃∙ ρ C (leg K x) ◃∎
               =ₛ₁⟨ 0 & 1 & ap-idf (tri K f) ⟩
             tri K f ◃∙ ρ C (leg K x) ◃∎ ∎ₛ
-
-  -- we assume a standard property of bicategories
-  module _ (trig-lamb : {a b c : ob C} (g : hom C b c) (f : hom C a b) →
-      α C (id₁ C c) g f ◃∙ 
-      ! (lamb C (⟦ C ⟧ g ◻ f)) ◃∎
-        =ₛ
-      ap (λ m → ⟦ C ⟧ m ◻ f) (! (lamb C g)) ◃∎)
-    where
 
     abstract
 
@@ -114,11 +100,11 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
           α C (id₁ C a) (leg K y) (D₁ Δ f) ◃∙
           ! (lamb C (⟦ C ⟧ leg K y ◻ D₁ Δ f)) ◃∙
           tri K f ◃∎
-            =ₛ⟨ 0 & 2 & trig-lamb (leg K y) (D₁ Δ f) ⟩
+            =ₛ⟨ 0 & 2 & trig-lamb-rot2 {C = C} trig pent (leg K y) (D₁ Δ f) ⟩
           ap (λ m → ⟦ C ⟧ m ◻ D₁ Δ f) (! (lamb C (leg K y))) ◃∙
           tri K f ◃∎ ∎ₛ))
 
-  -- we assume the pentagon identity of a bicat
+  -- we now assume just the pentagon identity of a bicat
   module _ (pent : pentagon-wc C) where
 
     abstract
