@@ -31,25 +31,13 @@ module _ {ℓ j} (μ : Modality (lmax ℓ j)) (A : Type j) where
   open Mod-Prsrv {lmax ℓ j} μ A
   open MapsCos A
 
-  private
-    -- a standard property of a bicategory
-    trig-ρ-Cos : {X Y Z : Coslice (lmax ℓ j) j A} (g : Y *→ Z) (f : X *→ Y) →
-      ap (λ m → g ∘* m) (ρ (Coslice-wc A (lmax ℓ j)) f) ◃∙
-      ! (α (Coslice-wc A (lmax ℓ j)) g f (id₁ (Coslice-wc A (lmax ℓ j)) X)) ◃∙
-      ! (ρ (Coslice-wc A (lmax ℓ j)) (g ∘* f)) ◃∎
-        =ₛ
-      []
-    trig-ρ-Cos g f = =ₛ-in $
-      ∙-unit-r (! (UndFun∼-to-== (*→-assoc g f id-cos))) ∙
-      ap ! (ap UndFun∼-to-== (∼∼-cos∼-to-== ((λ _ → idp) , (λ _ → idp))) ∙ UndFun∼-β)
-
   module _ {ℓv ℓe} {G : Graph ℓv ℓe} (Δ : Diagram G (Coslice-loc-wc μ A)) where
 
     open Col-Dmap {C = Coslice-loc-wc μ A} {G = G} (iso-cos A) (id-sys-iso-cos-loc μ A)
 
     open Map-diag
     
-    Mod-nat-eqv-η : diag-eqv Δ (F-diag (Mod-cos-fctr ∘WC Loc-cos-forg-fctr) Δ)
+    Mod-nat-eqv-η : diag-ueqv Δ (F-diag (Mod-cos-fctr ∘WC Loc-cos-forg-fctr) Δ)
     map-comp (fst Mod-nat-eqv-η) x = η , λ a → idp
     map-sq (fst Mod-nat-eqv-η) {x} {y} f = UndFun∼-to-== ((λ z → ◯-fmap-β (fst (D₁ Δ f)) z) , (λ a →
       !-inv-l-assoc (◯-fmap-β (fst (D₁ Δ f)) (str (fst (D₀ Δ x)) a)) (ap η (snd (D₁ Δ f) a)) ∙
@@ -62,7 +50,7 @@ module _ {ℓ j} (μ : Modality (lmax ℓ j)) (A : Type j) where
       -- construction of graph-indexed colimits in Coslice-loc-wc μ A
       CosCol-loc : is-colim {D = Δ} $
         act-dmap-coc (fst Mod-nat-eqv-η) (F-coc Mod-cos-fctr (CosCoc-to-wc (ColCoC-cos (Diag-to-grhom (F-diag Loc-cos-forg-fctr Δ)))))
-      CosCol-loc = colim-act-dmap (triangle-wc-Cos A {i = lmax ℓ j}) trig-ρ-Cos
+      CosCol-loc = colim-act-dmap (triangle-wc-Cos A {i = lmax ℓ j}) (pentagon-wc-Cos A {i = lmax ℓ j})
         Mod-nat-eqv-η
         (F-coc Mod-cos-fctr (CosCoc-to-wc (ColCoC-cos (Diag-to-grhom (F-diag Loc-cos-forg-fctr Δ)))))
         (Mod-prsrv-colim {Δ = F-diag Loc-cos-forg-fctr Δ} {X = po-CosCol {ℓd = lmax ℓ j} (Diag-to-grhom (F-diag Loc-cos-forg-fctr Δ))}

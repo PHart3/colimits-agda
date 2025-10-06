@@ -23,12 +23,12 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
     (P : ∀ {a b} (f : hom C a b) → Type ℓ) (id₁-eqv : ∀ a → P (id₁ C a))
     (idsys : ∀ a → ID-sys _ (λ b → Σ (hom C a b) P) a (id₁ C a , id₁-eqv a)) where
 
-    diag-eqv : Diagram G C → Diagram G C → Type (lmax (lmax (lmax (lmax ℓv ℓe) ℓ₁) ℓ₂) ℓ)
-    diag-eqv Δ₁ Δ₂ = Σ (Map-diag Δ₁ Δ₂) (λ μ → ∀ x → P (map-comp μ x))
+    diag-ueqv : Diagram G C → Diagram G C → Type (lmax (lmax (lmax (lmax ℓv ℓe) ℓ₁) ℓ₂) ℓ)
+    diag-ueqv Δ₁ Δ₂ = Σ (Map-diag Δ₁ Δ₂) (λ μ → ∀ x → P (map-comp μ x))
 
-    diag-eqv-id : {Δ : Diagram G C} → diag-eqv Δ Δ
-    fst (diag-eqv-id {Δ}) = diag-map-id Δ
-    snd diag-eqv-id _ = id₁-eqv _
+    diag-ueqv-id : {Δ : Diagram G C} → diag-ueqv Δ Δ
+    fst (diag-ueqv-id {Δ}) = diag-map-id Δ
+    snd diag-ueqv-id _ = id₁-eqv _
 
     module _ {Δ₁ : Diagram G C} where
 
@@ -49,7 +49,7 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
                 {{pathto-is-contr (⟦ C ⟧ id₁ C _ ◻ D₁ Δ₁ f)}}}}
 
       abstract
-        diag-contr : is-contr (Σ (Diagram G C) (λ Δ₂ → diag-eqv Δ₁ Δ₂))
+        diag-contr : is-contr (Σ (Diagram G C) (λ Δ₂ → diag-ueqv Δ₁ Δ₂))
         diag-contr = equiv-preserves-level lemma {{diag-contr-aux}}
           where
             lemma :
@@ -58,7 +58,7 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
                   Σ (hom C (fst (M x)) (fst (M y))) (λ k →
                     ⟦ C ⟧ k ◻ fst (snd (M x)) == ⟦ C ⟧ fst (snd (M y)) ◻ D₁ Δ₁ f))
                 ≃
-              Σ (Diagram G C) (λ Δ₂ → diag-eqv Δ₁ Δ₂)
+              Σ (Diagram G C) (λ Δ₂ → diag-ueqv Δ₁ Δ₂)
             lemma =
               equiv
                (λ (M , sq) →
@@ -67,8 +67,8 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
                (λ _ → idp)
                λ _ → idp
 
-      diag-ind : ∀ {k} (Q : (Δ₂ : Diagram G C) → (diag-eqv Δ₁ Δ₂ → Type k))
-        → Q Δ₁ diag-eqv-id → {Δ₂ : Diagram G C} (e : diag-eqv Δ₁ Δ₂) → Q Δ₂ e
+      diag-ind : ∀ {k} (Q : (Δ₂ : Diagram G C) → (diag-ueqv Δ₁ Δ₂ → Type k))
+        → Q Δ₁ diag-ueqv-id → {Δ₂ : Diagram G C} (e : diag-ueqv Δ₁ Δ₂) → Q Δ₂ e
       diag-ind Q = ID-ind-map Q diag-contr
 
   -- SIP for maps of diagrams valued in an arbitrary wild category

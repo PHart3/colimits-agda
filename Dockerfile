@@ -6,8 +6,8 @@ ARG GHC_VERSION=9.4.7
 FROM fossa/haskell-static-alpine:ghc-${GHC_VERSION} AS agda
 
 WORKDIR /build/agda
-# Agda 2.6.4
-ARG AGDA_VERSION=f42acb696e43d382639f04f869e9a99ab36a91c6
+# Agda 2.6.4.3
+ARG AGDA_VERSION=714c7d2c76c5ffda3180e95c28669259f0dc5b5c
 RUN \
   git init && \
   git remote add origin https://github.com/agda/agda.git && \

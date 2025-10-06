@@ -163,7 +163,7 @@ module _ {i j k} {X : Type i} {Y : Type j} {Z : Type k} (g : Y → Z) (f : X →
 module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} (g : Y ⊙→ Z) (f : X ⊙→ Y) where
 
   ⊙Susp-fmap-∘ : ⊙Susp-fmap (g ⊙∘ f) == ⊙Susp-fmap g ⊙∘ ⊙Susp-fmap f
-  ⊙Susp-fmap-∘ = ⊙-comp-to-== ((Susp-fmap-∘-∼ (fst g) (fst f)) , idp)
+  ⊙Susp-fmap-∘ = ⊙-crd∼-to-== ((Susp-fmap-∘-∼ (fst g) (fst f)) , idp)
 
 {- Extract the 'glue component' of a pushout -}
 module _ {i j k} {s : Span {i} {j} {k}} where

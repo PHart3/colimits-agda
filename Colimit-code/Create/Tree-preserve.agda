@@ -65,20 +65,8 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} (tr : is-tree Γ) {A : Type ℓ}
         cg-PO = cogap-map-wc (ColCoc-is-colim {ℓd = lmax ℓ ℓd} Δ)
 
       cg-PO-eqv : is-colim K → equiv-wc (Coslice-wc A (lmax ℓ ℓd)) (cg-PO K)
-      cg-PO-eqv cl = col-wc-unq {K₁ = CosCoc-to-wc {i = lmax ℓ ℓd} (ColCoC-cos Δ-F)} {K₂ = K} (pentagon-wc-Cos A {lmax ℓ ℓd})
-        (λ g f →
-          UndFun∼-to-== (*→-assoc id-cos g f) ◃∙
-          ! (UndFun∼-to-== (lunit-∘* (g ∘* f))) ◃∎
-            =ₛ₁⟨ 1 & 1 & !cos-conv (lunit-∘* (g ∘* f)) ⟩
-          UndFun∼-to-== (*→-assoc id-cos g f) ◃∙
-          UndFun∼-to-== (∼!-cos (lunit-∘* (g ∘* f))) ◃∎
-            =ₛ⟨ !ₛ (cos∘-conv (*→-assoc id-cos g f) (∼!-cos (lunit-∘* (g ∘* f)))) ⟩
-          UndFun∼-to-== (*→-assoc id-cos g f ∼∘-cos ∼!-cos (lunit-∘* (g ∘* f))) ◃∎
-            =ₛ₁⟨ ap UndFun∼-to-== (∼∼-cos∼-to-== ((λ _ → idp) , (λ a → aux (fst g) (snd f a) (snd g a)))) ⟩
-          UndFun∼-to-== (pre-∘*-∼ f (∼!-cos (lunit-∘* g))) ◃∎
-            =ₛ₁⟨ ! (ap (ap (λ m → m ∘* f)) (!cos-conv (lunit-∘* g)) ∙ whisk-cos-conv-r (∼!-cos (lunit-∘* g))) ⟩
-          ap (λ m → m ∘* f) (! (UndFun∼-to-== (lunit-∘* g))) ◃∎ ∎ₛ)
-        cl-po cl
+      cg-PO-eqv cl = col-wc-unq {K₁ = CosCoc-to-wc {i = lmax ℓ ℓd} (ColCoC-cos Δ-F)} {K₂ = K}
+        (pentagon-wc-Cos A {lmax ℓ ℓd}) (triangle-wc-Cos A {lmax ℓ ℓd}) cl-po cl
         where abstract
           aux : ∀ {ℓ₁ ℓ₂} {X : Type ℓ₁} {Y : Type ℓ₂} (k : X → Y)
             {x y : X} {z : Y} (p₁ : x == y) (p₂ : k y == z) → 

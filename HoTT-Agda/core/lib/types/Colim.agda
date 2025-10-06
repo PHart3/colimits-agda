@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --confluence-check --rewriting #-}
+{-# OPTIONS --without-K  --rewriting --confluence-check #-}
 
 open import lib.Basics
 open import lib.Equivalence2

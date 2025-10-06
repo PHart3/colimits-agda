@@ -28,6 +28,22 @@ infixr 82 ⟦_⟧_◻_
 ⟦_⟧_◻_ : ∀ {i j} (C : WildCat {i} {j}) {a b c : ob C} → hom C b c → hom C a b → hom C a c
 ⟦_⟧_◻_ ξ g f = _◻_ ξ g f 
 
+id₁-lft-≃ : ∀ {i j} {C : WildCat {i} {j}} → ∀ {x y} → hom C x y ≃ hom C x y
+fst (id₁-lft-≃ {C = C}) f = ⟦ C ⟧ id₁ C _ ◻ f
+snd (id₁-lft-≃ {C = C}) = ∼-preserves-equiv (λ x → lamb C x) (idf-is-equiv _)
+
+id₁-rght-≃ : ∀ {i j} {C : WildCat {i} {j}} → ∀ {x y} → hom C x y ≃ hom C x y
+fst (id₁-rght-≃ {C = C}) f = ⟦ C ⟧ f ◻ id₁ C _
+snd (id₁-rght-≃ {C = C}) = ∼-preserves-equiv (λ x → ρ C x) (idf-is-equiv _)
+
+id₁-comm-reflect-l : ∀ {i j} {C : WildCat {i} {j}} → ∀ {x y} {f₁ f₂ : hom C x y} {p₁ p₂ : f₁ == f₂}
+  → ap (λ m → ⟦ C ⟧ id₁ C _ ◻ m) p₁ == ap (λ m → ⟦ C ⟧ id₁ C _ ◻ m) p₂ → p₁ == p₂
+id₁-comm-reflect-l {C = C} e = equiv-is-inj (ap-is-equiv (snd (id₁-lft-≃ {C = C})) _ _) _ _ e
+
+id₁-comm-reflect-r : ∀ {i j} {C : WildCat {i} {j}} → ∀ {x y} {f₁ f₂ : hom C x y} {p₁ p₂ : f₁ == f₂}
+  → ap (λ m → ⟦ C ⟧ m ◻ id₁ C _) p₁ == ap (λ m → ⟦ C ⟧ m ◻ id₁ C _) p₂ → p₁ == p₂
+id₁-comm-reflect-r {C = C} e = equiv-is-inj (ap-is-equiv (snd (id₁-rght-≃ {C = C})) _ _) _ _ e
+
 record Functor-wc {i₁ j₁ i₂ j₂} (B : WildCat {i₁} {j₁}) (C : WildCat {i₂} {j₂}) :
   Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
   constructor functor-wc
@@ -138,6 +154,13 @@ module _ {i j} {C : WildCat {i} {j}} (trig : triangle-wc C)
         =ₛ
       []
     triangle-wc-rot1 = post-rotate'-in triangle-wc◃
+    
+    triangle-wc-rot2 :
+      ap (λ m → ⟦ C ⟧ m ◻ f) (ρ C g) ◃∎
+        =ₛ
+      ap (λ m → ⟦ C ⟧ g ◻ m) (lamb C f) ◃∙
+      ! (α C g (id₁ C b) f) ◃∎
+    triangle-wc-rot2 = post-rotate-in triangle-wc◃
 
 -- pentagon identity
 
@@ -181,6 +204,12 @@ module _ {i j} {C : WildCat {i} {j}} (pent : pentagon-wc C)
       ! (α C k g (⟦ C ⟧ h ◻ f)) ◃∙ ! (α C (⟦ C ⟧ k ◻ g) h f) ◃∎
     pentagon-wc-! = !-=ₛ pentagon-wc◃
 
+    pentagon-wc-!-rot1 :
+      α C k g (⟦ C ⟧ h ◻ f) ◃∙ ! (ap (λ m → ⟦ C ⟧ k ◻ m) (α C g h f)) ◃∙ ! (α C k (⟦ C ⟧ g ◻ h) f) ◃∙ ! (ap (λ m → ⟦ C ⟧ m ◻ f) (α C k g h)) ◃∎ 
+        =ₛ
+      ! (α C (⟦ C ⟧ k ◻ g) h f) ◃∎
+    pentagon-wc-!-rot1 = pre-rotate-out pentagon-wc-!
+
     pentagon-wc-rot1 : 
       ! (α C (⟦ C ⟧ k ◻ g) h f) ◃∙ ap (λ m → ⟦ C ⟧ m ◻ f) (α C k g h) ◃∙ α C k (⟦ C ⟧ g ◻ h) f ◃∎
         =ₛ
@@ -216,6 +245,12 @@ module _ {i j} {C : WildCat {i} {j}} (pent : pentagon-wc C)
           ! (α C k (⟦ C ⟧ g ◻ h) f) ◃∙ ! (ap (λ m → ⟦ C ⟧ m ◻ f) (α C k g h)) ◃∙ α C (⟦ C ⟧ k ◻ g) h f ◃∙ α C k g (⟦ C ⟧ h ◻ f) ◃∎
             =ₛ₁⟨ 1 & 1 & !-ap (λ m → ⟦ C ⟧ m ◻ f) (α C k g h) ⟩
           ! (α C k (⟦ C ⟧ g ◻ h) f) ◃∙ ap (λ m → ⟦ C ⟧ m ◻ f) (! (α C k g h)) ◃∙ α C (⟦ C ⟧ k ◻ g) h f ◃∙ α C k g (⟦ C ⟧ h ◻ f) ◃∎ ∎ₛ
+
+    pentagon-wc-rot4 :
+      ! (α C (⟦ C ⟧ k ◻ g) h f) ◃∙ ap (λ m → ⟦ C ⟧ m ◻ f) (α C k g h) ◃∙ α C k (⟦ C ⟧ g ◻ h) f ◃∙ ap (λ m → ⟦ C ⟧ k ◻ m) (α C g h f) ◃∎
+        =ₛ
+      α C k g (⟦ C ⟧ h ◻ f) ◃∎
+    pentagon-wc-rot4 = pre-rotate'-in pentagon-wc◃ 
 
 module _ {i₁ i₂ j₁ j₂} {C₁ : WildCat {i₁} {j₁}} {C₂ : WildCat {i₂} {j₂}} {F : Functor-wc C₁ C₂} (F-assoc : F-α-wc F)
   {a b c d : ob C₁} (h : hom C₁ c d) (g : hom C₁ b c) (f : hom C₁ a b) where
