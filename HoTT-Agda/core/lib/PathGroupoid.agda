@@ -219,6 +219,12 @@ module _ {i} {A : Type i} where
     → (idp {a = p}) ∙'2 (idp {a = q}) == idp
   idp∙'2idp idp idp = idp
 
+module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
+
+  ap-∙' : {x y z : A} (p : x == y) (q : y == z)
+    → ap f (p ∙' q) == ap f p ∙' ap f q
+  ap-∙' p idp = idp
+
 {- Coherence -}
 
 module _ {i} {A : Type i} where
@@ -235,21 +241,6 @@ module _ {i} {A : Type i} where
       ∙-assoc p (q ∙ r) s ◃∙
       ap (λ u → p ∙ u) (∙-assoc q r s) ◃∎
   ∙-assoc-pentagon idp idp r s = =ₛ-in idp
-
-module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
-
-  ap-∙' : {x y z : A} (p : x == y) (q : y == z)
-    → ap f (p ∙' q) == ap f p ∙' ap f q
-  ap-∙' p idp = idp
-
-  ap-inv-canc : {x y : A} (p : x == y) {z : B} (q : f x == z)
-    → (! (ap f p) ∙ q) ∙ ! (ap f (! p) ∙ q) == idp
-  ap-inv-canc idp idp = idp
-
-  trip-ap-inv : {x y : A} (p : x == y) {w z : B} (q : f x == w) (r : w == z)
-    → ! r ◃∙ (! q ∙ ap f p) ◃∎ =ₛ ! (! (ap f p) ∙ q ∙ r) ◃∎
-  trip-ap-inv idp idp idp = =ₛ-in idp
-
 
 {-
 Sometimes we need to restart a new section in order to have everything in the
