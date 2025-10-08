@@ -175,27 +175,8 @@ module _ {i} {A : Type i} where
     → ! p ∙ q == r → p == q ∙ ! r
   tri-exch {p = idp} {q = idp} {r} e = ap ! e
 
-  {- Horizontal compositions -}
-
-  infixr 80 _∙2_ _∙'2_
-
-  _∙2_ : {x y z : A} {p p' : x == y} {q q' : y == z} (α : p == p') (β : q == q')
-    → p ∙ q == p' ∙ q'
-  _∙2_ {p = idp} idp β = β
-
-  _∙'2_ : {x y z : A} {p p' : x == y} {q q' : y == z} (α : p == p') (β : q == q')
-    → p ∙' q == p' ∙' q'
-  _∙'2_ {q = idp} α idp = α
-
-  idp∙2idp : {x y z : A} (p : x == y) (q : y == z)
-    → (idp {a = p}) ∙2 (idp {a = q}) == idp
-  idp∙2idp idp idp = idp
-
-  idp∙'2idp : {x y z : A} (p : x == y) (q : y == z)
-    → (idp {a = p}) ∙'2 (idp {a = q}) == idp
-  idp∙'2idp idp idp = idp
-
-{- Coherence -}
+  trip-inv : {x y w z : A} {p : y == x} {q : y == z} {r : z == w} → ! r ∙ ! q ∙ p == ! (! p ∙ q ∙ r)
+  trip-inv {p = idp} {q = idp} {r = idp} = idp
 
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {f : A → B} {g : B → C} where
 
@@ -218,6 +199,34 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} where
 
 module _ {i} {A : Type i} where
 
+  {- Horizontal compositions -}
+
+  infixr 80 _∙2_ _∙'2_
+
+  _∙2_ : {x y z : A} {p p' : x == y} {q q' : y == z} (α : p == p') (β : q == q')
+    → p ∙ q == p' ∙ q'
+  _∙2_ {p = idp} idp β = β
+
+  _∙'2_ : {x y z : A} {p p' : x == y} {q q' : y == z} (α : p == p') (β : q == q')
+    → p ∙' q == p' ∙' q'
+  _∙'2_ {q = idp} α idp = α
+
+  idp∙2idp : {x y z : A} (p : x == y) (q : y == z)
+    → (idp {a = p}) ∙2 (idp {a = q}) == idp
+  idp∙2idp idp idp = idp
+
+  idp∙'2idp : {x y z : A} (p : x == y) (q : y == z)
+    → (idp {a = p}) ∙'2 (idp {a = q}) == idp
+  idp∙'2idp idp idp = idp
+
+{- Coherence -}
+
+module _ {i} {A : Type i} where
+
+  RUnCoh : {x y : A} (q : x == y) →
+    ! (∙-unit-r (! q)) ∙ ∙-unit-r (! q) ∙ ap ! (! (∙-unit-r q)) == ap ! (! (∙-unit-r q) ∙ idp)
+  RUnCoh idp = idp
+
   ∙-assoc-pentagon : {v w x y z : A} (p : v == w) (q : w == x) (r : x == y) (s : y == z)
     → ∙-assoc (p ∙ q) r s ◃∙
       ∙-assoc p q (r ∙ s) ◃∎
@@ -237,29 +246,10 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → (! (ap f p) ∙ q) ∙ ! (ap f (! p) ∙ q) == idp
   ap-inv-canc idp idp = idp
 
-  trip-ap-inv-p : {x y : A} {p : x == y} {w z : B} {q : f x == w} {r : w == z}
-    → ! r ∙ (! q ∙ ap f p) == ! (! (ap f p) ∙ q ∙ r)
-  trip-ap-inv-p {p = idp} {q = idp} {r = idp} = idp
-
   trip-ap-inv : {x y : A} (p : x == y) {w z : B} (q : f x == w) (r : w == z)
     → ! r ◃∙ (! q ∙ ap f p) ◃∎ =ₛ ! (! (ap f p) ∙ q ∙ r) ◃∎
   trip-ap-inv idp idp idp = =ₛ-in idp
 
-  ap-concat-drev : {x y z : A} {p : x == y} {q : x == z} {w : B} {r  : f z == w}
-    → (ap f q ∙ r) ∙ ! (ap f (! p ∙ q) ∙ r) == ap f p
-  ap-concat-drev {p = idp} {q = idp} {r = idp} = idp
-
-module _ {i} {A : Type i} {x y : A} where
-
-  left-canc : {z : A} (p : x == y) {r : x =-= z} → r =ₛ p ◃∙ ! p ◃∙ ↯ r ◃∎
-  left-canc idp = =ₛ-in idp
-
-  trip-inv : {w z : A} {p : y == x} {q : y == z} {r : z == w} → ! r ∙ ! q ∙ p == ! (! p ∙ q ∙ r)
-  trip-inv {p = idp} {q = idp} {r = idp} = idp
-
-  RUnCoh : (q : x == y) →
-    ! (∙-unit-r (! q)) ∙ ∙-unit-r (! q) ∙ ap ! (! (∙-unit-r q)) == ap ! (! (∙-unit-r q) ∙ idp)
-  RUnCoh idp = idp
 
 {-
 Sometimes we need to restart a new section in order to have everything in the
