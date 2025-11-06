@@ -1,7 +1,8 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
-open import lib.types.Graph
+open import lib.SIP
+open import lib.types.Pi
 open import lib.types.Sigma
 open import lib.wild-cats.WildCat
 
@@ -23,81 +24,81 @@ module _ {i j} {C : WildCat {i} {j}} where
 
   iso-wc-id : C iso-wc C
   fst (fst iso-wc-id) = idfWC C
-  fst (snd (fst iso-wc-id)) f = ap-idf-idp (lamb C f)
-  fst (snd (snd (fst iso-wc-id))) f = ap-idf-idp (ρ C f)
+  fst (snd (fst iso-wc-id)) f = ap-idf-idp (ρ C f)
+  fst (snd (snd (fst iso-wc-id))) f = ap-idf-idp (lamb C f)
   snd (snd (snd (fst iso-wc-id))) h g f = ! (ap-idf-idp (α C h g f))
   snd iso-wc-id = idf-is-equiv (ob C) , λ a b → idf-is-equiv (hom C a b)
 
 
-{-
-  tot-iso-wc : Type ?
+  tot-iso-wc : Type (lmax (lsucc i) (lsucc j))
   tot-iso-wc =
-    [ (D₀ , F₀ , _) ∈ Σ (Type i) (λ D₀ → B₀ ≃ D₀) ] ×
-      [ (homD , F₁) ∈ Σ (D₀ × D₀ → Type j) (λ homD → ((a , b) : B₀ × B₀) → hom ξB a b ≃ homD (F₀ a , F₀ b)) ] ×
-        [ (id₁D , F-id) ∈ Σ ((a : D₀) → homD (a , a)) (λ id₁D → ∀ a → (–> (F₁ (a , a)) (id₁ ξB a) == id₁D (F₀ a))) ] ×
+    [ (D₀ , F₀ , _) ∈ Σ (Type i) (λ D₀ → ob C ≃ D₀) ] ×
+     [ (homD , F₁) ∈ Σ (D₀ × D₀ → Type j) (λ homD → ((a , b) : ob C × ob C) → hom C a b ≃ homD (F₀ a , F₀ b)) ] ×
+        [ (id₁D , F-id) ∈ Σ ((a : D₀) → homD (a , a)) (λ id₁D → ∀ a → (–> (F₁ (a , a)) (id₁ C a) == id₁D (F₀ a))) ] ×
           [ (◻-D , F-◻) ∈  Σ ((((a , b , c) , _) : Σ (D₀ × D₀ × D₀) (λ (a , b , c) → homD (b , c) × homD (a , b))) → homD (a , c))
-            (λ ◻-D → (((a , b , c) , (g , f)) : Σ (B₀ × B₀ × B₀) (λ (a , b , c) →  hom ξB b c × hom ξB a b)) →
-              –> (F₁ (a , c)) (⟦ ξB ⟧ g ◻ f) == ◻-D (_ , (–> (F₁ (b , c)) g ,  –> (F₁ (a , b)) f))) ] ×
+            (λ ◻-D → (((a , b , c) , (g , f)) : Σ (ob C × ob C × ob C) (λ (a , b , c) →  hom C b c × hom C a b)) →
+              –> (F₁ (a , c)) (⟦ C ⟧ g ◻ f) == ◻-D (_ , (–> (F₁ (b , c)) g ,  –> (F₁ (a , b)) f))) ] ×
             [ (ρD , _) ∈ Σ ((((a , b) , f) : Σ (D₀ × D₀) (λ (a , b) → homD (a , b))) → f == ◻-D (_ , (f , id₁D a)))
-              (λ ρD → (((a , b) , f) : Σ (B₀ × B₀) (λ (a , b) → hom ξB a b)) →
-                ap (–> (F₁ (a , b))) (ρ ξB f) ∙ F-◻ (_ , (f , id₁ ξB a)) ∙ ap (λ m → ◻-D (_ , (–> (F₁ (a , b)) f , m))) (F-id a)
+              (λ ρD → (((a , b) , f) : Σ (ob C × ob C) (λ (a , b) → hom C a b)) →
+                ap (–> (F₁ (a , b))) (ρ C f) ∙ F-◻ (_ , (f , id₁ C a)) ∙ ap (λ m → ◻-D (_ , (–> (F₁ (a , b)) f , m))) (F-id a)
                   ==
                 ρD (_ , –> (F₁ (a , b)) f)) ] ×
               [ (lambD , _) ∈  Σ ((((a , b) , f) : Σ (D₀ × D₀) (λ (a , b) → homD (a , b))) → f == ◻-D (_ , (id₁D b , f)))
-                (λ lambD → (((a , b) , f) : Σ (B₀ × B₀) (λ (a , b) → hom ξB a b)) →
-                  ap (–> (F₁ (a , b))) (lamb ξB f) ∙ F-◻ (_ , (id₁ ξB b , f)) ∙ ap (λ m → ◻-D (_ , (m , –> (F₁ (a , b)) f))) (F-id b)
+                (λ lambD → (((a , b) , f) : Σ (ob C × ob C) (λ (a , b) → hom C a b)) →
+                  ap (–> (F₁ (a , b))) (lamb C f) ∙ F-◻ (_ , (id₁ C b , f)) ∙ ap (λ m → ◻-D (_ , (m , –> (F₁ (a , b)) f))) (F-id b)
                     ==
                   lambD (_ , –> (F₁ (a , b)) f)) ] ×
-                 [ (αD , _) ∈ Σ ((((a , b , c , d) , (h , g , f)) : Σ (D₀ × D₀ × D₀ × D₀)
+                 Σ ((((a , b , c , d) , (h , g , f)) : Σ (D₀ × D₀ × D₀ × D₀)
                    (λ (a , b , c , d) → homD (c , d) × homD (b , c) × homD (a , b)))
-                     → ◻-D (_ , (h , ◻-D (_ , (g , f)))) == ◻-D (_ , (◻-D (_ , (h , g)) , f)))
-                     (λ αD → (((a , b , c , d) , (h , g , f)) : Σ (B₀ × B₀ × B₀ × B₀)
-                       (λ (a , b , c , d) → hom ξB c d × hom ξB b c × hom ξB a b)) →
-                         ! (ap (λ m → ◻-D (_ , (–> (F₁ (c , d)) h , m))) (F-◻ (_ , (g , f)))) ∙
-                         ! (F-◻ (_ , (h , ⟦ ξB ⟧ g ◻ f))) ∙
-                         ap (–> (F₁ (a , d))) (α ξB h g f) ∙
-                         F-◻ (_ , (⟦ ξB ⟧ h ◻ g , f)) ∙
-                         ap (λ m → ◻-D (_ , (m , –> (F₁ (a , b)) f))) (F-◻ (_ , (h , g)))
+                     → ◻-D (_ , (◻-D (_ , (h , g)) , f)) == ◻-D (_ , (h , ◻-D (_ , (g , f)))))
+                     (λ αD → (((a , b , c , d) , (h , g , f)) : Σ (ob C × ob C × ob C × ob C)
+                       (λ (a , b , c , d) → hom C c d × hom C b c × hom C a b)) →
+                         F-◻ (_ , (⟦ C ⟧ h ◻ g , f)) ∙
+                         ap (λ m → ◻-D (_ , (m , –> (F₁ (a , b)) f))) (F-◻ (_ , (h , g))) ∙
+                         αD (_ , (–> (F₁ (c , d)) h , –> (F₁ (b , c)) g , –> (F₁ (a , b)) f))
                            ==
-                         αD (_ , (–> (F₁ (c , d)) h , –> (F₁ (b , c)) g , –> (F₁ (a , b)) f))) ] ×
-                   [ triD ∈
-                     ((((a , b , c) , (f , g)) : Σ (D₀ × D₀ × D₀)
-                       (λ (a , b , c) → homD (a , b) × homD (b , c))) →
-                         αD (_ , (g , (id₁D b) , f))
-                           ==
-                         ! (ap (λ m → ◻-D (_ , (g , m))) (lambD (_ , f))) ∙ ap (λ m → ◻-D (_ , (m , f))) (ρD (_ , g))) ] ×
-                     [ pentD ∈
-                       ((((a , b , c , d , e) , (f , g , h , i)) : Σ (D₀ × D₀ × D₀ × D₀ × D₀)
-                         (λ (a , b , c , d , e) → homD (a , b) × homD (b , c) × homD (c , d) × homD (d , e))) →
-                           αD (_ , (i , h , ◻-D (_ , (g , f)))) ∙ αD (_ , ((◻-D (_ , (i , h))) , g , f))
-                             ==
-                           ap (λ m → ◻-D (_ , (i , m))) (αD (_ , (h , g , f))) ∙
-                           αD (_ , (i , ◻-D (_ , (h , g)) , f)) ∙
-                           ap (λ m → ◻-D (_ , (m , f))) (αD (_ , (i , h , g)))) ] ×
-                       ({a b : D₀} → has-level 1 (homD (a , b)))
+                         ap (–> (F₁ (a , d))) (α C h g f) ∙
+                         F-◻ (_ , (h , ⟦ C ⟧ g ◻ f)) ∙
+                         ap (λ m → ◻-D (_ , (–> (F₁ (c , d)) h , m))) (F-◻ (_ , (g , f))))
+ 
+  abstract
+    wc-contr-aux : is-contr tot-iso-wc
+    wc-contr-aux = equiv-preserves-level ((Σ-contr-red ≃-tot-contr)⁻¹)
+      {{equiv-preserves-level ((Σ-contr-red ≃-∼-tot-contr)⁻¹)
+        {{equiv-preserves-level ((Σ-contr-red (funhom-contr {f = id₁ C}))⁻¹)
+          {{equiv-preserves-level ((Σ-contr-red (funhom-contr {f = λ (_ , (g , f)) → ⟦ C ⟧ g ◻ f}))⁻¹)
+            {{equiv-preserves-level ((Σ-contr-red (funhom-contr-∼ {f = λ (_ , f) → ap (λ v → v) (ρ C f) ∙ idp}
+              (λ (_ , f) → ap-idf-idp (ρ C f))))⁻¹)
+              {{equiv-preserves-level ((Σ-contr-red (funhom-contr-∼ {f = λ (_ , f) → ap (λ v → v) (lamb C f) ∙ idp}
+                (λ (_ , f) → ap-idf-idp (lamb C f))))⁻¹)
+                {{funhom-contr-to}}}}}}}}}}}}
 
   abstract
     wc-contr : is-contr (Σ (WildCat {i} {j}) (λ D → C iso-wc D))
-    wc-contr = equiv-preserves-level lemma {{?}}
+    wc-contr = equiv-preserves-level lemma {{wc-contr-aux}}
       where
-        lemma : tot-iso-wc ≃ Σ (WildCat {i} {j}) (λ C → C iso-wc D)
+        lemma : tot-iso-wc ≃ Σ (WildCat {i} {j}) (λ D → C iso-wc D)
         lemma =
           equiv
-            ?
-            ?
-            ?
-            ?
+            (λ ((D₀ , F₀ , e₀) , (homD , F₁) , (id₁D , F-id) , (◻-D , F-◻) , (ρD , F-ρ) , (lambD , F-λ) , (αD , F-α)) →
+              wildcat D₀ (λ a b → homD (a , b)) id₁D (λ {a} {b} {c} g f → ◻-D ((a , b , c) , g , f))
+                (λ {a} {b} f → ρD ((a , b) , f)) (λ {a} {b} f → lambD ((a , b) , f))
+                (λ {a} {b} {c} {d} h g f → αD ((a , b , c , d) , h , g , f)) ,
+                ((functor-wc F₀ (λ {a} {b} f → –> (F₁ (a , b)) f) F-id (λ {a} {b} {c} f g → F-◻ ((a , b , c) , g , f) )) ,
+                  ((λ {a} {b} f → F-ρ ((a , b) , f)) , ((λ {a} {b} f → F-λ ((a , b) , f)) , (λ {a} {b} {c} {d} h g f → F-α ((a , b , c , d) , h , g , f))))) ,
+                (e₀ , (λ a b → snd (F₁ (a , b)))))
+            (λ (D , (F , ρF , lambF , αF) , oe , ae) →
+              (ob D , (obj F) , oe) , (((λ (a , b) → hom D a b) , λ (a , b) → (arr F) , (ae a b)) , ((id₁ D , id F) ,
+                (((λ ((a , b , c) , g , f) → ⟦ D ⟧ g ◻ f) , λ ((a , b , c) , g , f) → comp F f g) ,
+                (((λ ((a , b) , f) → ρ D f) , λ ((a , b) , f) → ρF f) , ((λ ((a , b) , f) → lamb D f) , λ ((a , b) , f) → lambF f) ,
+                (λ ((a , b , c , d) , h , g , f) → α D h g f ) , λ ((a , b , c , d) , h , g , f) → αF h g f)))))
+            (λ _ → idp)
+            (λ _ → idp)
 
-  wc-ind : ∀ {k} (P : ((_ , ξC)  : Bicat j i) → (ξB iso-wc ξC → Type k))
-    → P _ iso-wc-id → {C@(_ , ξC) : Bicat j i} (p : ξB iso-wc ξC) → P C p
+  wc-ind : ∀ {k} (P : (D  : WildCat {i} {j}) → (C iso-wc D → Type k))
+    → P _ iso-wc-id → {D  : WildCat {i} {j}} (p : C iso-wc D) → P D p
   wc-ind P = ID-ind-map P wc-contr
 
-  wc-ind-β : ∀ {k} (P : ((_ , ξC) : Bicat j i) → (ξB iso-wc ξC → Type k))
+  wc-ind-β : ∀ {k} (P : (D : WildCat {i} {j}) → (C iso-wc D → Type k))
     → (r : P _ iso-wc-id) → wc-ind P r iso-wc-id == r
   wc-ind-β P = ID-ind-map-β P wc-contr
-
-module _ {i j : ULevel} where
-
-  iso-wc-to-== : {B@(_ , ξB) C@(_ , ξC) : Bicat j i} → ξB iso-wc ξC → B == C
-  iso-wc-to-== {B@(_ , ξB)} = wc-ind ξB (λ C _ → B == C) idp
--}
