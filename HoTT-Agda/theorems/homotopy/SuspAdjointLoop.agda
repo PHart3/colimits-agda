@@ -11,18 +11,6 @@ open import lib.wild-cats.WildCats
 
 module homotopy.SuspAdjointLoop where
 
-SuspFunctor : ∀ {i} → PtdFunctor i i
-obj SuspFunctor = ⊙Susp
-arr SuspFunctor = ⊙Susp-fmap
-id SuspFunctor = ⊙Susp-fmap-idf
-comp SuspFunctor f g = ⊙Susp-fmap-∘ g f
-
-LoopFunctor : ∀ {i} → PtdFunctor i i
-obj LoopFunctor = ⊙Ω
-arr LoopFunctor = ⊙Ω-fmap
-id LoopFunctor _ = ⊙Ω-fmap-idf
-comp LoopFunctor f g = ⊙Ω-fmap-∘ g f
-
 module _ {i} (X : Ptd i) where
 
   η : de⊙ X → Ω (⊙Susp X)

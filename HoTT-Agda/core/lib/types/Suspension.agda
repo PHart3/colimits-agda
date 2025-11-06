@@ -7,6 +7,9 @@ open import lib.types.Pushout
 open import lib.types.Unit
 open import lib.types.Paths
 open import lib.types.PushoutFmap
+open import lib.wild-cats.WildCat
+open import lib.wild-cats.Ptd-wc
+open import Cos-wc
 
 -- Suspension is defined as a particular case of pushout
 
@@ -187,3 +190,9 @@ module _ {i j} {A : Type i} {B : Type j} (eq : A ≃ B) where
 
   Susp-emap : Susp A ≃ Susp B
   Susp-emap = Pushout-emap susp-span-emap
+
+SuspFunctor : ∀ {i} → PtdFunctor i i
+obj SuspFunctor = ⊙Susp
+arr SuspFunctor = ⊙Susp-fmap
+id SuspFunctor = ⊙Susp-fmap-idf
+comp SuspFunctor f g = ⊙Susp-fmap-∘ g f

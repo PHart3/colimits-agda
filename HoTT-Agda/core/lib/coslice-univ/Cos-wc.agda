@@ -1,8 +1,9 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
-open import lib.wild-cats.WildCats
+open import lib.wild-cats.WildCat
 open import lib.wild-cats.Cocone-wc-SIP
+open import lib.wild-cats.Adjoint
 open import SIP-CosMap
 open import CosMap-conv
 
