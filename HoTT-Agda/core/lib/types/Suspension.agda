@@ -8,6 +8,7 @@ open import lib.types.Unit
 open import lib.types.Paths
 open import lib.types.PushoutFmap
 open import lib.wild-cats.WildCat
+open import lib.wild-cats.Iso-wc
 open import lib.wild-cats.Ptd-wc
 open import Cos-wc
 
@@ -196,3 +197,6 @@ obj SuspFunctor = ⊙Susp
 arr SuspFunctor = ⊙Susp-fmap
 id SuspFunctor = ⊙Susp-fmap-idf
 comp SuspFunctor f g = ⊙Susp-fmap-∘ g f
+
+SuspFunctor-Cos : ∀ {i} → Functor-wc (Coslice-wc Unit i) (Coslice-wc Unit i)
+SuspFunctor-Cos = wc-iso-ef Ptd-Cos-iso SuspFunctor

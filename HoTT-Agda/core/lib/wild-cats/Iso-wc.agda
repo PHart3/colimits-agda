@@ -110,3 +110,7 @@ module _ {i j} {C : WildCat {i} {j}} where
 
   wc-iso-ef-β : {F : Functor-wc C C} → wc-iso-ef iso-wc-id F == F
   wc-iso-ef-β {F} = app= (wc-ind-β (λ D i → Functor-wc C C → Functor-wc D D) (idf (Functor-wc C C))) F
+
+  wc-iso-ef-same  : ∀ {k} (P : {D : WildCat {i} {j}} (F : Functor-wc D D) → Type k)
+    {D : WildCat {i} {j}} {e : C iso-wc D} {F : Functor-wc C C} → P F → P (wc-iso-ef e F)
+  wc-iso-ef-same P {D} {e} = wc-ind (λ D e →  {F : Functor-wc C C} → P F → P (wc-iso-ef e F)) (coe (ap P (! wc-iso-ef-β))) e
