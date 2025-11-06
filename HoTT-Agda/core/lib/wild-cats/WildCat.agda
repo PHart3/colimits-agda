@@ -54,6 +54,14 @@ record Functor-wc {i₁ j₁ i₂ j₂} (B : WildCat {i₁} {j₁}) (C : WildCat
     comp : {a b c : ob B} (f : hom B a b) (g : hom B b c) → arr (⟦ B ⟧ g ◻ f) == ⟦ C ⟧ arr g ◻ arr f
 open Functor-wc public
 
+module _ {i j} (B : WildCat {i} {j}) where
+
+  idfWC : Functor-wc B B
+  obj idfWC = idf (ob B)
+  arr idfWC = λ f → f
+  id idfWC _ = idp
+  comp idfWC _ _ = idp
+
 module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B : WildCat {i₁} {j₁}} {C : WildCat {i₂} {j₂}} {D : WildCat {i₃} {j₃}}  where
 
   infixr 60 _∘WC_
@@ -176,6 +184,16 @@ pentagon-wc-ty _ _ _ _ = idp
 bicat-wc : ∀ {i j} → Type (lmax (lsucc i) (lsucc j))
 bicat-wc {i} {j} = Σ (WildCat {i} {j}) (λ C → triangle-wc C × pentagon-wc C)
 
+F-lamb-wc : ∀ {i₁ i₂ j₁ j₂} {C₁ : WildCat {i₁} {j₁}} {C₂ : WildCat {i₂} {j₂}}
+  → Functor-wc C₁ C₂ → Type (lmax (lmax i₁ j₁) j₂)
+F-lamb-wc {C₁ = C₁} {C₂} F = {a b : ob C₁} (f : hom C₁ a b) →
+  ap (arr F) (lamb C₁ f) ∙ comp F f (id₁ C₁ b) ∙ ap (λ m → ⟦ C₂ ⟧ m ◻ arr F f) (id F b) == lamb C₂ (arr F f)
+
+F-ρ-wc : ∀ {i₁ i₂ j₁ j₂} {C₁ : WildCat {i₁} {j₁}} {C₂ : WildCat {i₂} {j₂}}
+  → Functor-wc C₁ C₂ → Type (lmax (lmax i₁ j₁) j₂)
+F-ρ-wc {C₁ = C₁} {C₂} F = {a b : ob C₁} (f : hom C₁ a b) →
+  ap (arr F) (ρ C₁ f) ∙ comp F (id₁ C₁ a) f ∙ ap (λ m → ⟦ C₂ ⟧ arr F f ◻ m) (id F a) == ρ C₂ (arr F f)
+
 F-α-wc : ∀ {i₁ i₂ j₁ j₂} {C₁ : WildCat {i₁} {j₁}} {C₂ : WildCat {i₂} {j₂}}
   → Functor-wc C₁ C₂ → Type (lmax (lmax i₁ j₁) j₂)
 F-α-wc {C₁ = C₁} {C₂} F = {a b c d : ob C₁} (h : hom C₁ c d) (g : hom C₁ b c) (f : hom C₁ a b) →
@@ -186,6 +204,9 @@ F-α-wc {C₁ = C₁} {C₂} F = {a b c d : ob C₁} (h : hom C₁ c d) (g : hom
   ap (arr F) (α C₁ h g f) ∙
   comp F (⟦ C₁ ⟧ g ◻ f) h ∙
   ap (λ m → ⟦ C₂ ⟧ arr F h ◻ m) (comp F f g)
+
+F-bc : ∀ {i₁ i₂ j₁ j₂} → WildCat {i₁} {j₁} → WildCat {i₂} {j₂} → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
+F-bc C₁ C₂ = Σ (Functor-wc C₁ C₂) (λ F → F-lamb-wc F × F-ρ-wc F × F-α-wc F)
 
 module _ {i j} {C : WildCat {i} {j}} (pent : pentagon-wc C)
   {a b c d e : ob C} (k : hom C d e) (g : hom C c d) (h : hom C b c) (f : hom C a b) where
