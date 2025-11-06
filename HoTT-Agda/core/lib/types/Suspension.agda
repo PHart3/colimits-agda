@@ -6,6 +6,7 @@ open import lib.types.Pointed
 open import lib.types.Pushout
 open import lib.types.Unit
 open import lib.types.Paths
+open import lib.types.PushoutFmap
 
 -- Suspension is defined as a particular case of pushout
 
@@ -177,3 +178,12 @@ module _ {i j k} {s : Span {i} {j} {k}} where
 
     ⊙extract-glue : ⊙[ Pushout s , left x₀ ] ⊙→ ⊙[ Susp (Span.C s) , north ]
     ⊙extract-glue = extract-glue , idp
+
+module _ {i j} {A : Type i} {B : Type j} (eq : A ≃ B) where
+
+  susp-span-emap : SpanEquiv (susp-span A) (susp-span B)
+  susp-span-emap = ( span-map (idf _) (idf _) (fst eq) (comm-sqr λ _ → idp) (comm-sqr λ _ → idp)
+                  , idf-is-equiv _ , idf-is-equiv _ , snd eq)
+
+  Susp-emap : Susp A ≃ Susp B
+  Susp-emap = Pushout-emap susp-span-emap
