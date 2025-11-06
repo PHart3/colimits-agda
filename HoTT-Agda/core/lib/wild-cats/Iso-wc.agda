@@ -96,9 +96,17 @@ module _ {i j} {C : WildCat {i} {j}} where
             (λ _ → idp)
 
   wc-ind : ∀ {k} (P : (D  : WildCat {i} {j}) → (C iso-wc D → Type k))
-    → P _ iso-wc-id → {D  : WildCat {i} {j}} (p : C iso-wc D) → P D p
+    → P C iso-wc-id → {D  : WildCat {i} {j}} (p : C iso-wc D) → P D p
   wc-ind P = ID-ind-map P wc-contr
 
   wc-ind-β : ∀ {k} (P : (D : WildCat {i} {j}) → (C iso-wc D → Type k))
-    → (r : P _ iso-wc-id) → wc-ind P r iso-wc-id == r
+    → (r : P C iso-wc-id) → wc-ind P r iso-wc-id == r
   wc-ind-β P = ID-ind-map-β P wc-contr
+
+  -- transporting a wild endofunctor across an isomorphism
+  
+  wc-iso-ef : {D : WildCat {i} {j}} → C iso-wc D → Functor-wc C C → Functor-wc D D
+  wc-iso-ef = wc-ind (λ D i → Functor-wc C C → Functor-wc D D) (idf (Functor-wc C C))
+
+  wc-iso-ef-β : {F : Functor-wc C C} → wc-iso-ef iso-wc-id F == F
+  wc-iso-ef-β {F} = app= (wc-ind-β (λ D i → Functor-wc C C → Functor-wc D D) (idf (Functor-wc C C))) F
