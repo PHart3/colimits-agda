@@ -2,9 +2,13 @@
 
 open import lib.Basics
 open import lib.SIP
+open import lib.types.Graph
 open import lib.types.Pi
 open import lib.types.Sigma
 open import lib.wild-cats.WildCat
+open import lib.wild-cats.Diagram-wc
+open import lib.wild-cats.Colim-wc
+open import lib.wild-cats.Cocone-wc-SIP
 
 -- isomorphism of wild categories and associated SIP based on univalence
 
@@ -28,7 +32,6 @@ module _ {i j} {C : WildCat {i} {j}} where
   fst (snd (snd (fst iso-wc-id))) f = ap-idf-idp (lamb C f)
   snd (snd (snd (fst iso-wc-id))) h g f = ! (ap-idf-idp (α C h g f))
   snd iso-wc-id = idf-is-equiv (ob C) , λ a b → idf-is-equiv (hom C a b)
-
 
   tot-iso-wc : Type (lmax (lsucc i) (lsucc j))
   tot-iso-wc =
@@ -103,6 +106,24 @@ module _ {i j} {C : WildCat {i} {j}} where
     → (r : P C iso-wc-id) → wc-ind P r iso-wc-id == r
   wc-ind-β P = ID-ind-map-β P wc-contr
 
+  -- reverse isomorphism
+  wc-iso-rev : {D : WildCat {i} {j}} → C iso-wc D → D iso-wc C
+  wc-iso-rev = wc-ind (λ D _ → D iso-wc C) iso-wc-id
+
+  -- preservation of colimits by isomorphisms
+  wc-iso-colim-prsrv : ∀ {ℓv ℓe} {G : Graph ℓv ℓe} {F : Diagram G C} {a : ob C} {K : Cocone-wc F a}
+    {D : WildCat {i} {j}} ((iso , _) : C iso-wc D) → is-colim K → is-colim (F-coc (fst iso) K) 
+  wc-iso-colim-prsrv {G = G} {F} {a} {K}= wc-ind (λ D (iso , _) → is-colim K → is-colim (F-coc (fst iso) K))
+    λ cK → coe (ap is-colim (coc-to-== G ((λ _ → idp) , (λ f → ! (ap-idf (tri K f)))))) cK
+ 
+  -- creation of terminal objects by isomorphisms
+  
+  wc-iso-term-prsv : {D : WildCat {i} {j}} ((F , _) : C iso-wc D) {a : ob C} → is-term-wc C a → is-term-wc D (obj (fst F) a)
+  wc-iso-term-prsv = wc-ind (λ D ((F , _) : C iso-wc D) → {a : ob C} → is-term-wc C a → is-term-wc D (obj (fst F) a)) λ t → t
+
+  wc-iso-term-refct : {D : WildCat {i} {j}} ((F , _) : C iso-wc D) {a : ob C} → is-term-wc D (obj (fst F) a) → is-term-wc C a 
+  wc-iso-term-refct = wc-ind (λ D ((F , _) : C iso-wc D) → {a : ob C} → is-term-wc D (obj (fst F) a) → is-term-wc C a) λ t → t
+
   -- transporting a wild endofunctor across an isomorphism
   
   wc-iso-ef : {D : WildCat {i} {j}} → C iso-wc D → Functor-wc C C → Functor-wc D D
@@ -114,11 +135,3 @@ module _ {i j} {C : WildCat {i} {j}} where
   wc-iso-ef-same  : ∀ {k} (P : {D : WildCat {i} {j}} (F : Functor-wc D D) → Type k)
     {D : WildCat {i} {j}} {e : C iso-wc D} {F : Functor-wc C C} → P F → P (wc-iso-ef e F)
   wc-iso-ef-same P {D} {e} = wc-ind (λ D e →  {F : Functor-wc C C} → P F → P (wc-iso-ef e F)) (coe (ap P (! wc-iso-ef-β))) e
-
-  -- creation of terminal objects by isomorphisms
-  
-  wc-iso-term-prsv : {D : WildCat {i} {j}} ((F , _) : C iso-wc D) {a : ob C} → is-term-wc C a → is-term-wc D (obj (fst F) a)
-  wc-iso-term-prsv = wc-ind (λ D ((F , _) : C iso-wc D) → {a : ob C} → is-term-wc C a → is-term-wc D (obj (fst F) a)) λ t → t
-
-  wc-iso-term-refct : {D : WildCat {i} {j}} ((F , _) : C iso-wc D) {a : ob C} → is-term-wc D (obj (fst F) a) → is-term-wc C a 
-  wc-iso-term-refct = wc-ind (λ D ((F , _) : C iso-wc D) → {a : ob C} → is-term-wc D (obj (fst F) a) → is-term-wc C a) λ t → t

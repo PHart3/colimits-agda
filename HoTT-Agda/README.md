@@ -48,7 +48,9 @@ The main library is more or less divided into three parts.
 
 This directory contains a proof of the 2-coherence of the Suspension-Loop adjunction.
 This property of the adjunction lets us prove that the Suspension functor preserves
-colimits. The proof of 2-coherence relies on our work on homogeneous types.
+colimits. As a corollary, we prove that pointed colimits preserve acyclic types via 
+the construction of coslice colimits from `../Colimit-code`. Note that the proof of 
+2-coherence relies on our work on homogeneous types.
 
 ### Modality (directory `theorems/modality/`)
 
