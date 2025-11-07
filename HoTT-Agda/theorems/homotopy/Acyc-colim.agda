@@ -9,7 +9,7 @@ open import homotopy.Susp-colim
 
 open import CosCol-Coc-contr
 
--- Acyclic types are closed under (graph-indexed) pointed colimits.
+-- Pointed acyclic types are closed under (graph-indexed) pointed colimits.
 
 module homotopy.Acyc-colim where
 
