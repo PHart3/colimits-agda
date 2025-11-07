@@ -3,6 +3,8 @@
 open import lib.Basics
 open import lib.types.Pointed
 open import lib.types.Sigma
+open import lib.wild-cats.WildCat
+open import lib.wild-cats.Ptd-wc
 
 module lib.types.LoopSpace where
 
@@ -142,3 +144,9 @@ has-sect⊙.sect⊙-eq (⊙Ω-sect f (sect⊙ r-inv sect⊙-eq)) =
 Ω-fmap-∙ : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y) (p q : Ω X)
   → Ω-fmap F (p ∙ q) == Ω-fmap F p ∙ Ω-fmap F q
 Ω-fmap-∙ (f , idp) p q = ap-∙ f p q
+
+LoopFunctor : ∀ {i} → PtdFunctor i i
+obj LoopFunctor = ⊙Ω
+arr LoopFunctor = ⊙Ω-fmap
+id LoopFunctor _ = ⊙Ω-fmap-idf
+comp LoopFunctor f g = ⊙Ω-fmap-∘ g f

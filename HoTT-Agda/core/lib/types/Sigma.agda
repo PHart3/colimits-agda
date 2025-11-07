@@ -265,9 +265,6 @@ hfiber-Σ-fmap-r h {a} c = equiv to from to-from from-to
           from-to : (x : hfiber (Σ-fmap-r h) (a , c)) → from (to x) == x
           from-to ((_ , b) , idp) = idp
 
-{-
--- 2016/08/20 favonia: no one is using the following two functions.
-
 -- Two ways of simultaneously applying equivalences in each component.
 module _ {i₀ i₁ j₀ j₁} {A₀ : Type i₀} {A₁ : Type i₁}
          {B₀ : A₀ → Type j₀} {B₁ : A₁ → Type j₁} where
@@ -280,7 +277,6 @@ module _ {i₀ i₁ j₀ j₁} {A₀ : Type i₀} {A₁ : Type i₁}
   Σ-emap' u v = Σ A₀ B₀           ≃⟨ Σ-emap-r v ⟩
                 Σ A₀ (B₁ ∘ –> u)  ≃⟨ Σ-emap-l _ u ⟩
                 Σ A₁ B₁           ≃∎
--}
 
 ×-fmap : ∀ {i₀ i₁ j₀ j₁} {A₀ : Type i₀} {A₁ : Type i₁} {B₀ : Type j₀} {B₁ : Type j₁}
   → (h : A₀ → A₁) (k : B₀ → B₁) → (A₀ × B₀ → A₁ × B₁)

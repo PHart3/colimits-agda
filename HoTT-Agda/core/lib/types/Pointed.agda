@@ -424,3 +424,23 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} (⊙e : X ⊙≃ Y) where
       ⊙Bool→-to-idf
 ⊙Bool→-equiv-idf-nat F = (comm-sqr λ _ → idp) ,
   snd (⊙Bool→-equiv-idf _) , snd (⊙Bool→-equiv-idf _)
+
+-- converting between coslice under Unit
+open import Coslice
+open import SIP-CosMap
+
+Ptd-to-Cos : ∀ {i} → Ptd i → Coslice i _ Unit
+ty (Ptd-to-Cos X) = de⊙ X
+str (Ptd-to-Cos X) unit = pt X
+
+Cos-to-Ptd : ∀ {i} → Coslice i _ Unit → Ptd i
+de⊙ (Cos-to-Ptd X) = ty X
+pt (Cos-to-Ptd X) = str X unit
+
+Ptd-Cos-≃ : ∀ {i} → Ptd i ≃ (Coslice i _ Unit)
+Ptd-Cos-≃ = equiv Ptd-to-Cos Cos-to-Ptd (λ _ → idp) λ _ → idp
+
+open MapsCos Unit
+Ptd-Cos-hom≃ : ∀ {i j} {X : Ptd i} {Y : Coslice j _ Unit} → (X ⊙→ Cos-to-Ptd Y) ≃ (Ptd-to-Cos X *→ Y)
+Ptd-Cos-hom≃ = equiv (λ f → (fst f) , (λ _ → snd f)) (λ f → (fst f) , (snd f unit))
+  (λ (f , f₀) → UndFun∼-to-== ((λ _ → idp) , (λ _ → idp))) λ (f , f₀) → ⊙-crd∼-to-== ((λ _ → idp) , idp)

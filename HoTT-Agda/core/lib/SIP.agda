@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.types.Pi
 open import lib.types.Sigma
 
 module lib.SIP where
@@ -72,6 +73,16 @@ module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
 
   funhom-contr-to : is-contr (Σ (Π A B) (λ g → g ∼ f))
   funhom-contr-to = equiv-preserves-level (Σ-emap-r (λ g → app=-equiv)) {{pathto-is-contr f}}
+
+≃-∼-tot-contr : ∀ {i j} {A : Type i} {f : A → Type j}
+  → is-contr (Σ (A → Type j) (λ g → (x : A) → f x ≃ g x))
+≃-∼-tot-contr {f} = equiv-preserves-level (Σ-emap-r (λ g → Π-emap-r λ _ → ua-equiv ⁻¹)) {{funhom-contr}}
+
+module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
+
+  funhom-contr-∼ : {g : Π A B} → f ∼ g → is-contr (Σ (Π A B) (λ h → f ∼ h))
+  funhom-contr-∼ {g} H = has-level-in
+    ((g , H) , uncurry (∼-ind {f = f} (λ h p → _) (! (contr-path funhom-contr (g , H)))))
 
 -- helper equality
 
