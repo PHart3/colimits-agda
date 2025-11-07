@@ -118,6 +118,15 @@ fst (F-equiv-wc F {f = f} (g , _)) = arr F g
 fst (snd (F-equiv-wc F {a} {f = f} (g , li , _))) = ! (id F a) ∙ ap (arr F) li ∙ comp F f g 
 snd (snd (F-equiv-wc F {b = b} {f} (g , _ , ri))) =  ! (id F b) ∙ ap (arr F) ri ∙ comp F g f
 
+-- terminal object of a wild category
+is-term-wc : ∀ {i j} (C : WildCat {i} {j}) (a : ob C) → Type (lmax i j)
+is-term-wc C a = (x : ob C) → is-contr (hom C x a)
+
+term-uniq-wc : ∀ {i j} {C : WildCat {i} {j}} {a b : ob C} → is-term-wc C a → (tb : is-term-wc C b) → equiv-wc C (contr-center (tb a))
+fst (term-uniq-wc {a = a} {b} ta tb) = contr-center (ta b)
+fst (snd (term-uniq-wc {a = a} {b} ta tb)) = contr-has-all-paths {{(ta a)}} _ _
+snd (snd (term-uniq-wc {a = a} {b} ta tb)) = contr-has-all-paths {{(tb b)}} _ _
+
 Type-wc : (i : ULevel) → WildCat
 ob (Type-wc i) = Type i
 hom (Type-wc i) A B = A → B

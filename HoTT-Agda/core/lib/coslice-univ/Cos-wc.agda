@@ -1,6 +1,7 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
+open import lib.types.Unit
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Cocone-wc-SIP
 open import lib.wild-cats.Adjoint
@@ -52,7 +53,7 @@ module _ {j} (A : Type j) where
         aux : ∀ {ℓ} {A : Type ℓ} {x y z w : A} (p₁ : x == y) (p₂ : z == w) (p₃ : w == y)
           → ((p₁ ∙ ap (λ z → z) (! p₃) ∙' ! p₂) ∙ p₂) ∙ p₃ == ! (! p₁) ∙ idp
         aux idp idp p₃ = ap (λ p → p ∙ p₃) (∙-unit-r _ ∙ ap-idf (! p₃)) ∙ !-inv-l p₃
-
+        
   -- 2-coherence
 
   abstract
@@ -143,3 +144,17 @@ module _ {j} (A : Type j) where
   iso (free-forg-adj-cos {i}) {a = U} {x = V} = free-forg-cos A
   nat-cod free-forg-adj-cos _ _ = idp
   nat-dom free-forg-adj-cos _ _ = idp
+
+CosUnit-contr-term : ∀ {i} {X : ob (Coslice-wc Unit i)} → is-contr (ty X) → is-term-wc (Coslice-wc Unit i) X
+fst (has-level-apply (CosUnit-contr-term c Y)) = (λ _ → contr-center c) , (λ _ → contr-has-all-paths {{c}} _ _)
+snd (has-level-apply (CosUnit-contr-term c Y)) f = UndFun∼-to-== ((λ _ → contr-has-all-paths {{c}} _ _) ,
+  (λ unit → contr-has-all-paths {{=-preserves-contr c}} _ _))
+
+CosUnit-Unit-term : ∀ {i} → is-term-wc (Coslice-wc Unit i) (*[ (Lift Unit) , (λ _ → lift unit) ])
+fst (has-level-apply (CosUnit-Unit-term X)) = (λ _ → lift unit) , λ _ → idp 
+snd (has-level-apply (CosUnit-Unit-term X)) _ = pair= idp (λ= (λ _ → prop-has-all-paths {{=-preserves-level-instance}} _ _)) 
+
+CosUnit-term-contr : ∀ {i} {X : ob (Coslice-wc Unit i)} → is-term-wc (Coslice-wc Unit i) X → is-contr (ty X)
+CosUnit-term-contr {i} t = equiv-preserves-level
+  (_ , (eqv-wc-to-eqv-ty (F-equiv-wc (Forg-funct-cos Unit) (term-uniq-wc {C = Coslice-wc Unit i} CosUnit-Unit-term t))))
+

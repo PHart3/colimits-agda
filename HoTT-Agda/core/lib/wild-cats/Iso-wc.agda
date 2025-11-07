@@ -106,11 +106,19 @@ module _ {i j} {C : WildCat {i} {j}} where
   -- transporting a wild endofunctor across an isomorphism
   
   wc-iso-ef : {D : WildCat {i} {j}} → C iso-wc D → Functor-wc C C → Functor-wc D D
-  wc-iso-ef = wc-ind (λ D i → Functor-wc C C → Functor-wc D D) (idf (Functor-wc C C))
+  wc-iso-ef = wc-ind (λ D _ → Functor-wc C C → Functor-wc D D) (idf (Functor-wc C C))
 
   wc-iso-ef-β : {F : Functor-wc C C} → wc-iso-ef iso-wc-id F == F
-  wc-iso-ef-β {F} = app= (wc-ind-β (λ D i → Functor-wc C C → Functor-wc D D) (idf (Functor-wc C C))) F
+  wc-iso-ef-β {F} = app= (wc-ind-β (λ D _ → Functor-wc C C → Functor-wc D D) (idf (Functor-wc C C))) F
 
   wc-iso-ef-same  : ∀ {k} (P : {D : WildCat {i} {j}} (F : Functor-wc D D) → Type k)
     {D : WildCat {i} {j}} {e : C iso-wc D} {F : Functor-wc C C} → P F → P (wc-iso-ef e F)
   wc-iso-ef-same P {D} {e} = wc-ind (λ D e →  {F : Functor-wc C C} → P F → P (wc-iso-ef e F)) (coe (ap P (! wc-iso-ef-β))) e
+
+  -- creation of terminal objects by isomorphisms
+  
+  wc-iso-term-prsv : {D : WildCat {i} {j}} ((F , _) : C iso-wc D) {a : ob C} → is-term-wc C a → is-term-wc D (obj (fst F) a)
+  wc-iso-term-prsv = wc-ind (λ D ((F , _) : C iso-wc D) → {a : ob C} → is-term-wc C a → is-term-wc D (obj (fst F) a)) λ t → t
+
+  wc-iso-term-refct : {D : WildCat {i} {j}} ((F , _) : C iso-wc D) {a : ob C} → is-term-wc D (obj (fst F) a) → is-term-wc C a 
+  wc-iso-term-refct = wc-ind (λ D ((F , _) : C iso-wc D) → {a : ob C} → is-term-wc D (obj (fst F) a) → is-term-wc C a) λ t → t
