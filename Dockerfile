@@ -55,7 +55,7 @@ RUN /dist/agda --library-file=/dist/libraries ./Stability-ord.agda
 RUN /dist/agda --library-file=/dist/libraries ./Stability-cos-coc.agda
 
 WORKDIR /build/HoTT-Agda
-RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/Susp-colim.agda
+RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/Acyc-colim.agda
 RUN /dist/agda --library-file=/dist/libraries ./theorems/modality/Mod-colim.agda
 
 ####################################################################################################
