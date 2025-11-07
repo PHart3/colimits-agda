@@ -5,7 +5,7 @@
   - the associated [arXiv article](https://doi.org/10.48550/arXiv.2411.15103)
   - the preprint
     [On Left Adjoints Preserving Colimits in HoTT](https://phart3.github.io/2coher-preprint.pdf)
-    (based on the [HoTT/UF 2025 extended abstract](https://hott-uf.github.io/2025/abstracts/HoTTUF_2025_paper_9.pdf))
+    (accepted to CSL 2026)
   
   It has been checked with Agda 2.6.3 and 2.6.4.3
 
