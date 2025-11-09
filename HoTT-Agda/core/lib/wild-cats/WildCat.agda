@@ -143,7 +143,7 @@ eqv-wc-to-eqv-ty {i} {f = f} e = is-eq f (<–-wc (Type-wc i) e)
 -- triangle identity
 
 triangle-wc : ∀ {i j} (C : WildCat {i} {j}) → Type (lmax i j)
-triangle-wc C = {a b c : ob C} (g : hom C b c) (f : hom C a b)  → 
+triangle-wc C = {a b c : ob C} (g : hom C b c) (f : hom C a b) → 
   ap (λ m → ⟦ C ⟧ m ◻ f) (ρ C g) ∙
   α C g (id₁ C b) f
     ==
