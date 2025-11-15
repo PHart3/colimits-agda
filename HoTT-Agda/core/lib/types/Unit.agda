@@ -2,7 +2,6 @@
 
 open import lib.Basics
 open import lib.types.Lift
-open import lib.types.Paths
 
 module lib.types.Unit where
 
