@@ -106,6 +106,19 @@ module ColimitMap {Γ : Graph ℓv ℓe} {ℓd₁ ℓd₂} {F : Diag ℓd₁ Γ}
   comp-∼ (snd ColMap-mor) _ _ = idp
   comTri-∼ (snd ColMap-mor) g x = ColMap-β g x
 
+  CocMap-precmp : ∀ {ℓ} {T : Type ℓ} → Cocone G T → Cocone F T
+  comp (CocMap-precmp K) i = comp K i ∘ nat M i 
+  comTri (CocMap-precmp K) {j} {i} g x = ap (comp K j) (! (comSq M g x)) ∙ comTri K g (nat M i x)
+
+  Col-natsq-precmp : ∀ {ℓ} {T : Type ℓ} (m : Colim G → T)
+    → CocMap-precmp (PostComp (can-coc G) T m) == PostComp (can-coc F) T (m ∘ ColMap)
+  Col-natsq-precmp m = CocEq-to-== (coceq (λ _ _ → idp) (λ {i} {j} g x →
+    aux (comSq M g x) (cglue g (nat M i x)) ∙ ! (ap (ap m) (ColMap-β g x)) ∙ ∘-ap m ColMap (cglue g x)))
+    where
+      aux : ∀ {j} {v₁ v₂ : G # j} {u : Colim G} (p : v₁ == v₂) (q : cin j v₁ == u)
+        → ap (m ∘ cin j) (! p) ∙ ap m q == ap m (! (ap (cin j) p) ∙ q)
+      aux idp idp = idp
+
 open ColimitMap public
 
 module _ {Γ : Graph ℓv ℓe} where
