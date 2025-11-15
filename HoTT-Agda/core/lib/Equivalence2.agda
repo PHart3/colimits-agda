@@ -149,7 +149,7 @@ ua-∘e =
     (λ {A} {B} e₁ → ∀ {C} → ∀ (e₂ : B ≃ C) → ua (e₂ ∘e e₁) == ua e₁ ∙ ua e₂)
     (λ A → λ e₂ → ap ua (∘e-unit-r e₂) ∙ ap (λ w → (w ∙ ua e₂)) (! (ua-η idp)))
 
-{- Adjointion where hom = path -}
+{- Adjunction where hom = path -}
 
 module _ {i j} {A : Type i} {B : Type j} (e : A ≃ B) where
 
@@ -158,6 +158,21 @@ module _ {i j} {A : Type i} {B : Type j} (e : A ≃ B) where
 
   equiv-adj' : ∀ {a b} → (a == <– e b) → (–> e a == b)
   equiv-adj' p = ap (–> e) p ∙ (<–-inv-r e _)
+
+  equiv-adj-≃ : ∀ {a b} → (–> e a == b) ≃ (a == <– e b)
+  equiv-adj-≃ {a} = equiv equiv-adj equiv-adj' rt1 rt2
+    where
+    
+      rt1 : ∀ {b} (p : a == <– e b) → equiv-adj (equiv-adj' p) == p
+      rt1 {b} idp =
+        ap (λ t → ! (is-equiv.g-f (snd e) (is-equiv.g (snd e) b)) ∙ t) (<–-inv-adj' e b) ∙
+        !-inv-l (is-equiv.g-f (snd e) (is-equiv.g (snd e) b))
+
+      rt2 : ∀ {b} (p : –> e a == b) → equiv-adj' (equiv-adj p) == p
+      rt2 idp =
+        ap (λ t → ap (fst e) (! (is-equiv.g-f (snd e) a) ∙ idp) ∙ t) (! (<–-inv-adj e a)) ∙
+        ap (λ t → t ∙ ap (fst e) (is-equiv.g-f (snd e) a)) (ap (ap (fst e)) (∙-unit-r _)) ∙
+        ap-!-inv-l (fst e) (is-equiv.g-f (snd e) a)
 
 {- Type former equivalences involving Empty may require λ=. -}
 module _ {j} {B : Empty → Type j} where
@@ -224,3 +239,7 @@ replace-inverse : ∀ {i j} {A : Type i} {B : Type j} {f : A → B}
 replace-inverse {f = f} f-ise {g₁ = g₁} g∼ =
   is-eq f g₁ (λ b → ap f (! (g∼ b)) ∙ f-g b) (λ a → ! (g∼ (f a)) ∙ g-f a)
   where open is-equiv f-ise
+
+≃-==-contr : ∀ {i j} {A : Type i} {B : Type j} {b : B} (e : A ≃ B)
+  → is-contr (Σ A (λ a → b == –> e a))
+≃-==-contr e@(f , ise) = equiv-preserves-level (Σ-emap-r (λ a → equiv-adj-≃ (e ⁻¹)))

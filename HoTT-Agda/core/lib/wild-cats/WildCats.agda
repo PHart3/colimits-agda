@@ -13,3 +13,4 @@ open import lib.wild-cats.Limit public
 open import lib.wild-cats.Limit-map public
 open import lib.wild-cats.Ptd-wc public
 open import lib.wild-cats.WildCat public
+open import lib.wild-cats.WildNatTr public
