@@ -17,12 +17,12 @@ module lib.wild-cats.Iso-wc where
 module _ {i₁ i₂ j₁ j₂ : ULevel} where
 
   is-iso-wc : {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {j₂}}
-    → F-bc C D → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
+    → F-bc-wc C D → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
   is-iso-wc {C} (φ , _) = is-equiv (obj φ) × ((a b : ob C) → is-equiv (arr φ {a = a} {b}))
 
   infixr 70 _iso-wc_
   _iso-wc_ : WildCat {i₁} {j₁} → WildCat {i₂} {j₂} → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
-  C iso-wc D = Σ (F-bc C D) (λ φ → is-iso-wc φ)
+  C iso-wc D = Σ (F-bc-wc C D) (λ φ → is-iso-wc φ)
 
 module _ {i j} {C : WildCat {i} {j}} where
 
