@@ -331,3 +331,7 @@ module _ {ℓv ℓe : ULevel} {ℓ₁ ℓ₂} {D : WildCat {ℓv} {ℓe}} {C : W
         wftor-ind : ∀ {k} (Q : (F₂ : Functor-wc D C) → (wftor-ueqv F₁ F₂ → Type k))
           → Q F₁ wftor-ueqv-id → {F₂ : Functor-wc D C} (e : wftor-ueqv F₁ F₂) → Q F₂ e
         wftor-ind Q = ID-ind-map Q wftor-contr
+
+        wftor-ind-β : ∀ {k} (Q : (F₂ : Functor-wc D C) → (wftor-ueqv F₁ F₂ → Type k))
+          → (r : Q F₁ wftor-ueqv-id) → wftor-ind Q r wftor-ueqv-id == r
+        wftor-ind-β Q = ID-ind-map-β Q wftor-contr
