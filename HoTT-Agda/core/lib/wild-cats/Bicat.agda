@@ -232,6 +232,14 @@ module _ {i j} {C : WildCat {i} {j}} (trig : triangle-wc C) (pent : pentagon-wc 
       =ₛ₁⟨ !-ap (λ m → ⟦ C ⟧ m ◻ f) (lamb C g) ⟩
     ap (λ m → ⟦ C ⟧ m ◻ f) (! (lamb C g)) ◃∎ ∎ₛ
 
+  trig-lamb-rot3 :
+    lamb C (⟦ C ⟧ g ◻ f) ◃∙
+    ! (α C (id₁ C c) g f) ◃∙
+    ! (ap (λ m → ⟦ C ⟧ m ◻ f) (lamb C g)) ◃∎
+      =ₛ
+    []
+  trig-lamb-rot3 = !ₛ (post-rotate-in trig-lamb-rot1)
+
   trig-ρ :
     ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C f) ◃∙
     ! (α C g f (id₁ C a)) ◃∎
@@ -246,6 +254,14 @@ module _ {i j} {C : WildCat {i} {j}} (trig : triangle-wc C) (pent : pentagon-wc 
       =ₛ
     []
   trig-ρ-rot1 = post-rotate'-in trig-ρ
+
+  trig-ρ-rot2 :
+    ! (ρ C (⟦ C ⟧ g ◻ f)) ◃∙
+    ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C f) ◃∙
+    ! (α C g f (id₁ C a)) ◃∎
+      =ₛ
+    []
+  trig-ρ-rot2 = pre-rotate'-in trig-ρ
 
 module _ {i j} {C : WildCat {i} {j}} (trig : triangle-wc C) (pent : pentagon-wc C) where
 

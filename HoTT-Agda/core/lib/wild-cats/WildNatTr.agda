@@ -38,22 +38,15 @@ module _ {ℓv ℓe : ULevel} {ℓ₁ ℓ₂} {D : WildCat {ℓv} {ℓe}} {C : W
         
   open wild-pstrans
 
-  module _
-    (trig : triangle-wc C)
-    -- we also assume some standard properties of bicategories
-    (trig-lamb : {x y z : ob C} (f : hom C x y) (g : hom C y z) →
-      lamb C (⟦ C ⟧ g ◻ f) ◃∙
-      ! (α C (id₁ C z) g f) ◃∙
-      ! (ap (λ m → ⟦ C ⟧ m ◻ f) (lamb C g)) ◃∎
-        =ₛ
-      [])
-    (trig-ρ : {x y z : ob C} (f : hom C x y) (g : hom C y z) →
-      ! (ρ C (⟦ C ⟧ g ◻ f)) ◃∙
-      ap (λ m → ⟦ C ⟧ g ◻ m) (ρ C (f)) ◃∙
-      ! (α C (g) (f) (id₁ C x)) ◃∎
-        =ₛ
-      [])
-    (lamb-ρ-id : (x : ob C) → lamb C (id₁ C x) == ρ C (id₁ C x)) where
+  module _ -- We assume that C has bicategorical structure.
+    (trig : triangle-wc C) (pent : pentagon-wc C) where
+
+    open import lib.wild-cats.Bicat
+    
+    private    
+      trig-lambC = trig-lamb-rot3 {C = C} trig pent
+      trig-ρC = trig-ρ-rot2 {C = C} trig pent
+      lamb-ρ-idC = lamb-ρ-id₁ {C = C} trig pent
 
     wild-pstrans-id : (F : Functor-wc D C) → wild-pstrans F F
     η₀ (wild-pstrans-id F) x = id₁ C (obj F x)
@@ -85,7 +78,7 @@ module _ {ℓv ℓe : ULevel} {ℓ₁ ℓ₂} {D : WildCat {ℓv} {ℓe}} {C : W
       lamb C (id₁ C (obj F x)) ◃∙
       ! (ρ C (id₁ C (obj F x))) ◃∙
       lamb C (id₁ C (obj F x)) ◃∎
-        =ₛ₁⟨ 3 & 1 & lamb-ρ-id (obj F x) ⟩
+        =ₛ₁⟨ 3 & 1 & lamb-ρ-idC ⟩
       ! (ρ C (arr F (id₁ D x))) ◃∙
       idp ◃∙
       ap (λ z → z) (id F x) ◃∙
@@ -98,7 +91,7 @@ module _ {ℓv ℓe : ULevel} {ℓ₁ ℓ₂} {D : WildCat {ℓv} {ℓe}} {C : W
       ap (λ z → z) (id F x) ◃∙
       idp ◃∙
       lamb C (id₁ C (obj F x)) ◃∎
-        =ₛ₁⟨ 4 & 1 & lamb-ρ-id (obj F x) ⟩
+        =ₛ₁⟨ 4 & 1 & lamb-ρ-idC ⟩
       ! (ρ C (arr F (id₁ D x))) ◃∙
       idp ◃∙
       ap (λ z → z) (id F x) ◃∙
@@ -235,12 +228,12 @@ module _ {ℓv ℓe : ULevel} {ℓ₁ ℓ₂} {D : WildCat {ℓv} {ℓe}} {C : W
       ! (ap (λ m → ⟦ C ⟧ m ◻ arr F f) (lamb C (arr F g))) ◃∙
       ap (λ m → ⟦ C ⟧ arr F g ◻ m) (ρ C (arr F f)) ◃∙
       ! (α C (arr F g) (arr F f) (id₁ C (obj F x))) ◃∎
-        =ₛ⟨ 2 & 3 & trig-lamb (arr F f) (arr F g) ⟩
+        =ₛ⟨ 2 & 3 & trig-lambC (arr F g) (arr F f) ⟩
       ap (λ m → ⟦ C ⟧ m ◻ id₁ C (obj F x)) (comp F f g) ◃∙
       ! (ρ C (⟦ C ⟧ arr F g ◻ arr F f)) ◃∙
       ap (λ m → ⟦ C ⟧ arr F g ◻ m) (ρ C (arr F f)) ◃∙
       ! (α C (arr F g) (arr F f) (id₁ C (obj F x))) ◃∎
-        =ₛ⟨ 1 & 3 & trig-ρ (arr F f) (arr F g) ⟩
+        =ₛ⟨ 1 & 3 & trig-ρC (arr F g) (arr F f) ⟩
       ap (λ m → ⟦ C ⟧ m ◻ id₁ C (obj F x)) (comp F f g) ◃∎ ∎ₛ
 
     -- SIP for wild functors
