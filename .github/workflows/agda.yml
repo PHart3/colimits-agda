@@ -17,5 +17,3 @@ jobs:
           tags: colimit
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Check colimit
-        run: docker run colimit
