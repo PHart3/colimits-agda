@@ -6,6 +6,6 @@ cd /build/Colimit-code
 /dist/agda --html --library-file=/dist/libraries /build/Colimit-code/Create/Tree-reflect.agda
 
 cd /build/HoTT-Agda
-/dist/agda --html --library-file=/dist/libraries /build/HoTT-Agda/theorems/homotopy/Susp-colim.agda
+/dist/agda --html --library-file=/dist/libraries /build/HoTT-Agda/theorems/homotopy/Acyc-colim.agda
 /dist/agda --html --library-file=/dist/libraries /build/HoTT-Agda/theorems/modality/Mod-colim.agda
 
