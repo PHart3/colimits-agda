@@ -45,18 +45,23 @@ RUN echo "/build/HoTT-Agda/hott-theorems.agda-lib" >> /dist/libraries
 RUN echo "/build/Colimit-code/cos-colim.agda-lib" >> /dist/libraries
 RUN echo "/build/Pullback-stability/stab.agda-lib" >> /dist/libraries
 
+ARG S="save-metas"
+
 WORKDIR /build/Colimit-code
-RUN /dist/agda +RTS -M4.5G -RTS --library-file=/dist/libraries ./Main-Theorem/CosColim-main.agda
-RUN /dist/agda --library-file=/dist/libraries ./Create/Tree-preserve.agda
-RUN /dist/agda --library-file=/dist/libraries ./Create/Tree-reflect.agda
+RUN /dist/agda +RTS -M4.5G -RTS --library-file=/dist/libraries --$S ./Main-Theorem/CosColim-main.agda
+RUN /dist/agda --library-file=/dist/libraries --$S ./Create/Tree-preserve.agda
+RUN /dist/agda --library-file=/dist/libraries --$S ./Create/Tree-reflect.agda
 
 WORKDIR /build/Pullback-stability
-RUN /dist/agda --library-file=/dist/libraries ./Stability-ord.agda
-RUN /dist/agda --library-file=/dist/libraries ./Stability-cos-coc.agda
+RUN /dist/agda --library-file=/dist/libraries --$S ./Stability-ord.agda
+RUN /dist/agda --library-file=/dist/libraries --$S ./Stability-cos-coc.agda
+
+# Just check the following two files for the theorems in the paper
+# "On Left Adjoints Preserving Colimits in HoTT":
 
 WORKDIR /build/HoTT-Agda
-RUN /dist/agda --library-file=/dist/libraries ./theorems/homotopy/Acyc-colim.agda
-RUN /dist/agda --library-file=/dist/libraries ./theorems/modality/Mod-colim.agda
+RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/homotopy/Acyc-colim.agda
+RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/modality/Mod-colim.agda
 
 ####################################################################################################
 # Execute shell script to create html files

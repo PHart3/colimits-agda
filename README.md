@@ -7,7 +7,7 @@
     [On Left Adjoints Preserving Colimits in HoTT](https://phart3.github.io/2coher-preprint.pdf)
     (accepted to CSL 2026)
   
-  It has been checked with Agda 2.6.3 and 2.6.4.3
+  It has been checked with Agda 2.6.3 and 2.6.4.3. (We see a 15% speed-up by using the `--save-metas` option.)
 
 ## Organization
 
@@ -57,7 +57,7 @@ We have successfully tested the following Docker container on Linux but not on o
 
    The build installs Agda 2.6.4.3 and type checks our whole development.
    The entire build may take over an hour. The type checking of all our
-   Agda code takes about 46 minutes on our host Ubuntu with 16 GB of RAM.
+   Agda code takes about 38 minutes on our host Ubuntu with 16 GB of RAM.
 
 2. Generate HTML files:
 
