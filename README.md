@@ -7,7 +7,7 @@
     [On Left Adjoints Preserving Colimits in HoTT](https://phart3.github.io/2coher-preprint.pdf)
     (accepted to CSL 2026)
   
-  It has been checked with Agda 2.6.3 and 2.6.4.3. (We see a 15% speed-up by using the `--save-metas` option.)
+  It has been checked with Agda 2.6.3 and 2.6.4.3. (We see a 17% speed-up by using the `--save-metas` option.)
 
 ## Organization
 
