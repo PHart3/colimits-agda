@@ -119,7 +119,7 @@ module ConstrMap4 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
            (ψ₂-βr g a))) ◃∙
       ap !
         (ap (λ p → glue (cin i a) ∙ ap right (! p))
-          (long-red-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g))
+          (long-red-!-ap-∙ (cin j) (fst (nat δ j)) (fst (G <#> g))
             (snd (nat δ i) a) (snd (G <#> g) a) (snd (F <#> g) a)
             (snd (nat δ j) a) (cglue g (fst (nat δ i) (str (F # i) a)))
             (cglue g (str (G # i) a)))) ◃∙

@@ -104,7 +104,7 @@ module ConstrMap5 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
               (ψ₂-βr g a))) ◃∙
         ap !
           (ap (λ p → glue (cin i a) ∙ ap right (! p))
-            (long-red-!-∙ (cin j) (fst (nat δ j)) (fst (G <#> g))  d (snd (G <#> g) a) s (snd (nat δ j) a) (cglue g x) (cglue g (str (G # i) a)))) ◃∙
+            (long-red-!-ap-∙ (cin j) (fst (nat δ j)) (fst (G <#> g))  d (snd (G <#> g) a) s (snd (nat δ j) a) (cglue g x) (cglue g (str (G # i) a)))) ◃∙
         ap ! (ap (λ p → glue (cin i a) ∙ ap right (! p)) (apCommSq (cin j ∘ fst (G <#> g)) (cin i) (cglue g) d)) ◃∙
         !-!-ap-∘ (cin i) right d (glue (cin i a)) ◃∙
         ! (ap (λ p → ap (right ∘ cin i) d ∙ p) (∙-unit-r (! (glue (cin i a))))) ◃∙

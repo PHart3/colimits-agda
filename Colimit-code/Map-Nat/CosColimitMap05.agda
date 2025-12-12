@@ -14,9 +14,9 @@ module CosColimitMap05 where
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f : A → B) where
 
-  !-ap-!-∙ : {a₁ a₂ : A} (p₂ : a₁ == a₂) {b : B} (p₁ : b == f a₂) {κ : b == b} (ρ : κ == p₁ ∙ ! p₁)
+  !-ap-!-∙-rid : {a₁ a₂ : A} (p₂ : a₁ == a₂) {b : B} (p₁ : b == f a₂) {κ : b == b} (ρ : κ == p₁ ∙ ! p₁)
     → ! (p₁ ∙ ap f (! p₂)) ∙ κ == ! (p₁ ∙ ap f (! (p₂ ∙ idp)))
-  !-ap-!-∙ idp idp idp = idp
+  !-ap-!-∙-rid idp idp idp = idp
 
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} (f₁ : B → C) {f₂ : A → B} where
 
@@ -55,7 +55,7 @@ module ConstrMap6 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       ! (ap (right {d = SpCos₂} ∘ δ₀) m₂) ∙ ! (glue (cin j a) ∙ ap right (! (ap (cin j) (snd (nat δ j) a)))) ∙ κ
         ==
       ! (glue (cin j a) ∙ ap right (! (! (ap δ₀ m₂) ∙ ap (cin j) (snd (nat δ j) a) ∙ idp)))
-    ψ₁-free-aux3 idp ρ = !-ap-!-∙ right (ap (cin j) (snd (nat δ j) a)) (glue (cin j a)) ρ
+    ψ₁-free-aux3 idp ρ = !-ap-!-∙-rid right (ap (cin j) (snd (nat δ j) a)) (glue (cin j a)) ρ
 
     ψ₁-free-aux2 : {x : Colim (ConsDiag Γ A)} (q : cin j a == x) (m₂ : cin j (str (F # j) a) == ψ₁ x)
       {κ : left a == left ([id] x)} (ρ : κ == glue (cin j a) ∙ ap right (ap ψ₂ q) ∙ ! (glue x)) →
@@ -78,7 +78,7 @@ module ConstrMap6 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
         ==
       ! (∙-unit-r (! v)) ∙
       ap (λ p → ! p ∙ idp) s ∙
-      !-ap-!-∙ right t r₂ (! (!-inv-r r₂))
+      !-ap-!-∙-rid right t r₂ (! (!-inv-r r₂))
     ψ₁-red-aux3 idp idp idp = idp
 
     ψ₁-red-aux2 : {x : P₁} (r₁ : x == right (ψ₁ (cin j a))) (r₂ : 𝕕₀ x == right (ψ₂ (cin j a)))
@@ -89,7 +89,7 @@ module ConstrMap6 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
         ==
       (ap (λ p → ap 𝕕₀ p ∙ idp) (∙-unit-r (! r₁)) ∙ ap (λ p → p ∙ idp) (ap-! 𝕕₀ r₁)) ∙
       ap (λ p → ! p ∙ idp) s ∙
-      !-ap-!-∙ right (ap (cin j) (snd (nat δ j) a)) r₂ (! (!-inv-r r₂))
+      !-ap-!-∙-rid right (ap (cin j) (snd (nat δ j) a)) r₂ (! (!-inv-r r₂))
     ψ₁-red-aux2 idp r₂ s = ψ₁-red-aux3 (ap (cin j) (snd (nat δ j) a)) r₂ s
 
     ψ₁-red-aux : {m₂ : cin j (str (F # j) a) == cin j (str (F # j) a)} (τ : idp == m₂) → 

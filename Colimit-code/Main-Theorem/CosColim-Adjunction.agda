@@ -15,25 +15,20 @@ open import CosColimitPreCmp
 
 module CosColim-Adjunction where
 
-{-
-  Our pushout construction's action on maps fits into the two naturality
-  squares satisfied by the left adjoint to the constant diagram functor.
--}
+{- Our pushout construction's action on maps fits into the two naturality
+   squares satisfied by the left adjoint to the constant diagram functor. -}
 
 module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
   open MapsCos A
-
   open Id Γ A
-
   open Maps
 
   -- the first naturality square, arising from post-composition with the coslice map
-
   AdjSq-PostCmp : ∀ {ℓd ℓc₁ ℓc₂} (F : CosDiag ℓd ℓ A Γ) {T : Coslice ℓc₁ ℓ A} {U : Coslice ℓc₂ ℓ A}
     (φ : T *→ U) (f* : (Cos (P F) left) *→ T)
     → Map-to-Lim-map F φ (PostComp-cos (ColCoC-cos F) f*) == PostComp-cos (ColCoC-cos F) (φ ∘* f*)
-  AdjSq-PostCmp F φ (f , fₚ) = CosColim-NatSq1-eq F φ f fₚ 
+  AdjSq-PostCmp F φ (f , fₚ) = CosColim-NatSq1-== F φ f fₚ 
 
   -- the second naturality square, arising from pre-composition with the diagram map
 

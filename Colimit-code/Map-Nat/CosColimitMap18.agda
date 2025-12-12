@@ -16,19 +16,11 @@ open import CosColimitPreCmp-def
 
 module CosColimitMap18 where
 
-module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} (f : C → D) (g : B → C) (h : A → B) where
-
-  ap-∘-∘-!-∙ : {x y : A} (p₁ : x == y) {z : B} (p₂ : h x == z)
-    → ap f (ap g (! (ap h p₁) ∙ p₂)) == ! (ap (f ∘ g ∘ h) p₁) ∙ ap f (ap g p₂)
-  ap-∘-∘-!-∙ idp idp = idp
-
 module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : CosDiag ℓF ℓ A Γ} {G : CosDiag ℓG ℓ A Γ}
   (δ : CosDiagMor A F G) where
 
   open Id Γ A
-
   open Maps G
-
   open ConstrMap δ
 
   module _ {ℓc} (T : Coslice ℓc ℓ A) (f : P₂ → ty T) (fₚ : (a : A) → f (left a) == str T a) where
@@ -209,10 +201,11 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         ap (_∙_ (ap (λ x → f (right (cin i x))) τ₁₀))
           (!-ap-ap-∘-ap-∙ f (λ x → right (cin j x)) τ₁₃ (ap right (cglue g (str (G # i) a))) ∙
             ap (λ p → p ∙ τ₈) (ap (ap f) τ₁))) ◃∎
-      NatSq2-Λ-coher idp idp idp idp τ₁₀ τ₁₃ τ₁₄ idp = =ₛ-in (NatSq2-Λ-coher-aux τ₁₀ τ₁₃ τ₁₄)
+      NatSq2-Λ-coher idp idp idp idp τ₁₀ τ₁₃ τ₁₄ idp = =ₛ-in (NatSq2-Λ-coher-aux τ₁₀ τ₁₃ τ₁₄) 
 
     abstract
-      CosColim-NatSq2 : CosCocEq (Map-to-Lim-map F (f , fₚ) CC-from-diagmap) (Diag-to-Lim-map δ (PostComp-cos ColCoC-cos (f , fₚ)))
+      CosColim-NatSq2 :
+        CosCocEq (Map-to-Lim-map F (f , fₚ) CC-from-diagmap) (Diag-to-Lim-map δ (PostComp-cos ColCoC-cos (f , fₚ)))
       W CosColim-NatSq2 i x = idp
       u CosColim-NatSq2 i a = ap-∘-∙-∙ f (right ∘ cin i) (snd (nat δ i) a) (! (glue (cin i a)))
       Λ CosColim-NatSq2 {i} {j} g =
@@ -220,10 +213,12 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
         λ a → NatSq2-Λ-coher g a (snd (F <#> g) a) (snd (nat δ j) a) (! (glue (cin j a))) (fₚ a)
           (snd (nat δ i) a) (snd (G <#> g) a) (comSq-coher δ g a)
           (E₁ (snd (G <#> g) a) (! (glue (cin j a))) ∙
-          ! (ap (λ p → ! (ap right (! (ap (cin j) (snd (G <#> g) a)) ∙ cglue g (str (G # i) a))) ∙ ! (glue (cin j a)) ∙ p)
+          ! (ap
+              (λ p → ! (ap right (! (ap (cin j) (snd (G <#> g) a)) ∙ cglue g (str (G # i) a))) ∙ ! (glue (cin j a)) ∙ p)
               (ap (ap left) (id-βr g a))) ∙
           E₃ (λ x → ! (glue x)) (cglue g a) (ψ₂-βr g a) (λ x → idp) ∙
           ∙-unit-r (! (glue (cin i a))))
 
-    CosColim-NatSq2-eq : Map-to-Lim-map F (f , fₚ) CC-from-diagmap == Diag-to-Lim-map δ (PostComp-cos ColCoC-cos (f , fₚ))
+    CosColim-NatSq2-eq :
+      Map-to-Lim-map F (f , fₚ) CC-from-diagmap == Diag-to-Lim-map δ (PostComp-cos ColCoC-cos (f , fₚ))
     CosColim-NatSq2-eq = CosCocEq-to-== CosColim-NatSq2

@@ -52,7 +52,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
                   ! ((ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ (p ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
                     fst (comTri K₁ g) (str (F # i) a) ∙' W i (str (F # i) a)) ∙
                   ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ snd (comp K₂ j) a)
-             (u j a) ⟫
+               (u j a) ⟫
         ! ((ap (fst (comp K₂ j)) (snd (F <#> g) a) ∙ (snd (comp K₂ j) a ∙ ! (snd (comp K₁ j) a)) ∙ ! (ap (fst (comp K₁ j)) (snd (F <#> g) a))) ∙
           fst (comTri K₁ g) (str (F # i) a) ∙'
           W i (str (F # i) a)) ∙

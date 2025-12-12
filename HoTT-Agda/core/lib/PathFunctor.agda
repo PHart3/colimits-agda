@@ -40,13 +40,21 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f (p ∙ q) ◃∎ =ₛ ap f p ◃∙ ap f q ◃∎
   ap-∙◃ idp q = =ₛ-in idp
 
+  ap-!-∙ : {x y z : A} (p : x == y) (q : x == z)
+    → ap f (! p ∙ q) == ! (ap f p) ∙ ap f q
+  ap-!-∙ idp _ = idp
+  
   ap-!-!-∙◃ : {x y z : A} (p : x == y) (q : x == z)
     → ap f (! (! p ∙ q)) ◃∎ =ₛ ! (ap f q) ◃∙ ap f p ◃∎
   ap-!-!-∙◃ idp idp = =ₛ-in idp
 
+  !-ap-!-∙ : {x y z : A} (p : x == y) (q : x == z)
+    → ! (ap f (! p ∙ q)) == ! (ap f q) ∙ ap f p
+  !-ap-!-∙ idp idp = idp
+
   !-ap-!-∙◃ : {x y z : A} (p : x == y) (q : x == z)
     → ! (ap f (! p ∙ q)) ◃∎ =ₛ ! (ap f q) ◃∙ ap f p ◃∎
-  !-ap-!-∙◃ idp idp = =ₛ-in idp
+  !-ap-!-∙◃ p q = =ₛ-in (!-ap-!-∙ p q)
 
   !-ap-∙-!∙ : {x y z w : A} (p₁ : x == y) (p₂ : y == z) (p₃ : w == z)
     → ! (ap f (p₁ ∙ p₂ ∙ ! p₃)) ◃∎ =ₛ ap f p₃ ◃∙ ! (ap f p₂) ◃∙ ! (ap f p₁) ◃∎ 
@@ -192,6 +200,14 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     → ap g (ap f p₁ ∙ p₂) ∙ p₃ == ap g (ap f p₁) ∙ ap g p₂ ∙ p₃
   ap-ap-∙-∙ idp p₂ p₃ = idp
 
+  ap-∘-∙-∙ : {x y : A} (p₁ : x == y) {z : B} (p₂ : f y == z) {c : C} {s : g z == c}
+    → ap g (ap f p₁ ∙ p₂) ∙ s == ap (g ∘ f) p₁ ∙ ap g p₂ ∙ s
+  ap-∘-∙-∙ idp p₂ = idp
+
+  ap-∘-∘-!-∙ : ∀ {l} {D : Type l} (h : D → A) {x y : D} (p₁ : x == y) {z : A} (p₂ : h x == z)
+    → ap g (ap f (! (ap h p₁) ∙ p₂)) == ! (ap (g ∘ f ∘ h) p₁) ∙ ap g (ap f p₂)
+  ap-∘-∘-!-∙ _ idp idp = idp
+
   !ap-∘=∘-ap : {x y : A} (p : x == y) → ! (ap-∘ p) == ∘-ap p
   !ap-∘=∘-ap idp = idp
 
@@ -212,17 +228,17 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     ap-∙ g (ap f v) idp ∙ idp
   ap-∘2-ap-∙ idp = idp
 
-  ap-∘-rev : {w : C} {z : B} {x y : A} (p : x == y) (q : f x == z) (r : g (f y) == w) →
-    ! (ap g q) ∙ ap (g ∘ f) p ∙ r == ! (ap g (! (ap f p) ∙ q)) ∙ r
-  ap-∘-rev idp q r = idp
-
   !-ap-ap-∘-ap-∙ : {x y : A} (q : x == y) {w : B} {z : C} {r : f y == w} {s : g w == z} {b : B} (p : f x == b) 
     → ! (ap g p) ∙ (ap (g ∘ f) q) ∙ (ap g r) ∙ s == ap g (! p ∙ ap f q ∙ r) ∙ s
   !-ap-ap-∘-ap-∙ idp {r = r} {s = s} p = !-ap-∙-s g p {r = r} {s = s}
 
-  ap-cmp-rev-◃ : {x y : A} (q : x == y) {z : B} {p : f x == z}
-    → ap g ((! (ap f q)) ∙ p) ◃∎ =ₛ ! (ap (g ∘ f) q) ◃∙ ap g p ◃∎
-  ap-cmp-rev-◃ idp = =ₛ-in idp
+  ap-!-ap-∙ : {x y : A} (q : x == y) {z : B} {p : f x == z}
+    → ap g (! (ap f q) ∙ p) == ! (ap (g ∘ f) q) ∙ ap g p
+  ap-!-ap-∙ idp = idp
+
+  ap-!-ap-∙◃ : {x y : A} (q : x == y) {z : B} {p : f x == z}
+    → ap g (! (ap f q) ∙ p) ◃∎ =ₛ ! (ap (g ∘ f) q) ◃∙ ap g p ◃∎
+  ap-!-ap-∙◃ q = =ₛ-in (ap-!-ap-∙ q)
 
   inv-canc-cmp : {a b : A} (p : a == b) {z : B} (S : f a == z) {w : C} (gₚ : g z == w)
     → ! (ap (g ∘ f) p) ∙ (ap g S ∙ gₚ) ∙ ! (ap g (! (ap f p) ∙ S ∙ idp) ∙ gₚ) == idp
