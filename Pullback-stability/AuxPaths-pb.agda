@@ -9,13 +9,13 @@ module AuxPaths-pb where
 -- some ad-hoc computations
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} where
   
-  !-ap-!-∙ : {x y : A} {w : B} (p₁ : x == y) (p₂ : f y == w)
+  !-ap-!-∙2 : {x y : A} {w : B} (p₁ : x == y) (p₂ : f y == w)
     → ! (ap f (! p₁ ∙ p₁) ∙ p₂) ∙ p₂ == idp
-  !-ap-!-∙ idp idp = idp
+  !-ap-!-∙2 idp idp = idp
 
-  !-ap-ap-!-∙ : ∀ {ℓ₃} {C : Type ℓ₃} {g : B → C} {x y : A} {w : C} (p₁ : x == y) (p₂ : g (f y) == w)
+  !-ap-ap-!-∙2 : ∀ {ℓ₃} {C : Type ℓ₃} {g : B → C} {x y : A} {w : C} (p₁ : x == y) (p₂ : g (f y) == w)
     → ! (ap g (ap f (! p₁ ∙ p₁)) ∙ p₂) ∙ p₂ == idp
-  !-ap-ap-!-∙ idp idp = idp
+  !-ap-ap-!-∙2 idp idp = idp
 
   ∙-unit-r-!-inv-r-ap : {v u : A} (p : v == u) {z : B} (h : f v == z)
     → h ∙ idp == ap f p ∙ ! (ap f p) ∙ h
