@@ -103,10 +103,13 @@ module ConstrMap {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ}
       =-=
     ap (right ∘ cin i) (snd (nat δ i) a) ∙ ! (glue (cin i a))
   Θ {i} {j} g a =
-      ! (ap (right {d = SpCos₂}) (! (ap (cin j) (comSq δ g (str (F # i) a))) ∙ cglue g (fst (nat δ i) (str (F # i) a)))) ∙
+      ! (ap (right {d = SpCos₂})
+          (! (ap (cin j) (comSq δ g (str (F # i) a))) ∙ cglue g (fst (nat δ i) (str (F # i) a)))) ∙
       ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a))
         =⟪ ap (λ p → ! (ap (right {d = SpCos₂}) p) ∙
-                ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙ ap (right ∘ cin j) (snd (nat δ j) a) ∙ ! (glue (cin j a)))
+                ap (right ∘ cin j ∘ fst (nat δ j)) (snd (F <#> g) a) ∙
+                ap (right ∘ cin j) (snd (nat δ j) a) ∙
+                ! (glue (cin j a)))
              (ap (λ p → ! (ap (cin j) p) ∙ cglue g (fst (nat δ i) (str (F # i) a))) (comSq-coher δ g a)) ⟫
       ! (ap (right {d = SpCos₂})
           (! (ap (cin j)
@@ -151,15 +154,18 @@ module ConstrMap {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ}
 
   {- The preceding cocone is a special case of Diag-to-Lim-map.
      We use the preceding definition because it's a bit more
-     compact than the one derived from Diag-to-Lim-map. -}
+     compact than the one derived from Diag-to-Lim-map.
+     (The final coherence condition is defined in an auxiliary file) -}
   open import SIP-CosCoc
-  open import CosColimitPreCmp-def {-
+  open import CosColimitPreCmp-def
   CC-diagmap-lim-eq : CosCocEq CC-from-diagmap (Diag-to-Lim-map δ (ColCoC-cos G))
   W CC-diagmap-lim-eq _ _ = idp
   u CC-diagmap-lim-eq _ _ = idp
   fst (Λ CC-diagmap-lim-eq {i} {j} g) x = ap-!-ap-∙ right (cin j) (comSq δ g x)
-  snd (Λ CC-diagmap-lim-eq {i} {j} g) a = =ₛ-in {!!}
--}
+  snd (Λ CC-diagmap-lim-eq {i} {j} g) a = =ₛ-in $
+    CC-diagmap-lim-eq-coher δ (comSq-coher δ g a) (ap (λ p → ap (right ∘ cin i) (snd (nat δ i) a) ∙ p) (↯ (ε G g g a)))
+    where open import CosColimitMap00-aux
+
   ℂ : δ₀ ∘ ψ₁ ∼ ψ₂
   ℂ = colimE (λ i a → ap (cin i) (snd (nat δ i) a))
         (λ _ _ g a →  from-transp-g (λ z → δ₀ (ψ₁ z) == ψ₂ z) (cglue g a) (↯ (ζ g a)))

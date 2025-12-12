@@ -21,7 +21,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
   φ₁ = fst φ
   φ₂ = snd φ
 
-  -- action of Lim on A-maps
+  -- action of Lim on A-map φ (post-composes φ with given cocone)
   Map-to-Lim-map : CosCocone A F T →  CosCocone A F U
   comp (Map-to-Lim-map (comp₁ & comTri₁)) = λ i → φ ∘* comp₁ i
   comTri (Map-to-Lim-map (comp₁ & comTri₁)) {j} {i} =

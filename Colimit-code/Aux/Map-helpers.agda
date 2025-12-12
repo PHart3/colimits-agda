@@ -63,3 +63,14 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : 
       ==
     ap (m ∘ k) p₁ ∙ ! (ap m p₅) ∙ ap (m ∘ f) p₂ ∙ p₆
   act-dmap-CC-coh k m p₁ p₂ idp p₃ p₅ p₆ = !-!-!-∘-∘-∘-rid f h k m p₁ p₂ p₃ p₆ p₅
+
+module _ {ℓ₀ ℓ₁ ℓ₂ ℓ₃} {A₁ : Type ℓ₀} {A₂ : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃}
+  (f : B → C) (h : A₂ → B) (g : A₁ → B) where
+  
+  -- "ya" here stands for "yet another/again"
+  CCeq-coh-path-ya : {c₁ c₂ : C} (p₁ : c₁ == c₂) {a₁ a₂ : A₂} (p₂ : a₁ == a₂) (p₃ : c₂ == f (h a₂))
+    {b : B} (p₄ : h a₂ == b) {z₁ z₂ : A₁} (p₆ : z₁  == z₂) (p₅ : g z₂ == b) {c : C} (p₇ : f b == c) →
+    (p₁ ∙ p₃ ∙ ! (ap (f ∘ h) p₂)) ∙ ap f (ap h p₂ ∙ p₄ ∙ ! p₅ ∙ ! (ap g p₆)) ∙ ap (f ∘ g) p₆ ∙ ap f p₅ ∙ p₇
+      ==
+    p₁ ∙ p₃ ∙ ap f p₄ ∙ p₇
+  CCeq-coh-path-ya idp idp p₃ p₄ idp p₅ p₇ = rid-ap-!-!-rid-ap f p₅ p₃ p₄ p₇

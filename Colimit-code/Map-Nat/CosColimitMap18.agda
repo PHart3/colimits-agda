@@ -219,6 +219,6 @@ module ConstrMap19 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type �
           E₃ (λ x → ! (glue x)) (cglue g a) (ψ₂-βr g a) (λ x → idp) ∙
           ∙-unit-r (! (glue (cin i a))))
 
-    CosColim-NatSq2-eq :
+    CosColim-NatSq2-== :
       Map-to-Lim-map F (f , fₚ) CC-from-diagmap == Diag-to-Lim-map δ (PostComp-cos ColCoC-cos (f , fₚ))
-    CosColim-NatSq2-eq = CosCocEq-to-== CosColim-NatSq2
+    CosColim-NatSq2-== = CosCocEq-to-== CosColim-NatSq2

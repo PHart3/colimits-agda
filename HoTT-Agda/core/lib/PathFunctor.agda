@@ -84,6 +84,13 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f p ∙' ap f q == ap f (p ∙' q)
   ∙'-ap p idp = idp
 
+  ap-rid-∙ : {x y : A} (s : x == y) {w : B} (r : f y == w) → ap f (s ∙ idp) ∙ r == ap f s ∙ r
+  ap-rid-∙ idp r = idp
+
+  rid-ap-!-!-rid-ap : {y v z : A} {x w : B} (q : z == v) (p : x == f y) (s : y == v) (r : f v == w)
+    → (p ∙ idp) ∙ ap f (s ∙ ! q ∙ idp) ∙ ap f q ∙ r == p ∙ ap f s ∙ r
+  rid-ap-!-!-rid-ap idp idp s r = ap-rid-∙ s r
+
   ap3-!-ap-!-rid : ∀ {k} {C : Type k} (g : B → C) {x y : A} (p₁ : x == y)
     {e : f x == f y} (p₂ : ap f p₁ == e) →
     ap (ap g) (ap (λ p → p) (! (ap-! p₁ ∙ ap ! (p₂ ∙ idp))))

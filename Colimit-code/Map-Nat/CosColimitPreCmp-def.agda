@@ -3,36 +3,11 @@
 open import lib.Basics
 open import Coslice
 open import Diagram-Cos
+open import Map-helpers
 
 -- action of CosCocone (i.e., Limit) on morphisms of A-diagrams
 
 module CosColimitPreCmp-def where
-
-module _ {ℓ} {A : Type ℓ} where
-
-  !-!-∙-pth : {x y z w : A} (p : x == y) (q : x == z) {c : y == w} → ! (! p ∙ q) ∙ c == ! q ∙ p ∙ c
-  !-!-∙-pth idp idp = idp
-
-module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f : A → B) where
-
-  ap-rid-∙ : {x y : A} (s : x == y) {w : B} (r : f y == w) → ap f (s ∙ idp) ∙ r == ap f s ∙ r
-  ap-rid-∙ idp r = idp
-
-  rid-ap-!-!-rid-ap : {y v z : A} {x w : B} (q : z == v) (p : x == f y) (s : y == v) (r : f v == w)
-    → (p ∙ idp) ∙ ap f (s ∙ ! q ∙ idp) ∙ ap f q ∙ r == p ∙ ap f s ∙ r
-  rid-ap-!-!-rid-ap idp idp s r = ap-rid-∙ s r
-
-module _ {ℓ₀ ℓ₁ ℓ₂ ℓ₃} {A₁ : Type ℓ₀} {A₂ : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃}
-  (f : B → C) (h : A₂ → B) (g : A₁ → B) where
-
-  -- groupoid law from path induction blast, used in definition of action, below
-  CCeq-coh-path-ya : {c₁ c₂ : C} (p₁ : c₁ == c₂) {a₁ a₂ : A₂} (p₂ : a₁ == a₂) (p₃ : c₂ == f (h a₂))
-    {b : B} (p₄ : h a₂ == b) {z₁ z₂ : A₁} (p₆ : z₁  == z₂) (p₅ : g z₂ == b) {c : C} (p₇ : f b == c) →
-    (p₁ ∙ p₃ ∙ ! (ap (f ∘ h) p₂)) ∙ ap f (ap h p₂ ∙ p₄ ∙ ! p₅ ∙ ! (ap g p₆)) ∙ ap (f ∘ g) p₆ ∙ ap f p₅ ∙ p₇
-      ==
-    p₁ ∙ p₃ ∙ ap f p₄ ∙ p₇
-  CCeq-coh-path-ya idp idp p₃ p₄ idp p₅ p₇ = rid-ap-!-!-rid-ap f p₅ p₃ p₄ p₇
-  -- "ya" stands for "yet another/again"
 
 module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : CosDiag ℓF ℓ A Γ} {G : CosDiag ℓG ℓ A Γ}
   (δ : CosDiagMor A F G) where

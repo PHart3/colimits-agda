@@ -31,11 +31,11 @@ module _ {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ} {F : Co
 
       NatSq-PreCmp1 =
         Diag-to-Lim-map δ (PostComp-cos (ColCoC-cos G) (f , fₚ))
-          =⟨ ! (CosColim-NatSq2-eq T f fₚ) ⟩
+          =⟨ ! (CosColim-NatSq2-== T f fₚ) ⟩
         Map-to-Lim-map F (f , fₚ) CC-from-diagmap
           =⟨ ap (Map-to-Lim-map F (f , fₚ)) (! (LRfunEq CC-from-diagmap)) ⟩
         Map-to-Lim-map F (f , fₚ) (PostComp-cos (ColCoC-cos F) (recCosCoc CC-from-diagmap))
-          =⟨ CosColim-NatSq1-eq F (f , fₚ) (fst (recCosCoc CC-from-diagmap)) (snd (recCosCoc CC-from-diagmap)) ⟩
+          =⟨ CosColim-NatSq1-== F (f , fₚ) (fst (recCosCoc CC-from-diagmap)) (snd (recCosCoc CC-from-diagmap)) ⟩
         PostComp-cos (ColCoC-cos F) (f , fₚ ∘* recCosCoc CC-from-diagmap) =∎
 
       NatSq-PreCmp2 :
