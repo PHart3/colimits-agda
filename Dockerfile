@@ -48,7 +48,7 @@ RUN echo "/build/Pullback-stability/stab.agda-lib" >> /dist/libraries
 ARG S="save-metas"
 
 WORKDIR /build/Colimit-code
-RUN /dist/agda +RTS -M4.5G -RTS --library-file=/dist/libraries --$S ./Main-Theorem/CosColim-main.agda
+RUN /dist/agda --library-file=/dist/libraries --$S ./Main-Theorem/CosColim-main.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./Create/Tree-preserve.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./Create/Tree-reflect.agda
 

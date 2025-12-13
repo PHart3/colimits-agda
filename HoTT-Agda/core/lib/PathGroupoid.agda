@@ -107,6 +107,9 @@ module _ {i} {A : Type i} where
   !-inv-l-∙ : {x y z : A} (q : x == y) (p : y == z) → ! q ∙ q ∙ p == p
   !-inv-l-∙ idp p = idp
 
+  !-!-∙-pth : {x y z w : A} (p : x == y) (q : x == z) {c : y == w} → ! (! p ∙ q) ∙ c == ! q ∙ p ∙ c
+  !-!-∙-pth idp idp = idp
+
   !-∙-∙'-rot : {x y z w : A} (p₀ : x == y) {p₁ : x == z} {p₂ : z == w} (p₃ : y == w)
     → ! p₁ ∙ p₀ ∙' p₃ == p₂ → p₀ == p₁ ∙ p₂ ∙' ! p₃
   !-∙-∙'-rot idp {p₁ = idp} {p₂} idp e = e

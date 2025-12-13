@@ -42,7 +42,7 @@ creates (i.e., preserves and reflects) tree-indexed colimits.
     of **Lemma 17** of the paper. (The second naturality square,
     arising from pre-composition with diagram maps.)
 
-- The `Main-Theorem/` folder gathers all data of the desired
+- The `Main-Theorem/` folder gathers all the data of the desired
   adjunction from `L-R-L/`, `R-L-R/`, and `Map-Nat/`.
 
 - The `Create/` folder contains the proof of **Theorem 18** of the paper,

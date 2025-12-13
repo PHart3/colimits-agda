@@ -52,10 +52,10 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : 
 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} (f : A → B) (g : D → A) (h : C → A) where
 
-  long-red-!-∙ : {c₁ c₂ : C} (p₁ : c₁ == c₂) {a : A} (p₂ : h c₂ == a) {d₁ d₂ : D} (p₄ : d₁ == d₂) (p₃ : g d₂ == a)
+  long-red-!-ap-∙ : {c₁ c₂ : C} (p₁ : c₁ == c₂) {a : A} (p₂ : h c₂ == a) {d₁ d₂ : D} (p₄ : d₁ == d₂) (p₃ : g d₂ == a)
     {b₁ b₂ : B} (p₅ : f (h c₁) == b₁) (p₆ : f (h c₂) == b₂)
     → ! (! (ap f (ap h p₁ ∙ p₂ ∙ ! p₃  ∙ ! (ap g p₄))) ∙ p₅) ∙ ap (f ∘ g) p₄ ∙ ap f p₃ ∙ ! (ap f p₂) ∙ p₆ == ! p₅ ∙ ap (f ∘ h) p₁ ∙ p₆
-  long-red-!-∙ p₁ p₂ idp p₃ p₅ p₆ = ap-∘-!-!-rid-rid h f p₁ p₃ p₂ p₅ p₆
+  long-red-!-ap-∙ p₁ p₂ idp p₃ p₅ p₆ = ap-∘-!-!-rid-rid h f p₁ p₃ p₂ p₅ p₆
 
   act-dmap-CC-coh : ∀ {ℓ₅} {H : Type ℓ₅} (k : C → B) (m : B → H) {c₁ c₂ : C} (p₁ : c₁ == c₂) {a : A} (p₂ : h c₂ == a) {d₁ d₂ : D}
     (p₄ : d₁ == d₂) (p₃ : g d₂ == a) {e : H} (p₅ : f (h c₂) == k c₂) (p₆ : m (f a) == e) →
@@ -63,3 +63,14 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : 
       ==
     ap (m ∘ k) p₁ ∙ ! (ap m p₅) ∙ ap (m ∘ f) p₂ ∙ p₆
   act-dmap-CC-coh k m p₁ p₂ idp p₃ p₅ p₆ = !-!-!-∘-∘-∘-rid f h k m p₁ p₂ p₃ p₆ p₅
+
+module _ {ℓ₀ ℓ₁ ℓ₂ ℓ₃} {A₁ : Type ℓ₀} {A₂ : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃}
+  (f : B → C) (h : A₂ → B) (g : A₁ → B) where
+  
+  -- "ya" here stands for "yet another/again"
+  CCeq-coh-path-ya : {c₁ c₂ : C} (p₁ : c₁ == c₂) {a₁ a₂ : A₂} (p₂ : a₁ == a₂) (p₃ : c₂ == f (h a₂))
+    {b : B} (p₄ : h a₂ == b) {z₁ z₂ : A₁} (p₆ : z₁  == z₂) (p₅ : g z₂ == b) {c : C} (p₇ : f b == c) →
+    (p₁ ∙ p₃ ∙ ! (ap (f ∘ h) p₂)) ∙ ap f (ap h p₂ ∙ p₄ ∙ ! p₅ ∙ ! (ap g p₆)) ∙ ap (f ∘ g) p₆ ∙ ap f p₅ ∙ p₇
+      ==
+    p₁ ∙ p₃ ∙ ap f p₄ ∙ p₇
+  CCeq-coh-path-ya idp idp p₃ p₄ idp p₅ p₇ = rid-ap-!-!-rid-ap f p₅ p₃ p₄ p₇

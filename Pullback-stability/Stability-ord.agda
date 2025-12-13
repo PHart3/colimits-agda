@@ -121,7 +121,7 @@ module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} (F : Diag ℓd Γ) where
           cglue g (pullback a b h)) ◃∙
         idp ◃∙
         cglue g (pullback a b h) ◃∎
-          =ₛ₁⟨ !-ap-!-∙ (∙-unit-r (ap k (cglue g a) ∙ h)) (cglue g (pullback a b h)) ⟩
+          =ₛ₁⟨ !-ap-!-∙2 (∙-unit-r (ap k (cglue g a) ∙ h)) (cglue g (pullback a b h)) ⟩
         idp ◃∎ ∎ₛ )) 
 
     linv : can-map-inv ∘ can-map ∼ idf col-pb
@@ -180,7 +180,7 @@ module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} (F : Diag ℓd Γ) where
                   (∙-unit-r (ap k p₂ ∙ ! (ap k p₂) ∙ p₁))) ∙
                 pullback= pb-csp p₂ idp (∙-unit-r-!-inv-r-ap p₂ p₁)
               == idp
-            lemma-aux p₁ idp = !-ap-ap-!-∙ (∙-unit-r p₁)
+            lemma-aux p₁ idp = !-ap-ap-!-∙2 (∙-unit-r p₁)
               (ap (pullback (cin j ((F <#> g) x)) y) (! (∙-unit-r p₁) ∙ ∙-unit-r p₁))
 
     -- statement of equivalence

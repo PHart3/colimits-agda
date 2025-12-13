@@ -88,9 +88,9 @@ module ConstrMap2 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
         =ₛ⟨ ap-seq-∙ (λ q → q) (ap-seq (λ p → p ∙ idp) (ap-seq (ap 𝕕₀) 𝕤)) ⟩
       ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (E₁ (snd (F <#> g) a) (! (glue (cin j a)))))) ◃∙
       ap (λ q → q)
-        (ap (λ p → p ∙ idp)
-          (ap (ap 𝕕₀)
-            (! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (str (F # i) a))) ∙ ! (glue (cin j a)) ∙ p) (ap (ap left) (id-βr g a)))))) ◃∙
+        (ap (λ p → p ∙ idp) (ap (ap 𝕕₀)
+          (! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (str (F # i) a))) ∙ ! (glue (cin j a)) ∙ p)
+            (ap (ap left) (id-βr g a)))))) ◃∙
       ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (E₃ (λ x → ! (glue x)) (cglue g a)
         (ψ-βr F g a) (λ x → idp)))) ◃∙
       ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (∙-unit-r (! (glue (cin i a)))))) ◃∎ ∎ₛ
@@ -139,8 +139,9 @@ module ConstrMap2 {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ
       ap (λ q → q) (!-ap-ap-∘-ap-∙ 𝕕₀ (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (str (F # i) a)))) ◃∙
       ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (E₁ (snd (F <#> g) a) (! (glue (cin j a)))))) ◃∙
       ap (λ q → q)
-        (ap (λ p → p ∙ idp)
-          (ap (ap 𝕕₀) (! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (str (F # i) a))) ∙ ! (glue (cin j a)) ∙ p) (ap (ap left) (id-βr g a)))))) ◃∙
+        (ap (λ p → p ∙ idp) (ap (ap 𝕕₀)
+          (! (ap (λ p → ! (ap right (! (ap (cin j) (snd (F <#> g) a)) ∙ cglue g (str (F # i) a))) ∙ ! (glue (cin j a)) ∙ p)
+            (ap (ap left) (id-βr g a)))))) ◃∙
       ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (E₃ (λ x → ! (glue x)) (cglue g a) (ψ-βr F g a) (λ x → idp)))) ◃∙
       ap (λ q → q) (ap (λ p → p ∙ idp) (ap (ap 𝕕₀) (∙-unit-r (! (glue (cin i a)))))) ◃∙
       ap-inv-rid 𝕕₀ (glue (cin i a)) ◃∙
