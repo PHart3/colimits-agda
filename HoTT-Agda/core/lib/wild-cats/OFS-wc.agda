@@ -35,3 +35,4 @@ module _ {i j} {C : WildCat {i} {j}} where
       fact-contr : {a b : ob C} (f : hom C a b) → is-contr $
         Σ (fact-mor-wc f) (λ fct →
           fst (lclass (mor-l fct)) × fst (rclass (mor-r fct)))
+  open ofs-wc public
