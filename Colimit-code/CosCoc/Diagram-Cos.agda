@@ -40,7 +40,7 @@ record CosCocone {i j k} (A : Type j) {Γ : Graph ℓv ℓe} (F : CosDiag i j A 
   : Type (lmax k (lmax (lmax ℓv ℓe) (lmax i j))) where
   constructor _&_
   field
-    comp : (x : Obj Γ) → < A > (F # x) *→ C
+    comp : (x : Obj Γ) → < A > (F # x) *→ C  -- "comp" stands for "component"
     comTri : ∀ {y x : Obj Γ} (f : Hom Γ x y) → [ A , F # x ] (< A > comp y ∘ F <#> f) ∼ comp x
 open CosCocone public
 
