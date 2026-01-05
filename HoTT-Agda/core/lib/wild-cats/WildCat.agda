@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
 open import lib.types.Sigma
@@ -73,9 +73,31 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B : WildCat {i₁} {j₁}} {C : WildCa
 
 module _ {i j} (C : WildCat {i} {j}) where
 
+  -- coherent equivalences
+  biinv-wc : {a b : ob C} → hom C a b → Type j
+  biinv-wc {a} {b} f = Σ (hom C b a) (λ g → (id₁ C a == ⟦ C ⟧ g ◻ f)) × Σ (hom C b a) (λ h → id₁ C b == ⟦ C ⟧ f ◻ h)
+
+  ≃-wc : (a b : ob C) → Type j
+  ≃-wc a b = Σ (hom C a b) biinv-wc
+
+  ≃-wc-id : {a : ob C} → ≃-wc a a
+  fst (≃-wc-id {a}) = id₁ C a
+  fst (snd (≃-wc-id {a})) = (id₁ C a) , (lamb C (id₁ C a))
+  snd (snd (≃-wc-id {a})) = (id₁ C a) , (lamb C (id₁ C a))
+
+  ==-to-≃-wc : {a b : ob C} → a == b → ≃-wc a b
+  ==-to-≃-wc idp = ≃-wc-id
+
   -- (non-coherent) equivalences
   equiv-wc : {a b : ob C} → hom C a b → Type j
   equiv-wc {a} {b} f = Σ (hom C b a) (λ g → (id₁ C a == ⟦ C ⟧ g ◻ f) × (id₁ C b == ⟦ C ⟧ f ◻ g))
+
+  equiv-wc-forg : {a b : ob C} {f : hom C a b} (bi : biinv-wc f) → equiv-wc f
+  equiv-wc-forg {f = f} ((g , li) , (h , ri)) = g , li ,
+    (ri ∙
+    ap (λ m → ⟦ C ⟧ f ◻ m) (lamb C h) ∙
+    ap (λ m → ⟦ C ⟧ f ◻ ⟦ C ⟧ m ◻ h) li ∙
+    ap (λ m → ⟦ C ⟧ f ◻ m) (α C g f h ∙ ! (ρ C g ∙ ap (λ m → ⟦ C ⟧ g ◻ m) ri)))
 
   module _ {a b : ob C} {f : hom C a b} (e : equiv-wc f) where
 
@@ -126,6 +148,13 @@ term-uniq-wc : ∀ {i j} {C : WildCat {i} {j}} {a b : ob C} → is-term-wc C a �
 fst (term-uniq-wc {a = a} {b} ta tb) = contr-center (ta b)
 fst (snd (term-uniq-wc {a = a} {b} ta tb)) = contr-has-all-paths {{(ta a)}} _ _
 snd (snd (term-uniq-wc {a = a} {b} ta tb)) = contr-has-all-paths {{(tb b)}} _ _
+
+-- univalent wild category
+is-univ-wc : ∀ {i j} (C : WildCat {i} {j}) → Type (lmax i j)
+is-univ-wc C = (a b : ob C) → is-equiv (==-to-≃-wc C {a} {b})
+
+is-univ-wc-idsys : ∀ {i j} {C : WildCat {i} {j}} {a : ob C} → is-univ-wc C → is-contr (Σ (ob C) (λ b → ≃-wc C a b))
+is-univ-wc-idsys {C = C} {a} uC = equiv-preserves-level (Σ-emap-r (λ b → ==-to-≃-wc C {a} {b} , uC a b))
 
 Type-wc : (i : ULevel) → WildCat
 ob (Type-wc i) = Type i

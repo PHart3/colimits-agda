@@ -243,3 +243,7 @@ replace-inverse {f = f} f-ise {g₁ = g₁} g∼ =
 ≃-==-contr : ∀ {i j} {A : Type i} {B : Type j} {b : B} (e : A ≃ B)
   → is-contr (Σ A (λ a → b == –> e a))
 ≃-==-contr e@(f , ise) = equiv-preserves-level (Σ-emap-r (λ a → equiv-adj-≃ (e ⁻¹)))
+
+≃-==-contr-back : ∀ {i j} {A : Type i} {B : Type j} {b : B} (e : A ≃ B)
+  → is-contr (Σ A (λ a → –> e a == b))
+≃-==-contr-back e@(f , ise) = equiv-preserves-level (Σ-emap-r (λ _ → !-equiv)) {{≃-==-contr e}}
