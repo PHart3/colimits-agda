@@ -39,8 +39,9 @@ module _ {i j} {C : WildCat {i} {j}} where
           fst (lclass (mor-l fct)) × fst (rclass (mor-r fct)))
   open ofs-wc public
 
-  -- SIP for fact-mor-wc where C is univalent
-  module _ (uC : is-univ-wc C) {a b : ob C} {h : hom C a b} where
+  -- SIP for fact-mor-wc where C is univalent and has the triangle identity
+  
+  module _ {a b : ob C} {h : hom C a b} where
 
     infixr 70 _=-fact-wc_
     _=-fact-wc_ : fact-mor-wc h → fact-mor-wc h → Type j
@@ -48,7 +49,24 @@ module _ {i j} {C : WildCat {i} {j}} where
       [ e ∈ ≃-wc C im₁ im₂ ] × [ H-l ∈ ⟦ C ⟧ fst e ◻ mor-l₁ == mor-l₂ ] × [ H-r ∈ ⟦ C ⟧ mor-r₂ ◻ fst e == mor-r₁ ] ×
         (ap (λ m → ⟦ C ⟧ m ◻ mor-l₁) H-r ∙ fact₁ == α C mor-r₂ (fst e) mor-l₁ ∙ ap (λ m → ⟦ C ⟧ mor-r₂ ◻ m) H-l ∙ fact₂)
 
-    module _ (fct₁@(factmor im₁ mor-l₁ mor-r₁ fact₁) : fact-mor-wc h) where
+    =-fact-wc-id : triangle-wc C → {fct : fact-mor-wc h} → fct =-fact-wc fct
+    fst (=-fact-wc-id _ {fct}) = ≃-wc-id C
+    fst (snd (=-fact-wc-id _ {fct})) = ! (lamb C (mor-l fct))
+    fst (snd (snd (=-fact-wc-id _ {fct}))) = ! (ρ C (mor-r fct))
+    snd (snd (snd (=-fact-wc-id tC {fct}))) = =ₛ-out $
+      ap (λ m → ⟦ C ⟧ m ◻ mor-l fct) (! (ρ C (mor-r fct))) ◃∙ fact fct ◃∎
+        =ₛ₁⟨ 0 & 1 & ap-! (λ m → ⟦ C ⟧ m ◻ mor-l fct) (ρ C (mor-r fct)) ⟩
+      ! (ap (λ m → ⟦ C ⟧ m ◻ mor-l fct) (ρ C (mor-r fct))) ◃∙ fact fct ◃∎
+        =ₛ⟨ 0 & 1 & !ₛ (triangle-wc-rot3 {C = C} tC (mor-r fct) (mor-l fct)) ⟩
+      α C (mor-r fct) (id₁ C (im fct)) (mor-l fct) ◃∙
+      ! (ap (λ m → ⟦ C ⟧ mor-r fct ◻ m) (lamb C (mor-l fct))) ◃∙
+      fact fct ◃∎
+        =ₛ₁⟨ 1 & 1 & !-ap (λ m → ⟦ C ⟧ mor-r fct ◻ m) (lamb C (mor-l fct)) ⟩
+      α C (mor-r fct) (id₁ C (im fct)) (mor-l fct) ◃∙
+      ap (λ m → ⟦ C ⟧ mor-r fct ◻ m) (! (lamb C (mor-l fct))) ◃∙
+      fact fct ◃∎ ∎ₛ
+
+    module SIP-fact (uC : is-univ-wc C) (fct₁@(factmor im₁ mor-l₁ mor-r₁ fact₁) : fact-mor-wc h) where
 
       fact-wc-contr-aux :
         is-contr $
@@ -85,4 +103,32 @@ module _ {i j} {C : WildCat {i} {j}} where
                (λ ((factmor im₂ mor-l₂ mor-r₂ coh) , (e , (H-l , (H-r , coh2)))) →
                  ((im₂ , e) , (mor-l₂ , H-l) , (mor-r₂ , H-r) , (coh , coh2)))
                (λ _ → idp)
-               λ _ → idp
+               λ _ → idp 
+
+    module _ (uC : is-univ-wc C) (tC : triangle-wc C) {fct₁ : fact-mor-wc h} where
+
+      open SIP-fact uC fct₁
+
+      fact-wc-ind : ∀ {k} (P : (fct₂ : fact-mor-wc h) → (fct₁ =-fact-wc fct₂ → Type k))
+        → P fct₁ (=-fact-wc-id tC) → {fct₂ : fact-mor-wc h} (e : fct₁ =-fact-wc fct₂) → P fct₂ e
+      fact-wc-ind P = ID-ind-map P fact-wc-contr
+
+      fact-wc-to-== : {fct₂ : fact-mor-wc h} → fct₁ =-fact-wc fct₂ → fct₁ == fct₂
+      fact-wc-to-== = fact-wc-ind (λ fct₂ _ → fct₁ == fct₂) idp
+
+      fact-wc-to-==-β : fact-wc-to-== (=-fact-wc-id tC) == idp
+      fact-wc-to-==-β = ID-ind-map-β (λ fct₂ _ → fct₁ == fct₂) fact-wc-contr idp
+
+      fact-wc-from-== : {fct₂ : fact-mor-wc h} → fct₁ == fct₂ → fct₁ =-fact-wc fct₂
+      fact-wc-from-== idp = (=-fact-wc-id tC)
+
+      fact-wc-==-≃ : {fct₂ : fact-mor-wc h} → (fct₁ == fct₂) ≃ (fct₁ =-fact-wc fct₂)
+      fact-wc-==-≃ = equiv fact-wc-from-== fact-wc-to-== aux1 aux2
+        where abstract
+
+          aux1 : {fct₂ : fact-mor-wc h} (e : fct₁ =-fact-wc fct₂) → fact-wc-from-== (fact-wc-to-== e) == e
+          aux1 = fact-wc-ind (λ fct2 e → fact-wc-from-== (fact-wc-to-== e) == e) (ap fact-wc-from-== fact-wc-to-==-β)
+
+          aux2 : {fct₂ : fact-mor-wc h} (e : fct₁ == fct₂) → fact-wc-to-== (fact-wc-from-== e) == e
+          aux2 idp = fact-wc-to-==-β 
+

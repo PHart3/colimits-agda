@@ -190,7 +190,7 @@ module _ {i} where
     contr-has-section : ∀ {j} {A : Type i} {B : A → Type j}
       → (is-contr A → (x : A) → (u : B x) → Π A B)
     contr-has-section {B = B} p x₀ y₀ t = transport B (! (contr-path p x₀) ∙ contr-path p t) y₀
-    
+
 abstract
   ==-∙-contr : ∀ {i} {A : Type i} {x a b : A} {p₁ : x == b} (p₂ : x == a) →
     is-contr (Σ (a == b) (λ q → p₁ == p₂ ∙ q))
