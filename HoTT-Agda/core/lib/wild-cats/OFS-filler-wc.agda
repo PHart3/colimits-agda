@@ -67,5 +67,11 @@ module _ {i j} {C : WildCat {i} {j}} where
             (fct2 , ∘-lc fs l-L (fst (snd (ofct g))) , snd (snd (ofct g))))⁻¹)
             {{=-preserves-contr (fact-contr fs (⟦ C ⟧ r ◻ f))}}
             
-          fct==-contr-ext : is-contr (fct1 =-fact-wc fct2)
+          fct==-contr-ext : is-contr $  -- fct1 =-fact-wc fct2
+            Σ (≃-wc C (im fct1) (im fct2)) (λ e →
+                Σ (⟦ C ⟧ fst e ◻ mor-l fct1 == mor-l fct2) (λ H-l →
+                  Σ (⟦ C ⟧ mor-r fct2 ◻ fst e == mor-r fct1) (λ H-r →
+                    ap (λ m → ⟦ C ⟧ m ◻ mor-l fct1) H-r ∙ fact fct1
+                      ==
+                    α C (mor-r fct2) (fst e) (mor-l fct1) ∙ ap (λ m → ⟦ C ⟧ (mor-r fct2) ◻ m) H-l ∙ fact fct2)))
           fct==-contr-ext = equiv-preserves-level (fact-wc-==-≃  uC tC) {{fct==-contr}}
