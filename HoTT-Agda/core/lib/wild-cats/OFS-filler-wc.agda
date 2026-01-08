@@ -1,8 +1,9 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
 open import lib.NType2
 open import lib.types.Sigma hiding (diag)
+open import lib.types.Paths
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.OFS-wc
 open import lib.wild-cats.Filler-wc
@@ -111,9 +112,9 @@ module _ {i j} {C : WildCat {i} {j}} where
 
       fill-contr-aux1 :
         [ im-f ∈ ob C ] × [ (im-g , (e–> , _)) ∈ Σ (ob C) (λ im-g → ≃-wc C im-f im-g) ] ×
-          [ ((b₁ , a₁ , H-l) , (b₂ , a₂ , H-r)) ∈
+          [ ((b₁ , a₁ , H-l) , (a₂ , b₂ , H-r)) ∈
             Σ (hom C b im-g) (λ b₁ → (Σ (hom C a im-f) (λ a₁ → ⟦ C ⟧ e–> ◻ a₁ == ⟦ C ⟧ b₁ ◻ l))) ×
-            Σ (hom C im-g d) (λ b₂ → (Σ (hom C im-f c) (λ a₂ → ⟦ C ⟧ b₂ ◻ e–> == ⟦ C ⟧ r ◻ a₂))) ] ×
+            Σ (hom C im-f c) (λ a₂ → (Σ (hom C im-g d) (λ b₂ → ⟦ C ⟧ b₂ ◻ e–> == ⟦ C ⟧ r ◻ a₂))) ] ×
             [ (p-f , p-g) ∈ (⟦ C ⟧ a₂ ◻ a₁ == f) × (⟦ C ⟧ b₂ ◻ b₁ == g) ] ×
               (ap (λ m → ⟦ C ⟧ m ◻ a₁) H-r ∙
                α C r a₂ a₁ ∙
@@ -141,28 +142,14 @@ module _ {i j} {C : WildCat {i} {j}} where
               ! (α C t-g s-g l) ∙
               ap (λ m → ⟦ C ⟧ m ◻ l) p-g ∙ S))))
       fill-contr-aux1 = equiv
-        (λ (im-f , (im-g , e) , ((b₁ , a₁ , H-l) , (b₂ , a₂ , H-r)) , (p-f , p-g) , (c , m1 , m2 , m3 , m4)) →
+        (λ (im-f , (im-g , e) , ((b₁ , a₁ , H-l) , (a₂ , b₂ , H-r)) , (p-f , p-g) , (c , m1 , m2 , m3 , m4)) →
           ((factmor im-f a₁ a₂ p-f) , (m1 , m3)) , (((factmor im-g b₁ b₂ p-g) , (m2 , m4)) , (e , (H-l , (H-r , c)))))
         (λ (((factmor im-f a₁ a₂ p-f) , (m1 , m3)) , (((factmor im-g b₁ b₂ p-g) , (m2 , m4)) , (e , (H-l , (H-r , c))))) →
-          (im-f , (im-g , e) , ((b₁ , a₁ , H-l) , (b₂ , a₂ , H-r)) , (p-f , p-g) , (c , m1 , m2 , m3 , m4)))
+          (im-f , (im-g , e) , ((b₁ , a₁ , H-l) , (a₂ , b₂ , H-r)) , (p-f , p-g) , (c , m1 , m2 , m3 , m4)))
         (λ _ → idp)
         λ _ → idp
 
       fill-contr-aux2 :
-        [ I ∈ ob C ] × [ ((b₁ , a₁ , H-l) , (b₂ , a₂ , H-r)) ∈
-          Σ (hom C b I) (λ b₁ → (Σ (hom C a I) (λ a₁ → ⟦ C ⟧ id₁ C I ◻ a₁ == ⟦ C ⟧ b₁ ◻ l))) ×
-          Σ (hom C I d) (λ b₂ → (Σ (hom C I c) (λ a₂ → ⟦ C ⟧ b₂ ◻ id₁ C I == ⟦ C ⟧ r ◻ a₂))) ] ×
-          [ (p-f , p-g) ∈ (⟦ C ⟧ a₂ ◻ a₁ == f) × (⟦ C ⟧ b₂ ◻ b₁ == g) ] ×
-            (ap (λ m → ⟦ C ⟧ m ◻ a₁) H-r ∙
-             α C r a₂ a₁ ∙
-             ap (λ m → ⟦ C ⟧ r ◻ m) p-f
-               ==
-             α C b₂ (id₁ C I) a₁ ∙
-             ap (λ m → ⟦ C ⟧ b₂ ◻ m) H-l ∙
-             ! (α C b₂ b₁ l) ∙
-             ap (λ m → ⟦ C ⟧ m ◻ l) p-g ∙ S) ×
-             (fst (lclass fs a₁) × fst (lclass fs b₁) × fst (rclass fs a₂) × fst (rclass fs b₂))
-          ≃
         [ im-f ∈ ob C ] × [ (im-g , (e–> , _)) ∈ Σ (ob C) (λ im-g → ≃-wc C im-f im-g) ] ×
             [ ((b₁ , a₁ , H-l) , (b₂ , a₂ , H-r)) ∈
               Σ (hom C b im-g) (λ b₁ → (Σ (hom C a im-f) (λ a₁ → ⟦ C ⟧ e–> ◻ a₁ == ⟦ C ⟧ b₁ ◻ l))) ×
@@ -177,4 +164,126 @@ module _ {i j} {C : WildCat {i} {j}} where
                  ! (α C b₂ b₁ l) ∙
                  ap (λ m → ⟦ C ⟧ m ◻ l) p-g ∙ S) ×
                  (fst (lclass fs a₁) × fst (lclass fs b₁) × fst (rclass fs a₂) × fst (rclass fs b₂))
-      fill-contr-aux2 = Σ-emap-r {A = ob C} (λ im-f → (Σ-contr-red {A = Σ (ob C) (λ im-g → ≃-wc C im-f im-g)} (is-univ-wc-idsys uC))⁻¹)
+          ≃
+        [ I ∈ ob C ] × [ ((b₁ , a₁ , H-l) , (b₂ , a₂ , H-r)) ∈
+          Σ (hom C b I) (λ b₁ → (Σ (hom C a I) (λ a₁ → ⟦ C ⟧ id₁ C I ◻ a₁ == ⟦ C ⟧ b₁ ◻ l))) ×
+          Σ (hom C I d) (λ b₂ → (Σ (hom C I c) (λ a₂ → ⟦ C ⟧ b₂ ◻ id₁ C I == ⟦ C ⟧ r ◻ a₂))) ] ×
+          [ (p-f , p-g) ∈ (⟦ C ⟧ a₂ ◻ a₁ == f) × (⟦ C ⟧ b₂ ◻ b₁ == g) ] ×
+            (ap (λ m → ⟦ C ⟧ m ◻ a₁) H-r ∙
+             α C r a₂ a₁ ∙
+             ap (λ m → ⟦ C ⟧ r ◻ m) p-f
+               ==
+             α C b₂ (id₁ C I) a₁ ∙
+             ap (λ m → ⟦ C ⟧ b₂ ◻ m) H-l ∙
+             ! (α C b₂ b₁ l) ∙
+             ap (λ m → ⟦ C ⟧ m ◻ l) p-g ∙ S) ×
+             (fst (lclass fs a₁) × fst (lclass fs b₁) × fst (rclass fs a₂) × fst (rclass fs b₂))
+      fill-contr-aux2 = Σ-emap-r {A = ob C} (λ im-f →
+        Σ-contr-red {A = Σ (ob C) (λ im-g → ≃-wc C im-f im-g)} (is-univ-wc-idsys uC))
+
+      fill-contr-aux3 :
+        [ I ∈ ob C ] × [ ((b₁ , a₁ , H-l) , (a₂ , b₂ , H-r)) ∈
+          Σ (hom C b I) (λ b₁ → (Σ (hom C a I) (λ a₁ → a₁ == ⟦ C ⟧ b₁ ◻ l))) ×
+          Σ (hom C I c) (λ a₂ → (Σ (hom C I d) (λ b₂ → b₂ == ⟦ C ⟧ r ◻ a₂))) ] ×
+          [ (p-f , p-g) ∈ (⟦ C ⟧ a₂ ◻ a₁ == f) × (⟦ C ⟧ b₂ ◻ b₁ == g) ] ×
+            (ap (λ m → ⟦ C ⟧ m ◻ a₁) (! (ρ C b₂) ∙ H-r) ∙
+             α C r a₂ a₁ ∙
+             ap (λ m → ⟦ C ⟧ r ◻ m) p-f
+               ==
+             α C b₂ (id₁ C I) a₁ ∙
+             ap (λ m → ⟦ C ⟧ b₂ ◻ m) (! (lamb C a₁) ∙ H-l) ∙
+             ! (α C b₂ b₁ l) ∙
+             ap (λ m → ⟦ C ⟧ m ◻ l) p-g ∙ S) ×
+             (fst (lclass fs a₁) × fst (lclass fs b₁) × fst (rclass fs a₂) × fst (rclass fs b₂))
+          ≃
+        [ I ∈ ob C ] × [ ((b₁ , a₁ , H-l) , (a₂ , b₂ , H-r)) ∈
+          Σ (hom C b I) (λ b₁ → (Σ (hom C a I) (λ a₁ → ⟦ C ⟧ id₁ C I ◻ a₁ == ⟦ C ⟧ b₁ ◻ l))) ×
+          Σ (hom C I c) (λ a₂ → (Σ (hom C I d) (λ b₂ → ⟦ C ⟧ b₂ ◻ id₁ C I == ⟦ C ⟧ r ◻ a₂))) ] ×
+          [ (p-f , p-g) ∈ (⟦ C ⟧ a₂ ◻ a₁ == f) × (⟦ C ⟧ b₂ ◻ b₁ == g) ] ×
+            (ap (λ m → ⟦ C ⟧ m ◻ a₁) H-r ∙
+             α C r a₂ a₁ ∙
+             ap (λ m → ⟦ C ⟧ r ◻ m) p-f
+               ==
+             α C b₂ (id₁ C I) a₁ ∙
+             ap (λ m → ⟦ C ⟧ b₂ ◻ m) H-l ∙
+             ! (α C b₂ b₁ l) ∙
+             ap (λ m → ⟦ C ⟧ m ◻ l) p-g ∙ S) ×
+             (fst (lclass fs a₁) × fst (lclass fs b₁) × fst (rclass fs a₂) × fst (rclass fs b₂))
+      fill-contr-aux3 = Σ-emap-r {A = ob C} (λ I →
+        Σ-emap-l _ (×-emap
+          (Σ-emap-r (λ b₁ → Σ-emap-r (λ a₁ → pre∙-equiv (! (lamb C a₁)))))
+          (Σ-emap-r (λ a₂ → Σ-emap-r (λ b₂ → pre∙-equiv (! (ρ C b₂)))))))
+
+      fill-contr-aux4 :
+        [ I ∈ ob C ] × [ (b₁ , a₂) ∈ hom C b I × hom C I c ] ×
+           [ (p-f , p-g) ∈ (⟦ C ⟧ a₂ ◻ ⟦ C ⟧ b₁ ◻ l == f) × (⟦ C ⟧ ⟦ C ⟧ r ◻ a₂ ◻ b₁ == g) ] ×
+             (ap (λ m → ⟦ C ⟧ m ◻ ⟦ C ⟧ b₁ ◻ l) (! (ρ C (⟦ C ⟧ r ◻ a₂)) ∙ idp) ∙
+              α C r a₂ (⟦ C ⟧ b₁ ◻ l) ∙
+              ap (λ m → ⟦ C ⟧ r ◻ m) p-f
+                ==
+              α C (⟦ C ⟧ r ◻ a₂) (id₁ C I) (⟦ C ⟧ b₁ ◻ l) ∙
+              ap (λ m → ⟦ C ⟧ ⟦ C ⟧ r ◻ a₂ ◻ m) (! (lamb C (⟦ C ⟧ b₁ ◻ l)) ∙ idp) ∙
+              ! (α C (⟦ C ⟧ r ◻ a₂) b₁ l) ∙
+              ap (λ m → ⟦ C ⟧ m ◻ l) p-g ∙ S) ×
+              (fst (lclass fs (⟦ C ⟧ b₁ ◻ l)) × fst (lclass fs b₁) × fst (rclass fs a₂) × fst (rclass fs (⟦ C ⟧ r ◻ a₂)))
+           ≃
+         [ I ∈ ob C ] × [ ((b₁ , a₁ , H-l) , (a₂ , b₂ , H-r)) ∈
+          Σ (hom C b I) (λ b₁ → (Σ (hom C a I) (λ a₁ → a₁ == ⟦ C ⟧ b₁ ◻ l))) ×
+          Σ (hom C I c) (λ a₂ → (Σ (hom C I d) (λ b₂ → b₂ == ⟦ C ⟧ r ◻ a₂))) ] ×
+          [ (p-f , p-g) ∈ (⟦ C ⟧ a₂ ◻ a₁ == f) × (⟦ C ⟧ b₂ ◻ b₁ == g) ] ×
+            (ap (λ m → ⟦ C ⟧ m ◻ a₁) (! (ρ C b₂) ∙ H-r) ∙
+             α C r a₂ a₁ ∙
+             ap (λ m → ⟦ C ⟧ r ◻ m) p-f
+               ==
+             α C b₂ (id₁ C I) a₁ ∙
+             ap (λ m → ⟦ C ⟧ b₂ ◻ m) (! (lamb C a₁) ∙ H-l) ∙
+             ! (α C b₂ b₁ l) ∙
+             ap (λ m → ⟦ C ⟧ m ◻ l) p-g ∙ S) ×
+             (fst (lclass fs a₁) × fst (lclass fs b₁) × fst (rclass fs a₂) × fst (rclass fs b₂))
+      fill-contr-aux4 = Σ-emap-r {A = ob C} (λ I →
+        Σ-emap-l _ (×-emap (Σ-contr-red-cod ⁻¹) (Σ-contr-red-cod ⁻¹)))
+
+      fill-contr-aux5 :
+         [ I ∈ ob C ] × [ (b₁ , a₂) ∈ hom C b I × hom C I c ] ×
+           [ (p-f , p-g) ∈ (⟦ C ⟧ ⟦ C ⟧ a₂ ◻ b₁ ◻ l == f) × (⟦ C ⟧ r ◻ ⟦ C ⟧ a₂ ◻ b₁ == g) ] ×
+             (ap (λ m → ⟦ C ⟧ m ◻ ⟦ C ⟧ b₁ ◻ l) (! (ρ C (⟦ C ⟧ r ◻ a₂)) ∙ idp) ∙
+              α C r a₂ (⟦ C ⟧ b₁ ◻ l) ∙
+              ap (λ m → ⟦ C ⟧ r ◻ m) (! (α C a₂ b₁ l) ∙ p-f)
+                ==
+              α C (⟦ C ⟧ r ◻ a₂) (id₁ C I) (⟦ C ⟧ b₁ ◻ l) ∙
+              ap (λ m → ⟦ C ⟧ ⟦ C ⟧ r ◻ a₂ ◻ m) (! (lamb C (⟦ C ⟧ b₁ ◻ l)) ∙ idp) ∙
+              ! (α C (⟦ C ⟧ r ◻ a₂) b₁ l) ∙
+              ap (λ m → ⟦ C ⟧ m ◻ l) (α C r a₂ b₁ ∙ p-g) ∙ S) ×
+              (fst (lclass fs (⟦ C ⟧ b₁ ◻ l)) × fst (lclass fs b₁) × fst (rclass fs a₂) × fst (rclass fs (⟦ C ⟧ r ◻ a₂)))
+          ≃
+        [ I ∈ ob C ] × [ (b₁ , a₂) ∈ hom C b I × hom C I c ] ×
+           [ (p-f , p-g) ∈ (⟦ C ⟧ a₂ ◻ ⟦ C ⟧ b₁ ◻ l == f) × (⟦ C ⟧ ⟦ C ⟧ r ◻ a₂ ◻ b₁ == g) ] ×
+             (ap (λ m → ⟦ C ⟧ m ◻ ⟦ C ⟧ b₁ ◻ l) (! (ρ C (⟦ C ⟧ r ◻ a₂)) ∙ idp) ∙
+              α C r a₂ (⟦ C ⟧ b₁ ◻ l) ∙
+              ap (λ m → ⟦ C ⟧ r ◻ m) p-f
+                ==
+              α C (⟦ C ⟧ r ◻ a₂) (id₁ C I) (⟦ C ⟧ b₁ ◻ l) ∙
+              ap (λ m → ⟦ C ⟧ ⟦ C ⟧ r ◻ a₂ ◻ m) (! (lamb C (⟦ C ⟧ b₁ ◻ l)) ∙ idp) ∙
+              ! (α C (⟦ C ⟧ r ◻ a₂) b₁ l) ∙
+              ap (λ m → ⟦ C ⟧ m ◻ l) p-g ∙ S) ×
+              (fst (lclass fs (⟦ C ⟧ b₁ ◻ l)) × fst (lclass fs b₁) × fst (rclass fs a₂) × fst (rclass fs (⟦ C ⟧ r ◻ a₂)))
+      fill-contr-aux5 = Σ-emap-r {A = ob C} (λ I → Σ-emap-r {A = hom C b I × hom C I c} (λ (b₁ , a₂) → 
+        Σ-emap-l _ (×-emap (pre∙-equiv (! (α C a₂ b₁ l))) (pre∙-equiv (α C r a₂ b₁)))))
+      
+
+      module _ (I : ob C) (b₁ : hom C b I) (a₂ : hom C I c)
+        (p-f : ⟦ C ⟧ ⟦ C ⟧ a₂ ◻ b₁ ◻ l == f) (p-g : ⟦ C ⟧ r ◻ ⟦ C ⟧ a₂ ◻ b₁ == g) where
+
+        private
+          assoc-unit-reduce :
+            (ap (λ m → ⟦ C ⟧ m ◻ ⟦ C ⟧ b₁ ◻ l) (! (ρ C (⟦ C ⟧ r ◻ a₂)) ∙ idp) ∙
+             α C r a₂ (⟦ C ⟧ b₁ ◻ l) ∙
+             ap (λ m → ⟦ C ⟧ r ◻ m) (! (α C a₂ b₁ l) ∙ p-f)
+               ==
+             α C (⟦ C ⟧ r ◻ a₂) (id₁ C I) (⟦ C ⟧ b₁ ◻ l) ∙
+             ap (λ m → ⟦ C ⟧ ⟦ C ⟧ r ◻ a₂ ◻ m) (! (lamb C (⟦ C ⟧ b₁ ◻ l)) ∙ idp) ∙
+             ! (α C (⟦ C ⟧ r ◻ a₂) b₁ l) ∙
+             ap (λ m → ⟦ C ⟧ m ◻ l) (α C r a₂ b₁ ∙ p-g) ∙ S)
+              ≃
+            {!!}
+          assoc-unit-reduce = {!!}
