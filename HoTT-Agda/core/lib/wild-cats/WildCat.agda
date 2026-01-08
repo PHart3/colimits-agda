@@ -62,6 +62,7 @@ module _ {i j} (B : WildCat {i} {j}) where
   id idfWC _ = idp
   comp idfWC _ _ = idp
 
+
 module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B : WildCat {i₁} {j₁}} {C : WildCat {i₂} {j₂}} {D : WildCat {i₃} {j₃}}  where
 
   infixr 60 _∘WC_
@@ -290,6 +291,12 @@ module _ {i j} {C : WildCat {i} {j}} (pent : pentagon-wc C)
         =ₛ
       α C k g (⟦ C ⟧ h ◻ f) ◃∎
     pentagon-wc-rot4 = pre-rotate'-in pentagon-wc◃ 
+
+    pentagon-wc-rot5 :
+      ! (α C (⟦ C ⟧ k ◻ g) h f) ◃∙ ap (λ m → ⟦ C ⟧ m ◻ f) (α C k g h) ◃∎
+        =ₛ
+      α C k g (⟦ C ⟧ h ◻ f) ◃∙ ! (ap (λ m → ⟦ C ⟧ k ◻ m) (α C g h f)) ◃∙ ! (α C k (⟦ C ⟧ g ◻ h) f) ◃∎
+    pentagon-wc-rot5 = post-rotate-in (post-rotate-in pentagon-wc-rot4)
 
 bicat-wc : ∀ {i j} → Type (lmax (lsucc i) (lsucc j))
 bicat-wc {i} {j} = Σ (WildCat {i} {j}) (λ C → triangle-wc C × pentagon-wc C)
