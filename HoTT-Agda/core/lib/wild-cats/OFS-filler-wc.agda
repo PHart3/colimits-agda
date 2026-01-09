@@ -5,26 +5,30 @@ open import lib.NType2
 open import lib.types.Sigma hiding (diag)
 open import lib.types.Paths
 open import lib.wild-cats.WildCat
+open import lib.wild-cats.Bicat
 open import lib.wild-cats.OFS-wc
 open import lib.wild-cats.Filler-wc
 
 module lib.wild-cats.OFS-filler-wc where
 
--- the two classes of an OFS lift against each other
+-- the two classes of an OFS are exactly those classes of maps that lift against each other
 
-module _ {i j} {C : WildCat {i} {j}} where
+module _ {i j} {C : WildCat {i} {j}} {k₁ k₂} (fs : ofs-wc k₁ k₂ C) where
 
   open fact-mor-wc
 
-  module _ {k₁ k₂} (fs : ofs-wc k₁ k₂ C) {a b c d : ob C} {l : hom C a b} {r : hom C c d}
+  private  
+    ofct : {a b : ob C} (m : hom C a b) →
+      Σ (fact-mor-wc {C = C} m) (λ fct → fst (lclass fs (mor-l fct)) × fst (rclass fs (mor-r fct)))
+    ofct = contr-center ∘ (fact-contr fs)
+
+  -- the left class lifts against the right
+
+  module _ {a b c d : ob C} {l : hom C a b} {r : hom C c d}
     (l-L : fst (lclass fs l)) (r-R : fst (rclass fs r))
     (f : hom C a c) (g : hom C b d) (S : ⟦ C ⟧ g ◻ l == ⟦ C ⟧ r ◻ f) where
  
     private
-    
-      ofct : {a b : ob C} (m : hom C a b) →
-        Σ (fact-mor-wc {C = C} m) (λ fct → fst (lclass fs (mor-l fct)) × fst (rclass fs (mor-r fct)))
-      ofct = contr-center ∘ (fact-contr fs)
 
       im-f : ob C
       im-f = im (fst (ofct f))
@@ -540,6 +544,170 @@ module _ {i j} {C : WildCat {i} {j}} where
             fill-contr-aux2 ∘e fill-contr-aux1 ⁻¹ ∘e fill-contr-aux0 ⁻¹)
           {{fct==-contr-ext}}
 
-  llp-ofs-lc : (uC : is-univ-wc C) (tC : triangle-wc C) (pC : pentagon-wc C) →
-    ∀ {k₁ k₂} (fs : ofs-wc k₁ k₂ C) {a b : ob C} {l : hom C a b} (l-L : fst (lclass fs l)) → llp-wc {C = C} (rclass fs) l
-  llp-ofs-lc uC tC pC fs l-L r-R f g H = fill-contr-aux fs l-L r-R f g H uC tC pC 
+  module _ (uC : is-univ-wc C) (tC : triangle-wc C) (pC : pentagon-wc C) where
+
+    lc-ofs-llp : {a b : ob C} {l : hom C a b} (l-L : fst (lclass fs l)) → llp-wc {C = C} (rclass fs) l
+    lc-ofs-llp l-L r-R f g H = fill-contr-aux l-L r-R f g H uC tC pC 
+
+    -- if a map lifts against the right class, then it belongs to the left class
+
+    module _ {a b : ob C} (f : hom C a b) (lft : llp-wc {C = C} (rclass fs) f) where
+
+      open Fill-wc
+
+      private
+
+        im-f : ob C
+        im-f = im (fst (ofct f))
+        s-f : hom C a (im (fst (ofct f)))
+        s-f = mor-l (fst (ofct f))
+        t-f : hom C (im (fst (ofct f))) b
+        t-f = mor-r (fst (ofct f))
+        p-f : ⟦ C ⟧ mor-r (fst (ofct f)) ◻ mor-l (fst (ofct f)) == f
+        p-f = fact (fst (ofct f))
+
+        filler-pf : is-contr (Fill-wc {C = C} s-f (id₁ C b) (! (p-f ∙ lamb C f)))
+        filler-pf = lft (snd (snd (ofct f))) s-f (id₁ C b) (! (p-f ∙ lamb C f))
+
+        center-pf : Fill-wc {C = C} s-f (id₁ C b) (! (p-f ∙ lamb C f))
+        center-pf = contr-center filler-pf
+
+        filler-refl : is-contr (Fill-wc {C = C} s-f t-f idp)
+        filler-refl = lc-ofs-llp (fst (snd (ofct f))) (snd (snd (ofct f))) s-f t-f idp
+
+        filler-refl1 : Fill-wc {C = C} s-f t-f idp
+        diag filler-refl1 = id₁ C (im (fst (ofct f)))
+        tri-top filler-refl1 = ! (lamb C s-f)
+        tri-bottom filler-refl1 = ! (ρ C t-f)
+        tri-coh filler-refl1 = =ₛ-out aux ∙ ! (∙-unit-r (ap (λ m → ⟦ C ⟧ m ◻ s-f) (! (ρ C t-f))))
+          where
+            aux :
+              α C t-f (id₁ C (im (fst (ofct f)))) s-f ◃∙
+              ap (λ m → ⟦ C ⟧ t-f ◻ m) (! (lamb C s-f)) ◃∎
+                =ₛ
+              ap (λ m → ⟦ C ⟧ m ◻ s-f) (! (ρ C t-f)) ◃∎
+            aux = 
+              α C t-f (id₁ C (im (fst (ofct f)))) s-f ◃∙
+              ap (λ m → ⟦ C ⟧ t-f ◻ m) (! (lamb C s-f)) ◃∎
+                =ₛ₁⟨ 1 & 1 & ap-! (λ m → ⟦ C ⟧ t-f ◻ m) (lamb C s-f) ⟩
+              α C t-f (id₁ C (im (fst (ofct f)))) s-f ◃∙
+              ! (ap (λ m → ⟦ C ⟧ t-f ◻ m) (lamb C s-f)) ◃∎
+                =ₛ⟨ triangle-wc-rot3 {C = C} tC t-f s-f ⟩
+              ! (ap (λ m → ⟦ C ⟧ m ◻ s-f) (ρ C t-f)) ◃∎
+                =ₛ₁⟨ !-ap (λ m → ⟦ C ⟧ m ◻ s-f) (ρ C t-f) ⟩
+              ap (λ m → ⟦ C ⟧ m ◻ s-f) (! (ρ C t-f)) ◃∎ ∎ₛ
+
+        filler-refl2 : Fill-wc {C = C} s-f t-f idp
+        diag filler-refl2 = ⟦ C ⟧ diag center-pf ◻ t-f
+        tri-top filler-refl2 =
+          α C (diag center-pf) t-f s-f ∙ ap (λ m → ⟦ C ⟧ diag center-pf ◻ m) p-f ∙ tri-top center-pf
+        tri-bottom filler-refl2 =
+          ! (α C t-f (diag center-pf) t-f) ∙ ap (λ m → ⟦ C ⟧ m ◻ t-f) (tri-bottom center-pf) ∙ ! (lamb C t-f)
+        tri-coh filler-refl2 = =ₛ-out aux
+          where abstract
+            aux :
+              α C t-f (⟦ C ⟧ diag center-pf ◻ t-f) s-f ◃∙
+              ap (λ m → ⟦ C ⟧ t-f ◻ m)
+                (α C (diag center-pf) t-f s-f ∙ ap (λ m → ⟦ C ⟧ diag center-pf ◻ m) p-f ∙ tri-top center-pf) ◃∎
+                =ₛ
+              ap (λ m → ⟦ C ⟧ m ◻ s-f)
+                (! (α C t-f (diag center-pf) t-f) ∙ ap (λ m → ⟦ C ⟧ m ◻ t-f) (tri-bottom center-pf) ∙ ! (lamb C t-f)) ◃∙
+              idp ◃∎
+            aux = 
+              α C t-f (⟦ C ⟧ diag center-pf ◻ t-f) s-f ◃∙
+              ap (λ m → ⟦ C ⟧ t-f ◻ m)
+                (α C (diag center-pf) t-f s-f ∙ ap (λ m → ⟦ C ⟧ diag center-pf ◻ m) p-f ∙ tri-top center-pf) ◃∎
+                =ₛ⟨ 1 & 1 & ap-seq-∙ (λ m → ⟦ C ⟧ t-f ◻ m)
+                  (α C (diag center-pf) t-f s-f ◃∙ ap (λ m → ⟦ C ⟧ diag center-pf ◻ m) p-f ◃∙ tri-top center-pf ◃∎) ⟩
+              α C t-f (⟦ C ⟧ diag center-pf ◻ t-f) s-f ◃∙
+              ap (λ m → ⟦ C ⟧ t-f ◻ m)  (α C (diag center-pf) t-f s-f) ◃∙
+              ap (λ m → ⟦ C ⟧ t-f ◻ m) (ap (λ m → ⟦ C ⟧ diag center-pf ◻ m) p-f) ◃∙
+              ap (λ m → ⟦ C ⟧ t-f ◻ m) (tri-top center-pf) ◃∎
+                =ₛ⟨ 3 & 1 & tri-coh-rot1 center-pf ⟩
+              α C t-f (⟦ C ⟧ diag center-pf ◻ t-f) s-f ◃∙
+              ap (λ m → ⟦ C ⟧ t-f ◻ m)  (α C (diag center-pf) t-f s-f) ◃∙
+              ap (λ m → ⟦ C ⟧ t-f ◻ m) (ap (λ m → ⟦ C ⟧ diag center-pf ◻ m) p-f) ◃∙
+              ! (α C t-f (diag center-pf) f) ◃∙
+              ap (λ m → ⟦ C ⟧ m ◻ f) (tri-bottom center-pf) ◃∙
+              ! (p-f ∙ lamb C f) ◃∎
+                =ₛ₁⟨ 2 & 1 & ∘-ap (λ m → ⟦ C ⟧ t-f ◻ m) (λ m → ⟦ C ⟧ diag center-pf ◻ m) p-f ⟩
+              α C t-f (⟦ C ⟧ diag center-pf ◻ t-f) s-f ◃∙
+              ap (λ m → ⟦ C ⟧ t-f ◻ m) (α C (diag center-pf) t-f s-f) ◃∙
+              ap (λ m → ⟦ C ⟧ t-f ◻ ⟦ C ⟧ diag center-pf ◻ m) p-f ◃∙
+              ! (α C t-f (diag center-pf) f) ◃∙
+              ap (λ m → ⟦ C ⟧ m ◻ f) (tri-bottom center-pf) ◃∙
+              ! (p-f ∙ lamb C f) ◃∎
+                =ₛ⟨ 2 & 2 & !ₛ (homotopy-naturality-! (α C t-f (diag center-pf))  p-f) ⟩
+              α C t-f (⟦ C ⟧ diag center-pf ◻ t-f) s-f ◃∙
+              ap (λ m → ⟦ C ⟧ t-f ◻ m) (α C (diag center-pf) t-f s-f) ◃∙
+              ! (α C t-f (diag center-pf) (⟦ C ⟧ t-f ◻ s-f)) ◃∙
+              ap (λ m → ⟦ C ⟧ ⟦ C ⟧ t-f ◻ diag center-pf ◻ m) p-f ◃∙
+              ap (λ m → ⟦ C ⟧ m ◻ f) (tri-bottom center-pf) ◃∙
+              ! (p-f ∙ lamb C f) ◃∎
+                =ₛ⟨ 0 & 3 & pentagon-wc-rot6 {C = C} pC t-f (diag center-pf) t-f s-f ⟩
+              ! (ap (λ m → ⟦ C ⟧ m ◻ s-f) (α C t-f (diag center-pf) t-f)) ◃∙
+              α C (⟦ C ⟧ t-f ◻ diag center-pf) t-f s-f ◃∙
+              ap (λ m → ⟦ C ⟧ ⟦ C ⟧ t-f ◻ diag center-pf ◻ m) p-f ◃∙
+              ap (λ m → ⟦ C ⟧ m ◻ f) (tri-bottom center-pf) ◃∙
+              ! (p-f ∙ lamb C f) ◃∎
+                =ₛ⟨ 4 & 1 & !-∙◃ p-f (lamb C f) ⟩
+              ! (ap (λ m → ⟦ C ⟧ m ◻ s-f) (α C t-f (diag center-pf) t-f)) ◃∙
+              α C (⟦ C ⟧ t-f ◻ diag center-pf) t-f s-f ◃∙
+              ap (λ m → ⟦ C ⟧ ⟦ C ⟧ t-f ◻ diag center-pf ◻ m) p-f ◃∙
+              ap (λ m → ⟦ C ⟧ m ◻ f) (tri-bottom center-pf) ◃∙
+              ! (lamb C f) ◃∙
+              ! p-f ◃∎
+                =ₛ₁⟨ 3 & 2 & idp ⟩
+              ! (ap (λ m → ⟦ C ⟧ m ◻ s-f) (α C t-f (diag center-pf) t-f)) ◃∙
+              α C (⟦ C ⟧ t-f ◻ diag center-pf) t-f s-f ◃∙
+              ap (λ m → ⟦ C ⟧ ⟦ C ⟧ t-f ◻ diag center-pf ◻ m) p-f ◃∙
+              (ap (λ m → ⟦ C ⟧ m ◻ f) (tri-bottom center-pf) ∙ ! (lamb C f)) ◃∙
+              ! p-f ◃∎
+                =ₛ₁⟨ 4 & 1 & ap ! (! (ap-idf p-f)) ⟩
+              ! (ap (λ m → ⟦ C ⟧ m ◻ s-f) (α C t-f (diag center-pf) t-f)) ◃∙
+              α C (⟦ C ⟧ t-f ◻ diag center-pf) t-f s-f ◃∙
+              ap (λ m → ⟦ C ⟧ ⟦ C ⟧ t-f ◻ diag center-pf ◻ m) p-f ◃∙
+              (ap (λ m → ⟦ C ⟧ m ◻ f) (tri-bottom center-pf) ∙ ! (lamb C f)) ◃∙
+              ! (ap (λ m → m) p-f) ◃∎
+                =ₛ⟨ 2 & 3 & !ₛ (apCommSq2◃ (λ m → ap (λ k → ⟦ C ⟧ k ◻ m) (tri-bottom center-pf) ∙ ! (lamb C m)) p-f) ⟩
+              ! (ap (λ m → ⟦ C ⟧ m ◻ s-f) (α C t-f (diag center-pf) t-f)) ◃∙
+              α C (⟦ C ⟧ t-f ◻ diag center-pf) t-f s-f ◃∙
+              (ap (λ m → ⟦ C ⟧ m ◻ ⟦ C ⟧ t-f ◻ s-f) (tri-bottom center-pf) ∙ ! (lamb C (⟦ C ⟧ t-f ◻ s-f))) ◃∎
+                =ₑ⟨ 2 & 1 &
+                  (ap (λ m → ⟦ C ⟧ m ◻ ⟦ C ⟧ t-f ◻ s-f) (tri-bottom center-pf) ◃∙ ! (lamb C (⟦ C ⟧ t-f ◻ s-f)) ◃∎)
+                  % =ₛ-in idp ⟩
+              ! (ap (λ m → ⟦ C ⟧ m ◻ s-f) (α C t-f (diag center-pf) t-f)) ◃∙
+              α C (⟦ C ⟧ t-f ◻ diag center-pf) t-f s-f ◃∙
+              ap (λ m → ⟦ C ⟧ m ◻ ⟦ C ⟧ t-f ◻ s-f) (tri-bottom center-pf) ◃∙
+              ! (lamb C (⟦ C ⟧ t-f ◻ s-f)) ◃∎
+                =ₛ⟨ 1 & 2 & !ₛ (homotopy-naturality _ _ (λ m → α C m t-f s-f) (tri-bottom center-pf)) ⟩
+              ! (ap (λ m → ⟦ C ⟧ m ◻ s-f) (α C t-f (diag center-pf) t-f)) ◃∙
+              ap (λ m → ⟦ C ⟧ ⟦ C ⟧ m ◻ t-f ◻ s-f) (tri-bottom center-pf) ◃∙
+              α C (id₁ C b) t-f s-f ◃∙
+              ! (lamb C (⟦ C ⟧ t-f ◻ s-f)) ◃∎
+                =ₛ⟨ 2 & 2 & trig-lamb-rot2 {C = C} tC pC t-f s-f ⟩
+              ! (ap (λ m → ⟦ C ⟧ m ◻ s-f) (α C t-f (diag center-pf) t-f)) ◃∙
+              ap (λ m → ⟦ C ⟧ ⟦ C ⟧ m ◻ t-f ◻ s-f) (tri-bottom center-pf) ◃∙
+              ap (λ m → ⟦ C ⟧ m ◻ s-f) (! (lamb C t-f)) ◃∎
+                =ₛ⟨ =ₛ-in (aux2 (α C t-f (diag center-pf) t-f) (tri-bottom center-pf) (! (lamb C t-f))) ⟩
+              ap (λ m → ⟦ C ⟧ m ◻ s-f)
+                (! (α C t-f (diag center-pf) t-f) ∙ ap (λ m → ⟦ C ⟧ m ◻ t-f) (tri-bottom center-pf) ∙ ! (lamb C t-f)) ◃∙
+              idp ◃∎ ∎ₛ
+              where abstract
+                aux2 : {I : ob C} {x y : hom C _ I} {w u : hom C b I}
+                  (p₁ : _ == x) (p₂ : w == u) (p₃ : ⟦ C ⟧ u ◻ t-f == y) →
+                  ! (ap (λ m → ⟦ C ⟧ m ◻ s-f) p₁) ∙
+                  ap (λ m → ⟦ C ⟧ ⟦ C ⟧ m ◻ t-f ◻ s-f) p₂ ∙
+                  ap (λ m → ⟦ C ⟧ m ◻ s-f) p₃
+                    ==
+                  ap (λ m → ⟦ C ⟧ m ◻ s-f) (! p₁ ∙ ap (λ m → ⟦ C ⟧ m ◻ t-f) p₂ ∙ p₃) ∙ idp
+                aux2 idp idp idp = idp
+              
+        diag-eqv : biinv-wc C (diag center-pf)
+        fst (fst diag-eqv) = t-f
+        snd (fst diag-eqv) = ! (tri-bottom center-pf)
+        fst (snd diag-eqv) = t-f
+        snd (snd diag-eqv) = ap diag (contr-has-all-paths {{filler-refl}} filler-refl1 filler-refl2)
+
+      llp-ofs-lc : fst (lclass fs (diag center-pf))
+      llp-ofs-lc = ofcs-wc-eqv-lc {C = C} {fs = fs} uC (diag center-pf , diag-eqv)

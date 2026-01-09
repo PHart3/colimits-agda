@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
+open import lib.SIP
 open import lib.types.Sigma
 open import lib.types.Graph
 
@@ -154,8 +155,14 @@ snd (snd (term-uniq-wc {a = a} {b} ta tb)) = contr-has-all-paths {{(tb b)}} _ _
 is-univ-wc : ∀ {i j} (C : WildCat {i} {j}) → Type (lmax i j)
 is-univ-wc C = (a b : ob C) → is-equiv (==-to-≃-wc C {a} {b})
 
-is-univ-wc-idsys : ∀ {i j} {C : WildCat {i} {j}} {a : ob C} → is-univ-wc C → is-contr (Σ (ob C) (λ b → ≃-wc C a b))
-is-univ-wc-idsys {C = C} {a} uC = equiv-preserves-level (Σ-emap-r (λ b → ==-to-≃-wc C {a} {b} , uC a b))
+module _ {i j} {C : WildCat {i} {j}} {a : ob C} (uC : is-univ-wc C) where
+
+  is-univ-wc-idsys : is-contr (Σ (ob C) (λ b → ≃-wc C a b))
+  is-univ-wc-idsys = equiv-preserves-level (Σ-emap-r (λ b → ==-to-≃-wc C {a} {b} , uC a b))
+
+  univ-wc-ind : ∀ {k} (P : (b : ob C) → (≃-wc C a b → Type k))
+    → P a (≃-wc-id C) → {b : ob C} (e : ≃-wc C a b) → P b e
+  univ-wc-ind P = ID-ind-map P is-univ-wc-idsys
 
 Type-wc : (i : ULevel) → WildCat
 ob (Type-wc i) = Type i
@@ -297,6 +304,12 @@ module _ {i j} {C : WildCat {i} {j}} (pent : pentagon-wc C)
         =ₛ
       α C k g (⟦ C ⟧ h ◻ f) ◃∙ ! (ap (λ m → ⟦ C ⟧ k ◻ m) (α C g h f)) ◃∙ ! (α C k (⟦ C ⟧ g ◻ h) f) ◃∎
     pentagon-wc-rot5 = post-rotate-in (post-rotate-in pentagon-wc-rot4)
+
+    pentagon-wc-rot6 :
+      α C k (⟦ C ⟧ g ◻ h) f ◃∙ ap (λ m → ⟦ C ⟧ k ◻ m) (α C g h f) ◃∙ ! (α C k g (⟦ C ⟧ h ◻ f)) ◃∎
+        =ₛ
+      ! (ap (λ m → ⟦ C ⟧ m ◻ f) (α C k g h)) ◃∙ α C (⟦ C ⟧ k ◻ g) h f ◃∎
+    pentagon-wc-rot6 = post-rotate'-in (pre-rotate-in (pentagon-wc◃))
 
 bicat-wc : ∀ {i j} → Type (lmax (lsucc i) (lsucc j))
 bicat-wc {i} {j} = Σ (WildCat {i} {j}) (λ C → triangle-wc C × pentagon-wc C)

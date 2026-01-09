@@ -36,8 +36,17 @@ record ofs-wc (k₁ k₂ {i j} : ULevel) (C : WildCat {i} {j}) : Type (lmax (lma
       Σ (fact-mor-wc {C = C} f) (λ fct →
         fst (lclass (mor-l fct)) × fst (rclass (mor-r fct)))
 open ofs-wc public
+
 {- N.B.: This definition is intended for *univalent* wild categories,
    for then we have that both classes contain all isomorphisms.  -}
+
+module _ {i j} {C : WildCat {i} {j}} {k₁ k₂} {fs : ofs-wc k₁ k₂ C} (uC : is-univ-wc C)  where
+
+  ofcs-wc-eqv-lc : {a b : ob C} ((f , _) : ≃-wc C a b) → fst (lclass fs f)
+  ofcs-wc-eqv-lc {a} = univ-wc-ind uC (λ b (f , _) → fst (lclass fs f)) (id₁-lc fs)
+
+  ofcs-wc-eqv-rc : {a b : ob C} ((f , _) : ≃-wc C a b) → fst (rclass fs f)
+  ofcs-wc-eqv-rc {a} = univ-wc-ind uC (λ b (f , _) → fst (rclass fs f)) (id₁-rc fs)
 
 -- SIP for fact-mor-wc where C is univalent and has the triangle identity
 
