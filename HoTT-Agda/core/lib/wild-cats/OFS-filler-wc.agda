@@ -6,10 +6,11 @@ open import lib.types.Sigma hiding (diag)
 open import lib.types.Paths
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Bicat
-open import lib.wild-cats.OFS-wc
-open import lib.wild-cats.Filler-wc
 
 module lib.wild-cats.OFS-filler-wc where
+
+open import lib.wild-cats.OFS-wc public
+open import lib.wild-cats.Filler-wc public
 
 -- the two classes of an OFS are exactly those classes of maps that lift against each other
 

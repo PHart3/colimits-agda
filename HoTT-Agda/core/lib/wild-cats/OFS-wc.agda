@@ -136,7 +136,7 @@ module _ {i j} {C : WildCat {i} {j}} {a b : ob C} {h : hom C a b} where
       where abstract
 
         aux1 : {fct₂ : fact-mor-wc h} (e : fct₁ =-fact-wc fct₂) → fact-wc-from-== (fact-wc-to-== e) == e
-        aux1 = fact-wc-ind (λ fct2 e → fact-wc-from-== (fact-wc-to-== e) == e) (ap fact-wc-from-== fact-wc-to-==-β)
+        aux1 = fact-wc-ind (λ fct₂ e → fact-wc-from-== (fact-wc-to-== e) == e) (ap fact-wc-from-== fact-wc-to-==-β)
 
         aux2 : {fct₂ : fact-mor-wc h} (e : fct₁ == fct₂) → fact-wc-to-== (fact-wc-from-== e) == e
         aux2 idp = fact-wc-to-==-β 
