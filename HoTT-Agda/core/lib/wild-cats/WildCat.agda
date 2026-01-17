@@ -63,7 +63,6 @@ module _ {i j} (B : WildCat {i} {j}) where
   id idfWC _ = idp
   comp idfWC _ _ = idp
 
-
 module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B : WildCat {i₁} {j₁}} {C : WildCat {i₂} {j₂}} {D : WildCat {i₃} {j₃}}  where
 
   infixr 60 _∘WC_
