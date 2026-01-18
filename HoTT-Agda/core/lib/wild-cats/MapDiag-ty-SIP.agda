@@ -8,9 +8,9 @@ open import lib.types.Graph
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Diagram-wc
 
-module lib.wild-cats.Diag-ty-SIP where
+module lib.wild-cats.MapDiag-ty-SIP where
 
--- SIP for maps of type-valued diagrams
+-- SIP for maps of Type-valued diagrams
 
 module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
 

@@ -150,6 +150,13 @@ module _ {Γ : Graph ℓv ℓe} where
           idp
         aux _ _ idp idp idp = idp
 
+  -- colim as a wild functor
+  ColimFunctor : ∀ {i} → Functor-wc (Diag-ty-WC Γ i) (Type-wc i)
+  obj ColimFunctor Δ = Colim (Diag-to-grhom Δ) 
+  arr ColimFunctor f = ColMap (diagmor-from-wc f)
+  id ColimFunctor Δ = λ= (ColMap-id-pres (Diag-to-grhom Δ))
+  comp ColimFunctor f g = λ= (ColMap-∘-pres (diagmor-from-wc g) (diagmor-from-wc f))
+
   -- colim is invariant under equivalence
   ColMap-deqv : ∀ {ℓd₁ ℓd₂} {F : Diag ℓd₁ Γ} {G : Diag ℓd₂ Γ} {M : DiagMor F G} → eqv-dmor M → is-equiv (ColMap M)
   ColMap-deqv {M = M} e = let (N , li , ri) = eqv-to-qinv-dmor {μ = M} e in
