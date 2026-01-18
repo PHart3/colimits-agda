@@ -6,11 +6,11 @@ open import lib.types.Sigma hiding (diag)
 open import lib.types.Paths
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Bicat
+open import lib.wild-cats.Filler-wc
 
 module lib.wild-cats.OFS-filler-wc where
 
 open import lib.wild-cats.OFS-wc public
-open import lib.wild-cats.Filler-wc public
 
 -- the two classes of an OFS are exactly those classes of maps that lift against each other
 
@@ -704,11 +704,14 @@ module _ {i j} {C : WildCat {i} {j}} {k₁ k₂} (fs : ofs-wc k₁ k₂ C) where
                   ap (λ m → ⟦ C ⟧ m ◻ s-f) (! p₁ ∙ ap (λ m → ⟦ C ⟧ m ◻ t-f) p₂ ∙ p₃) ∙ idp
                 aux2 idp idp idp = idp
               
-        diag-eqv : biinv-wc C (diag center-pf)
-        fst (fst diag-eqv) = t-f
-        snd (fst diag-eqv) = ! (tri-bottom center-pf)
-        fst (snd diag-eqv) = t-f
-        snd (snd diag-eqv) = ap diag (contr-has-all-paths {{filler-refl}} filler-refl1 filler-refl2)
+        t-f-eqv : biinv-wc C t-f
+        fst (fst t-f-eqv) = diag center-pf
+        snd (fst t-f-eqv) = ap diag (contr-has-all-paths {{filler-refl}} filler-refl1 filler-refl2)
+        fst (snd t-f-eqv) = diag center-pf
+        snd (snd t-f-eqv) = ! (tri-bottom center-pf)
 
-      llp-ofs-lc : fst (lclass fs (diag center-pf))
-      llp-ofs-lc = ofcs-wc-eqv-lc {C = C} {fs = fs} uC (diag center-pf , diag-eqv)
+      llp-ofs-lc : fst (lclass fs f)
+      llp-ofs-lc = transport (λ m → fst (lclass fs m)) p-f (∘-lc fs (fst (snd (ofct f))) lemma)
+        where
+          lemma : fst (lclass fs t-f)
+          lemma = ofcs-wc-eqv-lc {C = C} {fs = fs} uC (t-f , t-f-eqv)
