@@ -14,12 +14,14 @@
 - `HoTT-Agda/`
 
   A stripped-down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
-  with specific additions and local changes for general lemmas used in our development of colimits.
+  with many additions and local changes for general lemmas used in our development of colimits and wild adjunctions.
 
-  In addition, it includes wild category theory, centered on (co)limits and 2-coherent left adjoints. We prove that such adjoints
-  preserve colimits (over graphs). Moreover, we prove that the Suspension functor is a 2-coherent left adjoint to Loop-space, for
-  which we develop some new properties of homogeneous types. As a result, we get a formal proof that Suspension preserves colimits.
-  We also prove that modalities, viewed as functors on coslices of Type, are 2-coherent left adjoints, hence preserve colimits.
+  In particular, it includes wild category theory, centered on (co)limits and adjunctions satisfying 2-coherence properties. 
+  We prove that such 2-coherent left adjoints preserve colimits (over graphs). Moreover, we prove that the suspension functor 
+  is a 2-coherent left adjoint to Loop-space, for which we develop some new properties of homogeneous types. As a result, we get 
+  a formal proof that suspension preserves colimits. We also prove that modalities, viewed as functors on coslices of Type, are 
+  2-coherent left adjoints, hence preserve colimits. Another notable result is that adjunctions satisfying a practical hexagon 
+  identity respect orthogonal factorization systems in a precise sense.
 
   See `HoTT-Agda/README.md`
   for details and for the license of the work inside this

@@ -13,7 +13,7 @@ open import lib.wild-cats.Filler-wc
 
 module lib.wild-cats.Adj-OFS-wc where
 
-open import lib.wild-cats.Adj-hexagon public
+open import lib.wild-cats.Adj-hexagon public  -- statement of the hexagon identity for a wild adjunction
 
 module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {j₂}} {L : Functor-wc C D} {R : Functor-wc D C} (adj : Adjunction L R)
   (hex : adj-wc-hexagon adj) where  -- assumption of hexagon coherence condition
