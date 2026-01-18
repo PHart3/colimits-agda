@@ -62,6 +62,9 @@ module _ {i} {A : Type i} {x y z : A} where
   post∙'-equiv : (p : y == z) → (x == y) ≃ (x == z)
   post∙'-equiv p = ((λ q → q ∙' p) , post∙'-is-equiv p)
 
+  path-eqlends-≃ : ∀ {w} → (p : x == y) (q : z == w) → (x == z) ≃ (y == w)
+  path-eqlends-≃ idp idp = ide _
+
 module _ {i} {A : Type i} {x y : A} where
 
   post∙idp∘!-is-equiv : (x == y) ≃ (y == x) 

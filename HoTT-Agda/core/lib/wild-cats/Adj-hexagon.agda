@@ -34,3 +34,13 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
         ap (λ m → ⟦ C ⟧ arr R g ◻ m) (nat-dom adj f d) ◃∙
         nat-cod adj g (⟦ D ⟧ d ◻ arr L f) ◃∎
       adj-wc-hexagon◃ = =ₛ-in (hex f g d)
+
+      adj-wc-hexagon-rot1 :
+        ap (–> (iso adj)) (α D g d (arr L f)) ◃∎
+          =ₛ
+        ! (nat-dom adj f (⟦ D ⟧ g ◻ d)) ◃∙
+        ! (ap (λ m → ⟦ C ⟧ m ◻ f) (nat-cod adj g d)) ◃∙
+        α C (arr R g) (–> (iso adj) d) f ◃∙
+        ap (λ m → ⟦ C ⟧ arr R g ◻ m) (nat-dom adj f d) ◃∙
+        nat-cod adj g (⟦ D ⟧ d ◻ arr L f) ◃∎
+      adj-wc-hexagon-rot1 = pre-rotate-in (pre-rotate-in adj-wc-hexagon◃)
