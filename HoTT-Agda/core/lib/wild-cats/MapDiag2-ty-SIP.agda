@@ -149,8 +149,6 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
           whisk-l-coh-aux
             (sq m f (comp μ₁ i x)) (fst p i x) (sq μ₂ f x) (fst p j (D₁ Δ₁ f x)) (sq m f (comp μ₂ i x))
 
-    module _ {ℓ₁ ℓ₂} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)} {μ₁ μ₂ : Map-diag-ty Δ₁ Δ₂} where
-
     open dmap-ty-contr
     open =-dmap-ty-contr
     open =-dmap-ops-conv
