@@ -110,21 +110,24 @@ module _ {i} {A : Type i} where
 
 module _ {i} {A : Type i} where
 
-  ∙-assoc-!-inv-r : {x y z : A} (q : x == y) (p : x == z) → q ∙ (! q ∙ p) ∙ idp == p ∙ idp
-  ∙-assoc-!-inv-r idp idp = idp
+  ∙-assoc-!-inv-r-∙ : {x y z w : A} (q : x == y) (p : x == z) (r : z == w) → q ∙ (! q ∙ p) ∙ r == p ∙ r
+  ∙-assoc-!-inv-r-∙ idp idp r = idp
 
   !-inv-l-∙ : {x y z : A} (q : x == y) (p : y == z) → ! q ∙ q ∙ p == p
   !-inv-l-∙ idp p = idp
 
   ∙'-∙-unit-r-!-inv-l : {x y : A} (p : x == y) → ((idp ∙' ! p) ∙ idp) ∙' p ∙ idp == idp
-  ∙'-∙-unit-r-!-inv-l idp = idp 
+  ∙'-∙-unit-r-!-inv-l idp = idp
+
+  !-!-inv-∙'-∙ : {x y z u w : A} (p : x == y) (q : u == z) (r : u == y) (q' : y == w) → ((p ∙' ! r) ∙ q) ∙' ! q ∙ r ∙ q' == p ∙ q'
+  !-!-inv-∙'-∙ p idp idp idp = idp
 
   !-!-∙-pth : {x y z w : A} (p : x == y) (q : x == z) {c : y == w} → ! (! p ∙ q) ∙ c == ! q ∙ p ∙ c
   !-!-∙-pth idp idp = idp
 
   ∙'-∙-sq-rot-out : {x y z w : A} (p₀ : x == y) (p₁ : y == z) (p₂ : x == w) (p₃ : w == z)
     → p₀ ∙' p₁ == p₂ ∙ p₃ → p₀ == p₂ ∙ p₃ ∙' ! p₁
-  ∙'-∙-sq-rot-out idp idp idp p₃ e = e
+  ∙'-∙-sq-rot-out p₀ idp idp p₃ e = e
 
   !-∙-∙'-rot : {x y z w : A} (p₀ : x == y) {p₁ : x == z} {p₂ : z == w} (p₃ : y == w)
     → ! p₁ ∙ p₀ ∙' p₃ == p₂ → p₀ == p₁ ∙ p₂ ∙' ! p₃
