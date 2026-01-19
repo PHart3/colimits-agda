@@ -44,8 +44,8 @@ The main library is more or less divided into three parts.
   Here are some notable results found in this part:
 	- A 2-coherent left adjoint between wild categories preserves colimiting cocones (`Ladj-colim.agda`).
 	- Given univalent wild bicategories equipped with orthogonal factorization systems and 
-	  a wild adjunction between them that satisfies a reasonable hexagon identity,
-	  if the right adjoint preserves the right class, then the left adjoint preserves the left class (`Adj-OFS-wc.agda`).
+	  a wild adjunction between them that satisfies a reasonable hexagon identity between the proofs of naturality in each 
+	  varaible, if the right adjoint preserves the right class, then the left adjoint preserves the left class (`Adj-OFS-wc.agda`).
 	- A lot of general theory about (co)cones.
 
 ### Homotopy (directory `theorems/homotopy/`)

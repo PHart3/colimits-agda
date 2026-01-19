@@ -11,7 +11,7 @@ open import lib.wild-cats.Diag-coher-wc
 
 module lib.wild-cats.Limit where
 
--- standard limit over a type-valued diagram
+-- standard limit over a Type-valued diagram
 
 module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
 

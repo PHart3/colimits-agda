@@ -7,7 +7,7 @@ open import lib.wild-cats.WildCat
 open import lib.wild-cats.Diagram-wc
 open import lib.wild-cats.MapDiag-ty-SIP
 
--- type-valued diagrams over graphs
+-- Type-valued diagrams over graphs
 
 module lib.types.Diagram where
 
