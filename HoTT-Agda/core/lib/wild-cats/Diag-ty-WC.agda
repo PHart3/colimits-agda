@@ -23,7 +23,8 @@ module _ {ℓv ℓe} where
     (h : Map-diag-ty c d) (g : Map-diag-ty b c) (f : Map-diag-ty a b)
     → (h tydiag-map-∘ g) tydiag-map-∘ f =-dmap-ty h tydiag-map-∘ g tydiag-map-∘ f
   fst (dmap-ty-assoc h g f) _ _ = idp
-  snd (dmap-ty-assoc h g f) {j = j} m x = Diag-ty-assoc-coh (comp h j) (comp g j) (sq h m (comp g _ (comp f _ x))) (sq g m (comp f _ x)) (sq f m x)
+  snd (dmap-ty-assoc h g f) {j = j} m x = Diag-ty-assoc-coh (comp h j) (comp g j)
+    (sq h m (comp g _ (comp f _ x))) (sq g m (comp f _ x)) (sq f m x)
 
   Diag-ty-WC : Graph ℓv ℓe → (i : ULevel) → WildCat
   ob (Diag-ty-WC G i) = Diagram G (Type-wc i)
