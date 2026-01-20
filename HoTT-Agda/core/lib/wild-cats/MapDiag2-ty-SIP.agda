@@ -7,13 +7,14 @@ open import lib.types.Pi
 open import lib.types.Graph
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Diagram-wc
-open import lib.wild-cats.MapDiag-ty-SIP
 
 module lib.wild-cats.MapDiag2-ty-SIP where
 
 -- SIP for =-dmap-ty
 
 module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
+
+  open import lib.wild-cats.MapDiag-ty-SIP public
 
   open Map-diag-ty
 

@@ -3,10 +3,10 @@
 open import lib.Basics
 open import lib.types.Graph
 open import lib.types.Colim
+open import lib.types.Diagram
 open import lib.wild-cats.WildCats
 
-{- the wild adjunction between the Type-valued colimit functor and the constant diagram functor
-   along with a proof of the hexagon coherence condition -}
+-- the wild adjunction between the Type-valued colimit functor and the constant diagram functor
 
 module homotopy.ColimAdjointConst {ℓ ℓv ℓe : ULevel} (Γ : Graph ℓv ℓe) where
 
@@ -27,19 +27,22 @@ module homotopy.ColimAdjointConst {ℓ ℓv ℓe : ULevel} (Γ : Graph ℓv ℓe
       ap (λ p → ! p ∙ ap f (cglue g x))
         (cglue-βr _ _ g x ∙ ap ! (ap-! f (cglue g x)) ∙ !-! (ap f (cglue g x))) ∙
       !-inv-l (ap f (cglue g x)))
-  nat-cod ColimConst-ty-Adj g h = dmap-ty-to-== $
-    (λ _ _ → idp) ,
-    λ f x → ∘-ap g h (! (cglue f x))
-  nat-dom ColimConst-ty-Adj f h = dmap-ty-to-== $
-    (λ _ _ → idp) ,
-    λ {i} {j} g x → ! $
-      ap-! _ (cglue g x) ∙
-      ap ! (ap-∘ h _ (cglue g x) ∙ ap (ap h) (cglue-βr _ _ g x)) ∙
-      !-ap-!-ap-∙ h (cin j) (sq f g x) (cglue g (comp f i x))
-
-  -- this adjunction satisfies the hexagon identity
-  open import lib.wild-cats.Adj-hexagon
-  open import lib.wild-cats.MapDiag-ty-SIP
-    
-  ColimConst-ty-adj-hex : adj-wc-hexagon ColimConst-ty-Adj
-  ColimConst-ty-adj-hex f g d = {!!}
+  nat-cod ColimConst-ty-Adj g h = dmap-ty-to-== nat-cod-ext
+    module cod-ext where
+      nat-cod-ext :
+        map-diag-ty (λ _ → g) (λ _ _ → idp) tydiag-map-∘ –> (iso ColimConst-ty-Adj) h
+          =-dmap-ty
+        –> (iso ColimConst-ty-Adj) (g ∘ h)
+      nat-cod-ext = (λ _ _ → idp) , λ f x → ∘-ap g h (! (cglue f x))
+  nat-dom ColimConst-ty-Adj f h = dmap-ty-to-== $ nat-dom-ext
+    module dom-ext where
+      nat-dom-ext :
+        –> (iso ColimConst-ty-Adj) h tydiag-map-∘ f
+          =-dmap-ty
+        –> (iso ColimConst-ty-Adj) (h ∘ ColMap (diagmor-from-wc f))
+      nat-dom-ext =
+        (λ _ _ → idp) ,
+        λ {i} {j} g x → ! $
+          ap-! _ (cglue g x) ∙
+          ap ! (ap-∘ h _ (cglue g x) ∙ ap (ap h) (cglue-βr _ _ g x)) ∙
+          !-ap-!-ap-∙ h (cin j) (sq f g x) (cglue g (comp f i x))
