@@ -50,11 +50,15 @@ The main library is more or less divided into three parts.
 
 ### Homotopy (directory `theorems/homotopy/`)
 
-This directory contains a proof of the 2-coherence of the suspension-loop adjunction.
-This property of the adjunction lets us prove that the suspension functor preserves
-colimits. As a corollary, we prove that pointed colimits preserve acyclic types via 
-the construction of coslice colimits from `../Colimit-code`. Note that the proof of 
-2-coherence relies on our work on homogeneous types.
+This directory contains two proofs related to higher coherence conditions on wild categorical data:
+- a proof that suspension is a 2-coherent left adjoint to loop
+    - This higher coherence lets us prove that the suspension functor preserves	colimits. 
+	As a corollary, we prove that pointed colimits preserve acyclic types via the 
+	construction of coslice colimits from `../Colimit-code`. Note that the proof of 
+	2-coherence relies on our work on homogeneous types.
+- a proof that the wild adjunction between colimit and the constant diagram functor on Type
+  satisfies the hexagon condition.
+    - This implies that colimit preserves the left class of an OFS on Type.
 
 ### Modality (directory `theorems/modality/`)
 

@@ -22,6 +22,7 @@
   a formal proof that suspension preserves colimits. We also prove that modalities, viewed as functors on coslices of Type, are 
   2-coherent left adjoints, hence preserve colimits. Another notable result is that an adjunction satisfying a practical hexagon 
   identity between the proofs of naturality in each varaible respects, in a precise sense, orthogonal factorization systems.
+  We show that the colimit functor on Type-valued diagrams satisfies this hexagon identity.
 
   See `HoTT-Agda/README.md`
   for details and for the license of the work inside this
