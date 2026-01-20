@@ -38,7 +38,7 @@ record ofs-wc (k₁ k₂ {i j} : ULevel) (C : WildCat {i} {j}) : Type (lmax (lma
 open ofs-wc public
 
 {- N.B.: This definition is intended for *univalent* wild categories,
-   for then we have that both classes contain all isomorphisms.  -}
+   for then we have that both classes contain all equivalences.  -}
 
 module _ {i j} {C : WildCat {i} {j}} {k₁ k₂} {fs : ofs-wc k₁ k₂ C} (uC : is-univ-wc C)  where
 
