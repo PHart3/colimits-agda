@@ -1,6 +1,7 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
+open import lib.SIP
 open import lib.types.Sigma
 open import lib.types.Graph
 
@@ -73,9 +74,31 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B : WildCat {i₁} {j₁}} {C : WildCa
 
 module _ {i j} (C : WildCat {i} {j}) where
 
+  -- coherent equivalences
+  biinv-wc : {a b : ob C} → hom C a b → Type j
+  biinv-wc {a} {b} f = Σ (hom C b a) (λ g → (id₁ C a == ⟦ C ⟧ g ◻ f)) × Σ (hom C b a) (λ h → id₁ C b == ⟦ C ⟧ f ◻ h)
+
+  ≃-wc : (a b : ob C) → Type j
+  ≃-wc a b = Σ (hom C a b) biinv-wc
+
+  ≃-wc-id : {a : ob C} → ≃-wc a a
+  fst (≃-wc-id {a}) = id₁ C a
+  fst (snd (≃-wc-id {a})) = (id₁ C a) , (lamb C (id₁ C a))
+  snd (snd (≃-wc-id {a})) = (id₁ C a) , (lamb C (id₁ C a))
+
+  ==-to-≃-wc : {a b : ob C} → a == b → ≃-wc a b
+  ==-to-≃-wc idp = ≃-wc-id
+
   -- (non-coherent) equivalences
   equiv-wc : {a b : ob C} → hom C a b → Type j
   equiv-wc {a} {b} f = Σ (hom C b a) (λ g → (id₁ C a == ⟦ C ⟧ g ◻ f) × (id₁ C b == ⟦ C ⟧ f ◻ g))
+
+  equiv-wc-forg : {a b : ob C} {f : hom C a b} (bi : biinv-wc f) → equiv-wc f
+  equiv-wc-forg {f = f} ((g , li) , (h , ri)) = g , li ,
+    (ri ∙
+    ap (λ m → ⟦ C ⟧ f ◻ m) (lamb C h) ∙
+    ap (λ m → ⟦ C ⟧ f ◻ ⟦ C ⟧ m ◻ h) li ∙
+    ap (λ m → ⟦ C ⟧ f ◻ m) (α C g f h ∙ ! (ρ C g ∙ ap (λ m → ⟦ C ⟧ g ◻ m) ri)))
 
   module _ {a b : ob C} {f : hom C a b} (e : equiv-wc f) where
 
@@ -126,6 +149,19 @@ term-uniq-wc : ∀ {i j} {C : WildCat {i} {j}} {a b : ob C} → is-term-wc C a �
 fst (term-uniq-wc {a = a} {b} ta tb) = contr-center (ta b)
 fst (snd (term-uniq-wc {a = a} {b} ta tb)) = contr-has-all-paths {{(ta a)}} _ _
 snd (snd (term-uniq-wc {a = a} {b} ta tb)) = contr-has-all-paths {{(tb b)}} _ _
+
+-- univalent wild category
+is-univ-wc : ∀ {i j} (C : WildCat {i} {j}) → Type (lmax i j)
+is-univ-wc C = (a b : ob C) → is-equiv (==-to-≃-wc C {a} {b})
+
+module _ {i j} {C : WildCat {i} {j}} {a : ob C} (uC : is-univ-wc C) where
+
+  is-univ-wc-idsys : is-contr (Σ (ob C) (λ b → ≃-wc C a b))
+  is-univ-wc-idsys = equiv-preserves-level (Σ-emap-r (λ b → ==-to-≃-wc C {a} {b} , uC a b))
+
+  univ-wc-ind : ∀ {k} (P : (b : ob C) → (≃-wc C a b → Type k))
+    → P a (≃-wc-id C) → {b : ob C} (e : ≃-wc C a b) → P b e
+  univ-wc-ind P = ID-ind-map P is-univ-wc-idsys
 
 Type-wc : (i : ULevel) → WildCat
 ob (Type-wc i) = Type i
@@ -178,6 +214,13 @@ module _ {i j} {C : WildCat {i} {j}} (trig : triangle-wc C)
       ap (λ m → ⟦ C ⟧ g ◻ m) (lamb C f) ◃∙
       ! (α C g (id₁ C b) f) ◃∎
     triangle-wc-rot2 = post-rotate-in triangle-wc◃
+
+    triangle-wc-rot3 :
+      α C g (id₁ C b) f ◃∙
+      ! (ap (λ m → ⟦ C ⟧ g ◻ m) (lamb C f)) ◃∎
+        =ₛ
+      ! (ap (λ m → ⟦ C ⟧ m ◻ f) (ρ C g)) ◃∎
+    triangle-wc-rot3 = pre-rotate-in triangle-wc-rot1
 
 -- pentagon identity
 
@@ -254,6 +297,18 @@ module _ {i j} {C : WildCat {i} {j}} (pent : pentagon-wc C)
         =ₛ
       α C k g (⟦ C ⟧ h ◻ f) ◃∎
     pentagon-wc-rot4 = pre-rotate'-in pentagon-wc◃ 
+
+    pentagon-wc-rot5 :
+      ! (α C (⟦ C ⟧ k ◻ g) h f) ◃∙ ap (λ m → ⟦ C ⟧ m ◻ f) (α C k g h) ◃∎
+        =ₛ
+      α C k g (⟦ C ⟧ h ◻ f) ◃∙ ! (ap (λ m → ⟦ C ⟧ k ◻ m) (α C g h f)) ◃∙ ! (α C k (⟦ C ⟧ g ◻ h) f) ◃∎
+    pentagon-wc-rot5 = post-rotate-in (post-rotate-in pentagon-wc-rot4)
+
+    pentagon-wc-rot6 :
+      α C k (⟦ C ⟧ g ◻ h) f ◃∙ ap (λ m → ⟦ C ⟧ k ◻ m) (α C g h f) ◃∙ ! (α C k g (⟦ C ⟧ h ◻ f)) ◃∎
+        =ₛ
+      ! (ap (λ m → ⟦ C ⟧ m ◻ f) (α C k g h)) ◃∙ α C (⟦ C ⟧ k ◻ g) h f ◃∎
+    pentagon-wc-rot6 = post-rotate'-in (pre-rotate-in (pentagon-wc◃))
 
 bicat-wc : ∀ {i j} → Type (lmax (lsucc i) (lsucc j))
 bicat-wc {i} {j} = Σ (WildCat {i} {j}) (λ C → triangle-wc C × pentagon-wc C)

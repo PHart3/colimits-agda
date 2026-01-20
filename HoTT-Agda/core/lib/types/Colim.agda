@@ -110,15 +110,6 @@ module ColimitMap {Γ : Graph ℓv ℓe} {ℓd₁ ℓd₂} {F : Diag ℓd₁ Γ}
   comp (CocMap-precmp K) i = comp K i ∘ nat M i 
   comTri (CocMap-precmp K) {j} {i} g x = ap (comp K j) (! (comSq M g x)) ∙ comTri K g (nat M i x)
 
-  Col-natsq-precmp : ∀ {ℓ} {T : Type ℓ} (m : Colim G → T)
-    → CocMap-precmp (PostComp (can-coc G) T m) == PostComp (can-coc F) T (m ∘ ColMap)
-  Col-natsq-precmp m = CocEq-to-== (coceq (λ _ _ → idp) (λ {i} {j} g x →
-    aux (comSq M g x) (cglue g (nat M i x)) ∙ ! (ap (ap m) (ColMap-β g x)) ∙ ∘-ap m ColMap (cglue g x)))
-    where
-      aux : ∀ {j} {v₁ v₂ : G # j} {u : Colim G} (p : v₁ == v₂) (q : cin j v₁ == u)
-        → ap (m ∘ cin j) (! p) ∙ ap m q == ap m (! (ap (cin j) p) ∙ q)
-      aux idp idp = idp
-
 open ColimitMap public
 
 module _ {Γ : Graph ℓv ℓe} where
@@ -150,6 +141,13 @@ module _ {Γ : Graph ℓv ℓe} where
           idp
         aux _ _ idp idp idp = idp
 
+  -- colim as a wild functor
+  ColimFunctor : ∀ {i} → Functor-wc (Diag-ty-WC Γ i) (Type-wc i)
+  obj ColimFunctor Δ = Colim (Diag-to-grhom Δ) 
+  arr ColimFunctor f = ColMap (diagmor-from-wc f)
+  id ColimFunctor Δ = λ= (ColMap-id-pres (Diag-to-grhom Δ))
+  comp ColimFunctor f g = λ= (ColMap-∘-pres (diagmor-from-wc g) (diagmor-from-wc f))
+
   -- colim is invariant under equivalence
   ColMap-deqv : ∀ {ℓd₁ ℓd₂} {F : Diag ℓd₁ Γ} {G : Diag ℓd₂ Γ} {M : DiagMor F G} → eqv-dmor M → is-equiv (ColMap M)
   ColMap-deqv {M = M} e = let (N , li , ri) = eqv-to-qinv-dmor {μ = M} e in
@@ -173,7 +171,7 @@ module _ {Γ : Graph ℓv ℓe} {ℓd : ULevel}  where
   can-coc-is-eqv {F = F} {D} = is-eq (PostComp (can-coc F) D) (λ K → colimR (comp K) λ _ _ g → comTri K g)
     (λ K → CocEq-to-== (coceq (λ _ _ → idp) (λ g x → cglue-βr (comp K) (λ _ _ g → comTri K g) g x)))
     λ f → λ= $
-      ColimMapEq _ f (λ _ _ → idp) (λ i j g x →
+      ColimMapEq _ f (λ _ _ → idp) (λ _ _ g x →
         ap (λ p → ! p ∙ ap f (cglue g x)) (cglue-βr _ _ g x) ∙ !-inv-l (ap f (cglue g x)))
 
   abstract

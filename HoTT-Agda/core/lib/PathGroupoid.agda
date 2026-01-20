@@ -75,6 +75,13 @@ module _ {i} {A : Type i} where
 
   !-inv'-r : {x y : A} (p : x == y) → p ∙' (! p) == idp
   !-inv'-r idp = idp
+
+  !-inv-l◃ : {x y : A} (p : x == y) → (! p) ◃∙ p ◃∎ =ₛ []
+  !-inv-l◃ idp = =ₛ-in idp
+
+  !-inv-r◃ : {x y : A} (p : x == y) → p ◃∙ (! p) ◃∎ =ₛ []
+  !-inv-r◃ idp = =ₛ-in idp
+
   {- Interactions between operations
 
   A lemma of the form [!-∙ …] gives a result of the form [! (_∙_ …) == …],
@@ -83,6 +90,9 @@ module _ {i} {A : Type i} where
 
   !-∙ : {x y z : A} (p : x == y) (q : y == z) → ! (p ∙ q) == ! q ∙ ! p
   !-∙ idp idp = idp
+
+  !-∙◃ : {x y z : A} (p : x == y) (q : y == z) → ! (p ∙ q) ◃∎ =ₛ ! q ◃∙ ! p ◃∎
+  !-∙◃ idp idp = =ₛ-in idp
 
   ∙-! : {x y z : A} (q : y == z) (p : x == y) → ! q ∙ ! p == ! (p ∙ q)
   ∙-! idp idp = idp
@@ -96,19 +106,28 @@ module _ {i} {A : Type i} where
   !-! : {x y : A} (p : x == y) → ! (! p) == p
   !-! idp = idp
 
-  ∙-idp-!-∙'-rot : {x y : A} (p : x == y) (q : x == y)
-    → idp == p ∙ idp ∙' ! q → p == q
-  ∙-idp-!-∙'-rot idp q e = ap ! (e ∙ ∙'-unit-l (! q)) ∙ !-! q
-
 {- additional algebraic lemmas -}
 
 module _ {i} {A : Type i} where
 
+  ∙-assoc-!-inv-r-∙ : {x y z w : A} (q : x == y) (p : x == z) (r : z == w) → q ∙ (! q ∙ p) ∙ r == p ∙ r
+  ∙-assoc-!-inv-r-∙ idp idp r = idp
+
   !-inv-l-∙ : {x y z : A} (q : x == y) (p : y == z) → ! q ∙ q ∙ p == p
   !-inv-l-∙ idp p = idp
 
+  ∙'-∙-unit-r-!-inv-l : {x y : A} (p : x == y) → ((idp ∙' ! p) ∙ idp) ∙' p ∙ idp == idp
+  ∙'-∙-unit-r-!-inv-l idp = idp
+
+  !-!-inv-∙'-∙ : {x y z u w : A} (p : x == y) (q : u == z) (r : u == y) (q' : y == w) → ((p ∙' ! r) ∙ q) ∙' ! q ∙ r ∙ q' == p ∙ q'
+  !-!-inv-∙'-∙ p idp idp idp = idp
+
   !-!-∙-pth : {x y z w : A} (p : x == y) (q : x == z) {c : y == w} → ! (! p ∙ q) ∙ c == ! q ∙ p ∙ c
   !-!-∙-pth idp idp = idp
+
+  ∙'-∙-sq-rot-out : {x y z w : A} (p₀ : x == y) (p₁ : y == z) (p₂ : x == w) (p₃ : w == z)
+    → p₀ ∙' p₁ == p₂ ∙ p₃ → p₀ == p₂ ∙ p₃ ∙' ! p₁
+  ∙'-∙-sq-rot-out p₀ idp idp p₃ e = e
 
   !-∙-∙'-rot : {x y z w : A} (p₀ : x == y) {p₁ : x == z} {p₂ : z == w} (p₃ : y == w)
     → ! p₁ ∙ p₀ ∙' p₃ == p₂ → p₀ == p₁ ∙ p₂ ∙' ! p₃
@@ -137,6 +156,10 @@ module _ {i} {A : Type i} where
   ∙'-!-∙-∙ : {x y z w : A} (p₁ : x == y) (p₂ : z == y) (p₃ : y == w)
     → (p₁ ∙' ! p₂) ∙ p₂ ∙ p₃ == p₁ ∙ p₃
   ∙'-!-∙-∙ p₁ idp p₃ = idp
+
+  ∙-idp-!-∙'-rot : {x y : A} (p : x == y) (q : x == y)
+    → idp == p ∙ idp ∙' ! q → p == q
+  ∙-idp-!-∙'-rot idp q e = ap ! (e ∙ ∙'-unit-l (! q)) ∙ !-! q
 
   !-inv-l-r-unit-assoc : {x y : A} (p : x == y) →
     ! (ap (λ c → p ∙ c) (!-inv-l p) ∙ ∙-unit-r p) ∙

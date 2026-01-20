@@ -6,7 +6,7 @@ open import lib.types.Sigma
 
 module lib.SIP where
 
--- identity system and associated induction principle
+-- identity system and associated induction principle, or structure identity principle (SIP)
 
 module _ {i j} (A : Type i) (B : A → Type j) (a : A) (b : B a) where
 
@@ -84,7 +84,7 @@ module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
   funhom-contr-∼ {g} H = has-level-in
     ((g , H) , uncurry (∼-ind {f = f} (λ h p → _) (! (contr-path funhom-contr (g , H)))))
 
--- helper equality
+-- coherence conditions that have shown up in the wild
 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {E : Type ℓ₅} {τ : A → B}
   {h : C → A} {v : C → D} {u : D → B} {f : B → E} where

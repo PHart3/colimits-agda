@@ -210,7 +210,7 @@ module _ {i j k l} {D : Cospan {i} {j} {k}} {T : Type l} where
         rtrip2 : {K₂ : Cone-csp D T} (a : ConCspEq K₁ K₂) → ==-to-ConCspEq (ConCspEq-to-== a) == a
         rtrip2 = ConCspEq-ind (λ K₂ a → ==-to-ConCspEq (ConCspEq-to-== a) == a) (ap ==-to-ConCspEq ConCspEq-β)
 
--- translating between type-valued diagrams over graphs and cospans
+-- translating between Type-valued diagrams over graphs and cospans
 
 module _ {ℓ} (Δ : Diag-cspan (Type-wc ℓ)) where
 

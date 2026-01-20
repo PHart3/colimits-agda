@@ -8,9 +8,9 @@ open import lib.types.Graph
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Diagram-wc
 
-module lib.wild-cats.Diag-ty-SIP where
+module lib.wild-cats.MapDiag-ty-SIP where
 
--- SIP for maps of type-valued diagrams
+-- SIP for maps of Type-valued diagrams
 
 module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
 
@@ -24,15 +24,17 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
       (λ H → {i j : Obj G} (f : Hom G i j) (x : D₀ Δ₁ i) → 
         sq μ₁ f x ∙' H j (D₁ Δ₁ f x) == ap (D₁ Δ₂ f) (H i x) ∙ sq μ₂ f x)
 
+  =-dmap-ty-coh-rot : ∀ {ℓ₁ ℓ₂} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)}
+    {μ₁ μ₂ : Map-diag-ty Δ₁ Δ₂} (p : μ₁ =-dmap-ty μ₂) {i j : Obj G} {f : Hom G i j} (x : D₀ Δ₁ i) →
+      sq μ₁ f x == ap (D₁ Δ₂ f) (fst p i x) ∙ sq μ₂ f x ∙' ! (fst p j (D₁ Δ₁ f x))
+  =-dmap-ty-coh-rot {Δ₁ = Δ₁} {Δ₂} {μ₁} {μ₂} p {i} {j} {f} x =
+    ∙'-∙-sq-rot-out (sq μ₁ f x) (fst p j (D₁ Δ₁ f x)) (ap (D₁ Δ₂ f) (fst p i x)) (sq μ₂ f x) (snd p f x)
+
   module _ {ℓ₁ ℓ₂} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)} where
 
     =-dmap-ty-id : (μ : Map-diag-ty Δ₁ Δ₂) → μ =-dmap-ty μ
     fst (=-dmap-ty-id μ) _ _ = idp
     snd (=-dmap-ty-id μ) _ _ = idp
-
-    qinv-dmap-ty : (μ : Map-diag-ty Δ₁ Δ₂) → Type (lmax (lmax ℓv ℓe) (lmax ℓ₁ ℓ₂))
-    qinv-dmap-ty μ =
-      Σ (Map-diag-ty Δ₂ Δ₁) (λ ν → (ν tydiag-map-∘ μ =-dmap-ty diag-map-idf Δ₁) × (μ tydiag-map-∘ ν =-dmap-ty diag-map-idf Δ₂))
 
     module dmap-ty-contr (μ₁ : Map-diag-ty Δ₁ Δ₂) where
 
@@ -90,6 +92,11 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
     abstract
       dmap-ty-β : {μ : Map-diag-ty Δ₁ Δ₂} → dmap-ty-to-== (=-dmap-ty-id μ) == idp
       dmap-ty-β {μ} = ID-ind-map-β (λ ν _ → μ == ν) (dmap-ty-contr μ) idp
+
+    -- incoherent inverses of diagram maps
+    qinv-dmap-ty : (μ : Map-diag-ty Δ₁ Δ₂) → Type (lmax (lmax ℓv ℓe) (lmax ℓ₁ ℓ₂))
+    qinv-dmap-ty μ =
+      Σ (Map-diag-ty Δ₂ Δ₁) (λ ν → (ν tydiag-map-∘ μ =-dmap-ty diag-map-idf Δ₁) × (μ tydiag-map-∘ ν =-dmap-ty diag-map-idf Δ₂))
 
     eqv-to-qinv-dmap-ty : (μ : Map-diag-ty Δ₁ Δ₂) → eqv-dmap-ty μ → qinv-dmap-ty μ
     comp (fst (eqv-to-qinv-dmap-ty μ e)) x = is-equiv.g (e x)

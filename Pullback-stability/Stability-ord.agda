@@ -35,18 +35,19 @@ module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} (F : Diag ℓd Γ) where
 
     -- canonical map out of colimit of pullbacks
     
-    comp-map : (i : Obj Γ) → Pullback (obj-csp i) → pb-col
-    comp-map i (pullback a b h) = pullback (cin i a) b h
+    compt-map : (i : Obj Γ) → Pullback (obj-csp i) → pb-col
+    compt-map i (pullback a b h) = pullback (cin i a) b h
 
-    map-coher : (i j : Obj Γ) (g : Hom Γ i j) (x : Pullback (obj-csp i))
-      → comp-map j (pullback ((F <#> g) (Pullback.a x)) (Pullback.b x)
-      (ap k (cglue g (Pullback.a x)) ∙ Pullback.h x)) == comp-map i x
+    map-coher : (i j : Obj Γ) (g : Hom Γ i j) (x@(pullback a b h) : Pullback (obj-csp i)) →
+      compt-map j (pullback ((F <#> g) a) b (ap k (cglue g a) ∙ h))
+        ==
+      compt-map i x
     map-coher i j g (pullback a b h) = pullback= pb-csp (cglue g a) idp (∙-unit-r (ap k (cglue g a) ∙ h)) 
 
     can-map : col-pb → pb-col
-    can-map = colimR comp-map map-coher
+    can-map = colimR compt-map map-coher
 
-    can-map-βr = cglue-βr comp-map map-coher
+    can-map-βr = cglue-βr compt-map map-coher
 
     -- quasi-inverse of canonical map
 
@@ -94,22 +95,22 @@ module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} (F : Diag ℓd Γ) where
             
     -- proof of equivalence
 
-    comp-linv : (i : Obj Γ) (x : Pullback (obj-csp i)) → (can-map-inv ∘ can-map) (cin i x) == cin i x
-    comp-linv i (pullback a b h) = idp
+    compt-linv : (i : Obj Γ) (x : Pullback (obj-csp i)) → (can-map-inv ∘ can-map) (cin i x) == cin i x
+    compt-linv i (pullback a b h) = idp
 
     coher-linv : (i j : Obj Γ) (g : Hom Γ i j) (x : Pullback (obj-csp i))
       → PathOver (λ z → (can-map-inv ∘ can-map) z == z) (cglue g x)
-      (comp-linv j ((diag-pb <#> g) x)) (comp-linv i x)
+      (compt-linv j ((diag-pb <#> g) x)) (compt-linv i x)
     coher-linv i j g (pullback a b h) = 
       from-transp-g (λ z → (can-map-inv ∘ can-map) z == z)
       (cglue g (pullback a b h)) (
       =ₛ-out (
         transport (λ z → (can-map-inv ∘ can-map) z == z) (cglue g (pullback a b h))
-          (comp-linv j (pullback ((F <#> g) a) b (ap k (cglue g a) ∙ h))) ◃∎
+          (compt-linv j (pullback ((F <#> g) a) b (ap k (cglue g a) ∙ h))) ◃∎
           =ₛ⟨ transp-path-cmp-idf {f = can-map} can-map-inv (cglue g (pullback a b h))
-            (comp-linv j (pullback ((F <#> g) a) b (ap k (cglue g a) ∙ h)))   ⟩
+            (compt-linv j (pullback ((F <#> g) a) b (ap k (cglue g a) ∙ h)))   ⟩
         ! (ap can-map-inv (ap can-map (cglue g (pullback a b h)))) ◃∙
-        comp-linv j (pullback ((F <#> g) a) b (ap k (cglue g a) ∙ h)) ◃∙
+        compt-linv j (pullback ((F <#> g) a) b (ap k (cglue g a) ∙ h)) ◃∙
         cglue g (pullback a b h) ◃∎
           =ₛ₁⟨ 0 & 1 & ap ! (ap (ap can-map-inv) (can-map-βr g (pullback a b h))) ⟩
           ! (ap can-map-inv (pullback= pb-csp (cglue g a) idp (∙-unit-r (ap k (cglue g a) ∙ h)))) ◃∙
@@ -125,7 +126,7 @@ module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} (F : Diag ℓd Γ) where
         idp ◃∎ ∎ₛ )) 
 
     linv : can-map-inv ∘ can-map ∼ idf col-pb
-    linv = colimE comp-linv coher-linv
+    linv = colimE compt-linv coher-linv
 
     rinv-cur : (x : Colim F) (y : Y) (h : k x == f y)
       → can-map (can-map-inv (pullback x y h)) == pullback x y h

@@ -1,6 +1,3 @@
-# This CITATION.cff file was generated with cffinit.
-# Visit https://bit.ly/cffinit to generate yours today!
-
 cff-version: 1.2.0
 title: >-
   Formal proofs related to coslice colimits and 2-coherent
@@ -13,9 +10,4 @@ authors:
     email: hart1262@umn.edu
     affiliation: 'University of Minnesota, Twin Cities'
     orcid: 'https://orcid.org/0000-0002-7247-362X'
-  - email: kbh@umn.edu
-    given-names: Kuen-Bang
-    family-names: Hou (Favonia)
-    affiliation: 'University of Minnesota, Twin Cities'
-    orcid: 'https://orcid.org/0000-0002-2310-3673'
 repository-code: 'https://github.com/PHart3/colimits-agda'

@@ -92,7 +92,8 @@ module _ {i j k} {d : Span {i} {j} {k}} (ε : is-equiv (Span.f d)) where
       ap (λ p → ! (! (glue (is-equiv.g ε (Span.f d c))) ∙ ap left (is-equiv.f-g ε (Span.f d c))) ∙ p ∙ idp)
         (ap-∘ right _ (glue c) ∙
         ap (ap right) (PushoutRec.glue-β (Span.g d ∘ is-equiv.g ε) (idf (Span.B d)) (λ c → ap (Span.g d) (is-equiv.g-f ε c)) c)) ∙
-       ap (λ p → ! (! (glue (is-equiv.g ε (Span.f d c))) ∙ ap left p) ∙ ap right (ap (Span.g d) (is-equiv.g-f ε c)) ∙ idp) (! (is-equiv.adj ε c)) ∙
+       ap (λ p → ! (! (glue (is-equiv.g ε (Span.f d c))) ∙ ap left p) ∙ ap right (ap (Span.g d) (is-equiv.g-f ε c)) ∙ idp)
+         (! (is-equiv.adj ε c)) ∙
        (ap (λ p → ! (p ∙ ap left (ap (Span.f d) (is-equiv.g-f ε c))) ∙ ap right (ap (Span.g d) (is-equiv.g-f ε c)) ∙ idp)
          (hmtpy-nat-!-∙' glue (is-equiv.g-f ε c)) ∙
        aux (is-equiv.g-f ε c) (glue c)) ∙

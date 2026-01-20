@@ -188,7 +188,7 @@ module ConstrMap {ℓv ℓe ℓ ℓF ℓG} {Γ : Graph ℓv ℓe} {A : Type ℓ}
   private
     module PM = PushoutMap span-map-forg
 
-  -- colimit action on maps
+  -- action of coslice colimit on maps
   𝕕 : < A > Cos P₁ left *→ Cos P₂ left
   𝕕 = PM.f , (λ a → idp)
 

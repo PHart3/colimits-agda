@@ -14,12 +14,15 @@
 - `HoTT-Agda/`
 
   A stripped-down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
-  with specific additions and local changes for general lemmas used in our development of colimits.
+  with many additions and local changes for general lemmas used in our development of colimits and wild adjunctions.
 
-  In addition, it includes wild category theory, centered on (co)limits and 2-coherent left adjoints. We prove that such adjoints
-  preserve colimits (over graphs). Moreover, we prove that the Suspension functor is a 2-coherent left adjoint to Loop-space, for
-  which we develop some new properties of homogeneous types. As a result, we get a formal proof that Suspension preserves colimits.
-  We also prove that modalities, viewed as functors on coslices of Type, are 2-coherent left adjoints, hence preserve colimits.
+  In particular, it includes wild category theory, centered on (co)limits and adjunctions satisfying 2-coherence properties. 
+  We prove that such 2-coherent left adjoints preserve colimits (over graphs). Moreover, we prove that the suspension functor 
+  is a 2-coherent left adjoint to Loop-space, for which we develop some new properties of homogeneous types. As a result, we get 
+  a formal proof that suspension preserves colimits. We also prove that modalities, viewed as functors on coslices of Type, are 
+  2-coherent left adjoints, hence preserve colimits. Another notable result is that an adjunction satisfying a practical hexagon 
+  identity between the proofs of naturality in each varaible respects, in a precise sense, orthogonal factorization systems.
+  We show that the colimit functor on Type-valued diagrams satisfies this hexagon identity.
 
   See `HoTT-Agda/README.md`
   for details and for the license of the work inside this
@@ -57,7 +60,7 @@ We have successfully tested the following Docker container on Linux but not on o
 
    The build installs Agda 2.6.4.3 and type checks our whole development.
    The entire build may take over an hour. The type checking of all our
-   Agda code takes about 38 minutes on our host Ubuntu with 16 GB of RAM.
+   Agda code takes about 41 minutes on our host Ubuntu with 16 GB of RAM.
    (We see a 17% speed-up by using the `--save-metas` option.)
    
    **Note:** Check just the final two files in the Dockerfile for the

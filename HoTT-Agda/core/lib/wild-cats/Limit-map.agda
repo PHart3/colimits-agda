@@ -8,7 +8,7 @@ open import lib.types.Graph
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Diagram-wc
 open import lib.wild-cats.Limit
-open import lib.wild-cats.Diag-ty-SIP
+open import lib.wild-cats.MapDiag-ty-SIP
 
 module lib.wild-cats.Limit-map where
 
