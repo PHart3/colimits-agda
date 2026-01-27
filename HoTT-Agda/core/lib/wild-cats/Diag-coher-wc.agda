@@ -193,7 +193,7 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
           ! (ap (λ m → ⟦ C ⟧ m ◻ f) (α C (D₁ Δ γ) (leg K x) g)) ◃∙
           ap (λ m → ⟦ C ⟧ (⟦ C ⟧ m ◻ g) ◻ f) (tri K γ) ◃∎
             =ₛ₁⟨ 2 & 2 &
-              ! (ap-∙! (λ m → ⟦ C ⟧ m ◻ f) (α C (D₁ Δ γ) (leg K x) g) (ap (λ m → ⟦ C ⟧ m ◻ g) (tri K γ)) ∙
+              ! (ap-!-∙ (λ m → ⟦ C ⟧ m ◻ f) (α C (D₁ Δ γ) (leg K x) g) (ap (λ m → ⟦ C ⟧ m ◻ g) (tri K γ)) ∙
               ap (λ p → ! (ap (λ m → ⟦ C ⟧ m ◻ f) (α C (D₁ Δ γ) (leg K x) g)) ∙ p)
                 (∘-ap (λ m → ⟦ C ⟧ m ◻ f) (λ m → ⟦ C ⟧ m ◻ g) (tri K γ))) ⟩
           ap (λ m → ⟦ C ⟧ D₁ Δ γ ◻ m) (! (α C (leg K x) g f)) ◃∙
@@ -307,7 +307,7 @@ module _ {ℓv ℓe ℓc₁ ℓc₂} {G : Graph ℓv ℓe} {C : WildCat {ℓc₁
           ! (ap (λ m → ⟦ C ⟧ map-comp μ y ◻ m) (α C (D₁ Δ₁ g) (leg K x) f)) ◃∙
           ap (λ m → ⟦ C ⟧ map-comp μ y ◻ ⟦ C ⟧ m ◻ f) (tri K g) ◃∎
             =ₛ₁⟨ 4 & 2 &
-                ! (ap-∙! (λ m → ⟦ C ⟧ map-comp μ y ◻ m) (α C (D₁ Δ₁ g) (leg K x) f) (ap (λ m → ⟦ C ⟧ m ◻ f) (tri K g)) ∙
+                ! (ap-!-∙ (λ m → ⟦ C ⟧ map-comp μ y ◻ m) (α C (D₁ Δ₁ g) (leg K x) f) (ap (λ m → ⟦ C ⟧ m ◻ f) (tri K g)) ∙
                   ap (λ p → ! (ap (λ m → ⟦ C ⟧ map-comp μ y ◻ m) (α C (D₁ Δ₁ g) (leg K x) f)) ∙ p)
                     (∘-ap (λ m → ⟦ C ⟧ map-comp μ y ◻ m) (λ m → ⟦ C ⟧ m ◻ f) (tri K g))) ⟩
           ap (λ m → ⟦ C ⟧ D₁ Δ₂ g ◻ m) (α C (map-comp μ x) (leg K x) f) ◃∙

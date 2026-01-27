@@ -78,3 +78,7 @@ module _ {i j} {C : WildCat {i} {j}} {ℓv ℓe} {G : Graph ℓv ℓe} where
         colim-act-dmap {Δ₁} = diag-ind (λ Δ₂ (μ , _) → ∀ {a} K → is-colim K → is-colim (act-dmap-coc μ K))
           λ K cl → λ b → coe (ap is-equiv (app= (ap post-cmp-coc (act-dmap-coc-id trig pent K)) b)) (cl b) 
 
+-- pushout square
+is-po-wc : ∀ {ℓc₁ ℓc₂} {C : WildCat {ℓc₁} {ℓc₂}} {Δ : Diag-span C} {a : ob C} (K : Cocone-wc Δ a)
+  → Type (lmax ℓc₁ ℓc₂)
+is-po-wc = is-colim {G = Graph-span}

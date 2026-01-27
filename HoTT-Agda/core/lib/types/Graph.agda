@@ -28,10 +28,22 @@ record GraphHom {ℓv ℓe ℓv' ℓe'} (G : Graph ℓv ℓe) (G' : Graph ℓv' 
   infix 90 _#_
 open GraphHom public
 
--- graph underlying a cospan
+-- graphs underlying span and cospan
 
 data Triple : Type₀ where
   lft mid rght : Triple
+
+Graph-span : Graph lzero lzero 
+Obj Graph-span = Triple
+Hom Graph-span lft lft = Empty
+Hom Graph-span lft mid = Empty
+Hom Graph-span lft rght = Empty
+Hom Graph-span mid lft = Unit
+Hom Graph-span mid mid = Empty
+Hom Graph-span mid rght = Unit
+Hom Graph-span rght lft = Empty
+Hom Graph-span rght mid = Empty
+Hom Graph-span rght rght = Empty
 
 Graph-cspan : Graph lzero lzero 
 Obj Graph-cspan = Triple

@@ -329,6 +329,9 @@ module _ {ℓv ℓe : ULevel} where
       α C (map-comp μ y) (D₁ Δ₁ f) (leg K x) ∙
       ap (λ m → ⟦ C ⟧ map-comp μ y ◻ m) (tri K f)
 
+Diag-span : ∀ {ℓc₁ ℓc₂} → WildCat {ℓc₁} {ℓc₂} → Type (lmax ℓc₁ ℓc₂)
+Diag-span C = Diagram Graph-span C
+
 Diag-cspan : ∀ {ℓc₁ ℓc₂} → WildCat {ℓc₁} {ℓc₂} → Type (lmax ℓc₁ ℓc₂)
 Diag-cspan C = Diagram Graph-cspan C
 

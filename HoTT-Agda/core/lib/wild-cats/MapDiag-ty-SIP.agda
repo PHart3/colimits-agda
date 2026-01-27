@@ -147,7 +147,7 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
     snd (snd (snd (eqv-to-qinv-dmap-ty μ e))) {x} {y} f z =
       ap (λ p →
         (sq μ f (is-equiv.g (e x) z) ∙ p) ∙' is-equiv.f-g (e y) (D₁ Δ₂ f z))
-        (ap-∙! (comp μ y) (is-equiv.g-f (e y) (D₁ Δ₁ f (is-equiv.g (e x) z))) _ ∙
+        (ap-!-∙ (comp μ y) (is-equiv.g-f (e y) (D₁ Δ₁ f (is-equiv.g (e x) z))) _ ∙
         ap (λ p →
           ! p ∙
           ap (comp μ y)

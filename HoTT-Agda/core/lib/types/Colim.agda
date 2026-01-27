@@ -128,7 +128,7 @@ module _ {Γ : Graph ℓv ℓe} where
         (ColMap-β (μ₂ diag-mor-∘ μ₁) g x)
         (ap-∘ (ColMap μ₂) (ColMap μ₁) (cglue g x) ∙
         ap (ap (ColMap μ₂)) (ColMap-β μ₁ g x) ∙
-        ap-∙! (ColMap μ₂) (ap (cin j) (comSq μ₁ g x)) (cglue g (nat μ₁ i x)) ∙
+        ap-!-∙ (ColMap μ₂) (ap (cin j) (comSq μ₁ g x)) (cglue g (nat μ₁ i x)) ∙
         ap2 (λ p₁ p₂ → ! p₁ ∙ p₂) (∘-ap (ColMap μ₂) (cin j) (comSq μ₁ g x)) (ColMap-β μ₂ g (nat μ₁ i x))) ∙
       aux (cin j) (nat μ₂ j) (comSq μ₂ g (nat μ₁ i x)) (comSq μ₁ g x) (cglue g (nat μ₂ i (nat μ₁ i x))))
       where 
