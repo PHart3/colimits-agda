@@ -36,7 +36,7 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
     abstract
 
       CanMap-eqv-v1 : is-equiv (PostComp-cos {D = T} (ColCoC-cos F))
-      CanMap-eqv-v1 = is-eq (PostComp-cos {D = T} (ColCoC-cos F)) (Recc.recCosCoc F T) (LRfunEq) λ (f , fₚ) → ! (RLfunEq F T f fₚ)
+      CanMap-eqv-v1 = is-eq (PostComp-cos {D = T} (ColCoC-cos F)) (Recc.recCosCoc F T) (LRfunEq) (λ (f , fₚ) → ! (RLfunEq F T f fₚ))
 
       CanMap-cos-eqv : is-equiv (RWhisk-coscoc {D = T} (ColCoC-cos F))
       CanMap-cos-eqv = ∼-preserves-equiv (CosPostComp-eq (ColCoC-cos F)) CanMap-eqv-v1
