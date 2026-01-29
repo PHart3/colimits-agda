@@ -8,7 +8,7 @@ open import lib.wild-cats.MapDiag-ty-SIP
 
 -- the wild category of Type-valued diagrams over a graph
 
-module lib.wild-cats.Diag-ty-WC where
+module lib.wild-cats.Diag-ty-wc where
 
 open Map-diag-ty
 

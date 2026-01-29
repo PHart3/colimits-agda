@@ -6,7 +6,7 @@ open import lib.wild-cats.Adjoint public
 open import lib.wild-cats.Bicat public
 open import lib.wild-cats.Colim-wc public
 open import lib.wild-cats.Counit-unit public
-open import lib.wild-cats.Diag-ty-WC public
+open import lib.wild-cats.Diag-ty-wc public
 open import lib.wild-cats.Diagram-wc public
 open import lib.wild-cats.Diagram-wc-SIP public
 open import lib.wild-cats.Limit public
