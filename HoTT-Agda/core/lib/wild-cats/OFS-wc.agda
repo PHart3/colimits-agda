@@ -21,6 +21,16 @@ record fact-mor-wc {i j} {C : WildCat {i} {j}} {a b : ob C} (h : hom C a b) : Ty
     fact : ⟦ C ⟧ mor-r ◻ mor-l == h
 open fact-mor-wc
 
+fact-mor-wc-Σ : ∀ {i j} {C : WildCat {i} {j}} {a b : ob C} {h : hom C a b} →
+  ([ im ∈ ob C ] × [ mor-l ∈ hom C a im ] × [ mor-r ∈ hom C im b ] × (⟦ C ⟧ mor-r ◻ mor-l == h))
+    ≃
+  fact-mor-wc {C = C} h
+fact-mor-wc-Σ = equiv
+  (λ (im , mor-l , mor-r , fact) → factmor im mor-l mor-r fact)
+  (λ (factmor im mor-l mor-r fact) → (im , mor-l , mor-r , fact))
+  (λ _ → idp)
+  λ _ → idp
+
 record ofs-wc (k₁ k₂ {i j} : ULevel) (C : WildCat {i} {j}) : Type (lmax (lmax i j) (lmax (lsucc k₁) (lsucc k₂))) where
   constructor ofs
   field

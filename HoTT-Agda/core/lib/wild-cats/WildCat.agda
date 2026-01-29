@@ -172,6 +172,9 @@ _◻_ (Type-wc i) g f = g ∘ f
 lamb (Type-wc i) = λ _ → idp
 α (Type-wc i) = λ _ _ _ → idp
 
+Type-wc-is-univ : ∀ {i} → is-univ-wc (Type-wc i)
+Type-wc-is-univ X Y = ∼-preserves-equiv {!!} ({!!} ∘ise snd coe-equiv-≃)
+
 eqv-wc-to-eqv-ty : ∀ {i} {X Y : Type i} {f : X → Y} → equiv-wc (Type-wc i) f → is-equiv f
 eqv-wc-to-eqv-ty {i} {f = f} e = is-eq f (<–-wc (Type-wc i) e)
   (λ b → app= (! (<–-wc-rinv (Type-wc i) e)) b) λ a → app= (! (<–-wc-linv (Type-wc i) e)) a
