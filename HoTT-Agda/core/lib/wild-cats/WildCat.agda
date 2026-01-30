@@ -197,15 +197,15 @@ module _ {i} {X Y : Type i} where
   eqv-wc-to-eqv-ty {f = f} e = is-eq f (<–-wc (Type-wc i) e)
     (λ b → app= (! (<–-wc-rinv (Type-wc i) e)) b) λ a → app= (! (<–-wc-linv (Type-wc i) e)) a
 
-  biinv-wc-to-eqv-ty :  {f : X → Y} → biinv-wc (Type-wc i) f → is-equiv f
+  biinv-wc-to-eqv-ty : {f : X → Y} → biinv-wc (Type-wc i) f → is-equiv f
   biinv-wc-to-eqv-ty e = eqv-wc-to-eqv-ty (equiv-wc-forg (Type-wc i) e)
 
-  eqv-to-biinv-wc-ty :  {f : X → Y} → is-equiv f → biinv-wc (Type-wc i) f
+  eqv-to-biinv-wc-ty : {f : X → Y} → is-equiv f → biinv-wc (Type-wc i) f
   fst (eqv-to-biinv-wc-ty e) = (is-equiv.g e) , (! (λ= (is-equiv.g-f e)))
   snd (eqv-to-biinv-wc-ty e) = (is-equiv.g e) , (! (λ= (is-equiv.f-g e)))
 
-  ==-≃-wc-equiv : (X == Y) ≃ (≃-wc (Type-wc i) X Y)
-  ==-≃-wc-equiv = Σ-emap-r (λ f →
+  ==-≃-wc-ty-equiv : (X == Y) ≃ (≃-wc (Type-wc i) X Y)
+  ==-≃-wc-ty-equiv = Σ-emap-r (λ f →
     props-BiImp-≃ {{pB = biinv-wc-is-prop {C = Type-wc i}}}
       eqv-to-biinv-wc-ty biinv-wc-to-eqv-ty) ∘e
     coe-equiv-≃
@@ -213,7 +213,7 @@ module _ {i} {X Y : Type i} where
 Type-wc-is-univ : ∀ {i} → is-univ-wc (Type-wc i)
 Type-wc-is-univ {i} X Y = ∼-preserves-equiv
   (λ { idp → pair= idp (prop-has-all-paths {{biinv-wc-is-prop {C = Type-wc i}}} _ _) })
-  (snd ==-≃-wc-equiv)
+  (snd ==-≃-wc-ty-equiv)
 
 -- triangle identity
 

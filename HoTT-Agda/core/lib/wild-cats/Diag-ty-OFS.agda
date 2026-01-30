@@ -53,8 +53,9 @@ module _ {k₁ k₂ ℓ ℓv ℓe} (fs : ofs-wc k₁ k₂ (Type-wc ℓ)) {G : Gr
           
       tot-sp = Σ tot-sp-dom-Π (λ d → {i j : Obj G} (g : Hom G i j) →
         [ A₁ ∈ (fst (fst (d i)) → fst (fst (d j))) ] ×
-          [ S₁ ∈ (A₁ ∘ fst (snd (fst (d i))) ∼ fst (snd (fst (d j))) ∘ D₁ a g) ] ×
-          [ T₁ ∈ (D₁ b g ∘ fst (snd (snd (fst (d i)))) ∼ fst (snd (snd (fst (d j)))) ∘ A₁) ] ×
+          [ (S₁ , T₁) ∈
+            (A₁ ∘ fst (snd (fst (d i))) ∼ fst (snd (fst (d j))) ∘ D₁ a g) ×
+            (D₁ b g ∘ fst (snd (snd (fst (d i)))) ∼ fst (snd (snd (fst (d j)))) ∘ A₁) ] ×
             ((x : D₀ a i) →
               (T₁ (fst (snd (fst (d i))) x) ∙ ap (fst (snd (snd (fst (d j))))) (S₁ x)) ∙'
               snd (snd (snd (fst (d j)))) (D₁ a g x)
@@ -127,33 +128,21 @@ module _ {k₁ k₂ ℓ ℓv ℓe} (fs : ofs-wc k₁ k₂ (Type-wc ℓ)) {G : Gr
             (center-lc i) (center-rc j) (lm j ∘ D₁ a g) (D₁ b g ∘ rm i)
             (λ= (λ x → ap (D₁ b g) (path i x) ∙ sq f g x ∙ ! (path j (D₁ a g x))))}}
 
-        tot-sp-curry :
-          tot-sp-aux
-            ≃
-          Σ (fst (center i) → fst (center j)) (λ A₁ →
-            Σ (A₁ ∘ lm i ∼ lm j ∘ D₁ a g) (λ S₁ → Σ (D₁ b g ∘ rm i ∼ rm j ∘ A₁) (λ T₁ →
-              (x : D₀ a i) →
-                (T₁ (lm i x) ∙ ap (rm j) (S₁ x)) ∙' path j (D₁ a g x)
-                  ==
-                ap (D₁ b g) (path i x) ∙ sq f g x)))
-        tot-sp-curry = equiv (λ (A₁ , (S₁ , T₁) , P) → (A₁ , S₁ , T₁ , P)) (λ (A₁ , S₁ , T₁ , P) → (A₁ , (S₁ , T₁) , P))
-          (λ _ → idp) λ _ → idp
-
       abstract
         tot-sp-contr : is-contr tot-sp
         tot-sp-contr = equiv-preserves-level ((Σ-contr-red tot-sp-dom-Π-contr) ⁻¹)
-          {{Πi-level λ i → Πi-level λ j → Π-level (λ g → equiv-preserves-level tot-sp-curry {{tot-sp-contr-aux}})}}
+          {{Πi-level λ i → Πi-level λ j → Π-level (λ g → tot-sp-contr-aux)}}
 
     Diag-ty-lw-unique-fct-aux1 : tot-sp ≃ tot-sp-pre
     Diag-ty-lw-unique-fct-aux1 = equiv
       (λ (d₀ , d₁) →
         ((Δ-wc (λ i → fst (fst (d₀ i))) (λ g → fst (d₁ g))) ,
-        ((map-diag-ty (λ i → fst (snd (fst (d₀ i)))) (λ g x → fst (snd (d₁ g)) x)) ,
-        ((map-diag-ty (λ i → fst (snd (snd (fst (d₀ i))))) (λ g x → fst (snd (snd (d₁ g))) x)) ,
-        ((λ i → snd (snd (snd (fst (d₀ i))))) , (λ g x → snd (snd (snd (d₁ g))) x))))) ,
+        ((map-diag-ty (λ i → fst (snd (fst (d₀ i)))) (λ g x → fst (fst (snd (d₁ g))) x)) ,
+        ((map-diag-ty (λ i → fst (snd (snd (fst (d₀ i))))) (λ g x → snd (fst (snd (d₁ g))) x)) ,
+        ((λ i → snd (snd (snd (fst (d₀ i))))) , (λ g x → snd (snd (d₁ g)) x))))) ,
         ((λ i → fst (snd (d₀ i))) , λ i → snd (snd (d₀ i))))
       (λ (((Δ-wc A₀ A₁) , ((map-diag-ty S₀ S₁) , ((map-diag-ty T₀ T₁) , (P₀ , P₁)))) , (L , R)) →
-        (λ i → (A₀ i , (S₀ i , (T₀ i , P₀ i))) , (L i , R i)) , λ g → A₁ g , (S₁ g , (T₁ g , (λ x → P₁ g x))))
+        (λ i → (A₀ i , (S₀ i , (T₀ i , P₀ i))) , (L i , R i)) , λ g → A₁ g , (S₁ g , T₁ g) , (λ x → P₁ g x))
       (λ _ → idp)
       λ _ → idp
 
