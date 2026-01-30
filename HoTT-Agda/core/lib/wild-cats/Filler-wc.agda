@@ -3,6 +3,7 @@
 open import lib.Basics
 open import lib.NType2
 open import lib.types.Sigma hiding (diag)
+open import lib.types.Paths
 open import lib.wild-cats.WildCat
 
 -- fillers of commuting squares in a wild category
@@ -44,3 +45,19 @@ module _ {i j} {C : WildCat {i} {j}} where
   llp-wc : ∀ {k} (H : ∀ {a b} → hom C a b → -1 -Type k) {a b : ob C} (l : hom C a b) → Type (lmax (lmax i j) k)
   llp-wc H {a} {b} l = ∀ {c d} {r : hom C c d} (r-H : fst (H r))
     (f : hom C a c) (g : hom C b d) (S : ⟦ C ⟧ g ◻ l == ⟦ C ⟧ r ◻ f) → is-contr (Fill-wc f g S)
+
+module _ {ℓ} {a b c d : Type ℓ} {l : a → b} {r : c → d} (f : a → c) (g : b → d) (T : g ∘ l == r ∘ f) where
+
+  Fill-wc-ty :
+    Fill-wc {C = Type-wc ℓ} {l = l} {r = r} f g T
+      ≃
+    [ diag ∈ (b → c) ] × [ (tri-top , tri-bottom) ∈ (diag ∘ l ∼ f) × (g ∼ r ∘ diag) ] ×
+      (ap (λ m → m ∘ l) (λ= tri-bottom) ∙ ap (λ m → r ∘ m) (λ= tri-top) == T)
+  Fill-wc-ty = Σ-emap-r (λ diag →
+      Σ-emap-r {B = λ (tri-top , tri-bottom) →
+        ap (λ m → r ∘ m) (λ= tri-top) == ap (λ m → m ∘ l) (! (λ= tri-bottom)) ∙ T}
+        (λ (tri-top , tri-bottom) →
+          path-rot-in-≃ (ap (λ m → r ∘ m) (λ= tri-top)) (ap (λ m → m ∘ l) (λ= tri-bottom)) ∘e
+          post∙-equiv (ap (λ q → q ∙ T) (ap-! (λ m → m ∘ l) (λ= tri-bottom)))) ∘e
+      (Σ-emap-l _ (×-emap λ=-equiv (!-equiv ∘e λ=-equiv)))⁻¹) ∘e
+    Fill-wc-Σ {C = Type-wc ℓ} {l = l} {r = r} f g T

@@ -285,6 +285,13 @@ module _ {i j} {A : Type i} {B : Type j} where
   ap-equiv : (e : A ≃ B) (x y : A) → (x == y) ≃ (–> e x == –> e y)
   ap-equiv e x y = _ , ap-is-equiv (snd e) x y
 
+{- A bi-implication between two props is an equivalence between them. -}
+
+props-BiImp-≃ : ∀ {i j} {A : Type i} {B : Type j} {{pA : is-prop A}} {{pB : is-prop B}}
+  → (A → B) → (B → A) → A ≃ B
+props-BiImp-≃ {{pA}} {{pB}} f g =
+  equiv f g (λ _ → prop-has-all-paths _ _) λ _ → prop-has-all-paths _ _
+
 {- Equivalent types have the same truncation level -}
 
 equiv-preserves-level : ∀ {i j} {A : Type i} {B : Type j} {n : ℕ₋₂} (e : A ≃ B)

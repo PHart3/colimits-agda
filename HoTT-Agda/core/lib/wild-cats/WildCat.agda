@@ -2,7 +2,9 @@
 
 open import lib.Basics
 open import lib.SIP
+open import lib.Equivalence2
 open import lib.types.Sigma
+open import lib.types.Paths
 open import lib.types.Graph
 
 module lib.wild-cats.WildCat where
@@ -78,6 +80,12 @@ module _ {i j} (C : WildCat {i} {j}) where
   biinv-wc : {a b : ob C} → hom C a b → Type j
   biinv-wc {a} {b} f = Σ (hom C b a) (λ g → (id₁ C a == ⟦ C ⟧ g ◻ f)) × Σ (hom C b a) (λ h → id₁ C b == ⟦ C ⟧ f ◻ h)
 
+  biinv-wc-sym : {a b : ob C} {f : hom C a b} →
+    Σ (hom C b a) (λ g → (⟦ C ⟧ g ◻ f == id₁ C a)) × Σ (hom C b a) (λ h → ⟦ C ⟧ f ◻ h == id₁ C b)
+      ≃
+    biinv-wc f
+  biinv-wc-sym {a} {b} {f} = ×-emap (Σ-emap-r (λ g → !-equiv)) (Σ-emap-r (λ g → !-equiv))
+
   ≃-wc : (a b : ob C) → Type j
   ≃-wc a b = Σ (hom C a b) biinv-wc
 
@@ -115,7 +123,12 @@ module _ {i j} (C : WildCat {i} {j}) where
     hom-dom-eqv : {c : ob C} → hom C b c ≃ hom C a c
     hom-dom-eqv = equiv (λ g → ⟦ C ⟧ g ◻ f) (λ g → ⟦ C ⟧ g ◻ <–-wc)
       (λ g → α C g <–-wc f ∙ ap (λ m → ⟦ C ⟧ g ◻ m) (! <–-wc-linv) ∙ ! (ρ C g))
-      λ g → α C g f <–-wc ∙ ap (λ m → ⟦ C ⟧ g ◻ m) (! <–-wc-rinv) ∙ ! (ρ C g) 
+      λ g → α C g f <–-wc ∙ ap (λ m → ⟦ C ⟧ g ◻ m) (! <–-wc-rinv) ∙ ! (ρ C g)
+
+    hom-cod-eqv : {c : ob C} → hom C c a ≃ hom C c b
+    hom-cod-eqv = equiv (λ g → ⟦ C ⟧ f ◻ g) (λ g → ⟦ C ⟧ <–-wc ◻ g)
+      (λ g → ! (α C f <–-wc g) ∙ ap (λ m → ⟦ C ⟧ m ◻ g) (! <–-wc-rinv) ∙ ! (lamb C g))
+      (λ g → ! (α C <–-wc f g) ∙ ap (λ m → ⟦ C ⟧ m ◻ g) (! <–-wc-linv) ∙ ! (lamb C g)) 
 
   equiv-wc-∘ : {a b c : ob C} {f : hom C a b} {g : hom C b c}
     → equiv-wc g → equiv-wc f → equiv-wc (⟦ C ⟧ g ◻ f)
@@ -133,6 +146,12 @@ module _ {i j} (C : WildCat {i} {j}) where
     α C g (⟦ C ⟧ f ◻ <–-wc ef) (<–-wc eg) ∙
     ap (λ m → ⟦ C ⟧ g ◻ m) (α C f (<–-wc ef) (<–-wc eg)) ∙
     ! (α C g f (⟦ C ⟧ <–-wc ef ◻ <–-wc eg)) 
+
+biinv-wc-is-prop : ∀ {i j} {C : WildCat {i} {j}} {a b : ob C} {f : hom C a b} → is-prop (biinv-wc C f)
+biinv-wc-is-prop {C = C} {a} {b} {f} = equiv-preserves-level (biinv-wc-sym C)
+  {{inhab-to-contr-is-prop (λ eqv → ×-level
+    (equiv-is-contr-map (snd (hom-dom-eqv C (equiv-wc-forg C (–> (biinv-wc-sym C) eqv)))) (id₁ C a))
+    (equiv-is-contr-map (snd (hom-cod-eqv C (equiv-wc-forg C (–> (biinv-wc-sym C) eqv)))) (id₁ C b)))}}
 
 -- functors preserve equivalences
 F-equiv-wc : ∀ {i₁ j₁ i₂ j₂} {B : WildCat {i₁} {j₁}} {C : WildCat {i₂} {j₂}}
@@ -172,12 +191,29 @@ _◻_ (Type-wc i) g f = g ∘ f
 lamb (Type-wc i) = λ _ → idp
 α (Type-wc i) = λ _ _ _ → idp
 
-Type-wc-is-univ : ∀ {i} → is-univ-wc (Type-wc i)
-Type-wc-is-univ X Y = ∼-preserves-equiv {!!} ({!!} ∘ise snd coe-equiv-≃)
+module _ {i} {X Y : Type i} where
 
-eqv-wc-to-eqv-ty : ∀ {i} {X Y : Type i} {f : X → Y} → equiv-wc (Type-wc i) f → is-equiv f
-eqv-wc-to-eqv-ty {i} {f = f} e = is-eq f (<–-wc (Type-wc i) e)
-  (λ b → app= (! (<–-wc-rinv (Type-wc i) e)) b) λ a → app= (! (<–-wc-linv (Type-wc i) e)) a
+  eqv-wc-to-eqv-ty : {f : X → Y} → equiv-wc (Type-wc i) f → is-equiv f
+  eqv-wc-to-eqv-ty {f = f} e = is-eq f (<–-wc (Type-wc i) e)
+    (λ b → app= (! (<–-wc-rinv (Type-wc i) e)) b) λ a → app= (! (<–-wc-linv (Type-wc i) e)) a
+
+  biinv-wc-to-eqv-ty :  {f : X → Y} → biinv-wc (Type-wc i) f → is-equiv f
+  biinv-wc-to-eqv-ty e = eqv-wc-to-eqv-ty (equiv-wc-forg (Type-wc i) e)
+
+  eqv-to-biinv-wc-ty :  {f : X → Y} → is-equiv f → biinv-wc (Type-wc i) f
+  fst (eqv-to-biinv-wc-ty e) = (is-equiv.g e) , (! (λ= (is-equiv.g-f e)))
+  snd (eqv-to-biinv-wc-ty e) = (is-equiv.g e) , (! (λ= (is-equiv.f-g e)))
+
+  ==-≃-wc-equiv : (X == Y) ≃ (≃-wc (Type-wc i) X Y)
+  ==-≃-wc-equiv = Σ-emap-r (λ f →
+    props-BiImp-≃ {{pB = biinv-wc-is-prop {C = Type-wc i}}}
+      eqv-to-biinv-wc-ty biinv-wc-to-eqv-ty) ∘e
+    coe-equiv-≃
+
+Type-wc-is-univ : ∀ {i} → is-univ-wc (Type-wc i)
+Type-wc-is-univ {i} X Y = ∼-preserves-equiv
+  (λ { idp → pair= idp (prop-has-all-paths {{biinv-wc-is-prop {C = Type-wc i}}} _ _) })
+  (snd ==-≃-wc-equiv)
 
 -- triangle identity
 
