@@ -30,7 +30,7 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
     fst (diag-ueqv-id {Δ}) = diag-map-id Δ
     snd diag-ueqv-id _ = id₁-eqv _
 
-    module _ {Δ₁ : Diagram G C} where
+    module Diag-contr {Δ₁ : Diagram G C} where
 
       diag-contr-aux :
         is-contr $
@@ -71,6 +71,27 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
         → Q Δ₁ diag-ueqv-id → {Δ₂ : Diagram G C} (e : diag-ueqv Δ₁ Δ₂) → Q Δ₂ e
       diag-ind Q = ID-ind-map Q diag-contr
 
+    open Diag-contr public
+
+    diag-to-== : {Δ₁ Δ₂ : Diagram G C} → diag-ueqv Δ₁ Δ₂ → Δ₁ == Δ₂
+    diag-to-== {Δ₁} = diag-ind (λ Δ₂ _ → Δ₁ == Δ₂) idp
+
+    diag-to-==-β : {Δ₁ : Diagram G C} → diag-to-== diag-ueqv-id == idp
+    diag-to-==-β {Δ₁} = ID-ind-map-β (λ Δ₂ _ → Δ₁ == Δ₂) diag-contr idp
+
+    diag-from-== : {Δ₁ Δ₂ : Diagram G C} → Δ₁ == Δ₂ → diag-ueqv Δ₁ Δ₂
+    diag-from-== idp = diag-ueqv-id
+
+    diag-==-≃ : {Δ₁ Δ₂ : Diagram G C} → (Δ₁ == Δ₂) ≃ (diag-ueqv Δ₁ Δ₂)
+    diag-==-≃ {Δ₁} = equiv diag-from-== diag-to-== aux1 aux2
+      where abstract
+
+        aux1 : {Δ₂ : Diagram G C} (e : diag-ueqv Δ₁ Δ₂) → diag-from-== (diag-to-== e) == e
+        aux1 = diag-ind (λ Δ₂ e → diag-from-== (diag-to-== e) == e) (ap diag-from-== diag-to-==-β)
+
+        aux2 : {Δ₂ : Diagram G C} (e : Δ₁ == Δ₂) → diag-to-== (diag-from-== e) == e
+        aux2 idp = diag-to-==-β 
+
   -- SIP for maps of diagrams valued in an arbitrary wild category
 
   infixr 70 _=-dmap_
@@ -87,7 +108,7 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
     fst (=-dmap-id μ) _ = idp
     snd (=-dmap-id μ) _ = idp
 
-    module _ (μ₁ : Map-diag Δ₁ Δ₂) where
+    module Dmap-contr (μ₁ : Map-diag Δ₁ Δ₂) where
 
       dmap-contr-aux :
         is-contr $
@@ -136,6 +157,24 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
         → P μ₁ (=-dmap-id μ₁) → {μ₂ : Map-diag Δ₁ Δ₂} (e : μ₁ =-dmap μ₂) → P μ₂ e
       dmap-ind P = ID-ind-map P dmap-contr
 
+    open Dmap-contr
+
     dmap-to-== : {μ₁ μ₂ : Map-diag Δ₁ Δ₂} → μ₁ =-dmap μ₂ → μ₁ == μ₂
     dmap-to-== {μ₁} = dmap-ind μ₁ (λ μ₂ _ → μ₁ == μ₂) idp
+
+    dmap-to-==-β : {μ₁ : Map-diag Δ₁ Δ₂} → dmap-to-== (=-dmap-id μ₁) == idp
+    dmap-to-==-β {μ₁} = ID-ind-map-β (λ μ₂ _ → μ₁ == μ₂) (dmap-contr μ₁) idp
+
+    dmap-from-== : {μ₁ μ₂ : Map-diag Δ₁ Δ₂} → μ₁ == μ₂ → μ₁ =-dmap μ₂
+    dmap-from-== idp = =-dmap-id _
+
+    dmap-==-≃ : {μ₁ μ₂ : Map-diag Δ₁ Δ₂} → (μ₁ == μ₂) ≃ (μ₁ =-dmap μ₂)
+    dmap-==-≃ {μ₁} = equiv dmap-from-== dmap-to-== aux1 aux2
+      where abstract
+
+        aux1 : {μ₂ : Map-diag Δ₁ Δ₂} (e : μ₁ =-dmap μ₂) → dmap-from-== (dmap-to-== e) == e
+        aux1 = dmap-ind μ₁ (λ μ₂ e → dmap-from-== (dmap-to-== e) == e) (ap dmap-from-== dmap-to-==-β)
+
+        aux2 : {μ₂ : Map-diag Δ₁ Δ₂} (e : μ₁ == μ₂) → dmap-to-== (dmap-from-== e) == e
+        aux2 idp = dmap-to-==-β 
 

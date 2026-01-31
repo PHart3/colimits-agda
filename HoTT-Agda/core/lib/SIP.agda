@@ -84,6 +84,31 @@ module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
   funhom-contr-∼ {g} H = has-level-in
     ((g , H) , uncurry (∼-ind {f = f} (λ h p → _) (! (contr-path funhom-contr (g , H)))))
 
+-- some coherence properties of λ=
+module _ {i j l} {A : Type i} {B : Type j} {C : Type l} {f g : A → B} where
+
+  pre∘-λ= : (h : C → A) (H : f ∼ g) → ap (λ k z → k (h z)) (λ= H) == λ= (λ z → H (h z))
+  pre∘-λ= h = ∼-ind {B = λ _ → B} (λ g H → ap (λ k z → k (h z)) (λ= H) == λ= (λ z → H (h z))) aux g
+    where
+      aux : ap (λ k z → k (h z)) (λ= (λ x → idp)) == λ= (λ z → idp)
+      aux =
+        ap (λ k z → k (h z)) (λ= (λ x → idp))
+          =⟨ ap (ap (λ k z → k (h z))) (! (λ=-η idp) ) ⟩
+        idp
+          =⟨ λ=-η idp ⟩
+        λ= (λ z → idp) =∎
+
+  post∘-λ= : (h : B → C) (H : f ∼ g) → ap (λ k z → h (k z)) (λ= H) == λ= (λ z → ap h (H z))
+  post∘-λ= h = ∼-ind {B = λ _ → B} (λ g H → ap (λ k z → h (k z)) (λ= H) == λ= (λ z → ap h (H z))) aux g
+    where
+      aux : ap (λ k z → h (k z)) (λ= (λ x → idp)) == λ= (λ z → idp)
+      aux =
+        ap (λ k z → h (k z)) (λ= (λ x → idp))
+          =⟨ ap (ap (λ k z → h (k z))) (! (λ=-η idp) ) ⟩
+        idp
+          =⟨ λ=-η idp ⟩
+        λ= (λ z → idp) =∎
+
 -- coherence conditions that have shown up in the wild
 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {E : Type ℓ₅} {τ : A → B}

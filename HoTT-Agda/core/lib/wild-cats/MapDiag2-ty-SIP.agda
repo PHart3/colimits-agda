@@ -84,7 +84,7 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
 
   -- basic operations on =-dmap-ty and their conversions to operations on paths
 
-  module _ {ℓ₁ ℓ₂} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)} {μ₁ μ₂ : Map-diag-ty Δ₁ Δ₂} where
+  module _ {ℓ₁ ℓ₂} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)} where
 
     module =-dmap-ops-conv where
 

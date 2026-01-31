@@ -3,6 +3,7 @@
 open import lib.Basics
 open import lib.types.Sigma
 open import lib.types.Graph
+open import lib.types.Span
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Diagram-wc
 open import lib.wild-cats.MapDiag-ty-SIP
@@ -15,6 +16,15 @@ private variable ℓv ℓe ℓd : ULevel
 
 Diag : ∀ ℓd (Γ : Graph ℓv ℓe) → Type (lmax (lmax ℓv ℓe) (lsucc ℓd))
 Diag ℓd Γ = GraphHom Γ (TypeGr ℓd)
+
+-- every span induces a diagram
+span-to-grhom : ∀ {ℓ} (σ : Span {ℓ} {ℓ} {ℓ}) → Diag ℓ Graph-span
+span-to-grhom σ # lft = Span.A σ
+span-to-grhom σ # mid = Span.C σ
+span-to-grhom σ # rght = Span.B σ
+_<#>_ (span-to-grhom σ) {mid} {lft} f = Span.f σ
+_<#>_ (span-to-grhom σ) {mid} {rght} f = Span.g σ
+_<#>_ (span-to-grhom σ) {lft} {mid} ()
 
 -- constant diagram at a type
 ConsDiag : ∀ {ℓd} (Γ : Graph ℓv ℓe) (A : Type ℓd) → Diag ℓd Γ
@@ -29,6 +39,21 @@ record DiagMor {ℓd ℓd'} {Γ : Graph ℓv ℓe} (F : Diag ℓd Γ) (F' : Diag
     nat : ∀ (x : Obj Γ) → F # x → F' # x
     comSq : ∀ {x y : Obj Γ} (f : Hom Γ x y) (z : F # x) → (F' <#> f) (nat x z) == nat y ((F <#> f) z)
 open DiagMor public
+
+diagmor-from-spanmap : ∀ {ℓ₁ ℓ₂} {σ₁ : Span {ℓ₁} {ℓ₁} {ℓ₁}} {σ₂ : Span {ℓ₂} {ℓ₂} {ℓ₂}} (sm : SpanMap-Rev σ₁ σ₂) →
+  DiagMor (span-to-grhom σ₁) (span-to-grhom σ₂)
+nat (diagmor-from-spanmap sm) lft = SpanMap-Rev.hA sm
+nat (diagmor-from-spanmap sm) mid = SpanMap-Rev.hC sm
+nat (diagmor-from-spanmap sm) rght = SpanMap-Rev.hB sm
+comSq (diagmor-from-spanmap sm) {lft} {lft} () x
+comSq (diagmor-from-spanmap sm) {lft} {mid} () x
+comSq (diagmor-from-spanmap sm) {lft} {rght} () x
+comSq (diagmor-from-spanmap sm) {mid} {lft} unit = commutes (SpanMap-Rev.f-commutes sm)
+comSq (diagmor-from-spanmap sm) {mid} {mid} () x
+comSq (diagmor-from-spanmap sm) {mid} {rght} unit = commutes (SpanMap-Rev.g-commutes sm)
+comSq (diagmor-from-spanmap sm) {rght} {lft} () x
+comSq (diagmor-from-spanmap sm) {rght} {mid} () x
+comSq (diagmor-from-spanmap sm) {rght} {rght} () x
 
 module _ {Γ : Graph ℓv ℓe} where
 

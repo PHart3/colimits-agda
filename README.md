@@ -31,8 +31,9 @@
 - `Colimit-code/`
 
   The formalization of our pushout construction of coslice
-  colimits as well as the fact that the forgetful functor
-  creates tree-indexed colimits.
+  colimits as well as a couple of applications:
+    - the fact that the forgetful functor creates tree-indexed colimits
+	- the coslice colimit functor preserves the left class of an OFS on Type.
 
   See `Colimit-code/README.md` for details and for the
   license of the work inside this directory.
@@ -60,7 +61,7 @@ We have successfully tested the following Docker container on Linux but not on o
 
    The build installs Agda 2.6.4.3 and type checks our whole development.
    The entire build may take over an hour. The type checking of all our
-   Agda code takes about 41 minutes on our host Ubuntu with 16 GB of RAM.
+   Agda code takes about 40 minutes on our host Ubuntu with 16 GB of RAM.
    (We see a 17% speed-up by using the `--save-metas` option.)
    
    **Note:** Check just the final two files in the Dockerfile for the

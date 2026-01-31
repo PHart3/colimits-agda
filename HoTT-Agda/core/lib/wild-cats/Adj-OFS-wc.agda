@@ -194,7 +194,7 @@ module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {
   module _ {k₁ k₂ k₃ k₄}
     (uC : is-univ-wc C) (tC : triangle-wc C) (pC : pentagon-wc C)
     (uD : is-univ-wc D) (tD : triangle-wc D) (pD : pentagon-wc D)
-    {fsC : ofs-wc k₁ k₂ C} {fsD : ofs-wc k₃ k₄ D} where
+    (fsC : ofs-wc k₁ k₂ C) (fsD : ofs-wc k₃ k₄ D) where
 
     OFS-Rprv-Lpsv : ({x y : ob D} {f : hom D x y} → fst (rclass fsD f) → fst (rclass fsC (arr R f))) →
       ({x y : ob C} {f : hom C x y} → fst (lclass fsC f) → fst (lclass fsD (arr L f)))

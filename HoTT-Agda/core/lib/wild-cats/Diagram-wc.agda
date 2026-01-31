@@ -3,6 +3,7 @@
 open import lib.Basics
 open import lib.types.Graph
 open import lib.types.Sigma
+open import lib.types.Pi
 open import lib.wild-cats.WildCat
 
 module lib.wild-cats.Diagram-wc where
@@ -49,6 +50,31 @@ module _ {ℓv ℓe : ULevel} where
       comp : (x : Obj G) → D₀ Δ₁ x → D₀ Δ₂ x
       sq : {x y : Obj G} (f : Hom G x y) → D₁ Δ₂ f ∘ comp x ∼ comp y ∘ D₁ Δ₁ f
   open Map-diag-ty
+
+  module _ {ℓ} {G : Graph ℓv ℓe} {Δ₁ : Diagram G (Type-wc ℓ)} {Δ₂ : Diagram G (Type-wc ℓ)} where
+
+    Map-diag-Σ :
+      Map-diag Δ₁ Δ₂
+        ≃
+      [ map-comp ∈ ((x : Obj G) → D₀ Δ₁ x → D₀ Δ₂ x) ] × (((x , y , f) : [ x ∈ Obj G ] × [ y ∈ Obj G ] × Hom G x y) →
+        D₁ Δ₂ f ∘ map-comp x == map-comp y ∘ D₁ Δ₁ f) 
+    Map-diag-Σ = equiv
+      (λ (map-diag map-comp map-sq) → map-comp ,
+      λ (_ , _ , g) → map-sq g) (λ (map-comp , map-sq) → map-diag map-comp λ g → map-sq (_ , _ , g))
+      (λ _ → idp) λ _ → idp
+
+    Map-diag-ty-Σ :
+      ([ comp ∈ ((x : Obj G) → D₀ Δ₁ x → D₀ Δ₂ x) ] × (((x , y , f) : [ x ∈ Obj G ] × [ y ∈ Obj G ] × Hom G x y) →
+        D₁ Δ₂ f ∘ comp x ∼ comp y ∘ D₁ Δ₁ f))
+        ≃
+      Map-diag-ty Δ₁ Δ₂
+    Map-diag-ty-Σ = equiv
+      (λ (comp , sq) → map-diag-ty comp λ g → sq (_ , _ , g))
+      (λ (map-diag-ty comp sq) → comp , λ (_ , _ , g) → sq g)
+      (λ _ → idp) λ _ → idp
+
+    Map-diag-Dty-≃ : Map-diag Δ₁ Δ₂ ≃ Map-diag-ty Δ₁ Δ₂
+    Map-diag-Dty-≃ = Map-diag-ty-Σ ∘e Σ-emap-r (λ map-comp → Π-emap-r (λ _ → app=-equiv)) ∘e Map-diag-Σ
 
   module _ {G : Graph ℓv ℓe} where
 
@@ -328,6 +354,9 @@ module _ {ℓv ℓe : ULevel} where
       ap (λ m → ⟦ C ⟧ m ◻ leg K x) (map-sq μ f) ∙
       α C (map-comp μ y) (D₁ Δ₁ f) (leg K x) ∙
       ap (λ m → ⟦ C ⟧ map-comp μ y ◻ m) (tri K f)
+
+Diag-span : ∀ {ℓc₁ ℓc₂} → WildCat {ℓc₁} {ℓc₂} → Type (lmax ℓc₁ ℓc₂)
+Diag-span C = Diagram Graph-span C
 
 Diag-cspan : ∀ {ℓc₁ ℓc₂} → WildCat {ℓc₁} {ℓc₂} → Type (lmax ℓc₁ ℓc₂)
 Diag-cspan C = Diagram Graph-cspan C

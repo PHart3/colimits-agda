@@ -93,6 +93,19 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
       dmap-ty-β : {μ : Map-diag-ty Δ₁ Δ₂} → dmap-ty-to-== (=-dmap-ty-id μ) == idp
       dmap-ty-β {μ} = ID-ind-map-β (λ ν _ → μ == ν) (dmap-ty-contr μ) idp
 
+    dmap-ty-from-== : {μ₁ μ₂ : Map-diag-ty Δ₁ Δ₂} → μ₁ == μ₂ → μ₁ =-dmap-ty μ₂
+    dmap-ty-from-== idp = =-dmap-ty-id _
+
+    dmap-ty-==-≃ : {μ₁ μ₂ : Map-diag-ty Δ₁ Δ₂} → (μ₁ == μ₂) ≃ (μ₁ =-dmap-ty μ₂)
+    dmap-ty-==-≃ {μ₁} = equiv dmap-ty-from-== dmap-ty-to-== aux1 aux2
+      where abstract
+
+        aux1 : {μ₂ : Map-diag-ty Δ₁ Δ₂} (e : μ₁ =-dmap-ty μ₂) → dmap-ty-from-== (dmap-ty-to-== e) == e
+        aux1 = dmap-ty-ind μ₁ (λ _ e → dmap-ty-from-== (dmap-ty-to-== e) == e) (ap dmap-ty-from-== dmap-ty-β)
+
+        aux2 : {μ₂ : Map-diag-ty Δ₁ Δ₂} (e : μ₁ == μ₂) → dmap-ty-to-== (dmap-ty-from-== e) == e
+        aux2 idp = dmap-ty-β
+
     -- incoherent inverses of diagram maps
     qinv-dmap-ty : (μ : Map-diag-ty Δ₁ Δ₂) → Type (lmax (lmax ℓv ℓe) (lmax ℓ₁ ℓ₂))
     qinv-dmap-ty μ =
@@ -147,7 +160,7 @@ module _ {ℓv ℓe} {G : Graph ℓv ℓe} where
     snd (snd (snd (eqv-to-qinv-dmap-ty μ e))) {x} {y} f z =
       ap (λ p →
         (sq μ f (is-equiv.g (e x) z) ∙ p) ∙' is-equiv.f-g (e y) (D₁ Δ₂ f z))
-        (ap-∙! (comp μ y) (is-equiv.g-f (e y) (D₁ Δ₁ f (is-equiv.g (e x) z))) _ ∙
+        (ap-!-∙ (comp μ y) (is-equiv.g-f (e y) (D₁ Δ₁ f (is-equiv.g (e x) z))) _ ∙
         ap (λ p →
           ! p ∙
           ap (comp μ y)

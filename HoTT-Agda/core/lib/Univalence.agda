@@ -27,6 +27,9 @@ postulate  -- Univalence axiom
 ua-equiv : ∀ {i} {A B : Type i} → (A ≃ B) ≃ (A == B)
 ua-equiv = equiv ua coe-equiv ua-η coe-equiv-β
 
+coe-equiv-≃ : ∀ {i} {A B : Type i} → (A == B) ≃ (A ≃ B) 
+coe-equiv-≃ = equiv coe-equiv ua coe-equiv-β ua-η 
+
 {- Reductions for coercions along a path constructed with the univalence axiom -}
 
 coe-β : ∀ {i} {A B : Type i} (e : A ≃ B) (a : A)

@@ -74,7 +74,14 @@ module _ {i} {A : Type i} {x y : A} where
     → ! p₁ ∙ idp == ! p₂ ∙ idp → p₁ == p₂
   ap-post∙idp∘!-inv {p₁} {p₂} = <– (ap-equiv (post∙idp∘!-is-equiv) p₁ p₂)
 
+  path-rot-in-≃ : {z : A} (p₁ : x == y) (p₂ : z == x) {p₃ : z == y} →
+    (p₁ == ! p₂ ∙ p₃) ≃ (p₂ ∙ p₁ == p₃)
+  path-rot-in-≃ idp idp = ide _
+
 module _ {i j} {A : Type i} {B : Type j} {f g : A → B} where
+
+  ap-app= : {a : A} (p : f == g) → ap (λ u → u a) p == app= p a
+  ap-app= idp = idp
 
   funext-nat : (a : A) {H₁ H₂ : f ∼ g} (K : H₁ == H₂)
     → ap (λ H → H a) K == app= K a

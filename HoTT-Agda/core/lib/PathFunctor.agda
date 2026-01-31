@@ -142,9 +142,6 @@ module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
   !-ap-∙ : {x y : A} (p : x == y) {z : A} (r : x == z) → ! (ap g p) ∙ ap g r == ap g (! p ∙ r)
   !-ap-∙ idp r = idp
 
-  ap-∙! : {x y : A} (p : x == y) {z : A} (r : x == z) → ap g (! p ∙ r) == ! (ap g p) ∙ ap g r
-  ap-∙! idp r = idp
-
   !r-ap-∙ : {x y z : A} (p₁ : x == y) (p₂ : z == y)
     → ap g p₁ ∙ ! (ap g p₂) == ap g (p₁ ∙ ! p₂)
   !r-ap-∙ idp idp = idp

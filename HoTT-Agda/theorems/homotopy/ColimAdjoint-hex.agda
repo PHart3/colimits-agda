@@ -24,89 +24,33 @@ module homotopy.ColimAdjoint-hex {ℓ ℓv ℓe : ULevel} {Γ : Graph ℓv ℓe}
     ap (λ D → D tydiag-map-∘ f) (nat-cod ColimConst-ty-Adj g d) ◃∙
     nat-dom ColimConst-ty-Adj f (g ∘ d) ◃∙
     idp ◃∎
-      =ₛ₁⟨ 0 & 1 & =-dmap-ty-whisk-r-conv
-        {μ₁ = arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d}
-        {μ₂ = –> (iso ColimConst-ty-Adj) (g ∘ d)}
-        (cod-ext.nat-cod-ext g d) ⟩
-    dmap-ty-to-== (=-dmap-ty-whisk-r
-      {μ₁ = arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d}
-      {μ₂ = –> (iso ColimConst-ty-Adj) (g ∘ d)}
-      f (cod-ext.nat-cod-ext g d)) ◃∙
+      =ₛ₁⟨ 0 & 1 & =-dmap-ty-whisk-r-conv (cod-ext.nat-cod-ext g d) ⟩
+    dmap-ty-to-== (=-dmap-ty-whisk-r f (cod-ext.nat-cod-ext g d)) ◃∙
     dmap-ty-to-== (dom-ext.nat-dom-ext f (g ∘ d)) ◃∙
     idp ◃∎
       =ₛ⟨ 0 & 2 & !ₛ
         (=-dmap-ty-∙-conv
-          {μ₁ =
-            (arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d) tydiag-map-∘ f}
-          {μ₂ = –> (iso ColimConst-ty-Adj) (g ∘ d ∘ ColMap (diagmor-from-wc f))}
-          (=-dmap-ty-whisk-r
-          {μ₁ = arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d}
-          {μ₂ = –> (iso ColimConst-ty-Adj) (g ∘ d)}
-          f (cod-ext.nat-cod-ext g d)) (dom-ext.nat-dom-ext f (g ∘ d))) ⟩
+          (=-dmap-ty-whisk-r f (cod-ext.nat-cod-ext g d)) (dom-ext.nat-dom-ext f (g ∘ d))) ⟩
     dmap-ty-to-==
-      (_=-dmap-ty-∙_
-        {μ₁ = (arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d) tydiag-map-∘ f}
-        {μ₂ = –> (iso ColimConst-ty-Adj) (g ∘ d) tydiag-map-∘ f}
-      (=-dmap-ty-whisk-r
-        {μ₁ = arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d}
-        {μ₂ = –> (iso ColimConst-ty-Adj) (g ∘ d)}
-        f (cod-ext.nat-cod-ext g d))
-      (dom-ext.nat-dom-ext f (g ∘ d))) ◃∙
+      (=-dmap-ty-whisk-r f (cod-ext.nat-cod-ext g d) =-dmap-ty-∙ dom-ext.nat-dom-ext f (g ∘ d)) ◃∙
     idp ◃∎
       =ₛ₁⟨ ∙-unit-r (dmap-ty-to-==
-             (_=-dmap-ty-∙_
-               {μ₁ = (arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d) tydiag-map-∘ f}
-               {μ₂ = –> (iso ColimConst-ty-Adj) (g ∘ d) tydiag-map-∘ f}
-             (=-dmap-ty-whisk-r
-               {μ₁ = arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d}
-               {μ₂ = –> (iso ColimConst-ty-Adj) (g ∘ d)}
-               f (cod-ext.nat-cod-ext g d))
-             (dom-ext.nat-dom-ext f (g ∘ d)))) ⟩
+             (=-dmap-ty-whisk-r f (cod-ext.nat-cod-ext g d) =-dmap-ty-∙ dom-ext.nat-dom-ext f (g ∘ d))) ⟩
     dmap-ty-to-==
-      (_=-dmap-ty-∙_
-        {μ₁ = (arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d) tydiag-map-∘ f}
-        {μ₂ = –> (iso ColimConst-ty-Adj) (g ∘ d) tydiag-map-∘ f}
-      (=-dmap-ty-whisk-r
-        {μ₁ = arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d}
-        {μ₂ = –> (iso ColimConst-ty-Adj) (g ∘ d)}
-        f (cod-ext.nat-cod-ext g d))
-      (dom-ext.nat-dom-ext f (g ∘ d))) ◃∎
+      (=-dmap-ty-whisk-r f (cod-ext.nat-cod-ext g d) =-dmap-ty-∙ dom-ext.nat-dom-ext f (g ∘ d)) ◃∎
       =ₛ₁⟨ ap dmap-ty-to-== (=-dmap-ty-to-== ((λ _ _ → idp) , (λ {i} {j} e x → =ₛ-out (aux e x)))) ⟩
     dmap-ty-to-== (
-      _=-dmap-ty-∙_
-        {μ₁ = (arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d) tydiag-map-∘ f}
-        {μ₂ = arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d tydiag-map-∘ f}
-        (dmap-ty-assoc (arr (const-diag-ty-WF Γ) g) (–> (iso ColimConst-ty-Adj) d) f)
-        (_=-dmap-ty-∙_
-          {μ₁ = arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d tydiag-map-∘ f }
-          {μ₂ = arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) (d ∘ ColMap (diagmor-from-wc f))}
-        (=-dmap-ty-whisk-l
-          {μ₁ = –> (iso ColimConst-ty-Adj) d tydiag-map-∘ f}
-          {μ₂ = –> (iso ColimConst-ty-Adj) (d ∘ ColMap (diagmor-from-wc f))}
-          (arr (const-diag-ty-WF Γ) g) (dom-ext.nat-dom-ext f d))
-        (cod-ext.nat-cod-ext g (d ∘ arr ColimFunctor f)))) ◃∎
+        dmap-ty-assoc (arr (const-diag-ty-WF Γ) g) (–> (iso ColimConst-ty-Adj) d) f =-dmap-ty-∙
+        =-dmap-ty-whisk-l (arr (const-diag-ty-WF Γ) g) (dom-ext.nat-dom-ext f d) =-dmap-ty-∙
+        cod-ext.nat-cod-ext g (d ∘ arr ColimFunctor f)) ◃∎
       =ₛ⟨ !ₛ (=-dmap-ty-∙2-conv
-        {μ₁ = (arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) d) tydiag-map-∘ f}
-        {μ₂ = arr (const-diag-ty-WF Γ) g tydiag-map-∘ –> (iso ColimConst-ty-Adj) (d ∘ arr ColimFunctor f)}
-        {μ₃ = arr (const-diag-ty-WF Γ) g tydiag-map-∘
-          –> (iso ColimConst-ty-Adj) (d ∘ arr ColimFunctor f)}
-        {μ₄ = –> (iso ColimConst-ty-Adj) (g ∘ d ∘ arr ColimFunctor f)}
-        (dmap-ty-assoc (arr (const-diag-ty-WF Γ) g) (–> (iso ColimConst-ty-Adj) d) f)
-        (=-dmap-ty-whisk-l
-          {μ₁ = –> (iso ColimConst-ty-Adj) d tydiag-map-∘ f}
-          {μ₂ = –> (iso ColimConst-ty-Adj) (d ∘ ColMap (diagmor-from-wc f))}
-          (arr (const-diag-ty-WF Γ) g) (dom-ext.nat-dom-ext f d))
-        (cod-ext.nat-cod-ext g (d ∘ arr ColimFunctor f))) ⟩
+          (dmap-ty-assoc (arr (const-diag-ty-WF Γ) g) (–> (iso ColimConst-ty-Adj) d) f)
+          (=-dmap-ty-whisk-l (arr (const-diag-ty-WF Γ) g) (dom-ext.nat-dom-ext f d))
+          (cod-ext.nat-cod-ext g (d ∘ arr ColimFunctor f))) ⟩
     α (Diag-ty-WC Γ ℓ) (arr (const-diag-ty-WF Γ) g) (–> (iso ColimConst-ty-Adj) d) f ◃∙
-    dmap-ty-to-== (=-dmap-ty-whisk-l
-      {μ₁ = –> (iso ColimConst-ty-Adj) d tydiag-map-∘ f}
-      {μ₂ = –> (iso ColimConst-ty-Adj) (d ∘ ColMap (diagmor-from-wc f))}
-      (arr (const-diag-ty-WF Γ) g) (dom-ext.nat-dom-ext f d)) ◃∙
+    dmap-ty-to-== (=-dmap-ty-whisk-l (arr (const-diag-ty-WF Γ) g) (dom-ext.nat-dom-ext f d)) ◃∙
     nat-cod ColimConst-ty-Adj g (d ∘ arr ColimFunctor f) ◃∎
-      =ₛ₁⟨ 1 & 1 & ! (=-dmap-ty-whisk-l-conv
-        {μ₁ = –> (iso ColimConst-ty-Adj) d tydiag-map-∘ f}
-        {μ₂ = –> (iso ColimConst-ty-Adj) (d ∘ ColMap (diagmor-from-wc f))}
-        {m = arr (const-diag-ty-WF Γ) g}
+      =ₛ₁⟨ 1 & 1 & ! (=-dmap-ty-whisk-l-conv {m = arr (const-diag-ty-WF Γ) g}
         (dom-ext.nat-dom-ext f d)) ⟩
     α (Diag-ty-WC Γ ℓ) (arr (const-diag-ty-WF Γ) g) (–> (iso ColimConst-ty-Adj) d) f ◃∙
     ap (λ D → arr (const-diag-ty-WF Γ) g tydiag-map-∘ D) (nat-dom ColimConst-ty-Adj f d) ◃∙

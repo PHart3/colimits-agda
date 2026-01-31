@@ -364,12 +364,12 @@ module _ {ℓ} {Δ : Diag-cspan (Type-wc ℓ)} {X : Type ℓ} {K : Cone-wc Δ X}
 
   -- limiting cone is pullback
   lim-to-pb : is-pb-wc K → is-pb-abs {ℓ₂ = ℓ} (con-to-csp Δ K)
-  lim-to-pb pb = λ S → ∼-preserves-equiv
-    {f₀ = –> (con-csp-diag-≃ Δ) ∘ pre-cmp-con {G = Graph-cspan} K S} {f₁ = pre-cmp-csp (con-to-csp Δ K) S}
+  lim-to-pb pb T = ∼-preserves-equiv
+    {f₀ = –> (con-csp-diag-≃ Δ) ∘ pre-cmp-con {G = Graph-cspan} K T} {f₁ = pre-cmp-csp (con-to-csp Δ K) T}
     (λ f → ConCspEq-to-== (concspeq (λ _ → idp) (λ _ → idp)
       (λ x → ! (ap (ap (λ u → u x)) (!r-ap-∙ (λ m z → m (f z)) (tri K unit) (tri K unit)) ∙
                ∘-ap (λ u → u x) (λ m z → m (f z)) (tri K unit ∙ ! (tri K unit))))))
-    (snd (con-csp-diag-≃ Δ ∘e is-lim-≃ {G = Graph-cspan} K pb S))
+    (snd (con-csp-diag-≃ Δ ∘e is-lim-≃ {G = Graph-cspan} K pb T))
 
 -- standard pullback is abstract pullback
 module _ {i j k} (D : Cospan {i} {j} {k}) where
@@ -378,8 +378,8 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
   open Cone-csp
 
   stdpb-is-abspb : ∀ {ℓ} → is-pb-abs {ℓ₂ = ℓ} (Pb-con D)
-  stdpb-is-abspb = λ S →
-    is-eq (pre-cmp-csp (Pb-con D) S) (λ K x → pullback (left K x) (right K x) (sq K x)) (λ _ → idp) λ f → λ= (λ _ → idp)
+  stdpb-is-abspb T =
+    is-eq (pre-cmp-csp (Pb-con D) T) (λ K x → pullback (left K x) (right K x) (sq K x)) (λ _ → idp) λ f → λ= (λ _ → idp)
 
 -- conversion between pullback squares and limiting cones
 module _ {ℓ} {Δ : Diag-cspan (Type-wc ℓ)} {X : Type ℓ} {K : Cone-wc Δ X} (ζ : is-pb-wc K) where
