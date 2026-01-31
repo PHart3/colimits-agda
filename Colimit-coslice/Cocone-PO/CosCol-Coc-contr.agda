@@ -27,13 +27,13 @@ module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} where
 
     abstract
       -- if each vertex of the diagram is contractible, then the cofiber is contractible 
-      diag-contr-po-contr : (∀ i → is-contr (ty (Δ # i))) → is-contr P
+      diag-contr-po-contr : (∀ i → is-contr (ty (Δ # i))) → is-contr po-coscol-tip
       diag-contr-po-contr cs = cofib-eqv-contr (ColMap-deqv λ i → Unit-to-contr (cs i))
 
       Cos-diag-contr-col-contr : (∀ i → is-contr (ty (Δ # i))) → {X : Coslice ℓd _ Unit} {K : Cocone-wc F X} → is-colim K → is-contr (ty X)
       Cos-diag-contr-col-contr cs {X} cK = equiv-preserves-level ty-≃ {{diag-contr-po-contr cs}}
         where abstract
-          ty-≃ : P ≃ ty X
+          ty-≃ : po-coscol-tip ≃ ty X
           ty-≃ = (_ , eqv-wc-to-eqv-ty (F-equiv-wc (Forg-funct-cos Unit)
             (col-wc-unq (pentagon-wc-Cos Unit) (triangle-wc-Cos Unit) (ColCoc-is-colim F) cK)))
 
