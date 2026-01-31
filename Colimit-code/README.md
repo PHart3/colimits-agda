@@ -48,6 +48,11 @@ creates (i.e., preserves and reflects) tree-indexed colimits.
 - The `Create/` folder contains the proof of **Theorem 18** of the paper,
   which states that the forgetful functor creates all tree-indexed colimits.
   It uses `Cos-WC/`.
+  
+- The `OFS-Preserve/` folder contains the proof that the coslice colimit
+  preserves the left class of an OFS on Type, which is asserted in **Section 7**
+  of the paper, as the first corollary of **Lemma 22** (which itself is formalized
+  at `../HoTT-Agda/core/lib/wild-cats/Diag-ty-OFS.agda`).
 
 ## Naming of Individual Files
 

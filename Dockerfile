@@ -51,6 +51,7 @@ WORKDIR /build/Colimit-code
 RUN /dist/agda --library-file=/dist/libraries --$S ./Main-Theorem/CosColim-main.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./Create/Tree-preserve.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./Create/Tree-reflect.agda
+RUN /dist/agda --library-file=/dist/libraries --$S ./OFS-Preserve/CosColim-lftclass.agda
 
 WORKDIR /build/Pullback-stability
 RUN /dist/agda --library-file=/dist/libraries --$S ./Stability-ord.agda
@@ -60,7 +61,6 @@ RUN /dist/agda --library-file=/dist/libraries --$S ./Stability-cos-coc.agda
 # "On Left Adjoints Preserving Colimits in HoTT":
 
 WORKDIR /build/HoTT-Agda
-RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/homotopy/ColimAdjoint-hex.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/homotopy/Acyc-colim.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/modality/Mod-colim.agda
 

@@ -31,8 +31,9 @@
 - `Colimit-code/`
 
   The formalization of our pushout construction of coslice
-  colimits as well as the fact that the forgetful functor
-  creates tree-indexed colimits.
+  colimits as well as a couple of applications:
+    - the fact that the forgetful functor creates tree-indexed colimits
+	- the coslice colimit functor preserves the left class of an OFS on Type.
 
   See `Colimit-code/README.md` for details and for the
   license of the work inside this directory.

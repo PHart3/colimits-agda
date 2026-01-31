@@ -8,7 +8,7 @@ open import homotopy.Colim-OFSLeftClass
 
 -- the coslice colimit preserves the left class of an OFS on Type
 
-module CosCol-lftclass where
+module CosColim-lftclass where
 
 module _ {ℓ k₁ k₂ ℓv ℓe : ULevel} (fs : ofs-wc k₁ k₂ (Type-wc ℓ)) {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
