@@ -52,6 +52,7 @@ RUN /dist/agda --library-file=/dist/libraries --$S ./Main-Theorem/CosColim-main.
 RUN /dist/agda --library-file=/dist/libraries --$S ./Create/Tree-preserve.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./Create/Tree-reflect.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./OFS-Preserve/CosColim-lftclass.agda
+RUN /dist/agda --library-file=/dist/libraries --$S ./Coproduct/CosWedge.agda
 
 WORKDIR /build/Pullback-stability
 RUN /dist/agda --library-file=/dist/libraries --$S ./Stability-ord.agda
