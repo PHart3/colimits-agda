@@ -88,3 +88,89 @@ module _ {ℓv ℓe} where
     is-univ-Diag-ty-wc A B = ∼-preserves-equiv
       (λ { idp → pair= idp (prop-has-all-paths {{biinv-wc-is-prop {C = Diag-ty-WC G i}}} _ _) })
       (snd ==-≃-wc-Dty-equiv)
+
+    -- bicategorical structure
+
+    open import lib.wild-cats.MapDiag2-ty-SIP
+    open =-dmap-ops-conv
+
+    triangle-wc-Dty : triangle-wc (Diag-ty-WC G i)
+    triangle-wc-Dty {a} {b} {c} g f = =ₛ-out $
+      ap (λ m → m tydiag-map-∘ f) (ρ (Diag-ty-WC G i) g) ◃∙
+      α (Diag-ty-WC G i) g (id₁ (Diag-ty-WC G i) b) f ◃∎
+        =ₛ₁⟨ 0 & 1 & =-dmap-ty-whisk-r-conv ((λ _ _ → idp) , (λ f x → ! (∙-unit-r (sq g f x)))) ⟩
+      dmap-ty-to-== (=-dmap-ty-whisk-r f ((λ _ _ → idp) , (λ f x → ! (∙-unit-r (sq g f x))))) ◃∙
+      dmap-ty-to-== (dmap-ty-assoc g (diag-map-idf b) f) ◃∎
+        =ₛ⟨ !ₛ (=-dmap-ty-∙-conv (=-dmap-ty-whisk-r f
+          ((λ _ _ → idp) , (λ f x → ! (∙-unit-r (sq g f x))))) (dmap-ty-assoc g (diag-map-idf b) f)) ⟩
+      (dmap-ty-to-== (
+        =-dmap-ty-whisk-r f ((λ _ _ → idp) , (λ f x → ! (∙-unit-r (sq g f x))))
+          =-dmap-ty-∙
+        dmap-ty-assoc g (diag-map-idf b) f)) ◃∎
+        =ₛ₁⟨ ap dmap-ty-to-== (=-dmap-ty-to-== ((λ _ _ → idp) , λ {x} {y} e z → aux (comp g y) (sq g e (comp f x z)) (sq f e z))) ⟩
+      dmap-ty-to-== (=-dmap-ty-whisk-l g
+        ((λ _ _ → idp) , (λ g x → ! (ap-idf (sq f g x))))) ◃∎
+        =ₛ₁⟨ ! (=-dmap-ty-whisk-l-conv {m = g} ((λ _ _ → idp) , (λ g x → ! (ap-idf (sq f g x))))) ⟩
+      ap (λ m → g tydiag-map-∘ m) (lamb (Diag-ty-WC G i) f) ◃∎ ∎ₛ
+        where abstract
+          aux : ∀ {ℓ₁ ℓ₂} {X : Type ℓ₁} {Y : Type ℓ₂} (m : X → Y) {x y : X} {z : Y} (p₁ : z == m x) (p₂ : x == y) →
+            ap (λ q → p₁ ∙ ap m q) (! (ap-idf p₂)) ∙
+            ap (λ q → p₁ ∙ q ∙ ap m (ap (λ p → p) p₂)) (! (!-inv-l p₁)) ∙
+            ∙-assoc-!-inv-r-∙ p₁ p₁ (ap m (ap (λ p → p) p₂))
+              ==
+            ap (λ p → p)
+              (ap (λ q → q ∙ ap m p₂) (! (∙-unit-r p₁)) ∙
+              ap (λ q → ((p₁ ∙ idp) ∙ ap m p₂) ∙' q) (apCommSq2-rev (λ _ → idp) p₂) ∙
+              !-!-inv-∙'-∙ (p₁ ∙ idp) (ap m p₂) idp (ap m p₂)) ∙
+            ap (λ p → p) (Diag-ty-assoc-coh m (λ p → p) p₁ idp p₂) ∙ idp
+          aux _ idp idp = idp
+
+    pentagon-wc-Dty : pentagon-wc (Diag-ty-WC G i)
+    pentagon-wc-Dty {a} {b} {c} {d} {e} k g h f = =ₛ-out $
+      ap (λ m → m tydiag-map-∘ f) (dmap-ty-to-== (dmap-ty-assoc k g h)) ◃∙
+      dmap-ty-to-== (dmap-ty-assoc k (g tydiag-map-∘ h) f) ◃∙
+      ap (λ m → k tydiag-map-∘ m) (dmap-ty-to-== (dmap-ty-assoc g h f)) ◃∎
+        =ₛ₁⟨ 2 & 1 & =-dmap-ty-whisk-l-conv {m = k} (dmap-ty-assoc g h f) ⟩
+      ap (λ m → m tydiag-map-∘ f) (dmap-ty-to-== (dmap-ty-assoc k g h)) ◃∙
+      dmap-ty-to-== (dmap-ty-assoc k (g tydiag-map-∘ h) f) ◃∙
+      dmap-ty-to-== (=-dmap-ty-whisk-l k (dmap-ty-assoc g h f)) ◃∎
+        =ₛ₁⟨ 0 & 1 & =-dmap-ty-whisk-r-conv (dmap-ty-assoc k g h) ⟩
+      dmap-ty-to-== (=-dmap-ty-whisk-r f (dmap-ty-assoc k g h)) ◃∙
+      dmap-ty-to-== (dmap-ty-assoc k (g tydiag-map-∘ h) f) ◃∙
+      dmap-ty-to-== (=-dmap-ty-whisk-l k (dmap-ty-assoc g h f)) ◃∎
+        =ₛ⟨ =-dmap-ty-∙2-conv
+          (=-dmap-ty-whisk-r f (dmap-ty-assoc k g h))
+          (dmap-ty-assoc k (g tydiag-map-∘ h) f)
+          (=-dmap-ty-whisk-l k (dmap-ty-assoc g h f)) ⟩
+      dmap-ty-to-==
+        (=-dmap-ty-whisk-r f (dmap-ty-assoc k g h) =-dmap-ty-∙
+        dmap-ty-assoc k (g tydiag-map-∘ h) f =-dmap-ty-∙
+        =-dmap-ty-whisk-l k (dmap-ty-assoc g h f)) ◃∎
+        =ₛ₁⟨ ap dmap-ty-to-== (=-dmap-ty-to-== ((λ _ _ → idp) , (λ {x} {y} e z →
+          aux (comp k y) (comp g y) (comp h y)
+            (sq k e (comp g x (comp h x (comp f x z))))
+            (sq h e (comp f x z))
+            (sq f e z)
+            (sq g e (comp h x (comp f x z)))))) ⟩
+      dmap-ty-to-== (dmap-ty-assoc (k tydiag-map-∘ g) h f =-dmap-ty-∙ dmap-ty-assoc k g (h tydiag-map-∘ f)) ◃∎
+        =ₛ⟨ =-dmap-ty-∙-conv (dmap-ty-assoc (k tydiag-map-∘ g) h f) (dmap-ty-assoc k g (h tydiag-map-∘ f)) ⟩
+      dmap-ty-to-== (dmap-ty-assoc (k tydiag-map-∘ g) h f) ◃∙
+      dmap-ty-to-== (dmap-ty-assoc k g (h tydiag-map-∘ f)) ◃∎ ∎ₛ
+      where abstract
+        aux : ∀ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {X : Type ℓ₁} {Y : Type ℓ₂} {Z : Type ℓ₃} {W : Type ℓ₄}
+          (m₁ : Z → W) (m₂ : Y → Z) (m₃ : X → Y) {x y : X} {z : Y} {u : Z} {v : W}
+          (p₁ : v == m₁ u) (p₂ : z == m₃ x) (p₃ : x == y) (p₄ : u == m₂ z) → 
+          ap (λ p → p) (Diag-ty-assoc-coh (m₁ ∘ m₂) m₃ (p₁ ∙ ap m₁ p₄) p₂ p₃) ∙
+          ap (λ p → p) (Diag-ty-assoc-coh m₁ m₂ p₁ p₄ (p₂ ∙ ap m₃ p₃)) ∙ idp
+            ==
+          ap (λ p → p)
+            (ap (λ q → q ∙ ap (m₁ ∘ m₂ ∘ m₃) p₃) (Diag-ty-assoc-coh m₁ m₂ p₁ p₄ p₂) ∙
+            ap (λ q → ((p₁ ∙ ap m₁ (p₄ ∙ ap m₂ p₂)) ∙ ap (m₁ ∘ m₂ ∘ m₃) p₃) ∙' q) (apCommSq2-rev (λ _ → idp) p₃) ∙
+            !-!-inv-∙'-∙ (p₁ ∙ ap m₁ (p₄ ∙ ap m₂ p₂)) (ap (m₁ ∘ m₂ ∘ m₃) p₃) idp (ap (m₁ ∘ m₂ ∘ m₃) p₃)) ∙
+          ap (λ p → p)
+            (ap (λ p → p) (Diag-ty-assoc-coh m₁ (m₂ ∘ m₃) p₁ (p₄ ∙ ap m₂ p₂) p₃) ∙
+            ap (λ p → p)
+              (ap (λ q → p₁ ∙ ap m₁ q) (Diag-ty-assoc-coh m₂ m₃ p₄ p₂ p₃) ∙
+              ap (λ q → p₁ ∙ q ∙ ap m₁ (p₄ ∙ ap m₂ (p₂ ∙ ap m₃ p₃))) (! (!-inv-l p₁)) ∙
+              ∙-assoc-!-inv-r-∙ p₁ p₁ (ap m₁ (p₄ ∙ ap m₂ (p₂ ∙ ap m₃ p₃)))) ∙ idp) ∙ idp
+        aux _ _ _ idp idp idp idp = idp

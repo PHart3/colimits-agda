@@ -155,3 +155,9 @@ module _ {ℓ₁ ℓ₂} {σ₁ : Span {ℓ₁} {ℓ₁} {ℓ₁}} {σ₂ : Span
         ColimMapEq-tri rght lft () x
         ColimMapEq-tri rght mid () x
         ColimMapEq-tri rght rght () x
+        
+  Colim-PO-ty-≃-nat-rot : PM.f ∼ Colim-PO-ty-to σ₂ ∘ ColMap (diagmor-from-spanmap span-map) ∘ <– (Colim-PO-ty-≃  σ₁)
+  Colim-PO-ty-≃-nat-rot x = ap PM.f (! (<–-inv-r (Colim-PO-ty-≃ σ₁) x)) ∙ Colim-PO-ty-≃-nat (<– (Colim-PO-ty-≃ σ₁) x)
+
+  Colim-PO-ty-≃-nat-== : PM.f == Colim-PO-ty-to σ₂ ∘ ColMap (diagmor-from-spanmap span-map) ∘ <– (Colim-PO-ty-≃  σ₁)
+  Colim-PO-ty-≃-nat-== = λ= Colim-PO-ty-≃-nat-rot

@@ -1,5 +1,7 @@
 name: cos-colim
-depend: hott-core-modified
+depend:
+  hott-core-modified
+  hott-theorems-modified
 include:
   L-R-L
   Map-Nat
@@ -10,3 +12,4 @@ include:
   Cocone-PO
   Main-Theorem
   Create
+  OFS-Preserve
