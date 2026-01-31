@@ -6,7 +6,6 @@ open import lib.types.Suspension
 open import lib.types.Acyclic
 open import lib.wild-cats.WildCats
 open import homotopy.Susp-colim
-
 open import CosCol-Coc-contr
 
 -- Pointed acyclic types are closed under (graph-indexed) pointed colimits.
