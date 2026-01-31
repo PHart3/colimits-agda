@@ -2,7 +2,7 @@
 
 {-
   This file contains a different yet equivalent version of the A-cocone structure on P_A(F) .
-  We use it to facilitate the path algebra required for Colimit-code/L-R-L .
+  We use it to facilitate the path algebra required for Colimit-coslice/L-R-L .
 -}
 
 open import lib.Basics
@@ -36,7 +36,7 @@ module CC-v2-Constr {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
       =⟪ E₃-v2 {f = left} (λ x → ! (glue x)) (cglue g a) (id-βr g a) ⟫
     ! (glue (cin i a)) ∎∎
 
-  E-eq-helper : {z : P} (q : right (ψ (cin j a)) == z)
+  E-eq-helper : {z : po-coscol-tip} (q : right (ψ (cin j a)) == z)
     →  E₁ {f = right} {g = cin j} idp q == E₂-v2 {f = right} {p = ap ψ (cglue g a)} idp q
   E-eq-helper idp = idp
 

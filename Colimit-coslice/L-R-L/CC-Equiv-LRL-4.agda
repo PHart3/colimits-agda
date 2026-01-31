@@ -14,7 +14,7 @@ module Constr5 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
   open Constr4 F T
 
-  module DiagCoher5 (i j : Obj Γ) (f : P → ty T) (fₚ : (a : A) → f (left a)  == str T a) (g : Hom Γ i j) (a : A) where
+  module DiagCoher5 (i j : Obj Γ) (f : po-coscol-tip → ty T) (fₚ : (a : A) → f (left a)  == str T a) (g : Hom Γ i j) (a : A) where
 
     open DiagCoher4 i j f fₚ g a public
 

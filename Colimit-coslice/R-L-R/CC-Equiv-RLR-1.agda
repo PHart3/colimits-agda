@@ -65,7 +65,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
         ! (apd-tr (λ z → ap (fst (recCosCoc K)) (! (glue z)) ∙ idp) q) ◃∎
       Ξ-rewrite-refine idp idp = =ₛ-in (lemma (glue (cin j a)))
         where
-          lemma : {y : P} (G : left a == y) →
+          lemma : {y : po-coscol-tip} (G : left a == y) →
             ap (λ p → p ∙ idp) (ap (ap (fst (recCosCoc K))) (∙-unit-r (! G))) ∙ idp
               ==
             ∙-unit-r (ap (fst (recCosCoc K)) ((! G) ∙ idp)) ∙
@@ -259,7 +259,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
         Ξ-Red0 q (ap [id] q) U R (L (cin j a)) (glue (cin j a)) t
       Ξ-RedEq0 idp U idp R L t = =ₛ-in (lemma (glue (cin j a)) (L (cin j a)) R t)
         where
-          lemma : {y : P} (G : left a == y) {z : A} (Λ : a == z) 
+          lemma : {y : po-coscol-tip} (G : left a == y) {z : A} (Λ : a == z) 
             (r : fst (recCosCoc K) y == str T z) (τ : ap (fst (recCosCoc K)) (! G) ∙ ap (str T) Λ == ! (! r)) →
             ap (λ p → p ∙ idp) (ap (ap (fst (recCosCoc K))) (ap (_∙_ (! G)) (∙-unit-r (ap left Λ)))) ∙
             ∙-unit-r (ap (fst (recCosCoc K)) ((! G) ∙ (ap left Λ))) ∙
@@ -341,7 +341,7 @@ module ConstrE2Cont {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type �
                 ap-dbl-inv-∙-del (str T) (ap [id] (cglue g a)) (ap (fst (comp K j)) Z ∙ R)
               lemma2 idp = lemma3 (glue (cin j a)) R t
                 where abstract
-                  lemma3 : {y : P} (G : left a == y) (r : fst (recCosCoc K) y == str T a)
+                  lemma3 : {y : po-coscol-tip} (G : left a == y) (r : fst (recCosCoc K) y == str T a)
                     (τ : ap (fst (recCosCoc K)) (! G) ∙ ap (str T) (ap [id] (cglue g a)) == ! (! r)) →
                     (Ξ-coher1-trip (fst (recCosCoc K)) left (ap [id] (cglue g a)) G (ap [id] (cglue g a)) ∙
                     ap (λ p → p ∙ ap (str T) (ap [id] (cglue g a))) τ ∙

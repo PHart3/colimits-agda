@@ -18,9 +18,9 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
   open Constr F T
 
-  module DiagCoher2 (i j : Obj Γ) (f : P → ty T) (fₚ : (a : A) → f (left a)  == str T a) (g : Hom Γ i j) (a : A) where
+  module DiagCoher2 (i j : Obj Γ) (f : po-coscol-tip → ty T) (fₚ : (a : A) → f (left a)  == str T a) (g : Hom Γ i j) (a : A) where
 
-    H : P → ty T
+    H : po-coscol-tip → ty T
     H = fst (RLfun (f , fₚ))
 
     K = κ F g a T f fₚ
@@ -70,20 +70,21 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
       transport (λ x → f (right (ψ x)) == H (right (ψ x))) (cglue g a) s
         =⟪ O₁ s (cglue g a) (ψ-βr g a) ⟫
       (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ s ∙ ap (reccForg K) (! (ap (cin j) (snd (F <#> g) a)) ∙ (cglue g (str (F # i) a)))
-        =⟪ O₂ {p = (! (ap (f ∘ right) (ap ψ (cglue g a))))} (snd (F <#> g) a) (ap f (! (glue (cin j a))) ∙ fₚ a) (cglue g (str (F # i) a))
-             (recc-βr K g (str (F # i) a)) ⟫  
+        =⟪ O₂ {p = (! (ap (f ∘ right) (ap ψ (cglue g a))))}
+          (snd (F <#> g) a) (ap f (! (glue (cin j a))) ∙ fₚ a) (cglue g (str (F # i) a)) (recc-βr K g (str (F # i) a)) ⟫  
       (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ s ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙
       ! (! (ap f (ap right (cglue g (str (F # i) a)))) ∙ ap (f ∘ right ∘ cin j) (snd (F <#> g) a) ∙ ap f (! (glue (cin j a))) ∙ fₚ a)
         =⟪ ap (λ p → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ s ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ p) (ap ! (snd (comTri K g) a)) ⟫
       ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ s ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)
         =⟪ ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ s ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a) )
              (O₄ (λ x → ap f (! (glue x)) ∙ fₚ ([id] x)) (cglue g a) (id-βr g a)) ⟫
-      ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ s ∙ (ap (f ∘ right) (ap ψ (cglue g a)) ∙ (ap f (! (glue (cin i a))) ∙ fₚ a) ∙ idp) ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a)
+      ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ s ∙ (ap (f ∘ right) (ap ψ (cglue g a)) ∙ (ap f (! (glue (cin i a))) ∙ fₚ a) ∙ idp) ∙
+      ! (ap f (! (glue (cin i a))) ∙ fₚ a)
         =⟪ O₅ s (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a) ⟫
       transport (λ x →  f (right (ψ x)) == f (right (ψ x))) (cglue g a) s ∎∎
 
     Mid-rw :
-      ap (transport (λ x → f (right (ψ x)) == H (right (ψ x))) (cglue g a)) (ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∎                                                                                                                              
+      ap (transport (λ x → f (right (ψ x)) == H (right (ψ x))) (cglue g a)) (ap-inv-canc f (glue (cin j a)) (fₚ a)) ◃∎
         =ₛ
       ↯ (transpEq-◃ ((! (ap f (glue (cin j a))) ∙ fₚ a) ∙ ! (ap f (! (glue (cin j a))) ∙ fₚ a))) ◃∙
       ap (transport (λ x → f (right (ψ x)) == f (right (ψ x))) (cglue g a))
@@ -95,15 +96,16 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
     
       CoherLemma : {z : Colim (ConsDiag Γ A)} (Q : z == cin i a) →
         ! (O₅ idp Q (ap f (! (glue (cin i a))) ∙ idp)) ∙
-        (CMPH.coher1 {τ = left} {h = [id]} {v = ψ} {u = right} {f = f} (cglue g a) idp (λ x → ! (glue x)) (λ x₁ → idp) idp Q (! (glue (cin i a))) ∙
-        CMPH.coher2 {τ = left} {h = [id]} {v = ψ} {u = right} {f = f} (cglue g a) idp (λ x → ! (glue x)) (λ x₁ → idp) idp Q (! (glue z))) ∙
+        (CMPH.coher1 {τ = left} {h = [id]} {v = ψ} {u = right} {f = f} (cglue g a) idp
+          (λ x → ! (glue x)) (λ x → idp) idp Q (! (glue (cin i a))) ∙
+        CMPH.coher2 {τ = left} {h = [id]} {v = ψ} {u = right} {f = f} (cglue g a) idp
+          (λ x → ! (glue x)) (λ x → idp) idp Q (! (glue z))) ∙
         inv-canc-cmp f right (ap ψ Q) (! (glue z)) idp
           ==
         apd-tr-refl {f = f ∘ right} {h = ψ} Q
       CoherLemma idp = lemma (! (glue (cin i a)))
         where
-          lemma : {x : P} (R : right (ψ (cin i a)) == x)
-            →
+          lemma : {x : po-coscol-tip} (R : right (ψ (cin i a)) == x) →
             ! (O₅ {f = f ∘ right} {h = ψ} {b = cin i a} idp idp (ap f R ∙ idp)) ∙
             (fun-rid-inv1 {f = f} R ∙ fun-rid-inv2 {f = f} R) ∙
             inv-canc-cmp f right idp R idp
@@ -140,14 +142,21 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
               =ₛ₁⟨ 1 & 1 &
                    ∼-ind-β
                      {P = λ m F →
-                       ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap (f ∘ right) (ap ψ (cglue g a)) ∙ (ap f (! (glue (cin i a))) ∙ F a) ∙ idp) ∙ ! (ap f (! (glue (cin i a))) ∙ F a)
+                       ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙
+                         (ap (f ∘ right) (ap ψ (cglue g a)) ∙ (ap f (! (glue (cin i a))) ∙ F a) ∙ idp) ∙
+                         ! (ap f (! (glue (cin i a))) ∙ F a)
                          ==
-                       ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ F a) ∙ ! (ap f (! (ap right (ap ψ (cglue g a))) ∙ ! (glue (cin j a)) ∙ idp) ∙ F a)}
-                   (CMPH.coher1 {τ = left} {h = [id]} {v = ψ} {u = right} (cglue g a) idp (λ x → ! (glue x)) (λ x₁ → idp) idp (cglue g a) (! (glue (cin i a))) ∙
-                   CMPH.coher2 {τ = left} {h = [id]} {v = ψ} {u = right} (cglue g a) idp (λ x → ! (glue x)) (λ x₁ → idp) idp (cglue g a) (! (glue (cin j a))) ) ⟩
+                       ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ F a) ∙
+                       ! (ap f (! (ap right (ap ψ (cglue g a))) ∙ ! (glue (cin j a)) ∙ idp) ∙ F a)}
+                   (CMPH.coher1 {τ = left} {h = [id]} {v = ψ} {u = right} (cglue g a) idp
+                     (λ x → ! (glue x)) (λ x → idp) idp (cglue g a) (! (glue (cin i a))) ∙
+                   CMPH.coher2 {τ = left} {h = [id]} {v = ψ} {u = right} (cglue g a) idp
+                     (λ x → ! (glue x)) (λ x → idp) idp (cglue g a) (! (glue (cin j a))) ) ⟩
               ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ idp)) ◃∙
-              (CMPH.coher1 {τ = left} {h = [id]} {v = ψ} {u = right} (cglue g a) idp (λ x → ! (glue x)) (λ x₁ → idp) idp (cglue g a) (! (glue (cin i a))) ∙
-              CMPH.coher2 {τ = left} {h = [id]} {v = ψ} {u = right} (cglue g a) idp (λ x → ! (glue x)) (λ x₁ → idp) idp (cglue g a) (! (glue (cin j a)))) ◃∙
+              (CMPH.coher1 {τ = left} {h = [id]} {v = ψ} {u = right} (cglue g a) idp
+                (λ x → ! (glue x)) (λ x → idp) idp (cglue g a) (! (glue (cin i a))) ∙
+              CMPH.coher2 {τ = left} {h = [id]} {v = ψ} {u = right} (cglue g a) idp
+                (λ x → ! (glue x)) (λ x → idp) idp (cglue g a) (! (glue (cin j a)))) ◃∙
               inv-canc-cmp f right (ap ψ (cglue g a)) (! (glue (cin j a))) idp ◃∎
                 =ₛ₁⟨ CoherLemma (cglue g a) ⟩
             apd-tr-refl {f = f ∘ right} {h = ψ} (cglue g a) ◃∎ ∎ₛ
@@ -178,7 +187,8 @@ module Constr2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
                   (! (ap (λ p → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ p ∙ ! (ap f (! (glue (cin i a))) ∙ fₚ a))
                     (O₄ {f = f ∘ right} {h = ψ} {u = str T} (λ x → ap f (! (glue x)) ∙ fₚ ([id] x)) (cglue g a) (id-βr g a))))
                   (! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
-                       (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₃-v2 {f = left} {v = ψ} {u = right} (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))))
+                       (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₃-v2 {f = left} {v = ψ} {u = right}
+                         (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))))
                   (inv-canc-cmp f right (ap ψ (cglue g a)) (! (glue (cin j (idf A a)))) (fₚ a)) ∙
                 ap (λ r →
                      ! (O₅ idp (cglue g a) (ap f (! (glue (cin i a))) ∙ fₚ a)) ∙

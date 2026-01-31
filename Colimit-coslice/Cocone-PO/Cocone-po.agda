@@ -49,10 +49,11 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
 
     SpCos = span A (Colim (DiagForg A Γ F)) (Colim (ConsDiag Γ A)) [id] ψ
 
-    P = Pushout SpCos
+    po-coscol-tip : Type (lmax ℓ ℓd)
+    po-coscol-tip = Pushout SpCos
 
     -- cocone structure on pushout
-    ColCoC-cos : CosCocone A F (Cos P left)
+    ColCoC-cos : CosCocone A F (Cos po-coscol-tip left)
     comp ColCoC-cos i = right ∘ cin i , λ a → ! (glue (cin i a))
     comTri ColCoC-cos g = (λ x → ap right (cglue g x)) ,  λ a → ↯ (ε g a)
       module _ where  -- see ../Aux/AuxPaths.agda for defs of E₁ and E₃
@@ -86,7 +87,7 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
         → ap (reccForg C) (cglue g x) == fst (comTri C g) x
       recc-βr C g x = cglue-βr (comp (CocForg C)) (λ i j g → fst (comTri C g)) g x
 
-      recCosCoc : CosCocone A F T → (< A > (Cos P left) *→ T)
+      recCosCoc : CosCocone A F T → (< A > (Cos po-coscol-tip left) *→ T)
       fst (recCosCoc (r & K)) = Pushout-rec (str T) recc σ
         module _ where
           recc : Colim (DiagForg A Γ F) → ty T

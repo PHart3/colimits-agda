@@ -23,7 +23,7 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
   -- a better name for the final interface
   
   po-CosCol-ty : ∀ {ℓd} → CosDiag ℓd ℓ A Γ → Set (lmax ℓ ℓd)
-  po-CosCol-ty F = Id.Maps.P Γ A F
+  po-CosCol-ty F = Id.Maps.po-coscol-tip Γ A F
 
   po-CosCol : ∀ {ℓd} → CosDiag ℓd ℓ A Γ → Coslice (lmax ℓ ℓd) ℓ A
   po-CosCol F = Cos (po-CosCol-ty F) left

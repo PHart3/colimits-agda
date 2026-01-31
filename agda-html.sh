@@ -1,9 +1,9 @@
 #!/bin/sh
 
-cd /build/Colimit-code
-/dist/agda --html --library-file=/dist/libraries /build/Colimit-code/Main-Theorem/CosColim-main.agda
-/dist/agda --html --library-file=/dist/libraries /build/Colimit-code/Create/Tree-preserve.agda
-/dist/agda --html --library-file=/dist/libraries /build/Colimit-code/Create/Tree-reflect.agda
+cd /build/Colimit-coslice
+/dist/agda --html --library-file=/dist/libraries /build/Colimit-coslice/Main-Theorem/CosColim-main.agda
+/dist/agda --html --library-file=/dist/libraries /build/Colimit-coslice/Create/Tree-preserve.agda
+/dist/agda --html --library-file=/dist/libraries /build/Colimit-coslice/Create/Tree-reflect.agda
 
 cd /build/HoTT-Agda
 /dist/agda --html --library-file=/dist/libraries /build/HoTT-Agda/theorems/homotopy/ColimAdjoint-hex.agda

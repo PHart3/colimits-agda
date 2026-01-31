@@ -28,14 +28,14 @@
   for details and for the license of the work inside this
   directory.
 
-- `Colimit-code/`
+- `Colimit-coslice/`
 
   The formalization of our pushout construction of coslice
   colimits as well as a couple of applications:
     - the fact that the forgetful functor creates tree-indexed colimits
 	- the coslice colimit functor preserves the left class of an OFS on Type.
 
-  See `Colimit-code/README.md` for details and for the
+  See `Colimit-coslice/README.md` for details and for the
   license of the work inside this directory.
 
 - `Pullback-stability/`
@@ -71,7 +71,7 @@ We have successfully tested the following Docker container on Linux but not on o
 
    ```bash
    mkdir -p ./html1 ./html2
-   docker run --mount type=bind,source=./html1,target=/build/Colimit-code/html \
+   docker run --mount type=bind,source=./html1,target=/build/Colimit-coslice/html \
      --mount type=bind,source=./html2,target=/build/HoTT-Agda/html \
      colimit
    ```

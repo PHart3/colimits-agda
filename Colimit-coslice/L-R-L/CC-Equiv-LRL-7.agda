@@ -17,7 +17,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
 
   open Constr F T
 
-  module _ (f : P → ty T) (fₚ : (a : A) → f (left a) == str T a) where
+  module _ (f : po-coscol-tip → ty T) (fₚ : (a : A) → f (left a) == str T a) where
 
     RLfunEqFun : f ∼ fst (RLfun (f , fₚ))
     RLfunEqFun =
@@ -31,7 +31,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
     RLfunEqBP : (a : A) → ! (RLfunEqFun (left a)) ∙ fₚ a == idp
     RLfunEqBP a = !-inv-l (fₚ a)
 
-    RLfun-∼ : [ A , Cos P left ] (f , fₚ) ∼ RLfun (f , fₚ)
+    RLfun-∼ : [ A , Cos po-coscol-tip left ] (f , fₚ) ∼ RLfun (f , fₚ)
     fst RLfun-∼ = RLfunEqFun
     snd RLfun-∼ = RLfunEqBP
 
