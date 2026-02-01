@@ -30,7 +30,7 @@ RUN \
 FROM alpine AS hottagda
 
 COPY ["HoTT-Agda", "/build/HoTT-Agda"]
-COPY ["Colimit-code", "/build/Colimit-code"]
+COPY ["Colimit-coslice", "/build/Colimit-coslice"]
 
 FROM alpine
 
@@ -42,16 +42,17 @@ COPY agda-html.sh /
 
 RUN echo "/build/HoTT-Agda/hott-core.agda-lib" >> /dist/libraries
 RUN echo "/build/HoTT-Agda/hott-theorems.agda-lib" >> /dist/libraries
-RUN echo "/build/Colimit-code/cos-colim.agda-lib" >> /dist/libraries
+RUN echo "/build/Colimit-coslice/cos-colim.agda-lib" >> /dist/libraries
 RUN echo "/build/Pullback-stability/stab.agda-lib" >> /dist/libraries
 
 ARG S="save-metas"
 
-WORKDIR /build/Colimit-code
+WORKDIR /build/Colimit-coslice
 RUN /dist/agda --library-file=/dist/libraries --$S ./Main-Theorem/CosColim-main.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./Create/Tree-preserve.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./Create/Tree-reflect.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./OFS-Preserve/CosColim-lftclass.agda
+RUN /dist/agda --library-file=/dist/libraries --$S ./Coproduct/CosWedge.agda
 
 WORKDIR /build/Pullback-stability
 RUN /dist/agda --library-file=/dist/libraries --$S ./Stability-ord.agda

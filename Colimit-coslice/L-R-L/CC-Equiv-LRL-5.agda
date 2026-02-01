@@ -17,13 +17,13 @@ module Constr6 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
   open Constr5 F T
 
-  𝕣 : (f* : < A > Cos P left *→ T) (i : Obj Γ) (a : A) →
+  𝕣 : (f* : < A > Cos po-coscol-tip left *→ T) (i : Obj Γ) (a : A) →
     (! (ap (fst f*) (glue (cin i a))) ∙ snd f* a) ∙ ap (fst (RLfun f*)) (glue (cin i a)) =-= idp
   𝕣 (f , fₚ) i a =
     ap (λ p → (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ p) (FPrecc-βr (PostComp-cos ColCoC-cos (f , fₚ)) (cin i a)) ◃∙
     ap-inv-canc f (glue (cin i a)) (fₚ a) ◃∎
 
-  module DiagCoher6 (i j : Obj Γ) (f : P → ty T) (fₚ : (a : A) → f (left a)  == str T a) (g : Hom Γ i j) (a : A) where
+  module DiagCoher6 (i j : Obj Γ) (f : po-coscol-tip → ty T) (fₚ : (a : A) → f (left a)  == str T a) (g : Hom Γ i j) (a : A) where
 
     𝕣₁ : (! (ap f (glue (cin i a))) ∙ fₚ a) ∙ ap (fst (RLfun (f , fₚ))) (glue (cin i a)) =-= idp
     𝕣₁ = 𝕣 (f , fₚ) i a

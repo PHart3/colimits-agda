@@ -31,9 +31,9 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
         (fst (comTri₁ g) (str (F # i) a)) ∙
       ap (λ p → ap φ₁ p ∙ φ₂ a) (snd (comTri₁ g) a)
 
-  module _ (f : P → ty T) (fₚ : (a : A) → f (left a) == str T a) where
+  module _ (f : po-coscol-tip → ty T) (fₚ : (a : A) → f (left a) == str T a) where
 
-    NatSq-1-Λ-aux : {i j : Obj Γ} (g : Hom Γ i j) (a : A) {x z : P} {y : ty (F # j)}
+    NatSq-1-Λ-aux : {i j : Obj Γ} (g : Hom Γ i j) (a : A) {x z : po-coscol-tip} {y : ty (F # j)}
       (p₁ : right (cin j (fst (F <#> g) (str (F # i) a))) == x)
       (p₂ : fst (F <#> g) (str (F # i) a) == y) (p₃ : right (cin j y) == z)
       {u : ty T} (p₄ : f z == u) {v : ty U} (p₅ : φ₁ u == v) →
@@ -47,7 +47,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
       ap φ₁ (ap f p₃ ∙ p₄) ∙ p₅
     NatSq-1-Λ-aux g a idp idp idp p₄ p₅ = idp ◃∎ 
 
-    NatSq-1-Λ-red : {i j : Obj Γ} (g : Hom Γ i j) (a : A) {x z : P} {y : ty (F # j)}
+    NatSq-1-Λ-red : {i j : Obj Γ} (g : Hom Γ i j) (a : A) {x z : po-coscol-tip} {y : ty (F # j)}
       (p₁ : right (cin j (fst (F <#> g) (str (F # i) a))) == x)
       (p₂ : fst (F <#> g) (str (F # i) a) == y) (p₃ : right (cin j y) == z) {u : ty T}
       (p₄ : f z == u) {v : ty U} (p₅ : φ₁ u == v)  →
@@ -64,7 +64,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
       ↯ (NatSq-1-Λ-aux g a p₁ p₂ p₃ p₄ p₅) ◃∎
     NatSq-1-Λ-red g a idp idp idp idp idp = =ₛ-in idp 
 
-    NatSq-1-Λ-red2 : {i j : Obj Γ} (g : Hom Γ i j) (a : A) {x : P} {y : ty (F # j)}
+    NatSq-1-Λ-red2 : {i j : Obj Γ} (g : Hom Γ i j) (a : A) {x : po-coscol-tip} {y : ty (F # j)}
       (p₁ : right (cin j (fst (F <#> g) (str (F # i) a))) == x)
       (p₂ : fst (F <#> g) (str (F # i) a) == y) (p₃ : right (cin j y) == left a)
       {σ : x == left a} (τ : ! p₁ ∙ ap (right ∘ cin j) p₂ ∙ p₃ == σ) →
@@ -79,7 +79,7 @@ module _ {ℓv ℓe ℓ ℓd ℓc₁ ℓc₂} {Γ : Graph ℓv ℓe} {A : Type �
       ap (λ p → p ∙ ap (fst φ) (fₚ a) ∙ φ₂ a) (ap (ap (φ₁ ∘ f)) τ)) ◃∎
     NatSq-1-Λ-red2 {i} {j} g a idp idp p₃ idp = =ₛ-in (lemma p₃ (fₚ a))
       where
-        lemma : {z : P} (p : right (cin j (fst (F <#> g) (str (F # i) a))) == z) (c : f z == str T a)
+        lemma : {z : po-coscol-tip} (p : right (cin j (fst (F <#> g) (str (F # i) a))) == z) (c : f z == str T a)
           → ↯ (NatSq-1-Λ-aux g a idp idp p c (φ₂ a)) ∙ ap-∘-∙-∙ φ₁ f p c == idp
         lemma idp c = idp
 

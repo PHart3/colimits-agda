@@ -15,7 +15,7 @@ module _ {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag
 
   open CC-v2-Constr F i j g a
 
-  module _ {ℓc} (T : Coslice ℓc ℓ A) (f : P → ty T) (fₚ : (a : A) → f (left a)  == str T a) where
+  module _ {ℓc} (T : Coslice ℓc ℓ A) (f : po-coscol-tip → ty T) (fₚ : (a : A) → f (left a)  == str T a) where
 
     κ : CosCocone A F T
     κ = PostComp-cos ColCoC-cos (f , fₚ)
@@ -40,7 +40,7 @@ module _ {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag
           =ₛ⟨ 1 & 1 & =ₛ-in (ap (λ p → ap (λ q → q ∙ fₚ a) p) (=ₛ-out (ap-seq-∙ (ap f) ε-v2))) ⟩
         !-ap-ap-∘-ap-∙ f (right ∘ cin j) (snd (F <#> g) a) (ap right (cglue g (str (F # i) a))) ◃∙
         ap (λ q → q ∙ fₚ a) (↯ (ap-seq (ap f) ε-v2)) ◃∎  
-          =ₛ⟨ 1 & 1 & ap-seq-∙ (λ q → q ∙ fₚ a) (ap-seq (ap f) ε-v2) ⟩                                                                                                          
+          =ₛ⟨ 1 & 1 & ap-seq-∙ (λ q → q ∙ fₚ a) (ap-seq (ap f) ε-v2) ⟩
         Ω ∎ₛ
 
     abstract
@@ -50,21 +50,24 @@ module _ {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag
           =ₛ
         ! (ap (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (↯ Ω))) ◃∎
       Ω-pth1 =
-        =ₛ-in (ap (λ p → ! (ap (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! p))) (=ₛ-out Ω-pth0))
+        =ₛ-in (ap (λ p → ! (ap (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! p)))
+          (=ₛ-out Ω-pth0))
 
       Ω-pth2 : !
         (ap (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (↯ Ω))) ◃∎
           =ₛ
         ! (ap (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (↯ (ap-seq ! Ω))) ◃∎
       Ω-pth2 =
-        =ₛ-in (ap (λ p → ! (ap (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) p)) (=ₛ-out (ap-seq-∙ ! Ω)))
+        =ₛ-in (ap (λ p → ! (ap (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) p))
+          (=ₛ-out (ap-seq-∙ ! Ω)))
 
       Ω-pth3 :
         ! (ap (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (↯ (ap-seq ! Ω))) ◃∎
           =ₛ
         ! (↯ (ap-seq (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap-seq ! Ω))) ◃∎
       Ω-pth3 =
-        =ₛ-in (ap ! (=ₛ-out (ap-seq-∙ (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap-seq ! Ω))))
+        =ₛ-in (ap ! (=ₛ-out (ap-seq-∙ (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
+          (ap-seq ! Ω))))
 
       Ω-pth4 :
         ! (↯ (ap-seq (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap-seq ! Ω))) ◃∎
@@ -84,7 +87,8 @@ module _ {ℓv ℓe ℓ ℓd} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : CosDiag
         ! (ap (λ q → (! (ap (f ∘ right) (ap ψ (cglue g a)))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q) (ap ! (snd (comTri κ g) a))) ◃∎
           =ₛ
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
-            (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₃-v2 {f = left} {v = ψ} {u = right} (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))) ◃∙
+            (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₃-v2 {f = left} {v = ψ} {u = right}
+              (λ x → ! (glue x)) (cglue g a) (id-βr g a)))))) ◃∙
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)
             (ap ! (ap (λ q → q ∙ fₚ a) (ap (ap f) (E₂-v2 {p = ap ψ (cglue g a)} (ψ-βr g a) (! (glue (cin j a)))))))) ◃∙
         ! (ap (λ q → ! (ap (f ∘ right) (ap ψ (cglue g a))) ∙ (ap f (! (glue (cin j a))) ∙ fₚ a) ∙ q)

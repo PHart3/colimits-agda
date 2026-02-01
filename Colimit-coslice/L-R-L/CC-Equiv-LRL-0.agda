@@ -18,10 +18,10 @@ module Constr {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F
 
   open Recc T public
 
-  RLfun : (< A > Cos P left *→ T) →  (< A > Cos P left *→ T)
+  RLfun : (< A > Cos po-coscol-tip left *→ T) →  (< A > Cos po-coscol-tip left *→ T)
   RLfun f* = recCosCoc (PostComp-cos ColCoC-cos f*) 
 
-  RfunEq : (f* : < A > Cos P left *→ T) → fst f* ∘ right ∼ fst (RLfun f*) ∘ right
+  RfunEq : (f* : < A > Cos po-coscol-tip left *→ T) → fst f* ∘ right ∼ fst (RLfun f*) ∘ right
   RfunEq (f , fₚ) =
     colimE
       (λ i x → idp)

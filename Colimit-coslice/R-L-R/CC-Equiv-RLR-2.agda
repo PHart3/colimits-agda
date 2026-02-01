@@ -176,7 +176,7 @@ module ConstrE2Cont2 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type 
                     ap (λ p → p ∙ idp) (!-! R) ◃∙
                     ap-dbl-inv-∙-del (str T) idp R ◃∎ ∎ₛ
 
-                  lemma3b : {y : P} (G : y == right (ψ (cin j a))) (r : fst (comp K j) (str (F # j) a) == (fst (recCosCoc K)) y)
+                  lemma3b : {y : po-coscol-tip} (G : y == right (ψ (cin j a))) (r : fst (comp K j) (str (F # j) a) == (fst (recCosCoc K)) y)
                     (τ : ap (fst (recCosCoc K)) (! G) ∙ idp == ! (! r)) →
                     ap (λ p → ! (p ∙ idp) ∙ r) (hmtpy-nat-rev {f = fst (comp K j)} (λ z → idp) idp (ap (fst (recCosCoc K)) (! G) ∙ idp)) ◃∙
                     ap (λ p → ! (((p ∙ ! (ap (fst (recCosCoc K)) (! G) ∙ idp)) ∙ idp) ∙ idp) ∙ r) τ ◃∙

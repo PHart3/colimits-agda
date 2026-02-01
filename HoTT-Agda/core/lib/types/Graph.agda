@@ -15,6 +15,11 @@ Graph-op : ∀ {ℓv ℓe} → Graph ℓv ℓe → Graph ℓv ℓe
 Obj (Graph-op G) = Obj G
 Hom (Graph-op G) j i  = Hom G i j
 
+-- the discrete graph over a type
+discrete-graph : ∀ {ℓv} → Type ℓv → Graph ℓv lzero
+Obj (discrete-graph G₀) = G₀
+Hom (discrete-graph G₀) _ _ = Empty
+
 TypeGr : ∀ i → Graph (lsucc i) i
 Obj (TypeGr i) = Type i
 Hom (TypeGr i) A B = A → B

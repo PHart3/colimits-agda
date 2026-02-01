@@ -15,7 +15,7 @@ module Constr7 {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (
 
   open Constr F T
 
-  module DiagCoher7 (i j : Obj Γ) (f : P → ty T) (fₚ : (a : A) → f (left a)  == str T a) (g : Hom Γ i j) (a : A) where
+  module DiagCoher7 (i j : Obj Γ) (f : po-coscol-tip → ty T) (fₚ : (a : A) → f (left a)  == str T a) (g : Hom Γ i j) (a : A) where
 
     open Constr6.DiagCoher6 F T i j f fₚ g a
 

@@ -61,7 +61,7 @@ This directory contains two proofs related to higher coherence conditions on wil
 - a proof that suspension is a 2-coherent left adjoint to loop
     - This higher coherence lets us prove that the suspension functor preserves	colimits. 
 	As a corollary, we prove that pointed colimits preserve acyclic types via the 
-	construction of coslice colimits from `../Colimit-code/`. Note that the proof of 
+	construction of coslice colimits from `../Colimit-coslice/`. Note that the proof of 
 	2-coherence relies on our work on homogeneous types.
 - a proof that the wild adjunction between colimit and the constant diagram functor on Type
   satisfies the hexagon condition and thus that colimit preserves the left class of an OFS on Type.

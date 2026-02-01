@@ -53,6 +53,10 @@ creates (i.e., preserves and reflects) tree-indexed colimits.
   preserves the left class of an OFS on Type, which is asserted in **Section 7**
   of the paper, as the first corollary of **Lemma 22** (which itself is formalized
   at `../HoTT-Agda/core/lib/wild-cats/Diag-ty-OFS.agda`).
+  
+- The `Coproduct/` folder contains two equivalent ways of constructing the coproduct
+  in coslices: the wedge sum (defined in the **Note in Section 8.1** of the paper) and 
+  the ordinary colimit of the underlying diagram augmented with A as its universal source.
 
 ## Naming of Individual Files
 

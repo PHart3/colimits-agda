@@ -26,7 +26,7 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
   -- the first naturality square, arising from post-composition with the coslice map
   AdjSq-PostCmp : ∀ {ℓd ℓc₁ ℓc₂} (F : CosDiag ℓd ℓ A Γ) {T : Coslice ℓc₁ ℓ A} {U : Coslice ℓc₂ ℓ A}
-    (φ : T *→ U) (f* : (Cos (P F) left) *→ T)
+    (φ : T *→ U) (f* : (Cos (po-coscol-tip F) left) *→ T)
     → Map-to-Lim-map F φ (PostComp-cos (ColCoC-cos F) f*) == PostComp-cos (ColCoC-cos F) (φ ∘* f*)
   AdjSq-PostCmp F φ (f , fₚ) = CosColim-NatSq1-== F φ f fₚ 
 
