@@ -3,9 +3,7 @@
   This Agda code accompanies the following written materials:
   - the CSL 2025 paper [Coslice Colimits in Homotopy Type Theory](https://doi.org/10.4230/LIPIcs.CSL.2025.46)
   - the associated [arXiv article](https://doi.org/10.48550/arXiv.2411.15103)
-  - the preprint
-    [On Left Adjoints Preserving Colimits in HoTT](https://phart3.github.io/2coher-preprint.pdf)
-    (accepted to CSL 2026)
+  - the CSL 2026 paper [On Left Adjoints Preserving Colimits in HoTT](https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CSL.2026.20)
   
   It has been checked with Agda 2.6.3 and 2.6.4.3.
 
