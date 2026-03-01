@@ -14,7 +14,7 @@
   A stripped-down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
   with many additions and local changes for general lemmas used in our development of colimits and wild adjunctions.
 
-  In particular, it includes wild category theory, centered on (co)limits and adjunctions satisfying 2-coherence properties. 
+  In particular, it includes a lot of wild category theory, centered on (co)limits and adjunctions satisfying 2-coherence properties. 
   We prove that such 2-coherent left adjoints preserve colimits (over graphs). Moreover, we prove that the suspension functor 
   is a 2-coherent left adjoint to Loop-space, for which we develop some new properties of homogeneous types. As a result, we get 
   a formal proof that suspension preserves colimits. We also prove that modalities, viewed as functors on coslices of Type, are 
