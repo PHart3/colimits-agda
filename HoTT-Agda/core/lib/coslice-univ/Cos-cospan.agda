@@ -28,3 +28,11 @@ module _ {i k l} (D : CosCospan {i} {k} {l}) where
       left : T *→ X
       right : T *→ Y
       sq : < T > f ∘* left ∼ g ∘* right
+
+  open CosCone-csp
+
+  -- pre-composition map
+  coscoc-precmp : ∀ {ℓ₁ ℓ₂} {T : Coslice ℓ₁ j A} {V : Coslice ℓ₂ j A} → CosCone-csp T → (V *→ T) → CosCone-csp V
+  left (coscoc-precmp κ h) = left κ ∘* h
+  right (coscoc-precmp κ h) = right κ ∘* h
+  sq (coscoc-precmp κ h) = *→-assoc-rev f (left κ) h ∼∘-cos pre-∘*-∼ h (sq κ) ∼∘-cos *→-assoc g (right κ) h

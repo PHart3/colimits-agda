@@ -60,6 +60,14 @@ module MapsCos {j} (A : Type j) where
     ap (λ p → p ∙ ap (fst h₃) (snd h₂ a) ∙ snd h₃ a) (ap-∘ (fst h₃) (fst h₂) (snd h₁ a)) ∙
     ! (ap-ap-∙-∙ (fst h₃) (fst h₂) (snd h₁ a) (snd h₂ a) (snd h₃ a))
 
+  *→-assoc-rev : ∀ {i k l ℓ} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A}
+    {W : Coslice ℓ j A} (h₃ : Z *→ W) (h₂ : Y *→ Z) (h₁ : X *→ Y) →
+    < X > h₃ ∘* (h₂ ∘* h₁) ∼ (h₃ ∘* h₂) ∘* h₁
+  fst (*→-assoc-rev h₃ h₂ h₁) x = idp
+  snd (*→-assoc-rev h₃ h₂ h₁) a =
+    ap-ap-∙-∙ (fst h₃) (fst h₂) (snd h₁ a) (snd h₂ a) (snd h₃ a) ∙ 
+    ap (λ p → p ∙ ap (fst h₃) (snd h₂ a) ∙ snd h₃ a) (∘-ap (fst h₃) (fst h₂) (snd h₁ a))
+
   lunit-∘* : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} (f : X *→ Y) → < X > f ∼ id-cos ∘* f
   lunit-∘* f = (λ _ → idp) , λ a → ! (∙-unit-r (snd f a)) ∙ ap (λ p → p ∙ idp) (! (ap-idf (snd f a)))
 
