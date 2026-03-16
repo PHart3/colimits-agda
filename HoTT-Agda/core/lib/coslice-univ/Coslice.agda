@@ -112,6 +112,17 @@ module MapsCos {j} (A : Type j) where
       ∙-assoc (! (K₁ (str X a))) (! (H₁ (str X a))) (snd h₁ a)) ∙
       ap (λ p → ! (K₁ (str X a)) ∙ p) (H₂ a) ∙ K₂ a)
 
+  -- composition with ∙'
+  infixr 40 _∼∘'-cos_
+  _∼∘'-cos_ : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} {h₁ h₂ h₃ : X *→ Y}
+    → < X > h₁ ∼ h₂ → < X > h₂ ∼ h₃ → < X > h₁ ∼ h₃
+  _∼∘'-cos_ {X = X} {h₁ = h₁} (H₁ , H₂) (K₁ , K₂) =
+    (λ x → H₁ x ∙' K₁ x) ,
+    (λ a →
+      ap (λ p → p ∙ snd h₁ a) (!-∙'=∙ (H₁ (str X a)) (K₁ (str X a))) ∙
+      ∙-assoc (! (K₁ (str X a))) (! (H₁ (str X a))) (snd h₁ a) ∙
+      ap (λ p → ! (K₁ (str X a)) ∙ p) (H₂ a) ∙ K₂ a)
+
   -- identity homotopy
   cos∼id : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} (h : X *→ Y) → < X > h ∼ h
   fst (cos∼id h) _ = idp
