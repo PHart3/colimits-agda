@@ -9,7 +9,7 @@ module SIP-CosMap where
 
 module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A > X *→ Y} where
 
--- SIP for A-maps (or maps under A)
+  -- SIP for A-maps (or maps under A)
 
   UndHomContr-aux :
     is-contr
@@ -44,28 +44,28 @@ module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A >
     UndHomContr-abs : is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
     UndHomContr-abs = UndHomContr
 
-  UndFun-ind : ∀ {k} (P : (g : X *→ Y) → (< X > f ∼ g → Type k))
+  UndHom-ind : ∀ {k} (P : (g : X *→ Y) → (< X > f ∼ g → Type k))
     → P f ((λ _ → idp) , (λ _ → idp)) → {g : X *→ Y} (p : < X > f ∼ g) → P g p
-  UndFun-ind P = ID-ind-map {b = (λ _ → idp) , (λ _ → idp)} P UndHomContr-abs
+  UndHom-ind P = ID-ind-map {b = (λ _ → idp) , (λ _ → idp)} P UndHomContr-abs
 
-  UndFun∼-from-== : {g : X *→ Y} → f == g → < X > f ∼ g
-  UndFun∼-from-== idp = (λ _ → idp) , (λ _ → idp)
+  UndHom∼-from-== : {g : X *→ Y} → f == g → < X > f ∼ g
+  UndHom∼-from-== idp = (λ _ → idp) , (λ _ → idp)
 
-  UndFun∼-to-== : {g : X *→ Y} → (< X > f ∼ g) → f == g
-  UndFun∼-to-== {g} = UndFun-ind (λ g _ → f == g) idp
+  UndHom∼-to-== : {g : X *→ Y} → (< X > f ∼ g) → f == g
+  UndHom∼-to-== {g} = UndHom-ind (λ g _ → f == g) idp
 
-  UndFun∼-β : UndFun∼-to-== ((λ _ → idp) , (λ _ → idp)) == idp
-  UndFun∼-β = ID-ind-map-β (λ g _ → f == g) UndHomContr-abs idp
+  UndHom∼-β : UndHom∼-to-== ((λ _ → idp) , (λ _ → idp)) == idp
+  UndHom∼-β = ID-ind-map-β (λ g _ → f == g) UndHomContr-abs idp
 
-  UndFun-∼-==-≃ : {g : X *→ Y} → (f == g) ≃ (< X > f ∼ g)
-  UndFun-∼-==-≃ = equiv UndFun∼-from-== UndFun∼-to-==
-    (UndFun-ind (λ g H → UndFun∼-from-== (UndFun∼-to-== H) == H) (ap UndFun∼-from-== UndFun∼-β)) aux
+  UndHom-∼-==-≃ : {g : X *→ Y} → (f == g) ≃ (< X > f ∼ g)
+  UndHom-∼-==-≃ = equiv UndHom∼-from-== UndHom∼-to-==
+    (UndHom-ind (λ g H → UndHom∼-from-== (UndHom∼-to-== H) == H) (ap UndHom∼-from-== UndHom∼-β)) aux
     where
-      aux : ∀ {g} (e : f == g) → UndFun∼-to-== (UndFun∼-from-== e) == e
-      aux idp = UndFun∼-β
+      aux : ∀ {g} (e : f == g) → UndHom∼-to-== (UndHom∼-from-== e) == e
+      aux idp = UndHom∼-β
 
-  fst=-UndFun∼ : {g : X *→ Y} (p : < X > f ∼ g) → λ= (fst p) == fst= (UndFun∼-to-== p)
-  fst=-UndFun∼ {g} = UndFun-ind (λ g p → λ= (fst p) == fst= (UndFun∼-to-== p)) (! (λ=-η idp) ∙ ! (ap fst= UndFun∼-β))
+  fst=-UndHom∼ : {g : X *→ Y} (p : < X > f ∼ g) → λ= (fst p) == fst= (UndHom∼-to-== p)
+  fst=-UndHom∼ {g} = UndHom-ind (λ g p → λ= (fst p) == fst= (UndHom∼-to-== p)) (! (λ=-η idp) ∙ ! (ap fst= UndHom∼-β))
   
 module _ {j} (A : Type j) where
 
@@ -79,7 +79,7 @@ module _ {j} (A : Type j) where
   free-forg-cos : ∀ {ℓ₁ ℓ₂} {X : Type ℓ₁} {Y : Coslice ℓ₂ j A} → (*[ Coprod X A , inr ] *→ Y) ≃ (X → ty Y)
   free-forg-cos {X = X} {Y} = equiv (λ m → fst m ∘ inl) (λ f → cos-map-promote {X = X} {Y = Y} f , λ _ → idp)
     (λ _ → idp)
-    (λ m → UndFun∼-to-== ((λ { (inl x) → idp ; (inr a) → ! (snd m a) }) , (λ a → ap (λ p → p ∙ idp) (!-! (snd m a)) ∙ ∙-unit-r (snd m a))))
+    (λ m → UndHom∼-to-== ((λ { (inl x) → idp ; (inr a) → ! (snd m a) }) , (λ a → ap (λ p → p ∙ idp) (!-! (snd m a)) ∙ ∙-unit-r (snd m a))))
 
 module _ {i j k l} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A} where
 
@@ -87,9 +87,9 @@ module _ {i j k l} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {Z : Cos
 
   -- Our definition of right whiskering was correct.
   rwhisk-cos-pres : {f : < A > X *→ Y} {h₁ h₂ : Z *→ X} (H : < Z > h₁ ∼ h₂)
-    → UndFun∼-to-== (post-∘*-∼ f H) == ap (λ m → f ∘* m) (UndFun∼-to-== H)
-  rwhisk-cos-pres {f} {h₁} = UndFun-ind {f = h₁} (λ h₂ H → UndFun∼-to-== (post-∘*-∼ f H) == ap (λ m → f ∘* m) (UndFun∼-to-== H))
-    (UndFun∼-β ∙ ap (ap (λ m → f ∘* m)) (! (UndFun∼-β)))
+    → UndHom∼-to-== (post-∘*-∼ f H) == ap (λ m → f ∘* m) (UndHom∼-to-== H)
+  rwhisk-cos-pres {f} {h₁} = UndHom-ind {f = h₁} (λ h₂ H → UndHom∼-to-== (post-∘*-∼ f H) == ap (λ m → f ∘* m) (UndHom∼-to-== H))
+    (UndHom∼-β ∙ ap (ap (λ m → f ∘* m)) (! (UndHom∼-β)))
 
 -- SIP for homotopies of A-homotopies
 

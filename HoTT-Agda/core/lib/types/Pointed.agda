@@ -443,4 +443,4 @@ Ptd-Cos-≃ = equiv Ptd-to-Cos Cos-to-Ptd (λ _ → idp) λ _ → idp
 open MapsCos Unit
 Ptd-Cos-hom≃ : ∀ {i j} {X : Ptd i} {Y : Coslice j _ Unit} → (X ⊙→ Cos-to-Ptd Y) ≃ (Ptd-to-Cos X *→ Y)
 Ptd-Cos-hom≃ = equiv (λ f → (fst f) , (λ _ → snd f)) (λ f → (fst f) , (snd f unit))
-  (λ (f , f₀) → UndFun∼-to-== ((λ _ → idp) , (λ _ → idp))) λ (f , f₀) → ⊙-crd∼-to-== ((λ _ → idp) , idp)
+  (λ (f , f₀) → UndHom∼-to-== ((λ _ → idp) , (λ _ → idp))) λ (f , f₀) → ⊙-crd∼-to-== ((λ _ → idp) , idp)
