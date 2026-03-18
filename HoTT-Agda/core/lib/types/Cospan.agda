@@ -5,6 +5,7 @@ open import lib.SIP
 open import lib.types.Pi
 open import lib.types.Sigma
 open import lib.types.Graph
+open import lib.types.Paths
 open import lib.wild-cats.WildCats
 open import lib.wild-cats.Cone-wc-SIP
 
@@ -83,6 +84,27 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
       map-left : left K₂ ∼ left K₁ ∘ m
       map-right : right K₂ ∼ right K₁ ∘ m
       map-sq : (x : T₂) → ap f (! (map-left x)) ∙ sq K₂ x ∙' ap g (map-right x) == sq K₁ (m x)
+
+  Cone-csp-mor-str-alt : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} → Cone-csp T₁ → Cone-csp T₂ → (T₂ → T₁)
+    → Type (lmax (lmax (lmax i j) k) ℓ₂)
+  Cone-csp-mor-str-alt {T₂ = T₂} K₁ K₂ m = Σ (left K₂ ∼ left K₁ ∘ m) (λ map-left → (Σ (right K₁ ∘ m ∼ right K₂) (λ map-right →
+    (x : T₂) → ap f (map-left x) ∙ sq K₁ (m x) ∙' ap g (map-right x) == sq K₂ x)))
+    
+  Cone-csp-mor-alt-≃ : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} {K₁ : Cone-csp T₁} {K₂ : Cone-csp T₂} (m : T₂ → T₁) →
+    Cone-csp-mor-str K₁ K₂ m ≃ Cone-csp-mor-str-alt K₁ K₂ m
+  Cone-csp-mor-alt-≃ {K₁ = K₁} {K₂} m =
+    Σ-emap-r (λ map-left → Σ-emap-l _ (Π-emap-r λ _ → !-equiv)) ∘e
+    Σ-emap-r (λ map-left → Σ-emap-r (λ map-right → Π-emap-r (λ x → aux (map-left x) (sq K₂ x) (sq K₁ (m x)) (map-right x)))) ∘e
+    equiv
+      (λ (conecspmor map-left map-right map-sq) → map-left , map-right , map-sq)
+      (λ (map-left , map-right , map-sq) → conecspmor map-left map-right map-sq)
+      (λ _ → idp) λ _ → idp
+      where abstract
+        aux : {x y : A} {w u : B} (p₁ : x == y) (p₂ : f x == g w) (p₃ : f y == g u) (p₄ : w == u) →
+          (ap f (! p₁) ∙ p₂ ∙' ap g p₄ == p₃)
+            ≃
+          (ap f p₁ ∙ p₃ ∙' ap g (! p₄) == p₂)
+        aux idp p₂ p₃ idp = !-equiv
 
   Cone-csp-iso : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (K₁ : Cone-csp T₁) (K₂ : Cone-csp T₂)
     → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)

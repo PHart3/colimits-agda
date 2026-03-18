@@ -137,6 +137,12 @@ module _ {i j} {A : Type i} {B : A → Type j} where
   =Σ-conv : (x y : Σ A B) → (=Σ x y) == (x == y)
   =Σ-conv x y = ua (=Σ-econv x y)
 
+module _ {i j} {A : Type i} {B : Type j} where
+
+  =×-econv : {x y : A × B} → ((fst x == fst y) × (snd x == snd y)) ≃ (x == y)
+  =×-econv {x} {y} = equiv (λ (p , q) → pair×= p q) (λ p → fst×= p , snd×= p)
+    (λ p → ! (pair×=-η p)) λ (p , q) → pair×= (fst×=-β p q) (snd×=-β p q) 
+
 Σ= : ∀ {i j} {A A' : Type i} (p : A == A') {B : A → Type j} {B' : A' → Type j}
   (q : B == B' [ (λ X → (X → Type j)) ↓ p ]) → Σ A B == Σ A' B'
 Σ= idp idp = idp
@@ -439,6 +445,22 @@ module _ {i j k} {A : Type i} {B : Type j} (C : A → B → Type k)
     → v == w [ (λ a → C a y') ↓ p ]
     → u == w [ uncurry C ↓ pair×= p q ]
   ↓-over-×-in' {p = idp} {q = idp} idp idp = idp
+
+-- a useful lemma for characterizing equality in pullbacks
+module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (f : A → C) (g : B → C) where
+
+  ↓-over-×-in-cone : {x x' : A} {y y' : B} {u : f x == g y} {w : f x' == g y'} →
+    Σ ((x , y) == (x' , y')) (λ e → (u == w [ (λ (a , b) → f a == g b) ↓ e ]))
+      ≃
+    Σ ((x == x') × (y == y')) (λ (e₁ , e₂) → u ∙ ap g e₂ == ap f e₁ ∙ w)
+  ↓-over-×-in-cone {x} {x'} {y} {y'} {u} {w} =
+    Σ-emap-r {A = (x == x') × (y == y')} (λ (e₁ , e₂) →
+      coe-equiv (transp-pth-sq {f = f ∘ fst} {g = g ∘ snd} {p = pair×= e₁ e₂} ∙
+        ap2 _==_
+          (ap (λ r → u ∙ r) (ap-∘ g snd _ ∙ ap (ap g) (snd×=-β e₁ e₂)))
+          (ap (λ r → r ∙ w) (ap-∘ f fst _ ∙ ap (ap f) (fst×=-β e₁ e₂)))) ∘e
+      to-transp-equiv _ (pair×= e₁ e₂)) ∘e
+    (Σ-emap-l _ =×-econv)⁻¹
 
 module _ where
   -- An orphan lemma.

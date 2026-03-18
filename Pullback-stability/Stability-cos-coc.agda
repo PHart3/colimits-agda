@@ -54,8 +54,8 @@ module _ {ℓ} {A : Type ℓ} where
     {-
       We just assume the existence of the relevant pullbacks in the
       coslice universe. It is possible, however, to explicitly construct
-      all pullbacks. See Note 6.0.4 of the technical report for the
-      details of such a construction.
+      all pullbacks. See `/HoTT-Agda/core/lib/coslice-univ/Cos-pullback.agda`
+      for the construction.
     -}
     
     module _

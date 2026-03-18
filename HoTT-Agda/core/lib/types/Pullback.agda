@@ -6,6 +6,7 @@ open import lib.types.Graph
 open import lib.types.Cospan
 open import lib.types.Pointed
 open import lib.types.Sigma
+open import lib.types.Pi
 open import lib.wild-cats.WildCats
 
 module lib.types.Pullback where
@@ -21,6 +22,9 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
       a : A
       b : B
       h : f a == g b
+
+  Pullback-Σ : Pullback ≃ Σ (A × B) (λ (a , b) → f a == g b)
+  Pullback-Σ = equiv (λ (pullback a b h) → ((a , b) , h)) (λ ((a , b) , h) → pullback a b h) (λ _ → idp) λ _ → idp
 
   Pb-con : Cone-csp D Pullback
   Cone-csp.left Pb-con = Pullback.a
@@ -52,6 +56,15 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
     ap (λ _ → _) (! (∙-unit-r _) ∙ r)
       =⟨ ap-cst _ _ ⟩
     idp =∎
+
+  -- equality of functions into the standard pullback
+  map-to-stdpb-== : ∀ {ℓ} {X Y : Type ℓ} (h₁ : X → Pullback) (h₂ : X → Pullback) →
+    (h₁ ∼ h₂)
+      ≃
+    [ (a-∼ , b-∼) ∈ (Pullback.a ∘ h₁ ∼ Pullback.a ∘ h₂) × (Pullback.b ∘ h₁ ∼ Pullback.b ∘ h₂) ] ×
+      ((x : X) → Pullback.h (h₁ x) ∙ ap g (b-∼ x) == ap f (a-∼ x) ∙ Pullback.h (h₂ x))
+  map-to-stdpb-== h₁ h₂ = Σ-assoc ⁻¹ ∘e Σ-emap-r (λ _ → choice) ∘e choice ∘e Π-emap-r (λ x → Σ-assoc ∘e
+    ↓-over-×-in-cone f g ∘e (=Σ-econv _ _)⁻¹ ∘e ap-equiv Pullback-Σ (h₁ x) (h₂ x))
 
 -- pullbacks are invariant under equivalence
 module _ {i j k : ULevel} where
@@ -276,7 +289,7 @@ module _ {i j k ℓ₁ ℓ₂} {D : Cospan {i} {j} {k}} {T : Type ℓ₁} where
     open Cone-csp K
 
     pre-cmp-csp : (S : Type ℓ₂) → (S → T) → Cone-csp D S
-    pre-cmp-csp = λ S m → cone-csp (left ∘ m) (right ∘ m) λ x → sq (m x) 
+    pre-cmp-csp = λ S m → cone-csp (left ∘ m) (right ∘ m) (sq ∘ m) 
 
     is-pb-abs : Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) (lsucc ℓ₂))
     is-pb-abs = (S : Type ℓ₂) → is-equiv (pre-cmp-csp S)
@@ -320,10 +333,13 @@ module _ {i j k ℓ₁ ℓ₂} {D : Cospan {i} {j} {k}} {T : Type ℓ₁} where
     limcsp-mor-contr J = equiv-preserves-level (Σ-emap-r (precmp-csp-mor-≃ J)) {{limcsp-is-contr J}}
 
     abstract
-      limcsp-mor-paths : {J : Cone-csp D S} {f₁ f₂ : S → T}
-        (σ₁ : Cone-csp-mor-str D K J f₁) (σ₂ : Cone-csp-mor-str D K J f₂)
+    
+      limcsp-mor-paths : {J : Cone-csp D S} {f₁ f₂ : S → T} (σ₁ : Cone-csp-mor-str D K J f₁) (σ₂ : Cone-csp-mor-str D K J f₂)
         → (f₁ , σ₁) == (f₂ , σ₂)
       limcsp-mor-paths {J} {f₁} {f₂} σ₁ σ₂ = contr-has-all-paths {{limcsp-mor-contr J}} (f₁ , σ₁) (f₂ , σ₂)
+
+      limcsp-mor-alt-contr : (J : Cone-csp D S) → is-contr (Σ (S → T) (λ f → Cone-csp-mor-str-alt D K J f))
+      limcsp-mor-alt-contr J = equiv-preserves-level (Σ-emap-r (Cone-csp-mor-alt-≃ D)) {{limcsp-mor-contr J}}
 
 module _ {i j k ℓ} {D : Cospan {i} {j} {k}} {T₁ : Type ℓ} {T₂ : Type ℓ} {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂}
   (ζ₁ : is-pb-abs {ℓ₂ = ℓ} K₁) (ζ₂ : is-pb-abs {ℓ₂ = ℓ} K₂) where

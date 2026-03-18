@@ -30,7 +30,7 @@ infixr 30 [_,_]_∼_
 [_,_]_∼_ :  ∀ {i j k} (A : Type j) (X : Coslice i j A) {Y : Coslice k j A} →
   < A > X *→ Y → < A > X *→ Y → Type (lmax (lmax i k) j)    
 [ A , *[ X , f ] ] ( h₁ , p₁ ) ∼ ( h₂ , p₂ ) =
-  Σ (h₁ ∼ h₂) (λ H → (a : A) →  ! (H (f a)) ∙ p₁ a == p₂ a)
+  Σ (h₁ ∼ h₂) (λ H → (a : A) → ! (H (f a)) ∙ p₁ a == p₂ a)
 
 module MapsCos {j} (A : Type j) where
 
@@ -46,7 +46,7 @@ module MapsCos {j} (A : Type j) where
   -- homotopy of A-maps
   infixr 30 <_>_∼_
   <_>_∼_ : ∀ {i k} (X : Coslice i j A) {Y : Coslice k j A} →
-    X *→ Y →  X *→ Y → Type (lmax (lmax i k) j)    
+    X *→ Y → X *→ Y → Type (lmax (lmax i k) j)    
   < X > h ∼ g = [ A , X ] h ∼ g 
 
   id-cos : ∀ {i} {X : Coslice i j A} → X *→ X
@@ -113,7 +113,7 @@ module MapsCos {j} (A : Type j) where
       ap (λ p → ! (K₁ (str X a)) ∙ p) (H₂ a) ∙ K₂ a)
 
   -- composition with ∙'
-  infixr 40 _∼∘'-cos_
+  infixr 45 _∼∘'-cos_
   _∼∘'-cos_ : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} {h₁ h₂ h₃ : X *→ Y}
     → < X > h₁ ∼ h₂ → < X > h₂ ∼ h₃ → < X > h₁ ∼ h₃
   _∼∘'-cos_ {X = X} {h₁ = h₁} (H₁ , H₂) (K₁ , K₂) =

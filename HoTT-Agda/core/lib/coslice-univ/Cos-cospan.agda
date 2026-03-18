@@ -1,8 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
-open import lib.SIP
-open import lib.types.Sigma
+open import lib.types.Cospan
 open import Coslice
 
 -- cospans and cones over them in coslices of Type
@@ -20,6 +19,9 @@ record CosCospan {i k l} : Type (lmax (lsucc i) (lmax (lsucc k) (lmax (lsucc l) 
     f : X *→ Z
     g : Y *→ Z
 
+coscospan-forg : ∀ {i k l} → CosCospan {i} {k} {l} → Cospan
+coscospan-forg (cos-cospan X Y Z f g) = cospan (ty X) (ty Y) (ty Z) (fst f) (fst g)
+
 module _ {i k l} (D : CosCospan {i} {k} {l}) where
 
   open CosCospan D
@@ -31,19 +33,30 @@ module _ {i k l} (D : CosCospan {i} {k} {l}) where
       right : T *→ Y
       sq : < T > f ∘* left ∼ g ∘* right
 
-  open CosCone-csp
+coscone-forg : ∀ {i k l ℓ} {D : CosCospan {i} {k} {l}} {T : Coslice ℓ j A} → CosCone-csp D T → Cone-csp (coscospan-forg D) (ty T)
+coscone-forg (cos-cone left right sq) = cone-csp (fst left) (fst right) (fst sq)
 
-  -- pre-composition map
-  coscoc-precmp : ∀ {ℓ₁ ℓ₂} {T : Coslice ℓ₁ j A} {V : Coslice ℓ₂ j A} → CosCone-csp T → (V *→ T) → CosCone-csp V
-  left (coscoc-precmp κ h) = left κ ∘* h
-  right (coscoc-precmp κ h) = right κ ∘* h
-  sq (coscoc-precmp κ h) = *→-assoc-rev f (left κ) h ∼∘-cos pre-∘*-∼ h (sq κ) ∼∘-cos *→-assoc g (right κ) h
+open CosCone-csp
+
+-- pre-composition map
+coscoc-precmp : ∀ {i k l ℓ₁ ℓ₂} {D : CosCospan {i} {k} {l}} {T : Coslice ℓ₁ j A} {V : Coslice ℓ₂ j A}
+  → CosCone-csp D T → (V *→ T) → CosCone-csp D V
+left (coscoc-precmp κ h) = left κ ∘* h
+right (coscoc-precmp κ h) = right κ ∘* h
+sq (coscoc-precmp {D = D} κ h) = *→-assoc-rev f (left κ) h ∼∘-cos pre-∘*-∼ h (sq κ) ∼∘'-cos *→-assoc g (right κ) h
+  where open CosCospan D
+
+-- definition of pullback coslice cone
+is-cospb-abs : ∀ {i k l ℓ₁} → ∀ ℓ₂ {D : CosCospan {i} {k} {l}} {T : Coslice ℓ₁ j A} (K : CosCone-csp D T)
+  → Type (lmax (lmax (lmax (lmax (lmax j i) k) l) ℓ₁) (lsucc ℓ₂))
+is-cospb-abs ℓ₂ K = (V : Coslice ℓ₂ j A) → is-equiv (coscoc-precmp {V = V} K)
 
 -- SIP for cones over coslice cospans
-module Cone-pb-id {i k l ℓ} {D : CosCospan {i} {k} {l}} {T : Coslice ℓ j A} where
+module CosCone-SIP {i k l ℓ} {D : CosCospan {i} {k} {l}} {T : Coslice ℓ j A} where
 
+  open import lib.SIP
+  open import lib.types.Sigma
   open import SIP-CosMap
-  open CosCone-csp
 
   infixr 80 _∼con-pb_
   record _∼con-pb_ (K₁ : CosCone-csp D T) (K₂ : CosCone-csp D T) : Type (lmax i (lmax k (lmax l (lmax ℓ j)))) where
