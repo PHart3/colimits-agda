@@ -85,6 +85,7 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
       map-right : right K₂ ∼ right K₁ ∘ m
       map-sq : (x : T₂) → ap f (! (map-left x)) ∙ sq K₂ x ∙' ap g (map-right x) == sq K₁ (m x)
 
+  -- version where the left and right homotopies have opposing directions
   Cone-csp-mor-str-alt : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} → Cone-csp T₁ → Cone-csp T₂ → (T₂ → T₁)
     → Type (lmax (lmax (lmax i j) k) ℓ₂)
   Cone-csp-mor-str-alt {T₂ = T₂} K₁ K₂ m = Σ (left K₂ ∼ left K₁ ∘ m) (λ map-left → (Σ (right K₁ ∘ m ∼ right K₂) (λ map-right →
@@ -117,6 +118,10 @@ module _ {i j k} {D : Cospan {i} {j} {k}} where
   Cone-csp-mor : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (K₁ : Cone-csp D T₁) (K₂ : Cone-csp D T₂)
     → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
   Cone-csp-mor {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₂ → T₁) (Cone-csp-mor-str D K₁ K₂)
+
+  Cone-csp-mor-alt : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (K₁ : Cone-csp D T₁) (K₂ : Cone-csp D T₂)
+    → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
+  Cone-csp-mor-alt {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₂ → T₁) (Cone-csp-mor-str-alt D K₁ K₂)
 
   Cone-csp-iso-mor : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂}
     → Cone-csp-iso D K₁ K₂ → Cone-csp-mor K₁ K₂
@@ -164,8 +169,7 @@ module _ {i j k} {D : Cospan {i} {j} {k}} where
     → Cone-csp-mor K₁ K₂ → Cone-csp-mor K₂ K₁ → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
   cospan-is-qinv μ ν = (μ Cone-csp-mor-∘ ν == Cone-csp-mor-id) × (ν Cone-csp-mor-∘ μ == Cone-csp-mor-id)
 
--- SIP for cospan cones
-
+-- SIP for cones over cospans
 module _ {i j k l} {D : Cospan {i} {j} {k}} {T : Type l} where
 
   open Cospan D
@@ -232,8 +236,44 @@ module _ {i j k l} {D : Cospan {i} {j} {k}} {T : Type l} where
         rtrip2 : {K₂ : Cone-csp D T} (a : ConCspEq K₁ K₂) → ==-to-ConCspEq (ConCspEq-to-== a) == a
         rtrip2 = ConCspEq-ind (λ K₂ a → ==-to-ConCspEq (ConCspEq-to-== a) == a) (ap ==-to-ConCspEq ConCspEq-β)
 
--- translating between Type-valued diagrams over graphs and cospans
+-- SIP for cone morphisms
+module SIP-cmor  {i j k ℓ₁ ℓ₂} {D : Cospan {i} {j} {k}} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂} where
 
+  open Cospan D
+
+  cone-mor-alt∼-coh : {x : A} {y : B} {t r : T₁}
+    (p₁ : x == left K₁ t) (p₂ : t == r) (p₃ : f (left K₁ t) == g (right K₁ t)) (p₄ : right K₁ r == y) →
+    ap f (p₁ ∙' ap (left K₁) p₂) ∙
+    (! (ap (f ∘ left K₁) p₂) ∙ p₃ ∙ ap (g ∘ right K₁) p₂) ∙'
+    ap g p₄
+      ==
+    ap f p₁ ∙ p₃ ∙' ap g (ap (right K₁) p₂ ∙ p₄)
+  cone-mor-alt∼-coh p₁ idp p₃ p₄ = ap (λ q → ap f p₁ ∙ q ∙' ap g p₄) (∙-unit-r p₃)
+
+  _cone-mor-alt∼_ : Cone-csp-mor-alt K₁ K₂ → Cone-csp-mor-alt K₁ K₂ → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
+  (m₁ , (map-left₁∼ , map-right₁∼ , sq₁∼)) cone-mor-alt∼ (m₂ , (map-left₂∼ , map-right₂∼ , sq₂∼)) =
+    [ m∼ ∈ m₁ ∼ m₂ ] ×
+      [ ml∼ ∈ (∀ x → map-left₂∼ x == map-left₁∼ x ∙' ap (left K₁) (m∼ x)) ] ×
+      [ mr∼ ∈ (∀ x → map-right₁∼ x == ap (right K₁) (m∼ x) ∙ map-right₂∼ x) ] × (∀ x →
+        ! (sq₁∼ x) ∙ ap (λ p → ap f (map-left₁∼ x) ∙ sq K₁ (m₁ x) ∙' ap g p) (mr∼ x)
+          ==
+        ! (sq₂∼ x) ∙
+        ap (λ p → ap f p ∙ sq K₁ (m₂ x) ∙' ap g (map-right₂∼ x)) (ml∼ x) ∙
+        ap (λ p → ap f (map-left₁∼ x ∙' ap (left K₁) (m∼ x)) ∙ p ∙' ap g (map-right₂∼ x)) (apCommSq2-rev (sq K₁) (m∼ x)) ∙
+        cone-mor-alt∼-coh (map-left₁∼ x) (m∼ x) (sq K₁ (m₁ x)) (map-right₂∼ x)) 
+
+  cone-mor-alt∼-id : {m : Cone-csp-mor-alt K₁ K₂} → m cone-mor-alt∼ m
+  fst cone-mor-alt∼-id _ = idp
+  fst (snd cone-mor-alt∼-id) _ = idp
+  fst (snd (snd cone-mor-alt∼-id)) _ = idp
+  snd (snd (snd (cone-mor-alt∼-id {m}))) x = ap (λ p → ! (snd (snd (snd m)) x) ∙ p) $
+    ! (ap-!-inv-l (λ p → ap f (fst (snd m) x) ∙ p ∙' ap g (fst (snd (snd m)) x)) (∙-unit-r (sq K₁ (fst m x))))
+
+  module _ (m₁ : Cone-csp-mor-alt K₁ K₂) where
+
+    
+
+-- translating between Type-valued diagrams over graphs and cospans
 module _ {ℓ} (Δ : Diag-cspan (Type-wc ℓ)) where
 
   diag-to-csp : Cospan

@@ -329,17 +329,22 @@ module _ {i j k ℓ₁ ℓ₂} {D : Cospan {i} {j} {k}} {T : Type ℓ₁} where
     precmp-csp-mor-≃ : (J : Cone-csp D S) (f : S → T) → (pre-cmp-csp K S f == J) ≃ Cone-csp-mor-str D K J f
     precmp-csp-mor-≃ J f = precmp-csp-mor-≃-aux J f ∘e ConCspEq-==-≃ ⁻¹
 
-    limcsp-mor-contr : (J : Cone-csp D S) → is-contr (Σ (S → T) (λ f → Cone-csp-mor-str D K J f))
-    limcsp-mor-contr J = equiv-preserves-level (Σ-emap-r (precmp-csp-mor-≃ J)) {{limcsp-is-contr J}}
-
     abstract
-    
-      limcsp-mor-paths : {J : Cone-csp D S} {f₁ f₂ : S → T} (σ₁ : Cone-csp-mor-str D K J f₁) (σ₂ : Cone-csp-mor-str D K J f₂)
-        → (f₁ , σ₁) == (f₂ , σ₂)
-      limcsp-mor-paths {J} {f₁} {f₂} σ₁ σ₂ = contr-has-all-paths {{limcsp-mor-contr J}} (f₁ , σ₁) (f₂ , σ₂)
+
+      limcsp-mor-contr : (J : Cone-csp D S) → is-contr (Σ (S → T) (λ f → Cone-csp-mor-str D K J f))
+      limcsp-mor-contr J = equiv-preserves-level (Σ-emap-r (precmp-csp-mor-≃ J)) {{limcsp-is-contr J}}
 
       limcsp-mor-alt-contr : (J : Cone-csp D S) → is-contr (Σ (S → T) (λ f → Cone-csp-mor-str-alt D K J f))
       limcsp-mor-alt-contr J = equiv-preserves-level (Σ-emap-r (Cone-csp-mor-alt-≃ D)) {{limcsp-mor-contr J}}
+
+    limcsp-mor-paths : {J : Cone-csp D S} {f₁ f₂ : S → T} (σ₁ : Cone-csp-mor-str D K J f₁) (σ₂ : Cone-csp-mor-str D K J f₂)
+      → (f₁ , σ₁) == (f₂ , σ₂)
+    limcsp-mor-paths {J} {f₁} {f₂} σ₁ σ₂ = contr-has-all-paths {{limcsp-mor-contr J}} (f₁ , σ₁) (f₂ , σ₂)
+
+    limcsp-mor-alt-==-contr : {J : Cone-csp D S} {f₁ f₂ : S → T}
+      (σ₁ : Cone-csp-mor-str-alt D K J f₁) (σ₂ : Cone-csp-mor-str-alt D K J f₂)
+      → is-contr ((f₁ , σ₁) == (f₂ , σ₂))
+    limcsp-mor-alt-==-contr {J} _ _ = =-preserves-contr (limcsp-mor-alt-contr J)
 
 module _ {i j k ℓ} {D : Cospan {i} {j} {k}} {T₁ : Type ℓ} {T₂ : Type ℓ} {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂}
   (ζ₁ : is-pb-abs {ℓ₂ = ℓ} K₁) (ζ₂ : is-pb-abs {ℓ₂ = ℓ} K₂) where

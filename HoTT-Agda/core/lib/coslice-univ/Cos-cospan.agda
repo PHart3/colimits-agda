@@ -58,7 +58,6 @@ module CosCone-SIP {i k l ℓ} {D : CosCospan {i} {k} {l}} {T : Coslice ℓ j A}
   open import lib.types.Sigma
   open import SIP-CosMap
 
-  infixr 80 _∼con-pb_
   record _∼con-pb_ (K₁ : CosCone-csp D T) (K₂ : CosCone-csp D T) : Type (lmax i (lmax k (lmax l (lmax ℓ j)))) where
     constructor ∼conpb
     field
