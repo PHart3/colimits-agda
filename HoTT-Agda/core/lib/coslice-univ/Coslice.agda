@@ -101,7 +101,7 @@ module MapsCos {j} (A : Type j) where
     ! (∙-assoc (fst H (str X a)) (! (fst H (str X a))) (snd h₁ a)) ∙
     ap (λ p → p ∙ snd h₁ a) (!-inv-r (fst H (str X a))) 
 
-  -- composition
+  -- homotopy composition
   infixr 40 _∼∘-cos_
   _∼∘-cos_ : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} {h₁ h₂ h₃ : X *→ Y}
     → < X > h₁ ∼ h₂ → < X > h₂ ∼ h₃ → < X > h₁ ∼ h₃
@@ -135,3 +135,22 @@ module MapsCos {j} (A : Type j) where
   <_>_∼∼_ X {h₁ = h₁} H₁ H₂ =
     Σ (fst H₁ ∼ fst H₂) (λ K →
       (a : A) → ap (λ p → ! p ∙ snd h₁ a) (! (K (str X a))) ∙ snd H₁ a == snd H₂ a)
+
+  -- the two definitions of homotopy composition agree
+  ∼∘-∼∼-∼∘'-cos : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} {h₁ h₂ h₃ : X *→ Y} (p₁ : < X > h₁ ∼ h₂) (p₂ : < X > h₂ ∼ h₃) →
+    < X > p₁ ∼∘-cos p₂ ∼∼ p₁ ∼∘'-cos p₂
+  fst (∼∘-∼∼-∼∘'-cos p₁ p₂) x = ∙=∙' (fst p₁ x) (fst p₂ x)
+  snd (∼∘-∼∼-∼∘'-cos {X = X} {h₁ = h₁} p₁ p₂) a = aux
+    (fst p₁ (str X a)) (fst p₂ (str X a)) (snd h₁ a) (ap (λ p → ! _ ∙ p) (snd p₁ a) ∙ snd p₂ a)
+    where
+      aux : ∀ {ℓ} {T : Type ℓ} {x y z w : T} (q₁ : x == y) (q₂ : y == z) (q₃ : x == w) {r : z == w} (q₄ : ! q₂ ∙ ! q₁ ∙ q₃ == r) → 
+        ap (λ p → ! p ∙ q₃) (! (∙=∙' q₁ q₂)) ∙
+        (ap (λ p → p ∙ q₃) (!-∙ q₁ q₂) ∙
+        ∙-assoc (! q₂) (! q₁) q₃) ∙
+        q₄
+          ==
+        ap (λ p → p ∙ q₃) (!-∙'=∙ q₁ q₂) ∙
+        ∙-assoc (! q₂) (! q₁) q₃ ∙
+        q₄
+      aux idp idp idp q₄ = idp
+      
