@@ -89,12 +89,12 @@ module _ {i k l} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A} (f 
     module Cmors ((d , h₁ , h₂ , τ) : pb-forg-precmp-dom) where
 
       cmor1-coh : {z : ty Z} {w t r : ty X} {y u v : ty Y}
-        (p₁ : fst f w == fst g u) (p₂ : w == t) (p₃ : fst f t == z) (p₄ : fst g v == z)
+        {p₁ : fst f w == fst g u} (p₂ : w == t) (p₃ : fst f t == z) (p₄ : fst g v == z)
         (p₅ : u == v) (p₆ : w == r) (p₇ : fst f r == fst g y) (p₈ : y == u) →
         (! p₁ ∙ ap (fst f) p₂ ∙ p₃ == ap (fst g) p₅ ∙ p₄) →          
         (ap (fst f) p₆ ∙ p₇ ∙' ap (fst g) p₈ == p₁) →          
         ap (fst f) (! p₂ ∙ p₆) ∙ p₇ ∙' ap (fst g) (p₈ ∙ p₅) == p₃ ∙ ! p₄
-      cmor1-coh p₁ p₂ idp _ idp idp _ idp e₁ idp =
+      cmor1-coh {p₁ = p₁} p₂ idp _ idp idp _ idp e₁ idp =
         (ap (λ p → p ∙ p₁) (ap-!-∙ (fst f) p₂ idp) ∙ !-unit-r-∙-!-! (ap (fst f) p₂) p₁) ∙ ap ! e₁
 
       cmor1 : Cone-csp-mor-alt pb-cone-forg str-cone 
@@ -102,7 +102,7 @@ module _ {i k l} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A} (f 
       fst (snd cmor1) a = ! (snd (left K) a) ∙ h₁ (str V a)
       fst (snd (snd cmor1)) a = h₂ (str V a) ∙ snd (right K) a
       snd (snd (snd cmor1)) a = cmor1-coh
-        (fst (sq K) (str V a)) (snd (left K) a) (snd f a) (snd g a) (snd (right K) a)
+        (snd (left K) a) (snd f a) (snd g a) (snd (right K) a)
         (h₁ (str V a)) (Pullback.h (d (str V a))) (h₂ (str V a))
         (snd (sq K) a) (τ (str V a))
 
@@ -131,7 +131,7 @@ module _ {i k l} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A} (f 
         (p₇ : Pullback.b t₁ == w) (d₃ : ! p₇ ∙ ap Pullback.b d₁ ∙ idp == p₅)
         (p₈ : ! p₁ ∙ ap (fst f) p₂ ∙ p₃ == ap (fst g) p₅ ∙ p₄)
         (p₉ : ap (fst f) p₆ ∙ Pullback.h t₁ ∙' ap (fst g) p₇ == p₁) →
-        (! (cmor1-coh p₁ p₂ p₃ p₄ p₅ p₆ (Pullback.h t₁) p₇ p₈ p₉) ∙
+        (! (cmor1-coh p₂ p₃ p₄ p₅ p₆ (Pullback.h t₁) p₇ p₈ p₉) ∙
         ap (λ p → ap (fst f) (! p₂ ∙ p₆) ∙ (Pullback.h t₁) ∙' ap (fst g) p)
           (–> (mr∼-≃ p₇ p₅ (ap Pullback.b d₁)) d₃)
           ==
