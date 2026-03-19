@@ -130,6 +130,9 @@ module _ {i} {A : Type i} where
   !-inv-l-∙-!-! : {x y z : A} (p : x == y) (q : z == y) → ! (p ∙ ! q) ∙ p == q
   !-inv-l-∙-!-! idp q = ∙-unit-r (! (! q)) ∙ !-! q
 
+  pth-∙-!-!-cl : {x y z  : A} (p : x == y) (q : x == z) → q ∙ ! (! p ∙ q) == p
+  pth-∙-!-!-cl idp q = !-inv-r q
+
   !-!-∙-pth : {x y z w : A} (p : x == y) (q : x == z) {c : y == w} → ! (! p ∙ q) ∙ c == ! q ∙ p ∙ c
   !-!-∙-pth idp idp = idp
 

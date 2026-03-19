@@ -58,13 +58,14 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
     idp =∎
 
   -- equality of functions into the standard pullback
-  map-to-stdpb-== : ∀ {ℓ} {X Y : Type ℓ} (h₁ : X → Pullback) (h₂ : X → Pullback) →
-    (h₁ ∼ h₂)
-      ≃
-    [ (a-∼ , b-∼) ∈ (Pullback.a ∘ h₁ ∼ Pullback.a ∘ h₂) × (Pullback.b ∘ h₁ ∼ Pullback.b ∘ h₂) ] ×
-      ((x : X) → Pullback.h (h₁ x) ∙ ap g (b-∼ x) == ap f (a-∼ x) ∙ Pullback.h (h₂ x))
-  map-to-stdpb-== h₁ h₂ = Σ-assoc ⁻¹ ∘e Σ-emap-r (λ _ → choice) ∘e choice ∘e Π-emap-r (λ x → Σ-assoc ∘e
-    ↓-over-×-in-cone f g ∘e (=Σ-econv _ _)⁻¹ ∘e ap-equiv Pullback-Σ (h₁ x) (h₂ x))
+  abstract
+    map-to-stdpb-== : ∀ {ℓ} {X Y : Type ℓ} (h₁ : X → Pullback) (h₂ : X → Pullback) →
+      (h₁ ∼ h₂)
+        ≃
+      [ (a-∼ , b-∼) ∈ (Pullback.a ∘ h₁ ∼ Pullback.a ∘ h₂) × (Pullback.b ∘ h₁ ∼ Pullback.b ∘ h₂) ] ×
+        ((x : X) → Pullback.h (h₁ x) ∙ ap g (b-∼ x) == ap f (a-∼ x) ∙ Pullback.h (h₂ x))
+    map-to-stdpb-== h₁ h₂ = Σ-assoc ⁻¹ ∘e Σ-emap-r (λ _ → choice) ∘e choice ∘e Π-emap-r (λ x → Σ-assoc ∘e
+      ↓-over-×-in-cone f g ∘e (=Σ-econv _ _)⁻¹ ∘e ap-equiv Pullback-Σ (h₁ x) (h₂ x))
 
 -- pullbacks are invariant under equivalence
 module _ {i j k : ULevel} where
@@ -345,6 +346,14 @@ module _ {i j k ℓ₁ ℓ₂} {D : Cospan {i} {j} {k}} {T : Type ℓ₁} where
       (σ₁ : Cone-csp-mor-str-alt D K J f₁) (σ₂ : Cone-csp-mor-str-alt D K J f₂)
       → is-contr ((f₁ , σ₁) == (f₂ , σ₂))
     limcsp-mor-alt-==-contr {J} _ _ = =-preserves-contr (limcsp-mor-alt-contr J)
+
+    open SIP-con-mor-alt
+
+    abstract
+      limcsp-mor-alt-∼-contr : {J : Cone-csp D S} {f₁ f₂ : S → T}
+        (σ₁ : Cone-csp-mor-str-alt D K J f₁) (σ₂ : Cone-csp-mor-str-alt D K J f₂)
+        → is-contr (_cone-mor-alt∼_ {D = D} {K₁ = K} (f₁ , σ₁) (f₂ , σ₂))
+      limcsp-mor-alt-∼-contr σ₁ σ₂ = equiv-preserves-level (conmor∼-alt-==-≃ ⁻¹) {{limcsp-mor-alt-==-contr σ₁ σ₂}}
 
 module _ {i j k ℓ} {D : Cospan {i} {j} {k}} {T₁ : Type ℓ} {T₂ : Type ℓ} {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂}
   (ζ₁ : is-pb-abs {ℓ₂ = ℓ} K₁) (ζ₂ : is-pb-abs {ℓ₂ = ℓ} K₂) where
