@@ -97,7 +97,7 @@ module _ {i k l} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A} (f 
       cmor1-coh {p₁ = p₁} p₂ idp _ idp idp _ idp e₁ idp =
         (ap (λ p → p ∙ p₁) (ap-!-∙ (fst f) p₂ idp) ∙ !-unit-r-∙-!-! (ap (fst f) p₂) p₁) ∙ ap ! e₁
 
-      cmor1 : Cone-csp-mor-alt pb-cone-forg str-cone 
+      cmor1 : Cone-csp-mor-alt str-cone pb-cone-forg 
       fst cmor1 = d ∘ str V
       fst (snd cmor1) a = ! (snd (left K) a) ∙ h₁ (str V a)
       fst (snd (snd cmor1)) a = h₂ (str V a) ∙ snd (right K) a
@@ -106,7 +106,7 @@ module _ {i k l} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A} (f 
         (h₁ (str V a)) (Pullback.h (d (str V a))) (h₂ (str V a))
         (snd (sq K) a) (τ (str V a))
 
-      cmor2 : Cone-csp-mor-alt pb-cone-forg str-cone
+      cmor2 : Cone-csp-mor-alt str-cone pb-cone-forg
       fst cmor2 = pb-forg-pt
       fst (snd cmor2) _ = idp
       fst (snd (snd cmor2)) _ = idp

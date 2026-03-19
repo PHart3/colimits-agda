@@ -56,8 +56,8 @@ module _ {ℓv ℓe : ULevel} where
     Map-diag-Σ :
       Map-diag Δ₁ Δ₂
         ≃
-      [ map-comp ∈ ((x : Obj G) → D₀ Δ₁ x → D₀ Δ₂ x) ] × (((x , y , f) : [ x ∈ Obj G ] × [ y ∈ Obj G ] × Hom G x y) →
-        D₁ Δ₂ f ∘ map-comp x == map-comp y ∘ D₁ Δ₁ f) 
+      [ map-comp ∈ ((x : Obj G) → D₀ Δ₁ x → D₀ Δ₂ x) ] ×
+        (((x , y , f) : [ x ∈ Obj G ] × [ y ∈ Obj G ] × Hom G x y) → D₁ Δ₂ f ∘ map-comp x == map-comp y ∘ D₁ Δ₁ f) 
     Map-diag-Σ = equiv
       (λ (map-diag map-comp map-sq) → map-comp ,
       λ (_ , _ , g) → map-sq g) (λ (map-comp , map-sq) → map-diag map-comp λ g → map-sq (_ , _ , g))
@@ -98,7 +98,8 @@ module _ {ℓv ℓe : ULevel} where
     sq (diag-map-idf Δ) f _ = idp
 
     infixr 80 _tydiag-map-∘_
-    _tydiag-map-∘_ : ∀ {ℓ₁ ℓ₂ ℓ₃} {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)} {Δ₃ : Diagram G (Type-wc ℓ₃)}
+    _tydiag-map-∘_ : ∀ {ℓ₁ ℓ₂ ℓ₃}
+      {Δ₁ : Diagram G (Type-wc ℓ₁)} {Δ₂ : Diagram G (Type-wc ℓ₂)} {Δ₃ : Diagram G (Type-wc ℓ₃)}
       → Map-diag-ty Δ₂ Δ₃ → Map-diag-ty Δ₁ Δ₂ → Map-diag-ty Δ₁ Δ₃
     comp (μ₂ tydiag-map-∘ μ₁) x = comp μ₂ x ∘ comp μ₁ x
     sq (_tydiag-map-∘_ μ₂ μ₁) {i} {j} f x = sq μ₂ f (comp μ₁ i x) ∙ ap (comp μ₂ j) (sq μ₁ f x)

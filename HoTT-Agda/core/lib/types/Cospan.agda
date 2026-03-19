@@ -78,7 +78,7 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
       sq : f ∘ left ∼ g ∘ right
   open Cone-csp
 
-  record Cone-csp-mor-str {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (K₁ : Cone-csp T₁) (K₂ : Cone-csp T₂)
+  record Cone-csp-mor-str {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (K₂ : Cone-csp T₂) (K₁ : Cone-csp T₁)
     (m : T₂ → T₁) : Type (lmax (lmax ℓ₁ ℓ₂) (lmax (lmax i j) k)) where
     constructor conecspmor
     field
@@ -87,13 +87,13 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
       map-sq : (x : T₂) → ap f (! (map-left x)) ∙ sq K₂ x ∙' ap g (map-right x) == sq K₁ (m x)
 
   -- version where the left and right homotopies have opposing directions
-  Cone-csp-mor-str-alt : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} → Cone-csp T₁ → Cone-csp T₂ → (T₂ → T₁)
+  Cone-csp-mor-str-alt : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} → Cone-csp T₂ → Cone-csp T₁ → (T₂ → T₁)
     → Type (lmax (lmax (lmax i j) k) ℓ₂)
-  Cone-csp-mor-str-alt {T₂ = T₂} K₁ K₂ m = Σ (left K₂ ∼ left K₁ ∘ m) (λ map-left → (Σ (right K₁ ∘ m ∼ right K₂) (λ map-right →
+  Cone-csp-mor-str-alt {T₂ = T₂} K₂ K₁ m = Σ (left K₂ ∼ left K₁ ∘ m) (λ map-left → (Σ (right K₁ ∘ m ∼ right K₂) (λ map-right →
     (x : T₂) → ap f (map-left x) ∙ sq K₁ (m x) ∙' ap g (map-right x) == sq K₂ x)))
     
   Cone-csp-mor-alt-≃ : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} {K₁ : Cone-csp T₁} {K₂ : Cone-csp T₂} (m : T₂ → T₁) →
-    Cone-csp-mor-str K₁ K₂ m ≃ Cone-csp-mor-str-alt K₁ K₂ m
+    Cone-csp-mor-str K₂ K₁ m ≃ Cone-csp-mor-str-alt K₂ K₁ m
   Cone-csp-mor-alt-≃ {K₁ = K₁} {K₂} m =
     Σ-emap-r (λ map-left → Σ-emap-l _ (Π-emap-r λ _ → !-equiv)) ∘e
     Σ-emap-r (λ map-left → Σ-emap-r (λ map-right → Π-emap-r (λ x → aux (map-left x) (sq K₂ x) (sq K₁ (m x)) (map-right x)))) ∘e
@@ -110,7 +110,7 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
 
   Cone-csp-iso : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (K₁ : Cone-csp T₁) (K₂ : Cone-csp T₂)
     → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
-  Cone-csp-iso {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₂ ≃ T₁) (λ m → Cone-csp-mor-str K₁ K₂ (–> m))
+  Cone-csp-iso {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₁ ≃ T₂) (λ m → Cone-csp-mor-str K₁ K₂ (–> m))
 
 open Cone-csp
 
@@ -118,11 +118,11 @@ module _ {i j k} {D : Cospan {i} {j} {k}} where
 
   Cone-csp-mor : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (K₁ : Cone-csp D T₁) (K₂ : Cone-csp D T₂)
     → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
-  Cone-csp-mor {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₂ → T₁) (Cone-csp-mor-str D K₁ K₂)
+  Cone-csp-mor {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₁ → T₂) (Cone-csp-mor-str D K₁ K₂)
 
   Cone-csp-mor-alt : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} (K₁ : Cone-csp D T₁) (K₂ : Cone-csp D T₂)
     → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
-  Cone-csp-mor-alt {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₂ → T₁) (Cone-csp-mor-str-alt D K₁ K₂)
+  Cone-csp-mor-alt {T₁ = T₁} {T₂} K₁ K₂ = Σ (T₁ → T₂) (Cone-csp-mor-str-alt D K₁ K₂)
 
   Cone-csp-iso-mor : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂}
     → Cone-csp-iso D K₁ K₂ → Cone-csp-mor K₁ K₂
@@ -144,13 +144,13 @@ module _ {i j k} {D : Cospan {i} {j} {k}} where
   --composite of cospan cone morphisms
   infixr 60 _Cone-csp-mor-∘-σ_
   _Cone-csp-mor-∘-σ_ : ∀ {ℓ₁ ℓ₂ ℓ₃} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} {T₃ : Type ℓ₃}
-    {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂} {K₃ : Cone-csp D T₃} {m₂ : T₂ → T₁} {m₁ : T₃ → T₂}
-    → Cone-csp-mor-str _ K₂ K₃ m₁ → Cone-csp-mor-str _ K₁ K₂ m₂ → Cone-csp-mor-str _ K₁ K₃ (m₂ ∘ m₁)
-  map-left (_Cone-csp-mor-∘-σ_ {m₂ = m₂} {m₁} σ₁ σ₂) = λ x → map-left σ₁ x ∙ map-left σ₂ (m₁ x) 
-  map-right (_Cone-csp-mor-∘-σ_ {m₂ = m₂} {m₁} σ₁ σ₂) = λ x → map-right σ₁ x ∙ map-right σ₂ (m₁ x)
-  map-sq (_Cone-csp-mor-∘-σ_ {K₃ = K₃} {m₂} {m₁} σ₁ σ₂) x =
+    {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂} {K₃ : Cone-csp D T₃} {m₁ : T₁ → T₂} {m₂ : T₂ → T₃}
+    → Cone-csp-mor-str _ K₂ K₃ m₂ → Cone-csp-mor-str _ K₁ K₂ m₁ → Cone-csp-mor-str _ K₁ K₃ (m₂ ∘ m₁)
+  map-left (_Cone-csp-mor-∘-σ_ {m₁ = m₁} {m₂} σ₂ σ₁) x = map-left σ₁ x ∙ map-left σ₂ (m₁ x) 
+  map-right (_Cone-csp-mor-∘-σ_ {m₁ = m₁} {m₂} σ₂ σ₁) x = map-right σ₁ x ∙ map-right σ₂ (m₁ x)
+  map-sq (_Cone-csp-mor-∘-σ_ {K₁ = K₁} {m₁ = m₁} {m₂} σ₂ σ₁) x =
     ! (ap (λ p →  ap f (! (map-left σ₂ (m₁ x))) ∙ p ∙' ap g (map-right σ₂ (m₁ x))) (! (map-sq σ₁ x)) ∙
-      aux (map-left σ₂ (m₁ x)) (map-left σ₁ x) (map-right σ₂ (m₁ x)) (map-right σ₁ x) (sq K₃ x)) ∙
+      aux (map-left σ₂ (m₁ x)) (map-left σ₁ x) (map-right σ₂ (m₁ x)) (map-right σ₁ x) (sq K₁ x)) ∙
     map-sq σ₂ (m₁ x)
     where
       aux : {a₁ a₂ a₃ : A} {b₁ b₂ b₃ : B}
@@ -164,7 +164,7 @@ module _ {i j k} {D : Cospan {i} {j} {k}} where
   _Cone-csp-mor-∘_ : ∀ {ℓ₁ ℓ₂ ℓ₃} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} {T₃ : Type ℓ₃}
     {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂} {K₃ : Cone-csp D T₃} →
     Cone-csp-mor K₂ K₃ → Cone-csp-mor K₁ K₂ → Cone-csp-mor K₁ K₃
-  (μ₂ Cone-csp-mor-∘ μ₁) = (fst μ₁ ∘ fst μ₂) , (snd μ₂ Cone-csp-mor-∘-σ snd μ₁)
+  (μ₂ Cone-csp-mor-∘ μ₁) = (fst μ₂ ∘ fst μ₁) , (snd μ₂ Cone-csp-mor-∘-σ snd μ₁)
 
   cospan-is-qinv : ∀ {ℓ₁ ℓ₂} {T₁ : Type ℓ₁} {T₂ : Type ℓ₂} {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂}
     → Cone-csp-mor K₁ K₂ → Cone-csp-mor K₂ K₁ → Type (lmax (lmax (lmax (lmax i j) k) ℓ₁) ℓ₂)
@@ -256,21 +256,21 @@ module SIP-con-mor-alt {i j k ℓ₁ ℓ₂} {D : Cospan {i} {j} {k}} {T₁ : Ty
   (m₁ , (map-left₁ , map-right₁ , sq₁)) cone-mor-alt∼ (m₂ , (map-left₂ , map-right₂ , sq₂)) =
     [ m∼ ∈ m₁ ∼ m₂ ] ×
       [ (ml∼ , mr∼) ∈
-        ((∀ x → map-left₂ x == map-left₁ x ∙' ap (left K₁) (m∼ x)) ×
-        (∀ x → map-right₁ x == ap (right K₁) (m∼ x) ∙ map-right₂ x)) ] ×
+        ((∀ x → map-left₂ x == map-left₁ x ∙' ap (left K₂) (m∼ x)) ×
+        (∀ x → map-right₁ x == ap (right K₂) (m∼ x) ∙ map-right₂ x)) ] ×
         (∀ x →
-          ! (sq₁ x) ∙ ap (λ p → ap f (map-left₁ x) ∙ sq K₁ (m₁ x) ∙' ap g p) (mr∼ x)
+          ! (sq₁ x) ∙ ap (λ p → ap f (map-left₁ x) ∙ sq K₂ (m₁ x) ∙' ap g p) (mr∼ x)
             ==
           ! (sq₂ x) ∙
-          ap (λ p → ap f p ∙ sq K₁ (m₂ x) ∙' ap g (map-right₂ x)) (ml∼ x) ∙
-          ap (λ p → ap f (map-left₁ x ∙' ap (left K₁) (m∼ x)) ∙ p ∙' ap g (map-right₂ x)) (apCommSq2-rev (sq K₁) (m∼ x)) ∙
-          cone-mor-alt∼-coh (map-left₁ x) (m∼ x) (sq K₁ (m₁ x)) (map-right₂ x)) 
+          ap (λ p → ap f p ∙ sq K₂ (m₂ x) ∙' ap g (map-right₂ x)) (ml∼ x) ∙
+          ap (λ p → ap f (map-left₁ x ∙' ap (left K₂) (m∼ x)) ∙ p ∙' ap g (map-right₂ x)) (apCommSq2-rev (sq K₂) (m∼ x)) ∙
+          cone-mor-alt∼-coh (map-left₁ x) (m∼ x) (sq K₂ (m₁ x)) (map-right₂ x)) 
 
   cone-mor-alt∼-id : {m : Cone-csp-mor-alt K₁ K₂} → m cone-mor-alt∼ m
   fst cone-mor-alt∼-id _ = idp
   fst (snd cone-mor-alt∼-id) = (λ _ → idp) , λ _ → idp
   snd (snd (cone-mor-alt∼-id {m})) x = ap (λ p → ! (snd (snd (snd m)) x) ∙ p) $
-    ! (ap-!-inv-l (λ p → ap f (fst (snd m) x) ∙ p ∙' ap g (fst (snd (snd m)) x)) (∙-unit-r (sq K₁ (fst m x)))) 
+    ! (ap-!-inv-l (λ p → ap f (fst (snd m) x) ∙ p ∙' ap g (fst (snd (snd m)) x)) (∙-unit-r (sq K₂ (fst m x)))) 
 
   ==-to-conmor∼-alt : {m₁ m₂ : Cone-csp-mor-alt K₁ K₂} → m₁ == m₂ → m₁ cone-mor-alt∼ m₂
   ==-to-conmor∼-alt idp = cone-mor-alt∼-id
@@ -279,16 +279,16 @@ module SIP-con-mor-alt {i j k ℓ₁ ℓ₂} {D : Cospan {i} {j} {k}} {T₁ : Ty
 
     private
       total =
-        [ (f₂ , f∼) ∈ Σ (T₂ → T₁) (λ f₂ → f₁ ∼ f₂) ] ×
-          [ (ml₂ , ml∼) ∈ Σ (left K₂ ∼ left K₁ ∘ f₂) (λ ml₂ → ∀ x → ml₂ x == fst σ₁ x ∙' ap (left K₁) (f∼ x)) ] ×
-            [ (mr₂ , mr∼) ∈ Σ (right K₁ ∘ f₂ ∼ right K₂) (λ mr₂ → ∀ x → fst (snd σ₁) x == ap (right K₁) (f∼ x) ∙ mr₂ x) ] ×
-              Σ ((x : T₂) → ap f (ml₂ x) ∙ sq K₁ (f₂ x) ∙' ap g (mr₂ x) == sq K₂ x) λ ms₂ → ∀ x →
-                ! (snd (snd σ₁) x) ∙ ap (λ p → ap f (fst σ₁ x) ∙ sq K₁ (f₁ x) ∙' ap g p) (mr∼ x)
+        [ (f₂ , f∼) ∈ Σ (T₁ → T₂) (λ f₂ → f₁ ∼ f₂) ] ×
+          [ (ml₂ , ml∼) ∈ Σ (left K₁ ∼ left K₂ ∘ f₂) (λ ml₂ → ∀ x → ml₂ x == fst σ₁ x ∙' ap (left K₂) (f∼ x)) ] ×
+            [ (mr₂ , mr∼) ∈ Σ (right K₂ ∘ f₂ ∼ right K₁) (λ mr₂ → ∀ x → fst (snd σ₁) x == ap (right K₂) (f∼ x) ∙ mr₂ x) ] ×
+              Σ ((x : T₁) → ap f (ml₂ x) ∙ sq K₂ (f₂ x) ∙' ap g (mr₂ x) == sq K₁ x) λ ms₂ → ∀ x →
+                ! (snd (snd σ₁) x) ∙ ap (λ p → ap f (fst σ₁ x) ∙ sq K₂ (f₁ x) ∙' ap g p) (mr∼ x)
                   ==
                 ! (ms₂ x) ∙
-                ap (λ p → ap f p ∙ sq K₁ (f₂ x) ∙' ap g (mr₂ x)) (ml∼ x) ∙
-                ap (λ p → ap f (fst σ₁ x ∙' ap (left K₁) (f∼ x)) ∙ p ∙' ap g (mr₂ x)) (apCommSq2-rev (sq K₁) (f∼ x)) ∙
-                cone-mor-alt∼-coh (fst σ₁ x) (f∼ x) (sq K₁ (f₁ x)) (mr₂ x)
+                ap (λ p → ap f p ∙ sq K₂ (f₂ x) ∙' ap g (mr₂ x)) (ml∼ x) ∙
+                ap (λ p → ap f (fst σ₁ x ∙' ap (left K₂) (f∼ x)) ∙ p ∙' ap g (mr₂ x)) (apCommSq2-rev (sq K₂) (f∼ x)) ∙
+                cone-mor-alt∼-coh (fst σ₁ x) (f∼ x) (sq K₂ (f₁ x)) (mr₂ x)
 
     conmor∼-alt-tot-contr : is-contr total
       
@@ -297,8 +297,8 @@ module SIP-con-mor-alt {i j k ℓ₁ ℓ₂} {D : Cospan {i} {j} {k}} {T₁ : Ty
         {{equiv-preserves-level ((Σ-contr-red funhom-contr)⁻¹)
           {{equiv-preserves-level choice {{Π-level (λ x → ≃-==-contr (
             post∙-equiv
-              (ap (λ p → ap f (fst (snd m₁) x) ∙ p ∙' ap g (fst (snd (snd m₁)) x)) (! (∙-unit-r (sq K₁ (fst m₁ x)))) ∙
-              ap (λ q → ap f (fst (snd m₁) x) ∙ q ∙' ap g (fst (snd (snd m₁)) x)) (∙-unit-r (sq K₁ (fst m₁ x)))) ∘e
+              (ap (λ p → ap f (fst (snd m₁) x) ∙ p ∙' ap g (fst (snd (snd m₁)) x)) (! (∙-unit-r (sq K₂ (fst m₁ x)))) ∙
+              ap (λ q → ap f (fst (snd m₁) x) ∙ q ∙' ap g (fst (snd (snd m₁)) x)) (∙-unit-r (sq K₂ (fst m₁ x)))) ∘e
             !-equiv))}}}}}}}}
 
     conmor∼-alt-Σ-≃ : 

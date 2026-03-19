@@ -303,47 +303,47 @@ module _ {i j k ℓ₁ ℓ₂} {D : Cospan {i} {j} {k}} {T : Type ℓ₁} where
     limcsp-is-contr : (J : Cone-csp D S) → is-contr (Σ (S → T) (λ f → pre-cmp-csp K S f == J))
     limcsp-is-contr J = equiv-is-contr-map (ζ S) J
 
-    precmp-csp-mor-≃-aux : (J : Cone-csp D S) (f : S → T) → (ConCspEq (pre-cmp-csp K S f) J) ≃ Cone-csp-mor-str D K J f
+    precmp-csp-mor-≃-aux : (J : Cone-csp D S) (f : S → T) → (ConCspEq (pre-cmp-csp K S f) J) ≃ Cone-csp-mor-str D J K f
     precmp-csp-mor-≃-aux _ f = equiv ==-to-mor mor-to-== rtrip1 rtrip2
 
       where
         open Cone-csp-mor-str 
 
-        ==-to-mor : {L : Cone-csp D S} → ConCspEq (pre-cmp-csp K S f) L → Cone-csp-mor-str D K L f
+        ==-to-mor : {L : Cone-csp D S} → ConCspEq (pre-cmp-csp K S f) L → Cone-csp-mor-str D L K f
         map-left (==-to-mor e) = left-== e
         map-right (==-to-mor e) = right-== e
         map-sq (==-to-mor e) = sq-== e
 
-        mor-to-== : {L : Cone-csp D S} → Cone-csp-mor-str D K L f →  ConCspEq (pre-cmp-csp K S f) L
+        mor-to-== : {L : Cone-csp D S} → Cone-csp-mor-str D L K f →  ConCspEq (pre-cmp-csp K S f) L
         left-== (mor-to-== m) = map-left m
         right-== (mor-to-== m) = map-right m
         sq-== (mor-to-== m) = map-sq m
 
         abstract
 
-          rtrip1 : {L : Cone-csp D S} (b : Cone-csp-mor-str D K L f) → ==-to-mor (mor-to-== b) == b
+          rtrip1 : {L : Cone-csp D S} (b : Cone-csp-mor-str D L K f) → ==-to-mor (mor-to-== b) == b
           rtrip1 {L} b = idp
 
           rtrip2 : {L : Cone-csp D S} (a : ConCspEq (pre-cmp-csp K S f) L) → mor-to-== (==-to-mor a) == a
           rtrip2 = ConCspEq-ind (λ L a → mor-to-== (==-to-mor a) == a) idp
 
-    precmp-csp-mor-≃ : (J : Cone-csp D S) (f : S → T) → (pre-cmp-csp K S f == J) ≃ Cone-csp-mor-str D K J f
+    precmp-csp-mor-≃ : (J : Cone-csp D S) (f : S → T) → (pre-cmp-csp K S f == J) ≃ Cone-csp-mor-str D J K f
     precmp-csp-mor-≃ J f = precmp-csp-mor-≃-aux J f ∘e ConCspEq-==-≃ ⁻¹
 
     abstract
 
-      limcsp-mor-contr : (J : Cone-csp D S) → is-contr (Σ (S → T) (λ f → Cone-csp-mor-str D K J f))
+      limcsp-mor-contr : (J : Cone-csp D S) → is-contr (Σ (S → T) (λ f → Cone-csp-mor-str D J K f))
       limcsp-mor-contr J = equiv-preserves-level (Σ-emap-r (precmp-csp-mor-≃ J)) {{limcsp-is-contr J}}
 
-      limcsp-mor-alt-contr : (J : Cone-csp D S) → is-contr (Σ (S → T) (λ f → Cone-csp-mor-str-alt D K J f))
+      limcsp-mor-alt-contr : (J : Cone-csp D S) → is-contr (Σ (S → T) (λ f → Cone-csp-mor-str-alt D J K f))
       limcsp-mor-alt-contr J = equiv-preserves-level (Σ-emap-r (Cone-csp-mor-alt-≃ D)) {{limcsp-mor-contr J}}
 
-    limcsp-mor-paths : {J : Cone-csp D S} {f₁ f₂ : S → T} (σ₁ : Cone-csp-mor-str D K J f₁) (σ₂ : Cone-csp-mor-str D K J f₂)
+    limcsp-mor-paths : {J : Cone-csp D S} {f₁ f₂ : S → T} (σ₁ : Cone-csp-mor-str D J K f₁) (σ₂ : Cone-csp-mor-str D J K f₂)
       → (f₁ , σ₁) == (f₂ , σ₂)
     limcsp-mor-paths {J} {f₁} {f₂} σ₁ σ₂ = contr-has-all-paths {{limcsp-mor-contr J}} (f₁ , σ₁) (f₂ , σ₂)
 
     limcsp-mor-alt-==-contr : {J : Cone-csp D S} {f₁ f₂ : S → T}
-      (σ₁ : Cone-csp-mor-str-alt D K J f₁) (σ₂ : Cone-csp-mor-str-alt D K J f₂)
+      (σ₁ : Cone-csp-mor-str-alt D J K f₁) (σ₂ : Cone-csp-mor-str-alt D J K f₂)
       → is-contr ((f₁ , σ₁) == (f₂ , σ₂))
     limcsp-mor-alt-==-contr {J} _ _ = =-preserves-contr (limcsp-mor-alt-contr J)
 
@@ -351,8 +351,8 @@ module _ {i j k ℓ₁ ℓ₂} {D : Cospan {i} {j} {k}} {T : Type ℓ₁} where
 
     abstract
       limcsp-mor-alt-∼-contr : {J : Cone-csp D S} {f₁ f₂ : S → T}
-        (σ₁ : Cone-csp-mor-str-alt D K J f₁) (σ₂ : Cone-csp-mor-str-alt D K J f₂)
-        → is-contr (_cone-mor-alt∼_ {D = D} {K₁ = K} (f₁ , σ₁) (f₂ , σ₂))
+        (σ₁ : Cone-csp-mor-str-alt D J K f₁) (σ₂ : Cone-csp-mor-str-alt D J K f₂)
+        → is-contr (_cone-mor-alt∼_ {D = D} {K₁ = J} {K₂ = K} (f₁ , σ₁) (f₂ , σ₂))
       limcsp-mor-alt-∼-contr σ₁ σ₂ = equiv-preserves-level (conmor∼-alt-==-≃ ⁻¹) {{limcsp-mor-alt-==-contr σ₁ σ₂}}
 
 module _ {i j k ℓ} {D : Cospan {i} {j} {k}} {T₁ : Type ℓ} {T₂ : Type ℓ} {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂}
@@ -360,24 +360,24 @@ module _ {i j k ℓ} {D : Cospan {i} {j} {k}} {T₁ : Type ℓ} {T₂ : Type ℓ
 
   private
 
-    can-map₁ : Cone-csp-mor K₂ K₁
+    can-map₁ : Cone-csp-mor K₁ K₂
     can-map₁ = contr-center (limcsp-mor-contr ζ₂ K₁) 
 
-    can-map₂ : Cone-csp-mor K₁ K₂
+    can-map₂ : Cone-csp-mor K₂ K₁
     can-map₂ = contr-center (limcsp-mor-contr ζ₁ K₂)
 
-    can-map-rtrip₁ : can-map₁ Cone-csp-mor-∘ can-map₂ == Cone-csp-mor-id
+    can-map-rtrip₁ : can-map₂ Cone-csp-mor-∘ can-map₁ == Cone-csp-mor-id
     can-map-rtrip₁ = limcsp-mor-paths ζ₁ _ _
 
-    can-map-rtrip₂ : can-map₂ Cone-csp-mor-∘ can-map₁ == Cone-csp-mor-id
+    can-map-rtrip₂ : can-map₁ Cone-csp-mor-∘ can-map₂ == Cone-csp-mor-id
     can-map-rtrip₂ = limcsp-mor-paths ζ₂ _ _
 
   -- uniqueness of pullback squares
-  pb-unique : Cone-csp-iso D K₁ K₂
+  pb-unique : Cone-csp-iso D K₂ K₁
   fst pb-unique = equiv (fst can-map₂) (fst can-map₁) (app= (fst= can-map-rtrip₁)) (app= (fst= can-map-rtrip₂))
   snd pb-unique = snd can-map₂
 
-  pb-unique-mor : Cone-csp-mor K₁ K₂
+  pb-unique-mor : Cone-csp-mor K₂ K₁
   pb-unique-mor = Cone-csp-iso-mor pb-unique
 
 module pb-qinv {i j k ℓ} {D : Cospan {i} {j} {k}} {T₁ : Type ℓ} {T₂ : Type ℓ} {K₁ : Cone-csp D T₁} {K₂ : Cone-csp D T₂}
@@ -385,8 +385,8 @@ module pb-qinv {i j k ℓ} {D : Cospan {i} {j} {k}} {T₁ : Type ℓ} {T₂ : Ty
 
   abstract
     pb-unique-qinv : cospan-is-qinv (pb-unique-mor {K₁ = K₁} {K₂ = K₂} ζ₁ ζ₂) (pb-unique-mor {D = D} ζ₂ ζ₁)
-    fst pb-unique-qinv = limcsp-mor-paths ζ₂ _ _
-    snd pb-unique-qinv = limcsp-mor-paths ζ₁ _ _
+    fst pb-unique-qinv = limcsp-mor-paths ζ₁ _ _
+    snd pb-unique-qinv = limcsp-mor-paths ζ₂ _ _
 
 module _ {ℓ} {Δ : Diag-cspan (Type-wc ℓ)} {X : Type ℓ} {K : Cone-wc Δ X} where
 
@@ -414,10 +414,10 @@ module _ {i j k} (D : Cospan {i} {j} {k}) where
 -- conversion between pullback squares and limiting cones
 module _ {ℓ} {Δ : Diag-cspan (Type-wc ℓ)} {X : Type ℓ} {K : Cone-wc Δ X} (ζ : is-pb-wc K) where
 
-  StdPb-Lim-≃ : Cone-csp-iso _ (Pb-con (diag-to-csp Δ)) (con-to-csp Δ K)
+  StdPb-Lim-≃ : Cone-csp-iso _ (con-to-csp Δ K) (Pb-con (diag-to-csp Δ))
   StdPb-Lim-≃ = pb-unique (stdpb-is-abspb (diag-to-csp Δ)) (lim-to-pb ζ)
 
-  Lim-StdPb-≃ : Cone-csp-iso _ (con-to-csp Δ K) (Pb-con (diag-to-csp Δ))
+  Lim-StdPb-≃ : Cone-csp-iso _ (Pb-con (diag-to-csp Δ)) (con-to-csp Δ K)
   Lim-StdPb-≃ = pb-unique (lim-to-pb ζ) (stdpb-is-abspb (diag-to-csp Δ))
 
 -- coherence between maps of standard limits and maps of pullbacks
