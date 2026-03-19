@@ -41,7 +41,9 @@
   Our formalization of pullback stability (or universality)
   for all ordinary colimits as well as the construction
   of the coslice cocone that induces the pullback stability
-  map in the coslice category of types.
+  map in the coslice category of types. We also include an
+  explicit construction of coslice pullbacks in terms of
+  the standard pullback in a type universe.
 
   See `Pullback-stability/README.md`
   for details and for the license of the work inside this

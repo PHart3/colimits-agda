@@ -57,6 +57,7 @@ RUN /dist/agda --library-file=/dist/libraries --$S ./Coproduct/CosWedge.agda
 WORKDIR /build/Pullback-stability
 RUN /dist/agda --library-file=/dist/libraries --$S ./Stability-ord.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./Stability-cos-coc.agda
+RUN /dist/agda --library-file=/dist/libraries --$S ./Cos-pullback.agda
 
 # Just check the following two files for the theorems in the paper
 # "On Left Adjoints Preserving Colimits in HoTT":
