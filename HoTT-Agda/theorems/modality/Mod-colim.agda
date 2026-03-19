@@ -39,7 +39,7 @@ module _ {ℓ j} (μ : Modality (lmax ℓ j)) (A : Type j) where
     
     Mod-nat-eqv-η : diag-ueqv Δ (F-diag (Mod-cos-fctr ∘WC Loc-cos-forg-fctr) Δ)
     map-comp (fst Mod-nat-eqv-η) x = η , λ a → idp
-    map-sq (fst Mod-nat-eqv-η) {x} {y} f = UndFun∼-to-== ((λ z → ◯-fmap-β (fst (D₁ Δ f)) z) , (λ a →
+    map-sq (fst Mod-nat-eqv-η) {x} {y} f = UndHom∼-to-== ((λ z → ◯-fmap-β (fst (D₁ Δ f)) z) , (λ a →
       !-inv-l-assoc (◯-fmap-β (fst (D₁ Δ f)) (str (fst (D₀ Δ x)) a)) (ap η (snd (D₁ Δ f) a)) ∙
       ! (∙-unit-r (ap η (snd (D₁ Δ f) a)))))
     snd Mod-nat-eqv-η x = local-implies-η-equiv (snd (D₀ Δ x))

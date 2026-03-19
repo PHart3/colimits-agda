@@ -7,6 +7,11 @@ cd /build/Colimit-coslice
 /dist/agda --html --library-file=/dist/libraries /build/Colimit-coslice/OFS-Preserve/CosColim-lftclass.agda
 /dist/agda --html --library-file=/dist/libraries /build/Colimit-coslice/Coproduct/CosWedge.agda
 
+cd /build/Pullback-stability
+/dist/agda --html --library-file=/dist/libraries /build/Pullback-stability/Stability-ord.agda
+/dist/agda --html --library-file=/dist/libraries /build/Pullback-stability/Stability-cos-coc.agda
+/dist/agda --html --library-file=/dist/libraries /build/Pullback-stability/Cos-pullback.agda
+
 cd /build/HoTT-Agda
 /dist/agda --html --library-file=/dist/libraries /build/HoTT-Agda/theorems/homotopy/Acyc-colim.agda
 /dist/agda --html --library-file=/dist/libraries /build/HoTT-Agda/theorems/modality/Mod-colim.agda

@@ -37,9 +37,9 @@ module lib.wild-cats.Ptd-wc where
   fst (snd (fst Ptd-Cos-iso)) _ =
     ap (λ p → p ∙ idp) (ap (ap (–> Ptd-Cos-hom≃)) (⊙-crd∼-to-==-β _)) 
   fst (snd (snd (fst Ptd-Cos-iso))) (_ , idp) =
-    ap (λ p → p ∙ idp) (ap (ap (–> Ptd-Cos-hom≃)) (⊙-crd∼-to-==-β _)) ∙ ! UndFun∼-β
+    ap (λ p → p ∙ idp) (ap (ap (–> Ptd-Cos-hom≃)) (⊙-crd∼-to-==-β _)) ∙ ! UndHom∼-β
   snd (snd (snd (fst Ptd-Cos-iso))) (_ , idp) (_ , idp) (_ , idp) =
-    UndFun∼-β ∙ ! (ap (λ p → p ∙ idp) (ap (ap (–> Ptd-Cos-hom≃)) (⊙-crd∼-to-==-β _)))
+    UndHom∼-β ∙ ! (ap (λ p → p ∙ idp) (ap (ap (–> Ptd-Cos-hom≃)) (⊙-crd∼-to-==-β _)))
   fst (snd Ptd-Cos-iso) = snd Ptd-Cos-≃
   snd (snd Ptd-Cos-iso) X Y = snd Ptd-Cos-hom≃
 

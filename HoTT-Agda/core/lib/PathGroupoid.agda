@@ -82,6 +82,8 @@ module _ {i} {A : Type i} where
   !-inv-r◃ : {x y : A} (p : x == y) → p ◃∙ (! p) ◃∎ =ₛ []
   !-inv-r◃ idp = =ₛ-in idp
 
+module _ {i} {A : Type i} where
+
   {- Interactions between operations
 
   A lemma of the form [!-∙ …] gives a result of the form [! (_∙_ …) == …],
@@ -89,7 +91,7 @@ module _ {i} {A : Type i} where
   -}
 
   !-∙ : {x y z : A} (p : x == y) (q : y == z) → ! (p ∙ q) == ! q ∙ ! p
-  !-∙ idp idp = idp
+  !-∙ idp q = ! (∙-unit-r (! q))
 
   !-∙◃ : {x y z : A} (p : x == y) (q : y == z) → ! (p ∙ q) ◃∎ =ₛ ! q ◃∙ ! p ◃∎
   !-∙◃ idp idp = =ₛ-in idp
@@ -102,6 +104,9 @@ module _ {i} {A : Type i} where
 
   ∙'-! : {x y z : A} (q : y == z) (p : x == y) → ! q ∙' ! p == ! (p ∙' q)
   ∙'-! idp idp = idp
+
+  !-∙'=∙ : {x y z : A} (p : x == y) (q : y == z) → ! (p ∙' q) == ! q ∙ ! p
+  !-∙'=∙ p idp = idp
 
   !-! : {x y : A} (p : x == y) → ! (! p) == p
   !-! idp = idp
@@ -116,11 +121,20 @@ module _ {i} {A : Type i} where
   !-inv-l-∙ : {x y z : A} (q : x == y) (p : y == z) → ! q ∙ q ∙ p == p
   !-inv-l-∙ idp p = idp
 
+  !-unit-r-∙-!-! : {x y z : A} (q : y == x) (p : y == z) → (! q ∙ idp) ∙ p == ! (! p ∙ q ∙ idp)
+  !-unit-r-∙-!-! idp p = ! (ap ! (∙-unit-r (! p)) ∙ !-! p)
+
   ∙'-∙-unit-r-!-inv-l : {x y : A} (p : x == y) → ((idp ∙' ! p) ∙ idp) ∙' p ∙ idp == idp
   ∙'-∙-unit-r-!-inv-l idp = idp
 
   !-!-inv-∙'-∙ : {x y z u w : A} (p : x == y) (q : u == z) (r : u == y) (q' : y == w) → ((p ∙' ! r) ∙ q) ∙' ! q ∙ r ∙ q' == p ∙ q'
   !-!-inv-∙'-∙ p idp idp idp = idp
+
+  !-inv-l-∙-!-! : {x y z : A} (p : x == y) (q : z == y) → ! (p ∙ ! q) ∙ p == q
+  !-inv-l-∙-!-! idp q = ∙-unit-r (! (! q)) ∙ !-! q
+
+  pth-∙-!-!-cl : {x y z  : A} (p : x == y) (q : x == z) → q ∙ ! (! p ∙ q) == p
+  pth-∙-!-!-cl idp q = !-inv-r q
 
   !-!-∙-pth : {x y z w : A} (p : x == y) (q : x == z) {c : y == w} → ! (! p ∙ q) ∙ c == ! q ∙ p ∙ c
   !-!-∙-pth idp idp = idp

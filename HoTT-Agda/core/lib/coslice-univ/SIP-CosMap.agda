@@ -3,70 +3,76 @@
 open import lib.Basics
 open import lib.SIP
 open import lib.types.Sigma
+open import lib.types.Paths
 open import Coslice
 
 module SIP-CosMap where
 
-module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {f : < A > X *→ Y} where
-
--- SIP for A-maps (or maps under A)
-
-  UndHomContr-aux :
-    is-contr
-      (Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g))
-        (λ (h , K) → Σ ((a : A) → h (str X a) == str Y a) (λ p → ((a : A) → ! (K (str X a)) ∙ (snd f a) == p a))))
-  UndHomContr-aux =
-    equiv-preserves-level
-      ((Σ-contr-red
-        {P = λ (h , K) → Σ ((a : A) → h (str X a) == str Y a) (λ p → ((a : A) → ! (K (str X a)) ∙ (snd f a) == p a))}
-        (funhom-contr {f = fst f}))⁻¹)
-      {{equiv-preserves-level ((Σ-emap-r (λ _ → app=-equiv))) {{pathfrom-is-contr (snd f)}}}}
+module _ {i j k} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} where
 
   open MapsCos A
 
-  UndHomContr : is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
-  UndHomContr = equiv-preserves-level lemma {{UndHomContr-aux}}
-    where
-      lemma :
-        Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g))
-          (λ (h , K) → Σ ((a : A) → h (str X a) == str Y a)
-            (λ p → ((a : A) → ! (K (str X a)) ∙ (snd f a) == p a)))
-          ≃
-        Σ (X *→ Y) (λ g → < X > f ∼ g)
-      lemma =
-        equiv
-          (λ ((g , K) , (p , H)) → (g , (λ a → p a)) , ((λ x → K x) , (λ a → H a)))
-          (λ ((h , p) , (H , K)) → (h , H) , (p , K))
-          (λ ((h , p) , (H , K)) → idp)
-          λ ((g , K) , (p , H)) → idp
+  -- SIP for A-maps (or maps under A)
 
-  abstract
-    UndHomContr-abs : is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
-    UndHomContr-abs = UndHomContr
+  module _ {f : X *→ Y} where
 
-  UndFun-ind : ∀ {k} (P : (g : X *→ Y) → (< X > f ∼ g → Type k))
-    → P f ((λ _ → idp) , (λ _ → idp)) → {g : X *→ Y} (p : < X > f ∼ g) → P g p
-  UndFun-ind P = ID-ind-map {b = (λ _ → idp) , (λ _ → idp)} P UndHomContr-abs
+    UndHomContr-aux :
+      is-contr
+        (Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g))
+          (λ (h , K) → Σ ((a : A) → h (str X a) == str Y a) (λ p → ((a : A) → ! (K (str X a)) ∙ (snd f a) == p a))))
+    UndHomContr-aux =
+      equiv-preserves-level
+        ((Σ-contr-red
+          {P = λ (h , K) → Σ ((a : A) → h (str X a) == str Y a) (λ p → ((a : A) → ! (K (str X a)) ∙ (snd f a) == p a))}
+          (funhom-contr {f = fst f}))⁻¹)
+        {{equiv-preserves-level ((Σ-emap-r (λ _ → app=-equiv))) {{pathfrom-is-contr (snd f)}}}}
 
-  UndFun∼-from-== : {g : X *→ Y} → f == g → < X > f ∼ g
-  UndFun∼-from-== idp = (λ _ → idp) , (λ _ → idp)
+    UndHomContr : is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
+    UndHomContr = equiv-preserves-level lemma {{UndHomContr-aux}}
+      where
+        lemma :
+          Σ (Σ (ty X → ty Y) (λ g → fst f ∼ g))
+            (λ (h , K) → Σ ((a : A) → h (str X a) == str Y a)
+              (λ p → ((a : A) → ! (K (str X a)) ∙ (snd f a) == p a)))
+            ≃
+          Σ (X *→ Y) (λ g → < X > f ∼ g)
+        lemma =
+          equiv
+            (λ ((g , K) , (p , H)) → (g , (λ a → p a)) , ((λ x → K x) , (λ a → H a)))
+            (λ ((h , p) , (H , K)) → (h , H) , (p , K))
+            (λ ((h , p) , (H , K)) → idp)
+            λ ((g , K) , (p , H)) → idp
 
-  UndFun∼-to-== : {g : X *→ Y} → (< X > f ∼ g) → f == g
-  UndFun∼-to-== {g} = UndFun-ind (λ g _ → f == g) idp
+    abstract
+      UndHomContr-abs : is-contr (Σ (X *→ Y) (λ g → < X > f ∼ g))
+      UndHomContr-abs = UndHomContr
 
-  UndFun∼-β : UndFun∼-to-== ((λ _ → idp) , (λ _ → idp)) == idp
-  UndFun∼-β = ID-ind-map-β (λ g _ → f == g) UndHomContr-abs idp
+    UndHom-ind : ∀ {k} (P : (g : X *→ Y) → (< X > f ∼ g → Type k))
+      → P f ((λ _ → idp) , (λ _ → idp)) → {g : X *→ Y} (p : < X > f ∼ g) → P g p
+    UndHom-ind P = ID-ind-map {b = (λ _ → idp) , (λ _ → idp)} P UndHomContr-abs
 
-  UndFun-∼-==-≃ : {g : X *→ Y} → (f == g) ≃ (< X > f ∼ g)
-  UndFun-∼-==-≃ = equiv UndFun∼-from-== UndFun∼-to-==
-    (UndFun-ind (λ g H → UndFun∼-from-== (UndFun∼-to-== H) == H) (ap UndFun∼-from-== UndFun∼-β)) aux
-    where
-      aux : ∀ {g} (e : f == g) → UndFun∼-to-== (UndFun∼-from-== e) == e
-      aux idp = UndFun∼-β
+    UndHom∼-from-== : {g : X *→ Y} → f == g → < X > f ∼ g
+    UndHom∼-from-== idp = (λ _ → idp) , (λ _ → idp)
 
-  fst=-UndFun∼ : {g : X *→ Y} (p : < X > f ∼ g) → λ= (fst p) == fst= (UndFun∼-to-== p)
-  fst=-UndFun∼ {g} = UndFun-ind (λ g p → λ= (fst p) == fst= (UndFun∼-to-== p)) (! (λ=-η idp) ∙ ! (ap fst= UndFun∼-β))
-  
+    UndHom∼-to-== : {g : X *→ Y} → (< X > f ∼ g) → f == g
+    UndHom∼-to-== {g} = UndHom-ind (λ g _ → f == g) idp
+
+    UndHom∼-β : UndHom∼-to-== ((λ _ → idp) , (λ _ → idp)) == idp
+    UndHom∼-β = ID-ind-map-β (λ g _ → f == g) UndHomContr-abs idp
+
+    UndHom-∼-==-≃ : {g : X *→ Y} → (f == g) ≃ (< X > f ∼ g)
+    UndHom-∼-==-≃ = equiv UndHom∼-from-== UndHom∼-to-==
+      (UndHom-ind (λ _ H → UndHom∼-from-== (UndHom∼-to-== H) == H) (ap UndHom∼-from-== UndHom∼-β)) aux
+      where
+        aux : ∀ {g} (e : f == g) → UndHom∼-to-== (UndHom∼-from-== e) == e
+        aux idp = UndHom∼-β
+
+    fst=-UndHom∼ : {g : X *→ Y} (p : < X > f ∼ g) → λ= (fst p) == fst= (UndHom∼-to-== p)
+    fst=-UndHom∼ {g} = UndHom-ind (λ g p → λ= (fst p) == fst= (UndHom∼-to-== p)) (! (λ=-η idp) ∙ ! (ap fst= UndHom∼-β))
+
+  UndHomContr-rev : {f : X *→ Y} → is-contr (Σ (X *→ Y) (λ g → < X > g ∼ f))
+  UndHomContr-rev = equiv-preserves-level (Σ-emap-r (λ H → UndHom-∼-==-≃ ∘e !-equiv ∘e UndHom-∼-==-≃ ⁻¹)) {{UndHomContr-abs}}
+
 module _ {j} (A : Type j) where
 
   open MapsCos A
@@ -79,7 +85,8 @@ module _ {j} (A : Type j) where
   free-forg-cos : ∀ {ℓ₁ ℓ₂} {X : Type ℓ₁} {Y : Coslice ℓ₂ j A} → (*[ Coprod X A , inr ] *→ Y) ≃ (X → ty Y)
   free-forg-cos {X = X} {Y} = equiv (λ m → fst m ∘ inl) (λ f → cos-map-promote {X = X} {Y = Y} f , λ _ → idp)
     (λ _ → idp)
-    (λ m → UndFun∼-to-== ((λ { (inl x) → idp ; (inr a) → ! (snd m a) }) , (λ a → ap (λ p → p ∙ idp) (!-! (snd m a)) ∙ ∙-unit-r (snd m a))))
+    (λ m → UndHom∼-to-== $
+      (λ { (inl x) → idp ; (inr a) → ! (snd m a) }) , (λ a → ap (λ p → p ∙ idp) (!-! (snd m a)) ∙ ∙-unit-r (snd m a)))
 
 module _ {i j k l} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A} where
 
@@ -87,9 +94,9 @@ module _ {i j k l} {A : Type j} {X : Coslice i j A} {Y : Coslice k j A} {Z : Cos
 
   -- Our definition of right whiskering was correct.
   rwhisk-cos-pres : {f : < A > X *→ Y} {h₁ h₂ : Z *→ X} (H : < Z > h₁ ∼ h₂)
-    → UndFun∼-to-== (post-∘*-∼ f H) == ap (λ m → f ∘* m) (UndFun∼-to-== H)
-  rwhisk-cos-pres {f} {h₁} = UndFun-ind {f = h₁} (λ h₂ H → UndFun∼-to-== (post-∘*-∼ f H) == ap (λ m → f ∘* m) (UndFun∼-to-== H))
-    (UndFun∼-β ∙ ap (ap (λ m → f ∘* m)) (! (UndFun∼-β)))
+    → UndHom∼-to-== (post-∘*-∼ f H) == ap (λ m → f ∘* m) (UndHom∼-to-== H)
+  rwhisk-cos-pres {f} {h₁} = UndHom-ind {f = h₁} (λ h₂ H → UndHom∼-to-== (post-∘*-∼ f H) == ap (λ m → f ∘* m) (UndHom∼-to-== H))
+    (UndHom∼-β ∙ ap (ap (λ m → f ∘* m)) (! (UndHom∼-β)))
 
 -- SIP for homotopies of A-homotopies
 
@@ -111,26 +118,48 @@ module _ {j} {A : Type j} {ℓ₁ ℓ₂} {X : Coslice ℓ₁ j A} {Y : Coslice 
           funhom-contr)⁻¹)
         {{funhom-contr}}
 
+    ∼∼-cos-Contr : is-contr (Σ (< X > h₁ ∼ h₂) (λ H₂ → < X > H₁ ∼∼ H₂))
+    ∼∼-cos-Contr = equiv-preserves-level lemma {{∼∼-cos-Contr-aux}} 
+      where
+        lemma :
+          Σ (Σ (fst h₁ ∼ fst h₂) (λ φ → fst H₁ ∼ φ))
+            (λ (φ , K) → Σ ((a : A) → ! (φ (str X a)) ∙ snd h₁ a == snd h₂ a)
+              (λ ρ → (a : A) → ap (λ p → ! p ∙ snd h₁ a) (! (K (str X a))) ∙ snd H₁ a == ρ a))
+            ≃
+          Σ (< X > h₁ ∼ h₂) (λ H₂ → < X > H₁ ∼∼ H₂)
+        lemma =
+          equiv
+            (λ ((φ , K) , ρ , coh) → (φ , ρ) , (K , coh))
+            (λ ((φ , ρ) , (K , coh)) → (φ , K) , ρ , coh)
+            (λ _ → idp)
+            λ _ → idp
+
     abstract
-      ∼∼-cos-Contr : is-contr (Σ (< X > h₁ ∼ h₂) (λ H₂ → < X > H₁ ∼∼ H₂))
-      ∼∼-cos-Contr = equiv-preserves-level lemma {{∼∼-cos-Contr-aux}} 
-        where
-          lemma :
-            Σ (Σ (fst h₁ ∼ fst h₂) (λ φ → fst H₁ ∼ φ))
-              (λ (φ , K) → Σ ((a : A) → ! (φ (str X a)) ∙ snd h₁ a == snd h₂ a)
-                (λ ρ → (a : A) → ap (λ p → ! p ∙ snd h₁ a) (! (K (str X a))) ∙ snd H₁ a == ρ a))
-              ≃
-            Σ (< X > h₁ ∼ h₂) (λ H₂ → < X > H₁ ∼∼ H₂)
-          lemma =
-            equiv
-              (λ ((φ , K) , ρ , coh) → (φ , ρ) , (K , coh))
-              (λ ((φ , ρ) , (K , coh)) → (φ , K) , ρ , coh)
-              (λ _ → idp)
-              λ _ → idp
+      ∼∼-cos-Contr-abs : is-contr (Σ (< X > h₁ ∼ h₂) (λ H₂ → < X > H₁ ∼∼ H₂))
+      ∼∼-cos-Contr-abs = ∼∼-cos-Contr
 
     ∼∼-cos-ind : ∀ {k} (P : (H₂ : < X > h₁ ∼ h₂) → (< X > H₁ ∼∼ H₂ → Type k))
       → P H₁ ((λ _ → idp) , (λ _ → idp)) → {H₂ : < X > h₁ ∼ h₂} (p : < X > H₁ ∼∼ H₂) → P H₂ p
-    ∼∼-cos-ind P = ID-ind-map {b = (λ _ → idp) , (λ _ → idp)} P ∼∼-cos-Contr
+    ∼∼-cos-ind P = ID-ind-map {b = (λ _ → idp) , (λ _ → idp)} P ∼∼-cos-Contr-abs
+
+    ∼∼-cos∼-from-== : {H₂ : < X > h₁ ∼ h₂} → H₁ == H₂ → < X > H₁ ∼∼ H₂
+    ∼∼-cos∼-from-== idp = (λ _ → idp) , (λ _ → idp)
 
     ∼∼-cos∼-to-== : {H₂ : < X > h₁ ∼ h₂} → (< X > H₁ ∼∼ H₂) → H₁ == H₂
     ∼∼-cos∼-to-== {H₂} = ∼∼-cos-ind (λ H₂ _ → H₁ == H₂) idp
+
+    ∼∼-cos∼-to-==-β : ∼∼-cos∼-to-== ((λ _ → idp) , (λ _ → idp)) == idp
+    ∼∼-cos∼-to-==-β = ID-ind-map-β (λ H₂ _ → H₁ == H₂) ∼∼-cos-Contr-abs idp
+    
+    ∼∼-cos∼-==-≃ : {H₂ : < X > h₁ ∼ h₂} → (H₁ == H₂) ≃ (< X > H₁ ∼∼ H₂)
+    ∼∼-cos∼-==-≃ = equiv ∼∼-cos∼-from-== ∼∼-cos∼-to-== aux1 aux2
+      where
+
+        aux1 : {H₂ : < X > h₁ ∼ h₂} (h : < X > H₁ ∼∼ H₂) → ∼∼-cos∼-from-== (∼∼-cos∼-to-== h) == h
+        aux1 = ∼∼-cos-ind (λ _ h → ∼∼-cos∼-from-== (∼∼-cos∼-to-== h) == h) (ap ∼∼-cos∼-from-== ∼∼-cos∼-to-==-β)
+
+        aux2 : {H₂ : < X > h₁ ∼ h₂} (e : H₁ == H₂) → ∼∼-cos∼-to-== (∼∼-cos∼-from-== e) == e
+        aux2 idp = ∼∼-cos∼-to-==-β
+
+  ∼∼-cos-Contr-rev : {H₁ : < X > h₁ ∼ h₂} → is-contr (Σ (< X > h₁ ∼ h₂) (λ H₂ → < X > H₂ ∼∼ H₁))
+  ∼∼-cos-Contr-rev = equiv-preserves-level (Σ-emap-r (λ H → ∼∼-cos∼-==-≃ ∘e !-equiv ∘e ∼∼-cos∼-==-≃ ⁻¹)) {{∼∼-cos-Contr-abs}}

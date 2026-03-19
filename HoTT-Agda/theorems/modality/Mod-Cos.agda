@@ -24,8 +24,8 @@ module _ {ℓ j} (μ : Modality ℓ) (A : Type j) where
   id₁ Coslice-loc-wc X = id-cos {X = fst X}
   _◻_ Coslice-loc-wc g f = g ∘* f
   ρ Coslice-loc-wc f = idp
-  lamb Coslice-loc-wc f = UndFun∼-to-== (lunit-∘* f)
-  α Coslice-loc-wc h g f = UndFun∼-to-== (*→-assoc h g f)
+  lamb Coslice-loc-wc f = UndHom∼-to-== (lunit-∘* f)
+  α Coslice-loc-wc h g f = UndHom∼-to-== (*→-assoc h g f)
 
   module _ (X : ob Coslice-loc-wc) where
 
@@ -141,11 +141,11 @@ module _ {ℓ j} (μ : Modality ℓ) (A : Type j) where
 
   abstract
     ap-Mod-cos-coh : {X : Coslice ℓ j A} {Y : Coslice ℓ j A} {h₁ h₂ : Mod-cos X *→ Y} (H : < Mod-cos X > h₁ ∼ h₂)
-      → ap Mod-cos-hom (UndFun∼-to-== H) == UndFun∼-to-== (ap-Mod-cos-hom H)
+      → ap Mod-cos-hom (UndHom∼-to-== H) == UndHom∼-to-== (ap-Mod-cos-hom H)
     ap-Mod-cos-coh {h₁ = h₁} = 
-      UndFun-ind {f = h₁} (λ h₂ H → ap Mod-cos-hom (UndFun∼-to-== H) == UndFun∼-to-== (ap-Mod-cos-hom H))
-        (ap (ap Mod-cos-hom) UndFun∼-β ∙
-        ! (ap UndFun∼-to-== (∼∼-cos∼-to-== (ap-Mod-cos-hom-id {f = h₁})) ∙ UndFun∼-β))
+      UndHom-ind {f = h₁} (λ h₂ H → ap Mod-cos-hom (UndHom∼-to-== H) == UndHom∼-to-== (ap-Mod-cos-hom H))
+        (ap (ap Mod-cos-hom) UndHom∼-β ∙
+        ! (ap UndHom∼-to-== (∼∼-cos∼-to-== (ap-Mod-cos-hom-id {f = h₁})) ∙ UndHom∼-β))
 
   -- naturality of hom map in the codomain
   Mod-cos-cod : {X : Coslice ℓ j A} {Y : Coslice ℓ j A} {Z : Coslice ℓ j A}
@@ -320,40 +320,40 @@ module _ {ℓ j} (μ : Modality ℓ) (A : Type j) where
 
     abstract
       Mod-cos-is-2-coher :
-        ap (λ m → m ∘* f₃) (UndFun∼-to-== (Mod-cos-dom f₂ f₁)) ◃∙
-        UndFun∼-to-== (Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂)) ◃∙
-        ap Mod-cos-hom (UndFun∼-to-== (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
+        ap (λ m → m ∘* f₃) (UndHom∼-to-== (Mod-cos-dom f₂ f₁)) ◃∙
+        UndHom∼-to-== (Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂)) ◃∙
+        ap Mod-cos-hom (UndHom∼-to-== (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
           =ₛ
-        UndFun∼-to-== (*→-assoc (Mod-cos-hom f₁) f₂ f₃) ◃∙
-        UndFun∼-to-== (Mod-cos-dom (f₂ ∘* f₃) f₁) ◃∙
-        ap Mod-cos-hom (ap (λ m → f₁ ∘* m) (UndFun∼-to-== (Mod-cos-fmap-∘ f₂ f₃))) ◃∎
+        UndHom∼-to-== (*→-assoc (Mod-cos-hom f₁) f₂ f₃) ◃∙
+        UndHom∼-to-== (Mod-cos-dom (f₂ ∘* f₃) f₁) ◃∙
+        ap Mod-cos-hom (ap (λ m → f₁ ∘* m) (UndHom∼-to-== (Mod-cos-fmap-∘ f₂ f₃))) ◃∎
       Mod-cos-is-2-coher = 
-        ap (λ m → m ∘* f₃) (UndFun∼-to-== (Mod-cos-dom f₂ f₁)) ◃∙
-        UndFun∼-to-== (Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂)) ◃∙
-        ap Mod-cos-hom (UndFun∼-to-== (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
+        ap (λ m → m ∘* f₃) (UndHom∼-to-== (Mod-cos-dom f₂ f₁)) ◃∙
+        UndHom∼-to-== (Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂)) ◃∙
+        ap Mod-cos-hom (UndHom∼-to-== (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
           =ₛ₁⟨ 2 & 1 & ap-Mod-cos-coh (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃)) ⟩
-        ap (λ m → m ∘* f₃) (UndFun∼-to-== (Mod-cos-dom f₂ f₁)) ◃∙
-        UndFun∼-to-== (Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂)) ◃∙
-        UndFun∼-to-== (ap-Mod-cos-hom (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
+        ap (λ m → m ∘* f₃) (UndHom∼-to-== (Mod-cos-dom f₂ f₁)) ◃∙
+        UndHom∼-to-== (Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂)) ◃∙
+        UndHom∼-to-== (ap-Mod-cos-hom (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
           =ₛ₁⟨ 0 & 1 & whisk-cos-conv-r (Mod-cos-dom f₂ f₁) ⟩
-        UndFun∼-to-== (pre-∘*-∼ f₃ (Mod-cos-dom f₂ f₁)) ◃∙
-        UndFun∼-to-== (Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂)) ◃∙
-        UndFun∼-to-== (ap-Mod-cos-hom (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
+        UndHom∼-to-== (pre-∘*-∼ f₃ (Mod-cos-dom f₂ f₁)) ◃∙
+        UndHom∼-to-== (Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂)) ◃∙
+        UndHom∼-to-== (ap-Mod-cos-hom (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
           =ₛ⟨ cos∘-conv-tri ⟩
-        UndFun∼-to-==
+        UndHom∼-to-==
           (pre-∘*-∼ f₃ (Mod-cos-dom f₂ f₁) ∼∘-cos
           Mod-cos-dom f₃ (f₁ ∘* Mod-cos-fmap f₂) ∼∘-cos
           ap-Mod-cos-hom (*→-assoc f₁ (Mod-cos-fmap f₂) (Mod-cos-fmap f₃))) ◃∎
-          =ₛ₁⟨ ap UndFun∼-to-== (∼∼-cos∼-to-== two-coher-Mod-cos) ⟩
-        UndFun∼-to-==
+          =ₛ₁⟨ ap UndHom∼-to-== (∼∼-cos∼-to-== two-coher-Mod-cos) ⟩
+        UndHom∼-to-==
           (*→-assoc (Mod-cos-hom f₁) f₂ f₃ ∼∘-cos
           Mod-cos-dom (f₂ ∘* f₃) f₁ ∼∘-cos
           ap-Mod-cos-hom (post-∘*-∼ f₁ (Mod-cos-fmap-∘ f₂ f₃))) ◃∎
           =ₛ⟨ !ₛ cos∘-conv-tri ⟩
-        UndFun∼-to-== (*→-assoc (Mod-cos-hom f₁) f₂ f₃) ◃∙
-        UndFun∼-to-== (Mod-cos-dom (f₂ ∘* f₃) f₁) ◃∙
-        UndFun∼-to-== (ap-Mod-cos-hom (post-∘*-∼ f₁ (Mod-cos-fmap-∘ f₂ f₃))) ◃∎
+        UndHom∼-to-== (*→-assoc (Mod-cos-hom f₁) f₂ f₃) ◃∙
+        UndHom∼-to-== (Mod-cos-dom (f₂ ∘* f₃) f₁) ◃∙
+        UndHom∼-to-== (ap-Mod-cos-hom (post-∘*-∼ f₁ (Mod-cos-fmap-∘ f₂ f₃))) ◃∎
           =ₛ₁⟨ 2 & 1 & ! (ap (ap Mod-cos-hom) (whisk-cos-conv-l (Mod-cos-fmap-∘ f₂ f₃)) ∙ ap-Mod-cos-coh _) ⟩
-        UndFun∼-to-== (*→-assoc (Mod-cos-hom f₁) f₂ f₃) ◃∙
-        UndFun∼-to-== (Mod-cos-dom (f₂ ∘* f₃) f₁) ◃∙
-        ap Mod-cos-hom (ap (λ m → f₁ ∘* m) (UndFun∼-to-== (Mod-cos-fmap-∘ f₂ f₃))) ◃∎ ∎ₛ
+        UndHom∼-to-== (*→-assoc (Mod-cos-hom f₁) f₂ f₃) ◃∙
+        UndHom∼-to-== (Mod-cos-dom (f₂ ∘* f₃) f₁) ◃∙
+        ap Mod-cos-hom (ap (λ m → f₁ ∘* m) (UndHom∼-to-== (Mod-cos-fmap-∘ f₂ f₃))) ◃∎ ∎ₛ

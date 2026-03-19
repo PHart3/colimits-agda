@@ -36,6 +36,6 @@ module _ {ℓv ℓe ℓ ℓd ℓc} {Γ : Graph ℓv ℓe} {A : Type ℓ} (F : Co
     snd RLfun-∼ = RLfunEqBP
 
     RLfunEq : (f , fₚ) == RLfun (f , fₚ)
-    RLfunEq = UndFun∼-to-== RLfun-∼
+    RLfunEq = UndHom∼-to-== RLfun-∼
 
     

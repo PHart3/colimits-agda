@@ -56,6 +56,10 @@ module _ {i j} {A : Type i} {B : Type j} where
     → (↓-cst-out (↓-cst-in {p = p} q) == q)
   ↓-cst-β idp q = idp
 
+  ↓-cst-== : {x y : A} {p : x == y} {u v : B}
+    → (u == v) ≃ (u == v [ (λ _ → B) ↓ p ])
+  ↓-cst-== {p = idp} = ide _
+
   {- Interaction of [↓-cst-in] with [_∙_] -}
   ↓-cst-in-∙ : {x y z : A} (p : x == y) (q : y == z) {u v w : B}
     (p' : u == v) (q' : v == w)
@@ -316,7 +320,7 @@ module _ {i j} {A : Type i} where
   to-transp!-equiv B p =
     equiv to-transp! (from-transp! B p) (to-transp!-β B p) (to-transp!-η)
 
--- apd-tr conversion
+  -- apd-tr conversion
 
   from-transp-g : (B : A → Type j) {a a' : A} (p : a == a') {u : B a} {v : B a'}
     → transport B p u == v → u == v [ B ↓ p ]

@@ -30,7 +30,7 @@ infixr 30 [_,_]_∼_
 [_,_]_∼_ :  ∀ {i j k} (A : Type j) (X : Coslice i j A) {Y : Coslice k j A} →
   < A > X *→ Y → < A > X *→ Y → Type (lmax (lmax i k) j)    
 [ A , *[ X , f ] ] ( h₁ , p₁ ) ∼ ( h₂ , p₂ ) =
-  Σ (h₁ ∼ h₂) (λ H → (a : A) →  ! (H (f a)) ∙ p₁ a == p₂ a)
+  Σ (h₁ ∼ h₂) (λ H → (a : A) → ! (H (f a)) ∙ p₁ a == p₂ a)
 
 module MapsCos {j} (A : Type j) where
 
@@ -46,7 +46,7 @@ module MapsCos {j} (A : Type j) where
   -- homotopy of A-maps
   infixr 30 <_>_∼_
   <_>_∼_ : ∀ {i k} (X : Coslice i j A) {Y : Coslice k j A} →
-    X *→ Y →  X *→ Y → Type (lmax (lmax i k) j)    
+    X *→ Y → X *→ Y → Type (lmax (lmax i k) j)    
   < X > h ∼ g = [ A , X ] h ∼ g 
 
   id-cos : ∀ {i} {X : Coslice i j A} → X *→ X
@@ -59,6 +59,14 @@ module MapsCos {j} (A : Type j) where
   snd (*→-assoc h₃ h₂ h₁) a =
     ap (λ p → p ∙ ap (fst h₃) (snd h₂ a) ∙ snd h₃ a) (ap-∘ (fst h₃) (fst h₂) (snd h₁ a)) ∙
     ! (ap-ap-∙-∙ (fst h₃) (fst h₂) (snd h₁ a) (snd h₂ a) (snd h₃ a))
+
+  *→-assoc-rev : ∀ {i k l ℓ} {X : Coslice i j A} {Y : Coslice k j A} {Z : Coslice l j A}
+    {W : Coslice ℓ j A} (h₃ : Z *→ W) (h₂ : Y *→ Z) (h₁ : X *→ Y) →
+    < X > h₃ ∘* (h₂ ∘* h₁) ∼ (h₃ ∘* h₂) ∘* h₁
+  fst (*→-assoc-rev h₃ h₂ h₁) x = idp
+  snd (*→-assoc-rev h₃ h₂ h₁) a =
+    ap-ap-∙-∙ (fst h₃) (fst h₂) (snd h₁ a) (snd h₂ a) (snd h₃ a) ∙ 
+    ap (λ p → p ∙ ap (fst h₃) (snd h₂ a) ∙ snd h₃ a) (∘-ap (fst h₃) (fst h₂) (snd h₁ a))
 
   lunit-∘* : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} (f : X *→ Y) → < X > f ∼ id-cos ∘* f
   lunit-∘* f = (λ _ → idp) , λ a → ! (∙-unit-r (snd f a)) ∙ ap (λ p → p ∙ idp) (! (ap-idf (snd f a)))
@@ -93,7 +101,7 @@ module MapsCos {j} (A : Type j) where
     ! (∙-assoc (fst H (str X a)) (! (fst H (str X a))) (snd h₁ a)) ∙
     ap (λ p → p ∙ snd h₁ a) (!-inv-r (fst H (str X a))) 
 
-  -- composition
+  -- homotopy composition
   infixr 40 _∼∘-cos_
   _∼∘-cos_ : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} {h₁ h₂ h₃ : X *→ Y}
     → < X > h₁ ∼ h₂ → < X > h₂ ∼ h₃ → < X > h₁ ∼ h₃
@@ -102,6 +110,17 @@ module MapsCos {j} (A : Type j) where
     (λ a →
       (ap (λ p → p ∙ snd h₁ a) (!-∙ (H₁ (str X a)) (K₁ (str X a))) ∙
       ∙-assoc (! (K₁ (str X a))) (! (H₁ (str X a))) (snd h₁ a)) ∙
+      ap (λ p → ! (K₁ (str X a)) ∙ p) (H₂ a) ∙ K₂ a)
+
+  -- composition with ∙'
+  infixr 45 _∼∘'-cos_
+  _∼∘'-cos_ : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} {h₁ h₂ h₃ : X *→ Y}
+    → < X > h₁ ∼ h₂ → < X > h₂ ∼ h₃ → < X > h₁ ∼ h₃
+  _∼∘'-cos_ {X = X} {h₁ = h₁} (H₁ , H₂) (K₁ , K₂) =
+    (λ x → H₁ x ∙' K₁ x) ,
+    (λ a →
+      ap (λ p → p ∙ snd h₁ a) (!-∙'=∙ (H₁ (str X a)) (K₁ (str X a))) ∙
+      ∙-assoc (! (K₁ (str X a))) (! (H₁ (str X a))) (snd h₁ a) ∙
       ap (λ p → ! (K₁ (str X a)) ∙ p) (H₂ a) ∙ K₂ a)
 
   -- identity homotopy
@@ -116,3 +135,22 @@ module MapsCos {j} (A : Type j) where
   <_>_∼∼_ X {h₁ = h₁} H₁ H₂ =
     Σ (fst H₁ ∼ fst H₂) (λ K →
       (a : A) → ap (λ p → ! p ∙ snd h₁ a) (! (K (str X a))) ∙ snd H₁ a == snd H₂ a)
+
+  -- the two definitions of homotopy composition agree
+  ∼∘-∼∼-∼∘'-cos : ∀ {i k} {X : Coslice i j A} {Y : Coslice k j A} {h₁ h₂ h₃ : X *→ Y} (p₁ : < X > h₁ ∼ h₂) (p₂ : < X > h₂ ∼ h₃) →
+    < X > p₁ ∼∘-cos p₂ ∼∼ p₁ ∼∘'-cos p₂
+  fst (∼∘-∼∼-∼∘'-cos p₁ p₂) x = ∙=∙' (fst p₁ x) (fst p₂ x)
+  snd (∼∘-∼∼-∼∘'-cos {X = X} {h₁ = h₁} p₁ p₂) a = aux
+    (fst p₁ (str X a)) (fst p₂ (str X a)) (snd h₁ a) (ap (λ p → ! _ ∙ p) (snd p₁ a) ∙ snd p₂ a)
+    where
+      aux : ∀ {ℓ} {T : Type ℓ} {x y z w : T} (q₁ : x == y) (q₂ : y == z) (q₃ : x == w) {r : z == w} (q₄ : ! q₂ ∙ ! q₁ ∙ q₃ == r) → 
+        ap (λ p → ! p ∙ q₃) (! (∙=∙' q₁ q₂)) ∙
+        (ap (λ p → p ∙ q₃) (!-∙ q₁ q₂) ∙
+        ∙-assoc (! q₂) (! q₁) q₃) ∙
+        q₄
+          ==
+        ap (λ p → p ∙ q₃) (!-∙'=∙ q₁ q₂) ∙
+        ∙-assoc (! q₂) (! q₁) q₃ ∙
+        q₄
+      aux idp idp idp q₄ = idp
+      

@@ -17,9 +17,7 @@ module _ {j ℓ} {A : Type j} (X : Coslice ℓ j A) where
   contr-iso-cos-aux : is-contr $
     Σ (Σ (Type ℓ) (λ Y₀ → ty X ≃ Y₀)) (λ (Y₀ , eqv) → Σ (A → Y₀) (λ σ → –> eqv ∘ str X ∼ σ))
   contr-iso-cos-aux = 
-    equiv-preserves-level
-      ((Σ-contr-red {A = Σ (Type ℓ) (λ Y₀ → ty X ≃ Y₀)}
-        ≃-tot-contr)⁻¹)
+    equiv-preserves-level ((Σ-contr-red {A = Σ (Type ℓ) (λ Y₀ → ty X ≃ Y₀)} ≃-tot-contr)⁻¹)
       {{funhom-contr}}
 
   contr-iso-cos : is-contr (Σ (Coslice ℓ j A) (λ Y → Σ (X *→ Y) (iso-cos A)))

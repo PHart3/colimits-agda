@@ -770,6 +770,13 @@ module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
     → transport (λ x → f x == g x) p q ◃∎ =ₛ (! (ap f p)) ◃∙ q ◃∙ (ap g p) ◃∎
   transp-pth-◃ idp q = =ₛ-in (! (∙-unit-r q))
 
+  transp-pth-sq : {x y : A} {g : A → B} {p : x == y} {q : f x == g x} {r : f y == g y}
+    → (transport (λ x → f x == g x) p q == r) == (q ∙ ap g p == ap f p ∙ r)
+  transp-pth-sq {p = idp} {q} = aux q
+    where
+      aux : ∀ {ℓ} {X : Type ℓ} {x y : X} (t {t'} : x == y) → (t == t') == (t ∙ idp == t')
+      aux idp = idp
+
   transp-path-cmp-idf : (g : B → A) {x y : A} (p : x == y) (q : g (f x) == x)
     → transport (λ z → g (f z) == z) p q ◃∎ =ₛ ! (ap g (ap f p)) ◃∙ q ◃∙ p ◃∎
   transp-path-cmp-idf g idp q = =ₛ-in (! (∙-unit-r q))
