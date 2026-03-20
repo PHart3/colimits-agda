@@ -70,13 +70,14 @@ We have successfully tested the following Docker container on Linux but not on o
 2. Generate HTML files:
 
    ```bash
-   mkdir -p ./html1 ./html2
+   mkdir -p ./html1 ./html2 ./html3
    docker run --mount type=bind,source=./html1,target=/build/Colimit-coslice/html \
-     --mount type=bind,source=./html2,target=/build/HoTT-Agda/html \
+     --mount type=bind,source=./html2,target=/build/Pullback-stability/html \
+	 --mount type=bind,source=./html3,target=/build/HoTT-Agda/html \
      colimit
    ```
 
-   The HTML files will be under `html1/` and `html2/`.
+   The HTML files will be under `html1/`, `html2/`, and `html3/`.
 
 ## Acknowledgement
 
