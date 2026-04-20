@@ -35,6 +35,7 @@ module _ {i j} {C : WildCat {i} {j}} {ℓv ℓe} {G : Graph ℓv ℓe} where
       cogap-map-wc-β : (cl : is-colim K) {b : _} {V : Cocone-wc D b} → post-cmp-coc K _ (cogap-map-wc cl V) == V
       cogap-map-wc-β cl {V = V} = is-equiv.f-g (cl _) V
 
+    -- uniqueness of colimits
     module _ {a₁ a₂ : ob C} {K₁ : Cocone-wc D a₁} {K₂ : Cocone-wc D a₂} (pent : pentagon-wc C) where
 
       module _ (trig : triangle-wc C) where
