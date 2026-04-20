@@ -8,15 +8,15 @@ open import lib.wild-cats.Adjoint
 open import lib.wild-cats.Filler-wc
 
 {- A left adjoint between univalent wild bicategories preserves the left class of an OFS
-   as soon as its right adjoint preserves the right class, under a reasonable hexagon
-   coherence condition on the adjunction. -}
+   as soon as its right adjoint preserves the right class, under a reasonable interchange
+   law on the adjunction. -}
 
 module lib.wild-cats.Adj-OFS-wc where
 
-open import lib.wild-cats.Adj-hexagon public  -- statement of the hexagon identity for a wild adjunction
+open import lib.wild-cats.Adj-hexagon public  -- statement of the interchange law for a wild adjunction
 
 module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {j₂}} {L : Functor-wc C D} {R : Functor-wc D C} (adj : Adjunction L R)
-  (hex : adj-wc-hexagon adj) where  -- assumption of hexagon coherence condition
+  (hex : adj-wc-hexagon adj) where  -- assumption of interchange law
 
   module _ {a b : ob C} {x y : ob D} {f : hom C a b} {g : hom D x y} (u : hom D (obj L a) x) (v : hom D (obj L b) y)
     (S : ⟦ D ⟧ v ◻ arr L f == ⟦ D ⟧ g ◻ u) where

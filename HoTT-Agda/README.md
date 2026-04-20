@@ -8,8 +8,9 @@ development of coslice colimits.
 In addition, it contributes new machinery that is noteworthy in its own right:
 
 - It contains a formal proof that wild adjunctions satisfying a higher hexagon identity
-  preserve orthogonal factorization systems in a precise sense. It also verifies that
-  the colimit-constant adjunction on Type satisfies this hexagon identity.
+  expressing an interchange law preserve orthogonal factorization systems in a precise 
+  sense. It also verifies that the colimit-constant adjunction on Type satisfies this 
+  hexagon identity.
 - It contains a formal proof that suspension is 2-coherent as a left adjoint to loop.
   We prove that suspension preserves graph-indexed colimits as a corollary. 
 - It contains a formal proof of the 2-coherence of modality functors on coslices of 
@@ -51,8 +52,10 @@ The main library is more or less divided into three parts.
   Here are some notable results found in this part:
 	- A 2-coherent left adjoint between wild categories preserves colimiting cocones (`Ladj-colim.agda`).
 	- Given univalent wild bicategories equipped with orthogonal factorization systems and 
-	  a wild adjunction between them that satisfies a reasonable hexagon identity between the proofs of naturality in each 
+	  a wild adjunction between them that satisfies a reasonable interchange law between the proofs of naturality in each 
 	  varaible, if the right adjoint preserves the right class, then the left adjoint preserves the left class (`Adj-OFS-wc.agda`).
+	  This interchange law is precisely the condition that the adjunction's two separate naturality squares assemble into 
+	  a joint pseudonaturality square (with respect to composition).
 	- A lot of general theory about (co)cones.
 
 ### Homotopy (directory `theorems/homotopy/`)
@@ -64,7 +67,7 @@ This directory contains two proofs related to higher coherence conditions on wil
 	construction of coslice colimits from `../Colimit-coslice/`. Note that the proof of 
 	2-coherence relies on our work on homogeneous types.
 - a proof that the wild adjunction between colimit and the constant diagram functor on Type
-  satisfies the hexagon condition and thus that colimit preserves the left class of an OFS on Type.
+  satisfies the interchange law and thus that colimit preserves the left class of an OFS on Type.
 
 ### Modality (directory `theorems/modality/`)
 

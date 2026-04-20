@@ -4,13 +4,15 @@ open import lib.Basics
 open import lib.wild-cats.WildCat
 open import lib.wild-cats.Adjoint
 
--- the hexagon coherence condition for a wild adjunction
+-- the hexagon coherence condition for a wild adjunction expressing that its naturality squares can be interchanged
+{- This is exactly the condition making the wild adjunction pseudonatural on the product wild category. -}
 
 module lib.wild-cats.Adj-hexagon where
 
 module _ {i₁ i₂ j₁ j₂} {C : WildCat {i₁} {j₁}} {D : WildCat {i₂} {j₂}}
   {L : Functor-wc C D} {R : Functor-wc D C} (adj : Adjunction L R) where
 
+  -- the interchange law
   adj-wc-hexagon : Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
   adj-wc-hexagon = {a b : ob C} {x y : ob D} (f : hom C a b) (g : hom D x y) (d : hom D (obj L b) x) →
     ap (λ m → ⟦ C ⟧ m ◻ f) (nat-cod adj g d) ∙
