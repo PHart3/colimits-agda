@@ -19,7 +19,7 @@
   is a 2-coherent left adjoint to Loop-space, for which we develop some new properties of homogeneous types. As a result, we get 
   a formal proof that suspension preserves colimits. We also prove that modalities, viewed as functors on coslices of Type, are 
   2-coherent left adjoints, hence preserve colimits. Another notable result is that an adjunction satisfying a reasonable interchange
-  law between the proofs of naturality in each varaible respects, in a precise sense, orthogonal factorization systems.
+  law between the proofs of naturality in each variable respects, in a precise sense, orthogonal factorization systems.
   We show that the colimit functor on Type-valued diagrams satisfies this law.
 
   See `HoTT-Agda/README.md`

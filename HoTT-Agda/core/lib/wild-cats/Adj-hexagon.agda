@@ -5,7 +5,7 @@ open import lib.wild-cats.WildCat
 open import lib.wild-cats.Adjoint
 
 -- the hexagon coherence condition for a wild adjunction expressing that its naturality squares can be interchanged
-{- This is exactly the condition making the wild adjunction pseudonatural on the product wild category. -}
+{- This holds for all wild adjunctions that are pseudonatural on the relevant product wild category. -}
 
 module lib.wild-cats.Adj-hexagon where
 

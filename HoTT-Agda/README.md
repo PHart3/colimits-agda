@@ -53,9 +53,9 @@ The main library is more or less divided into three parts.
 	- A 2-coherent left adjoint between wild categories preserves colimiting cocones (`Ladj-colim.agda`).
 	- Given univalent wild bicategories equipped with orthogonal factorization systems and 
 	  a wild adjunction between them that satisfies a reasonable interchange law between the proofs of naturality in each 
-	  varaible, if the right adjoint preserves the right class, then the left adjoint preserves the left class (`Adj-OFS-wc.agda`).
-	  This interchange law is precisely the condition that the adjunction's two separate naturality squares assemble into 
-	  a joint pseudonaturality square (with respect to composition).
+	  variable, if the right adjoint preserves the right class, then the left adjoint preserves the left class (`Adj-OFS-wc.agda`).
+	  This interchange law holds for all wild adjunctions that are jointly pseudonatural (with respect to composition), i.e.,
+	  pseudonatural on the relevant product wild category. (This is a stronger condition than 2-coherence on the left adjoint.)
 	- A lot of general theory about (co)cones.
 
 ### Homotopy (directory `theorems/homotopy/`)
