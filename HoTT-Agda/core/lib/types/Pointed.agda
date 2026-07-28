@@ -18,6 +18,27 @@ module lib.types.Pointed where
 
 {- Pointed maps -}
 
+infixr 0 _⊙–→_
+
+_⊙–→_ : ∀ {i j} (X : Ptd i) (Y : Ptd j) → Ptd (lmax i j)
+X ⊙–→ Y = ⊙[ (X ⊙→ Y) , ⊙cst ]
+
+⊙hom-cod-fmap : ∀ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k}
+  → (Y ⊙→ Z) → (X ⊙–→ Y) ⊙→ (X ⊙–→ Z)
+fst (⊙hom-cod-fmap f) m = f ⊙∘ m
+snd (⊙hom-cod-fmap (_ , idp)) = idp
+
+⊙hom-cod-∘ : ∀ {i j k₁ k₂} {X : Ptd i} {Y : Ptd j} {Z₁ : Ptd k₁} {Z₂ : Ptd k₂}
+  → (g : Z₁ ⊙→ Z₂) (f : Y ⊙→ Z₁)
+  → ⊙hom-cod-fmap (g ⊙∘ f) ⊙-crd∼ ⊙hom-cod-fmap {X = X} g ⊙∘ ⊙hom-cod-fmap {X = X} f
+fst (⊙hom-cod-∘ _ _) (_ , idp) = idp
+snd (⊙hom-cod-∘ (_ , idp) (_ , idp)) = idp
+
+⊙hom-cod-idf : ∀ {i j} {X : Ptd i} {Y : Ptd j}
+  → ⊙hom-cod-fmap {X = X} (⊙idf Y) ⊙-crd∼ ⊙idf (X ⊙–→ Y)
+fst ⊙hom-cod-idf (_ , idp) = idp
+snd ⊙hom-cod-idf = idp
+
 ⊙app= : ∀ {i j} {X : Ptd i} {Y : Ptd j} {f g : X ⊙→ Y}
   → f == g → f ⊙∼ g
 ⊙app= {X = X} {Y = Y} p =
@@ -317,6 +338,16 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
     lemma : {Y : Ptd j} (⊙e : X ⊙≃ Y)
       → snd (⊙–> ⊙e ⊙∘ ⊙<– ⊙e) == is-equiv.f-g (snd ⊙e) (pt Y)
     lemma ((f , idp) , f-ise) = ∙-unit-r _ ∙ is-equiv.adj f-ise (pt X)
+
+  ⊙<–-inv-l-pt : (⊙e : X ⊙≃ Y) →
+    ! (fst (⊙<–-inv-l ⊙e) (pt X)) ◃∙ ap (fst (⊙<– ⊙e)) (snd (⊙–> ⊙e)) ◃∙ snd (⊙<– ⊙e) ◃∎ =ₛ idp ◃∎
+  ⊙<–-inv-l-pt ⊙e = =ₛ-in (snd (⊙-to-crd (⊙<–-inv-l ⊙e)))
+
+  ⊙<–-inv-r-pt : (⊙e : X ⊙≃ Y) →
+    ap (fst (⊙–> ⊙e)) (snd (⊙<– ⊙e)) ◃∙ snd (⊙–> ⊙e) ◃∎ =ₛ fst (⊙<–-inv-r ⊙e) (pt Y) ◃∎
+  ⊙<–-inv-r-pt ⊙e =
+    pre-rotate'-out {q = idp ◃∎} (=ₛ-in (snd (⊙-to-crd (⊙<–-inv-r ⊙e)))) ∙ₛ
+    =ₛ-in (∙-unit-r (fst (⊙<–-inv-r ⊙e) (pt Y)))
 
 module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} (⊙e : X ⊙≃ Y) where
 

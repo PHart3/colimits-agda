@@ -23,6 +23,12 @@ module lib.wild-cats.Ptd-wc where
   PtdFunctor : (i j : ULevel) → Type (lsucc (lmax i j))
   PtdFunctor i j = Functor-wc (Ptd-wc i) (Ptd-wc j)
 
+  ⊙hom-codF : ∀ {i j} (X : Ptd i) → PtdFunctor j (lmax i j)
+  obj (⊙hom-codF X) Y = X ⊙–→ Y
+  arr (⊙hom-codF X) f = ⊙hom-cod-fmap f
+  id (⊙hom-codF X) Y = ⊙-crd∼-to-== ⊙hom-cod-idf
+  comp (⊙hom-codF X) f g = ⊙-crd∼-to-== (⊙hom-cod-∘ g f)
+
   Forg-funct-ptd : ∀ {i} → Functor-wc (Ptd-wc i) (Type-wc i)
   obj Forg-funct-ptd = de⊙
   arr Forg-funct-ptd = fst
