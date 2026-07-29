@@ -1,11 +1,11 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.types.Graph
 open import lib.types.Unit
 open import lib.types.Bool
 open import lib.types.Circle
-open import lib.wild-cats.WildCat
-open import lib.wild-cats.Adjoint
+open import lib.wild-cats.WildCats
 
 -- a wild left adjoint and a colimiting cocone that it fails to preserve
 
@@ -63,3 +63,11 @@ comp Λ-wfunctor _ _ = idp
 iso Λ-wadjunction = ide _
 nat-cod Λ-wadjunction _ _ = idp
 nat-dom Λ-wadjunction _ _ = idp
+
+lapc-cexmp-gr : Graph lzero lzero
+Obj lapc-cexmp-gr = Unit
+Hom lapc-cexmp-gr _ _ = Unit
+
+lapc-cexmp-diag : Diagram lapc-cexmp-gr lapc-cexmp-wcat
+D₀ lapc-cexmp-diag unit = false
+D₁ lapc-cexmp-diag = idf Unit
