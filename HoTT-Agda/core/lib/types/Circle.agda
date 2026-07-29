@@ -2,11 +2,13 @@
 
 open import lib.Basics
 open import lib.types.Paths
+open import lib.types.Unit
 open import lib.types.Bool
 open import lib.types.Suspension
-open import lib.types.IteratedSuspension
 
 module lib.types.Circle where
+
+open import lib.types.IteratedSuspension public
 
 module _ where
   -- (already defined in IteratedSuspension.agda)
@@ -80,3 +82,6 @@ open S¹Rec public using () renaming (f to S¹-rec)
 S¹-rec-η : ∀ {i} {A : Type i} (f : S¹ → A)
   → ∀ x → S¹-rec (f base) (ap f loop) x == f x
 S¹-rec-η f = S¹-elim idp (↓-='-in' $ ! $ S¹Rec.loop-β (f base) (ap f loop))
+
+S¹-auto-loop : (x : S¹) → x == x
+S¹-auto-loop = S¹-elim loop (↓-idf=idf-in idp)
