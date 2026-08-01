@@ -1,12 +1,15 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.Equivalence2
+open import lib.types.Paths
 open import lib.types.Graph
 open import lib.types.Unit
 open import lib.types.Bool
 open import lib.types.Circle
 open import lib.types.Sigma
 open import lib.wild-cats.WildCats
+open import lib.wild-cats.Cocone-wc-SIP
 
 -- a wild left adjoint and a colimiting cocone that it fails to preserve
 
@@ -73,6 +76,8 @@ lapc-cexmp-diag : Diagram lapc-cexmp-gr lapc-cexmp-wcat
 D₀ lapc-cexmp-diag unit = false
 D₁ lapc-cexmp-diag = idf Unit
 
+-- colimiting cocone under lapc-cexmp-diag
+
 lapc-cexmp-colim-coc : Cocone-wc lapc-cexmp-diag true
 leg lapc-cexmp-colim-coc _ = base
 tri lapc-cexmp-colim-coc _ = loop
@@ -87,9 +92,27 @@ lapc-cexmp-coc-false = equiv-preserves-level aux {{Σ-level ⟨⟩ (λ _ → =-p
     aux = equiv (λ (unit , p) → cocone (idf Unit) (λ _ → idp)) (λ (cocone u p) → unit , idp)
       (λ (cocone u p) → coc-to-== _ ((λ unit → idp) , (λ _ → contr-has-all-paths {{=-preserves-level-instance}} _ _)))
       λ (unit , p) → pair= idp (contr-has-all-paths {{=-preserves-level-instance}} _ _)
-      where open import lib.wild-cats.Cocone-wc-SIP
 
 lapc-cexmp-iscolim : is-colim lapc-cexmp-colim-coc
 lapc-cexmp-iscolim true = snd (lapc-cexmp-coc-true ∘e S¹-univ-prop)
 lapc-cexmp-iscolim false = Unit-to-contr lapc-cexmp-coc-false
 
+-- Λ-wfunctor takes lapc-cexmp-colim-coc to non-colimiting cocone
+
+lapc-cexmp-colim-coc-Λ : Cocone-wc lapc-cexmp-diag true
+lapc-cexmp-colim-coc-Λ = F-coc Λ-wfunctor lapc-cexmp-colim-coc
+
+lapc-cexmp-coc-triv : Cocone-wc lapc-cexmp-diag true
+leg lapc-cexmp-coc-triv _ = base
+tri lapc-cexmp-coc-triv _ = idp
+
+lapc-cexmp-colim-coc-Λ-triv : lapc-cexmp-colim-coc-Λ == lapc-cexmp-coc-triv
+lapc-cexmp-colim-coc-Λ-triv = coc-to-== _ ((λ _ → idp) , (λ unit → inv-l-ap-idf loop))
+
+abstract
+  lapc-cexmp-Λ-not-colim : ¬ (is-colim lapc-cexmp-colim-coc-Λ)
+  lapc-cexmp-Λ-not-colim cl = loop-not-refl $
+    ∙'-canc-l (↓-idf=idf-out' (snd= (snd (contr-center (equiv-is-contr-map (snd (lapc-cexmp-coc-true ⁻¹) ∘ise triv-cl true) (base , loop))))))
+    where abstract
+      triv-cl : is-colim lapc-cexmp-coc-triv
+      triv-cl = transport is-colim lapc-cexmp-colim-coc-Λ-triv cl

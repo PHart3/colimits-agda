@@ -115,6 +115,9 @@ module _ {i} {A : Type i} where
 
 module _ {i} {A : Type i} where
 
+  ∙'-canc-l : {x y : A} {p : x == y} {q : y == y} → p == p ∙' q → idp == q
+  ∙'-canc-l {p = idp} r = r ∙ ∙'-unit-l _
+
   ∙-assoc-!-inv-r-∙ : {x y z w : A} (q : x == y) (p : x == z) (r : z == w) → q ∙ (! q ∙ p) ∙ r == p ∙ r
   ∙-assoc-!-inv-r-∙ idp idp r = idp
 

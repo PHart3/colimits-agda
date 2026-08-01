@@ -89,3 +89,10 @@ S¹-univ-prop = equiv (λ f → (f base) , ap f loop) (λ (a , p) → S¹-rec a 
 
 S¹-auto-loop : (x : S¹) → x == x
 S¹-auto-loop = S¹-elim loop (↓-idf=idf-in idp)
+
+abstract
+  -- loop is nontrivial
+  loop-not-refl : idp ≠ loop
+  loop-not-refl triv = Bool-flip-≃-≠-idf $
+    fst= (ap coe-equiv (ap (ap (S¹-rec Bool (ua Bool-flip-≃))) triv ∙ S¹Rec.loop-β _ _) ∙ coe-equiv-β _)
+    where open import lib.types.Sigma
