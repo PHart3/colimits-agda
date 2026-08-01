@@ -83,5 +83,9 @@ S¹-rec-η : ∀ {i} {A : Type i} (f : S¹ → A)
   → ∀ x → S¹-rec (f base) (ap f loop) x == f x
 S¹-rec-η f = S¹-elim idp (↓-='-in' $ ! $ S¹Rec.loop-β (f base) (ap f loop))
 
+-- universal property of the circle
+S¹-univ-prop : ∀ {i} {A : Type i} → (S¹ → A) ≃ Σ A (λ a → a == a)
+S¹-univ-prop = equiv (λ f → (f base) , ap f loop) (λ (a , p) → S¹-rec a p) (λ (a , p) → pair= idp (S¹Rec.loop-β a p)) λ f → λ= (S¹-rec-η f)
+
 S¹-auto-loop : (x : S¹) → x == x
 S¹-auto-loop = S¹-elim loop (↓-idf=idf-in idp)
