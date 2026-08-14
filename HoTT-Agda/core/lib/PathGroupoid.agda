@@ -224,6 +224,15 @@ module _ {i} {A : Type i} where
   trip-inv : {x y w z : A} {p : y == x} {q : y == z} {r : z == w} → ! r ∙ ! q ∙ p == ! (! p ∙ q ∙ r)
   trip-inv {p = idp} {q = idp} {r = idp} = idp
 
+  !-inv-r-twice : {x y z : A} (p : x == y) (q : x == z) → p ∙ ! p ∙ q ∙ ! q == idp
+  !-inv-r-twice idp q = !-inv-r q
+
+  !-inv-r-twice-mid : {x y z : A} (p : x == y) (q : z == y) → p ∙ ! q ∙ q ∙ ! p == idp
+  !-inv-r-twice-mid p idp = !-inv-r p
+
+  !-inv-r-twice-coh : {x y : A} (p : x == y) → !-inv-r-twice p p == !-inv-r-twice-mid p p
+  !-inv-r-twice-coh idp = idp
+
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {f : A → B} {g : B → C} where
 
   cmp-inv-l : {x y : A} (p : x == y) → ! (ap (g ∘ f) p) ∙ ap g (ap f p) == idp

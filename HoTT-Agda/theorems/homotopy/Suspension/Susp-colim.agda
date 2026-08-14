@@ -12,7 +12,7 @@ open import Cos-wc
 
 -- Suspension preserves colimits over graphs.
 
-module homotopy.Susp-colim {i ℓv ℓe} {G : Graph ℓv ℓe} where
+module homotopy.Suspension.Susp-colim {i ℓv ℓe} {G : Graph ℓv ℓe} where
 
 Susp-prsrv-colim : {Δ : Diagram G (Ptd-wc i)} {X : Ptd i} {K : Cocone-wc Δ X}
   → is-colim K → is-colim (F-coc SuspFunctor K)

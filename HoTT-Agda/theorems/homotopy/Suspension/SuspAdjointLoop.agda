@@ -9,7 +9,7 @@ open import lib.types.LoopSpace
 open import lib.types.Homogeneous
 open import lib.wild-cats.WildCats
 
-module homotopy.SuspAdjointLoop where
+module homotopy.Suspension.SuspAdjointLoop where
 
 module _ {i} (X : Ptd i) where
 
