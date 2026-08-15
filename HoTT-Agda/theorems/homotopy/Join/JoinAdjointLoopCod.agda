@@ -10,7 +10,7 @@ open import lib.wild-cats.WildCats
 
 module homotopy.Join.JoinAdjointLoopCod where
 
-module JoinAdjLoop-units {i j} (X : Ptd i) (Y : Ptd j) where
+module JoinAdjLoop-units {i} (X : Ptd i) {j} (Y : Ptd j) where
 
   ⊙η : Y ⊙→ X ⊙–→ ⊙Ω (X ⊙* Y)
   fst (fst ⊙η y) x = jglue (pt X) (pt Y) ∙ ! (jglue x (pt Y)) ∙ jglue x y ∙ ! (jglue (pt X) y) 
@@ -23,6 +23,67 @@ module JoinAdjLoop-units {i j} (X : Ptd i) (Y : Ptd j) where
   ⊙ε : X ⊙* (X ⊙–→ ⊙Ω Y) ⊙→ Y
   fst ⊙ε = Join-rec (λ _ → pt Y) (λ _ → pt Y) (λ x (f , _) → f x)
   snd ⊙ε = idp
+
+module _ {i} (X : Ptd i) where
+
+  open JoinAdjLoop-units X
+
+  η-natural : ∀ {j k} {Z : Ptd j} {Y : Ptd k} (f : Z ⊙→ Y)
+    → ⊙η Y ⊙∘ f == ⊙hom-cod-fmap (⊙Ω-fmap (jmap⊙-un X f)) ⊙∘ ⊙η Z
+  η-natural {Z = Z} (f , idp) = ⊙-crd∼-to-== $
+    (λ z → ⊙-crd∼-to-== $
+      (λ x → !
+        (ap-∙!∙∙! _ (glue (pt X , pt Z)) (glue (x , pt Z)) (glue (x , z)) (glue (pt X , z)) ∙
+        ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄)
+          (glue-β _ _ _ (pt X) (pt Z))
+          (glue-β _ _ _ x (pt Z))
+          (glue-β _ _ _ x z)
+          (glue-β _ _ _ (pt X) z))) ,
+      {!!}) ,
+    {!!}
+    where open JoinRec
+
+  Ωcodε-ηΩcod : ∀ {j} (Y : Ptd j) → ⊙hom-cod-fmap (⊙Ω-fmap (⊙ε Y)) ⊙∘ ⊙η (X ⊙–→ ⊙Ω Y) == ⊙idf _
+  Ωcodε-ηΩcod Y = ⊙-crd∼-to-== ((λ (p , q) → ⊙-crd∼-to-== $
+    (λ x → 
+      ap-∙!∙∙! _ (glue _) (glue _) (glue _) (glue _) ∙
+      ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄)
+        (glue-β _ _ _ _ _)
+        (glue-β _ _ _ _ _)
+        (glue-β _ _ _ _ _)
+        (glue-β _ _ _ _ _) ∙
+      ap (λ r → p x ∙ ! r) q ∙ ∙-unit-r (p x)) ,
+    {!!}) ,
+    {!!})
+    where open JoinRec
+
+  open JoinElim
+
+  ε-natural : ∀ {j k} {Z : Ptd j} {Y : Ptd k} (f : Z ⊙→ Y)
+    → ⊙ε Y ⊙∘ jmap⊙-un X (⊙hom-cod-fmap (⊙Ω-fmap f)) == f ⊙∘ ⊙ε Z
+  ε-natural {Z = Z} (f , idp) = ⊙-crd∼-to-== $
+    JoinMapEq (λ _ → idp) (λ _ → idp) (λ x (p , q) →
+      ap2 _∙_
+        (ap ! (ap-∘ (fst (⊙ε _)) (fst (jmap⊙-un X (⊙hom-cod-fmap (ap f , idp)))) (jglue x (p , q)) ∙
+        ap (ap _) (JoinRec.glue-β _ _ _ x (p , q)) ∙ JoinRec.glue-β _ _ _ x _))
+      (ap-∘ f (fst (⊙ε Z)) (jglue x (p , q)) ∙ ap (ap f) (JoinRec.glue-β _ _ _ x (p , q))) ∙
+      !-inv-l (ap f (p x))) ,
+    idp
+
+  εJoin-Joinη : ∀ {j} (Y : Ptd j) → ⊙ε (X ⊙* Y) ⊙∘ jmap⊙-un X (⊙η Y) == ⊙idf _
+  εJoin-Joinη Y = ⊙-crd∼-to-== $
+    JoinMapEq (λ x → jglue (pt X) (pt Y) ∙ ! (jglue x (pt Y))) (λ y → jglue (pt X) y) (λ x y →
+      ap (λ r → ! r ∙ (glue (pt X , pt Y) ∙ ! (glue (x , pt Y))) ∙ ap (λ z → z) (glue (x , y)))
+        (ap-∘ (fst (⊙ε (X ⊙* Y))) (fst (jmap⊙-un X (⊙η Y))) (jglue x y) ∙
+        ap (ap _) (JoinRec.glue-β _ _ _ x y) ∙ JoinRec.glue-β _ _ _ x (fst (⊙η Y) y)) ∙
+      aux-coher (glue (pt X , pt Y)) (glue (x , pt Y)) (glue (x , y)) (glue (pt X , y))) ,
+      ap (λ r → ! r ∙ idp) (!-inv-r (glue (pt X , pt Y)))
+    where abstract
+      aux-coher : {x y z w v : de⊙ X * de⊙ Y} (p₁ : x == y) (p₂ : z == y) (p₃ : z == w) (p₄ : v == w) →
+        ! (p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) ∙ (p₁ ∙ ! p₂) ∙ ap (λ z → z) p₃ == p₄
+      aux-coher idp idp idp idp = idp
+      
+
 {-
 -- desired adjunction
 JoinLoopCodAdj : ∀ {i j} (X : Ptd i) → Adjunction (JoinFunctor {j = lmax i j} X) (⊙hom-codF X ∘WC LoopFunctor {lmax i j})
