@@ -209,6 +209,12 @@ module _ {i} {A : Type i} where
   inv-rid : {x y : A} (p : x == y) → ! p ∙ p ∙ idp == idp
   inv-rid p = !-inv-l-assoc p idp
 
+  !-∙!-∙! : {x y z w : A} (p : x == y) (q : z == y) (r : w == z) → ! (p ∙ ! q ∙ ! r) == r ∙ q ∙ ! p
+  !-∙!-∙! idp idp idp = idp
+
+  !-∙!-∙!' : {x y z w : A} (p : x == y) (q : z == y) (r : w == z) → ! (p ∙ ! q ∙ ! r) == r ∙' q ∙ ! p
+  !-∙!-∙!' idp idp idp = idp
+
   !3-∙3 : {x y z w : A} (p : x == y) (q : z == y) (r : w == y)
     → ! ((p ∙ ! q) ∙ q ∙ ! r) ∙ p == r
   !3-∙3 idp idp r = ∙-unit-r (! (! r)) ∙ !-! r

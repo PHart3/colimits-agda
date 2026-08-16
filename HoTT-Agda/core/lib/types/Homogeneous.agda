@@ -18,6 +18,26 @@ module _ {i} {X : Type i} where
       constructor homog
       field
         auto : (y : X) → ⊙[ X , x ] ⊙≃ ⊙[ X , y ]
+    open homogeneous
+
+    homog-⊙Ω≃ : (y : X) → homogeneous → ⊙Ω ⊙[ X , x ] ⊙≃ ⊙Ω ⊙[ X , y ]
+    homog-⊙Ω≃ y η = ⊙Ω-emap (auto η y)
+
+    homog-Ω≃ : (y : X) → homogeneous → (x == x) ≃ (y == y)
+    homog-Ω≃ y η = ⊙≃-to-≃ (homog-⊙Ω≃ y η)
+
+    -- Cavallo's trick: Two pointed maps into a homogeneous type are homotopic as soon as their underlying maps are.
+    ⊙→homog∼ : ∀ {j} {Y : Ptd j} {f g : Y ⊙→ ⊙[ X , x ]} → homogeneous → fst f ∼ fst g → f ⊙-crd∼ g
+    ⊙→homog∼ η = loop-auto-∼-to-⊙∼ (λ z → homog-Ω≃ z η)
+      where
+      loop-auto-∼-to-⊙∼ : ∀ {ℓ₁ ℓ₂} {Y : Ptd ℓ₁} {Z : Ptd ℓ₂} {f g : Y ⊙→ Z}
+        → ((z : de⊙ Z) → Ω Z ≃ (z == z)) → fst f ∼ fst g → f ⊙-crd∼ g
+      fst (loop-auto-∼-to-⊙∼ {Y = Y} {f = f} {g} e H) y = H y ∙ –> (e (fst g y)) (<– (e (fst g (pt Y))) (! (H (pt Y)) ∙ snd f ∙ ! (snd g)))
+      snd (loop-auto-∼-to-⊙∼ {Y = Y} {f = (f , idp)} {g} e H) =
+        ap (λ p → ! (H (pt Y) ∙ p) ∙ idp) (<–-inv-r (e (fst g (pt Y))) _) ∙
+        ∙-unit-r (! (H (pt Y) ∙ ! (H (pt Y)) ∙ ! (snd g))) ∙
+        !-∙!-∙!' (H (pt Y)) (H (pt Y)) (snd g) ∙
+        ap (λ p → snd g ∙' p) (!-inv-r (H (pt Y)))
 
     record str-homog : Type i where
       constructor sthomog
@@ -31,12 +51,6 @@ module _ {i} {X : Type i} where
     auto (homog-to-strhomog (homog self)) y = self y ⊙∘e (self x) ⊙⁻¹
     homog-idf (homog-to-strhomog (homog self)) = ⊙λ= (⊙<–-inv-r (self x)) 
 
-    homog-⊙Ω≃ : (y : X) → str-homog → ⊙Ω ⊙[ X , x ] ⊙≃ ⊙Ω ⊙[ X , y ]
-    homog-⊙Ω≃ y (sthomog auto _) = ⊙Ω-emap (auto y)
-
-    homog-Ω≃ : (y : X) → str-homog → (x == x) ≃ (y == y)
-    homog-Ω≃ y η = ⊙≃-to-≃ (homog-⊙Ω≃ y η)
-
   {-
     Two pointed homotopies of pointed maps valued in a strongly homogeneous
     type are equal as soon as their underlying homotopies are equal.
@@ -49,7 +63,7 @@ module _ {i} {X : Type i} where
     snd ⊙∼-eval = idp
 
     ⊙∼-eval-sect : str-homog (f z) → has-sect⊙ ⊙∼-eval
-    fst (has-sect⊙.r-inv (⊙∼-eval-sect η)) p = λ x₁ → –>(homog-Ω≃ (f z) (f x₁) η) p
+    fst (has-sect⊙.r-inv (⊙∼-eval-sect (sthomog auto _))) p = λ x₁ → –>(homog-Ω≃ (f z) (f x₁) (homog auto)) p
     snd (has-sect⊙.r-inv (⊙∼-eval-sect (sthomog auto _))) =
       λ= λ x → Ω-fmap-β∙ (fst (auto (f x))) idp ∙
         !-inv-l (snd (fst (auto (f x))))
