@@ -91,6 +91,9 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
   ap-rid-∙ : {x y : A} (s : x == y) {w : B} (r : f y == w) → ap f (s ∙ idp) ∙ r == ap f s ∙ r
   ap-rid-∙ idp r = idp
 
+  !-!-ap-!-unit-r-∙ : {x y : A} (p : x == y) → ! (! (ap f (! p)) ∙ idp) ∙ ap f p ∙ idp == idp
+  !-!-ap-!-unit-r-∙ idp = idp
+
   rid-ap-!-!-rid-ap : {y v z : A} {x w : B} (q : z == v) (p : x == f y) (s : y == v) (r : f v == w)
     → (p ∙ idp) ∙ ap f (s ∙ ! q ∙ idp) ∙ ap f q ∙ r == p ∙ ap f s ∙ r
   rid-ap-!-!-rid-ap idp idp s r = ap-rid-∙ s r
@@ -226,6 +229,10 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   ap-∘-∙-∙ : {x y : A} (p₁ : x == y) {z : B} (p₂ : f y == z) {c : C} {s : g z == c}
     → ap g (ap f p₁ ∙ p₂) ∙ s == ap (g ∘ f) p₁ ∙ ap g p₂ ∙ s
   ap-∘-∙-∙ idp p₂ = idp
+
+  ∘-ap-∙!∙∙! : {x y z w t : A} (p : x == y) (q : z == y) (r : z == w) (s : t == w)
+    → ap g (ap f p ∙ ! (ap f q) ∙ ap f r ∙ ! (ap f s)) == ap (g ∘ f) (p ∙ ! q ∙ r ∙ ! s)
+  ∘-ap-∙!∙∙! idp idp idp s = ! (∘-!-ap s)
 
   ap-∘-∘-!-∙ : ∀ {l} {D : Type l} (h : D → A) {x y : D} (p₁ : x == y) {z : A} (p₂ : h x == z)
     → ap g (ap f (! (ap h p₁) ∙ p₂)) == ! (ap (g ∘ f ∘ h) p₁) ∙ ap g (ap f p₂)
@@ -952,6 +959,12 @@ module _ {i₀ i₁ i₂ i₃ j} {A₀ : Type i₀} {A₁ : Type i₁} {A₂ : T
   ap4 : {x₀ y₀ : A₀} {x₁ y₁ : A₁} {x₂ y₂ : A₂} {x₃ y₃ : A₃}
     → (x₀ == y₀) → (x₁ == y₁) → (x₂ == y₂) → (x₃ == y₃) → f x₀ x₁ x₂ x₃ == f y₀ y₁ y₂ y₃
   ap4 idp idp idp idp = idp
+
+ap4-∙!-∙!-refl : ∀ {i} {A : Type i} {x y z : A} {p₁ p₂ : x == y} {p₃ p₄ : x == z} (q : p₁ == p₂) (r : p₃ == p₄) →
+  ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) q q r r
+    ==
+  !-inv-r-twice p₁ p₃ ∙ ! (!-inv-r-twice p₂ p₄) 
+ap4-∙!-∙!-refl {p₁ = idp} {p₃ = p₃} idp idp = ! (!-inv-r (!-inv-r p₃))
 
 module _ {i₀ i₁ i₂ i₃ i₄ j} {A₀ : Type i₀} {A₁ : Type i₁} {A₂ : Type i₂} {A₃ : Type i₃}
   {A₄ : Type i₄} {B : Type j} (f : A₀ → A₁ → A₂ → A₃ → A₄ → B) where

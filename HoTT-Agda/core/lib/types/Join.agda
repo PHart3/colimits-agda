@@ -113,6 +113,12 @@ jmap⊙-un-∘ : ∀ {i j₁ j₂ j₃}
   → jmap⊙-un X (g₂ ⊙∘ g₁) ⊙-crd∼ jmap⊙-un X g₂ ⊙∘ jmap⊙-un X g₁
 jmap⊙-un-∘ {X = X} g₂ g₁ = jmap⊙-∘ (⊙idf X) (⊙idf X) g₁ g₂
 
+jmap⊙-un-∘-== : ∀ {i j₁ j₂ j₃}
+  {X : Ptd i} {Y₁ : Ptd j₁} {Y₂ : Ptd j₂} {Y₃ : Ptd j₃}
+  (g₂ : Y₂ ⊙→ Y₃) (g₁ : Y₁ ⊙→ Y₂)
+  → jmap⊙-un X (g₂ ⊙∘ g₁) == jmap⊙-un X g₂ ⊙∘ jmap⊙-un X g₁
+jmap⊙-un-∘-== g₂ g₁ = ⊙-crd∼-to-== (jmap⊙-un-∘ g₂ g₁)
+
 jmap⊙-un-idf : ∀ {i j} {X : Ptd i} (Y : Ptd j) → jmap⊙-un X (⊙idf Y) ⊙-crd∼ ⊙idf (X ⊙* Y)
 jmap⊙-un-idf Y = jmap⊙-idf {Y = Y}
 
