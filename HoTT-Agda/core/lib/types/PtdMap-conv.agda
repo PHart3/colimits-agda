@@ -35,6 +35,22 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
           idp {a = f₁} ◃∙ ⊙-crd∼-to-== h₂ ◃∎
             =ₛ₁⟨ 0 & 1 & ! (⊙-crd∼-to-==-β f₁) ⟩
           ⊙-crd∼-to-== (⊙∼-id f₁) ◃∙ ⊙-crd∼-to-== h₂ ◃∎ ∎ₛ
+
+    !-⊙∘-conv : {f₁ f₃ f₂ : X ⊙→ Y} (h₁ : f₂ ⊙-crd∼ f₁) (h₂ : f₂ ⊙-crd∼ f₃) →
+      ! (⊙-crd∼-to-== h₁) ∙ ⊙-crd∼-to-== h₂ == ⊙-crd∼-to-== (!-⊙∼ h₁ ∙⊙∼ h₂)
+    !-⊙∘-conv {f₃ = f₃} {f₂} =
+      ⊙hom-ind f₂
+        (λ f₁ h₁ →
+          ((h₂ : f₂ ⊙-crd∼ f₃) →
+            ! (⊙-crd∼-to-== h₁) ∙ ⊙-crd∼-to-== h₂ == ⊙-crd∼-to-== (!-⊙∼ h₁ ∙⊙∼ h₂)))
+        λ h₂ → =ₛ-out $
+          ! (⊙-crd∼-to-== (⊙∼-id f₂)) ◃∙ ⊙-crd∼-to-== h₂ ◃∎
+            =ₛ₁⟨ 0 & 1 & ap ! (⊙-crd∼-to-==-β f₂) ⟩
+          idp {a = f₂} ◃∙ ⊙-crd∼-to-== h₂ ◃∎
+            =ₛ⟨ =ₛ-in (idp {a = ⊙-crd∼-to-== h₂}) ⟩
+          ⊙-crd∼-to-== h₂ ◃∎
+            =ₛ₁⟨ ! (ap ⊙-crd∼-to-== (∙⊙∼-unit-l h₂)) ⟩
+          ⊙-crd∼-to-== (!-⊙∼ (⊙∼-id f₂) ∙⊙∼ h₂) ◃∎ ∎ₛ
           
     ⊙∘-conv-tri : {f₁ f₂ f₃ f₄ : X ⊙→ Y}
       (h₁ : f₁ ⊙-crd∼ f₂) (h₂ : f₂ ⊙-crd∼ f₃) (h₃ : f₃ ⊙-crd∼ f₄) →

@@ -960,11 +960,17 @@ module _ {i₀ i₁ i₂ i₃ j} {A₀ : Type i₀} {A₁ : Type i₁} {A₂ : T
     → (x₀ == y₀) → (x₁ == y₁) → (x₂ == y₂) → (x₃ == y₃) → f x₀ x₁ x₂ x₃ == f y₀ y₁ y₂ y₃
   ap4 idp idp idp idp = idp
 
-ap4-∙!-∙!-refl : ∀ {i} {A : Type i} {x y z : A} {p₁ p₂ : x == y} {p₃ p₄ : x == z} (q : p₁ == p₂) (r : p₃ == p₄) →
+ap4-∙!-∙!-canc : ∀ {i} {A : Type i} {x y z : A} {p₁ p₂ : x == y} {p₃ p₄ : x == z} (q : p₁ == p₂) (r : p₃ == p₄) →
   ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) q q r r
     ==
   !-inv-r-twice p₁ p₃ ∙ ! (!-inv-r-twice p₂ p₄) 
-ap4-∙!-∙!-refl {p₁ = idp} {p₃ = p₃} idp idp = ! (!-inv-r (!-inv-r p₃))
+ap4-∙!-∙!-canc {p₁ = idp} {p₃ = p₃} idp idp = ! (!-inv-r (!-inv-r p₃))
+
+ap4-∙!-∙!-canc-mid : ∀ {i} {A : Type i} {x y z : A} {p₁ p₂ : x == y} {p₃ p₄ : z == y} (q : p₁ == p₂) (r : p₃ == p₄) →
+  ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) q r r q
+    ==
+  !-inv-r-twice-mid p₁ p₃ ∙ ! (!-inv-r-twice-mid p₂ p₄) 
+ap4-∙!-∙!-canc-mid {p₁ = p₁} {p₃ = idp} idp idp = ! (!-inv-r (!-inv-r p₁))
 
 module _ {i₀ i₁ i₂ i₃ i₄ j} {A₀ : Type i₀} {A₁ : Type i₁} {A₂ : Type i₂} {A₃ : Type i₃}
   {A₄ : Type i₄} {B : Type j} (f : A₀ → A₁ → A₂ → A₃ → A₄ → B) where
