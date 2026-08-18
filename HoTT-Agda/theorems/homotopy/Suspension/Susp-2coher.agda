@@ -7,7 +7,7 @@ open import lib.types.Pushout
 open import lib.types.Suspension
 open import lib.types.LoopSpace
 open import lib.types.Homogeneous
-open import homotopy.SuspAdjointLoop
+open import homotopy.Suspension.SuspAdjointLoop
 open import lib.wild-cats.Ladj-2-coher
 
 -- Suspension is a 2-coherent left adjoint to Loop.
@@ -460,7 +460,7 @@ module 2-coher-cmp {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd 
       !-⊙∼ (⊙∘-assoc-crd (into X Y h₁) h₂ h₃) ∙⊙∼
       ⊙∘-pre h₃ (nat-dom-cmp h₂ h₁) ∙⊙∼
       nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂) ∙⊙∼
-      ap-cmp-into W Y (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
+      ap-crd-into W Y (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
         ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp))) ∙⊙∼
       !-⊙∼ (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)
         ⊙→∼
@@ -530,13 +530,13 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
         (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
         ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp)))) ◃∙
       ⊙-crd∼-to-== (!-⊙∼ (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ◃∎
-        =ₛ₁⟨ 3 & 1 & ap-cmp-into-agree W Y
+        =ₛ₁⟨ 3 & 1 & ap-crd-into-agree W Y
           (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
           ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp))) ⟩
       ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-crd (into X Y h₁) h₂ h₃)) ◃∙
       ⊙-crd∼-to-== (⊙∘-pre h₃ (nat-dom-cmp h₂ h₁)) ◃∙
       ⊙-crd∼-to-== (nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂)) ◃∙
-      ⊙-crd∼-to-== (ap-cmp-into W Y
+      ⊙-crd∼-to-== (ap-crd-into W Y
         (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
         ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp)))) ◃∙
       ⊙-crd∼-to-== (!-⊙∼ (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ◃∎
@@ -544,7 +544,7 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
               (!-⊙∼ (⊙∘-assoc-crd (into X Y h₁) h₂ h₃))
               (⊙∘-pre h₃ (nat-dom-cmp h₂ h₁))
               (nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂))
-              (ap-cmp-into W Y
+              (ap-crd-into W Y
                 (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
                 ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp))))
               (!-⊙∼ (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ⟩
@@ -552,7 +552,7 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
         (!-⊙∼ (⊙∘-assoc-crd (into X Y h₁) h₂ h₃) ∙⊙∼
         ⊙∘-pre h₃ (nat-dom-cmp h₂ h₁) ∙⊙∼
         nat-dom-cmp h₃ (h₁ ⊙∘ ⊙Susp-fmap h₂) ∙⊙∼
-        ap-cmp-into W Y
+        ap-crd-into W Y
           (⊙∘-assoc-crd h₁ (⊙Susp-fmap h₂) (⊙Susp-fmap h₃) ∙⊙∼
           ⊙∘-post h₁ (!-⊙∼ (Susp-fmap-∘-∼ (fst h₂) (fst h₃) , idp))) ∙⊙∼
         !-⊙∼ (nat-dom-cmp (h₂ ⊙∘ h₃) h₁)) ◃∎

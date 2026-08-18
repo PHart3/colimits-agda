@@ -231,6 +231,22 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
       aux2 : {k : X ⊙→ Y} (p : f == k) → ⊙-crd∼-to-== (==-to-⊙-crd∼ p) == p
       aux2 idp = ⊙-crd∼-to-==-β f 
 
+module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
+
+  ⊙hom-cod-fmap-fstβ : {f : Y ⊙→ Z} {f₁ f₂ : X ⊙→ Y} (h : f₁ ⊙-crd∼ f₂) →
+    ⊙-crd∼-to-== ((λ x → ap (fst f) (fst h x)) , !-ap-∙-s (fst f) (fst h (pt X)) ∙ ap (λ p → ap (fst f) p ∙ snd f) (snd h))
+      ==
+    ap (fst (⊙hom-cod-fmap {X = X} f)) (⊙-crd∼-to-== h)
+  ⊙hom-cod-fmap-fstβ {f = (f , idp)} {f₁} = ⊙hom-ind f₁ (λ f₂ h → 
+    ⊙-crd∼-to-== ((λ x → ap f (fst h x)) , !-ap-∙-s f (fst h (pt X)) ∙ ap (λ p → ap f p ∙ idp) (snd h))
+      ==
+    ap (fst (⊙hom-cod-fmap {X = X} (f , idp))) (⊙-crd∼-to-== h))
+    (⊙-crd∼-to-==-β _ ∙ ap (ap (λ m → (f , idp) ⊙∘ m)) (! (⊙-crd∼-to-==-β _)))
+
+  ⊙hom-cod-fmap-sndβ : {f : Y ⊙→ Z}
+    → ⊙-crd∼-to-== ((λ _ → snd f) , (!-inv-l (snd f))) == snd (⊙hom-cod-fmap {X = X} f)
+  ⊙hom-cod-fmap-sndβ {f = (_ , idp)} = ⊙-crd∼-to-==-β _
+
 -- induction principle for ⊙∼→
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ : X ⊙→ Y} {H : f₁ ⊙-crd∼ f₂} where
@@ -447,6 +463,11 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} (⊙e : X ⊙≃ Y) where
             lemma true = ! hpt
             lemma false = idp
 
+⊙Bool→-⊙equiv-idf : ∀ {i} (X : Ptd i)
+  → (⊙Bool ⊙–→ X) ⊙≃ X
+fst (⊙Bool→-⊙equiv-idf {i} X) = ⊙Bool→-to-idf , idp
+snd (⊙Bool→-⊙equiv-idf {i} X) = snd (⊙Bool→-equiv-idf X)
+
 ⊙Bool→-equiv-idf-nat : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y)
   → CommSquareEquiv
       (F ⊙∘_)
@@ -455,7 +476,11 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} (⊙e : X ⊙≃ Y) where
       ⊙Bool→-to-idf
 ⊙Bool→-equiv-idf-nat F = (comm-sqr λ _ → idp) ,
   snd (⊙Bool→-equiv-idf _) , snd (⊙Bool→-equiv-idf _)
-
+{-
+⊙Bool→-⊙equiv-idf-nat : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y)
+  → {!!}
+⊙Bool→-⊙equiv-idf-nat F = {!!}
+-}
 -- converting between coslice under Unit
 open import Coslice
 open import SIP-CosMap

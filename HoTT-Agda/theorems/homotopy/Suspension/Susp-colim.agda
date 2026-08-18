@@ -3,8 +3,8 @@
 open import lib.Basics
 open import lib.types.Graph
 open import lib.types.Suspension
-open import homotopy.SuspAdjointLoop
-open import homotopy.Susp-2coher
+open import homotopy.Suspension.SuspAdjointLoop
+open import homotopy.Suspension.Susp-2coher
 open import lib.wild-cats.WildCats
 open import lib.wild-cats.Iso-wc
 open import lib.wild-cats.Ladj-colim
@@ -14,9 +14,10 @@ open import Cos-wc
 
 module homotopy.Suspension.Susp-colim {i ℓv ℓe} {G : Graph ℓv ℓe} where
 
-Susp-prsrv-colim : {Δ : Diagram G (Ptd-wc i)} {X : Ptd i} {K : Cocone-wc Δ X}
-  → is-colim K → is-colim (F-coc SuspFunctor K)
-Susp-prsrv-colim = Ladj-prsrv-clim {adj = SuspLoopAdj-exp} Susp-is-2-coher
+abstract
+  Susp-prsrv-colim : {Δ : Diagram G (Ptd-wc i)} {X : Ptd i} {K : Cocone-wc Δ X}
+    → is-colim K → is-colim (F-coc SuspFunctor K)
+  Susp-prsrv-colim = Ladj-prsrv-clim {adj = SuspLoopAdj-exp} Susp-is-2-coher
 
 -- equivalent version for the coslice under Unit
 

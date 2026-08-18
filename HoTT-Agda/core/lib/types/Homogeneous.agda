@@ -51,6 +51,10 @@ module _ {i} {X : Type i} where
     auto (homog-to-strhomog (homog self)) y = self y ⊙∘e (self x) ⊙⁻¹
     homog-idf (homog-to-strhomog (homog self)) = ⊙λ= (⊙<–-inv-r (self x)) 
 
+  -- we may always switch the basepoint
+  homog-switch : ({x} y : X) → homogeneous x → homogeneous y
+  (homog-switch y η) = homog (λ z → auto η z ⊙∘e (auto η y) ⊙⁻¹) where open homogeneous
+
   {-
     Two pointed homotopies of pointed maps valued in a strongly homogeneous
     type are equal as soon as their underlying homotopies are equal.
@@ -212,6 +216,7 @@ module _ {i} {X : Type i} {x : X} where
   ∼⊙Ωhomog∼ {Z = Z} {p} {f} K = ∼⊙homog∼ (loop-homog-str {p = fst f (pt Z)}) p K
 
   -- pointed function type with homogeneous codomain is homogeneous
+  
   ⊙→-homog-cod : ∀ {j} {Y : Ptd j} → homogeneous x → homogeneous {X = Y ⊙→ ⊙[ X , x ]} ⊙cst
   fst (auto (⊙→-homog-cod {Y = Y} η) (f , fₚ)) =
     (λ (g , gₚ) → (λ y → fst (⊙–> (auto η (f y))) (g y)) , ap (fst (⊙–> (auto η (f (pt Y))))) gₚ ∙ snd (⊙–> (auto η (f (pt Y)))) ∙ fₚ) ,
@@ -287,5 +292,11 @@ module _ {i} {X : Type i} {x : X} where
         snd (⊙<– (auto η (f (pt Y)))) ◃∎
           =ₛ⟨ ⊙<–-inv-l-pt (auto η (f (pt Y))) ⟩
         idp ◃∎ ∎ₛ
+
+  ⊙→-homog-cod-any : ∀ {j} {Y : Ptd j} (f : Y ⊙→ ⊙[ X , x ]) → homogeneous x → homogeneous {X = Y ⊙→ ⊙[ X , x ]} f
+  ⊙→-homog-cod-any f η = homog-switch f (⊙→-homog-cod η)
+
+⊙→-homog-str-⊙Ωcod : ∀ {i j} {X : Ptd i} {Y : Ptd j} {f : Y ⊙→ ⊙Ω X} → str-homog {X = Y ⊙→ ⊙Ω X} f
+⊙→-homog-str-⊙Ωcod {f = f} = homog-to-strhomog f (⊙→-homog-cod-any f loop-homog)
 
 open str-homog public

@@ -169,3 +169,9 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
         ==
       ⊙-crd∼-to-== (!-⊙∼ (⊙∘-post f₁ (h₁ ∙⊙∼ h₂)))
     !⊙-whisk⊙-conv-l-∙ {f₁} h₁ h₂ = ap ! (⊙-whisk⊙-conv-l-∙ h₁ h₂) ∙ ! (!⊙-conv (⊙∘-post f₁ (h₁ ∙⊙∼ h₂)))
+
+    whisk⊙-conv-l-∙⊙-crd : {f₁ : Y ⊙→ Z} {f₂ f₂'' f₂' : X ⊙→ Y} (h₁ : f₂ ⊙-crd∼ f₂') (h₂ : f₁ ⊙∘ f₂' ⊙-crd∼ f₁ ⊙∘ f₂'') →
+      ⊙-crd∼-to-== (⊙∘-post f₁ h₁ ∙⊙∼ h₂)
+        ==
+      ap (λ m → f₁ ⊙∘ m) (⊙-crd∼-to-== h₁) ∙ ⊙-crd∼-to-== h₂
+    whisk⊙-conv-l-∙⊙-crd {f₁} h₁ h₂ = =ₛ-out (⊙∘-conv _ h₂) ∙ ap (λ p → p ∙ ⊙-crd∼-to-== h₂) (whisk⊙-conv-l h₁)

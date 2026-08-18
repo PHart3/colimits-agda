@@ -1,16 +1,15 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --lossy-unification #-}
 
 open import lib.Basics
 open import lib.types.Pointed
 open import lib.types.PtdMap-conv
-open import lib.types.Pushout
 open import lib.types.Join
 open import lib.types.LoopSpace
 open import lib.types.Homogeneous
 open import homotopy.Join.JoinAdjointLoopCod
 open import lib.wild-cats.Ladj-2-coher
 
--- Join is a 2-coherent left adjoint to the covariant Loop hom functor.
+-- The unary pointed join is a 2-coherent left adjoint to the covariant Loop hom functor.
 
 module homotopy.Join.Join-2coher where
 {-
@@ -43,7 +42,7 @@ module _ {i j k l ℓ} {A : Type i} {B : Type j} {C : Type k} {D : Type l} {E : 
       red7 : R₄ ∙ R₅ ∙ ! p₅ ∙ ! μ₃ == idp
   open sev_step_red_inp public
 
-module Reduce {i j k l ℓ} {A : Type i} {B : Type j} {C : Type k} {D : Type l} {E : Type ℓ}
+module JLA-Reduce {i j k l ℓ} {A : Type i} {B : Type j} {C : Type k} {D : Type l} {E : Type ℓ}
   {m : A → D} {n : B → A} {s : C → A} {r : E → C} where
 
   abstract
@@ -70,10 +69,10 @@ module Reduce {i j k l ℓ} {A : Type i} {B : Type j} {C : Type k} {D : Type l} 
           (∙-unit-r ((! (ap m (ϕ ∙ idp)) ∙ idp) ∙ idp) ∙ ∙-unit-r (! (ap m (ϕ ∙ idp)) ∙ idp)) ∙
         ap (λ p → (! (ap m (ϕ ∙ idp)) ∙ idp) ∙ p) (! (∙-unit-r (! p₆))) ∙
         red7
-
+-}
 -- proof of 2-coherence
-module 2-coher-cmp {i₀ i₁ i₂ i₃ i₄} (A : Ptd i₀) {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W : Ptd i₄} where
-
+module JLA-2-coher-cmp {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W : Ptd i₄} where
+{-
   open Reduce
 
   module _ (f₂ : de⊙ Z → de⊙ X) (f₃ : de⊙ W → de⊙ Z) (f₁ : de⊙ A * de⊙ X → de⊙ Y)
@@ -448,27 +447,29 @@ module 2-coher-cmp {i₀ i₁ i₂ i₃ i₄} (A : Ptd i₀) {X : Ptd i₁} {Y :
       β-red6 (merid (f₂ (f₃ x))) (merid (pt W))
         (SuspFmap.merid-β (f₂ ∘ f₃) (pt W))
 -}
+  open JLA-into-ap
+
   {-
     It suffices to prove that the underlying homotopies are equal
     because loop spaces are strongly homogeneous.
   -}
 
   abstract
-    2-coher-Join-cmp : (h₁ : A ⊙* X ⊙→ Y ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →
+    2-coher-Join-cmp : (h₁ : A ⊙* X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →
       !-⊙∼ (⊙∘-assoc-crd (JLA-into X Y h₁) h₂ h₃) ∙⊙∼
       ⊙∘-pre h₃ (JLA-nat-dom-⊙∼ h₂ h₁) ∙⊙∼
       JLA-nat-dom-⊙∼ h₃ (h₁ ⊙∘ jmap⊙-un A h₂) ∙⊙∼
-      ap-crd-into W Y (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃) ∙⊙∼
-        ⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ A h₂ h₃))) ∙⊙∼
+      ap-crd-into (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃) ∙⊙∼
+        ⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ h₂ h₃))) ∙⊙∼
       !-⊙∼ (JLA-nat-dom-⊙∼ (h₂ ⊙∘ h₃) h₁)
         ⊙→∼
       ⊙∼-id ((JLA-into X Y h₁) ⊙∘ h₂ ⊙∘ h₃)
-    2-coher-Join-cmp (f₁ , idp) (f₂ , idp) (f₃ , idp) = ?
-      -- ∼⊙Ωhomog∼ λ x → sev_step_reduce (2-coher-Join-∼ f₂ f₃ f₁ x)
+    2-coher-Join-cmp (f₁ , idp) (f₂ , idp) (f₃ , idp) = {!!} -- ∼⊙Ωhomog∼ (λ u → ? ∙ ap ⊙-crd∼-to-== (⊙→∼-to-== (∼⊙Ωhomog∼ (λ v → ?))))
 
-module _ {i₀ i₁ i₂ i₃ i₄} (A : Ptd i₀) {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W : Ptd i₄} where
+module _ {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W : Ptd i₄} where
 
-  open 2-coher-cmp A
+  open JLA-into-ap
+  open JLA-2-coher-cmp A
 
   -- converting 2-coherence property via the SIP
   abstract
@@ -478,7 +479,7 @@ module _ {i₀ i₁ i₂ i₃ i₄} (A : Ptd i₀) {X : Ptd i₁} {Y : Ptd i₂}
       ⊙-crd∼-to-== (JLA-nat-dom-⊙∼ h₃ (h₁ ⊙∘ jmap⊙-un A h₂)) ∙
       ap (JLA-into W Y)
         (⊙-crd∼-to-== (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃)) ∙
-        ap (λ m →  h₁ ⊙∘ m) (! (jmap⊙-un-∘-== A h₂ h₃))) ∙
+        ap (λ m →  h₁ ⊙∘ m) (! (jmap⊙-un-∘-== h₂ h₃))) ∙
       ! (⊙-crd∼-to-== (JLA-nat-dom-⊙∼ (h₂ ⊙∘ h₃) h₁))
         ==
       idp
@@ -488,7 +489,7 @@ module _ {i₀ i₁ i₂ i₃ i₄} (A : Ptd i₀) {X : Ptd i₁} {Y : Ptd i₂}
       ⊙-crd∼-to-== (JLA-nat-dom-⊙∼ h₃ (h₁ ⊙∘ jmap⊙-un A h₂)) ◃∙
       ap (JLA-into W Y)
         (⊙-crd∼-to-== (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃)) ∙
-        ap (λ m →  h₁ ⊙∘ m) (! (jmap⊙-un-∘-== A h₂ h₃))) ◃∙
+        ap (λ m →  h₁ ⊙∘ m) (! (jmap⊙-un-∘-== h₂ h₃))) ◃∙
       ! (⊙-crd∼-to-== (JLA-nat-dom-⊙∼ (h₂ ⊙∘ h₃) h₁)) ◃∎
         =ₛ₁⟨ 0 & 1 & ! (!⊙-conv (⊙∘-assoc-crd (JLA-into X Y h₁) h₂ h₃)) ⟩
       ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-crd (JLA-into X Y h₁) h₂ h₃)) ◃∙
@@ -496,7 +497,7 @@ module _ {i₀ i₁ i₂ i₃ i₄} (A : Ptd i₀) {X : Ptd i₁} {Y : Ptd i₂}
       ⊙-crd∼-to-== (JLA-nat-dom-⊙∼ h₃ (h₁ ⊙∘ jmap⊙-un A h₂)) ◃∙
       ap (JLA-into W Y)
         (⊙-crd∼-to-== (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃)) ∙
-        ap (λ m →  h₁ ⊙∘ m) (! (jmap⊙-un-∘-== A h₂ h₃))) ◃∙
+        ap (λ m →  h₁ ⊙∘ m) (! (jmap⊙-un-∘-== h₂ h₃))) ◃∙
       ! (⊙-crd∼-to-== (JLA-nat-dom-⊙∼ (h₂ ⊙∘ h₃) h₁)) ◃∎
         =ₛ₁⟨ 1 & 1 & ! (whisk⊙-conv-r (JLA-nat-dom-⊙∼ h₂ h₁)) ⟩
       ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-crd (JLA-into X Y h₁) h₂ h₃)) ◃∙
@@ -504,7 +505,7 @@ module _ {i₀ i₁ i₂ i₃ i₄} (A : Ptd i₀) {X : Ptd i₁} {Y : Ptd i₂}
       ⊙-crd∼-to-== (JLA-nat-dom-⊙∼ h₃ (h₁ ⊙∘ jmap⊙-un A h₂)) ◃∙
       ap (JLA-into W Y)
         (⊙-crd∼-to-== (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃)) ∙
-        ap (λ m →  h₁ ⊙∘ m) (! (jmap⊙-un-∘-== A h₂ h₃))) ◃∙
+        ap (λ m →  h₁ ⊙∘ m) (! (jmap⊙-un-∘-== h₂ h₃))) ◃∙
       ! (⊙-crd∼-to-== (JLA-nat-dom-⊙∼ (h₂ ⊙∘ h₃) h₁)) ◃∎
         =ₛ₁⟨ 4 & 1 & ! (!⊙-conv (JLA-nat-dom-⊙∼ (h₂ ⊙∘ h₃) h₁)) ⟩
       ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-crd (JLA-into X Y h₁) h₂ h₃)) ◃∙
@@ -512,12 +513,12 @@ module _ {i₀ i₁ i₂ i₃ i₄} (A : Ptd i₀) {X : Ptd i₁} {Y : Ptd i₂}
       ⊙-crd∼-to-== (JLA-nat-dom-⊙∼ h₃ (h₁ ⊙∘ jmap⊙-un A h₂)) ◃∙
       ap (JLA-into W Y)
         (⊙-crd∼-to-== (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃)) ∙
-        ap (λ m →  h₁ ⊙∘ m) (! (jmap⊙-un-∘-== A h₂ h₃))) ◃∙
+        ap (λ m →  h₁ ⊙∘ m) (! (jmap⊙-un-∘-== h₂ h₃))) ◃∙
       ⊙-crd∼-to-== (!-⊙∼ (JLA-nat-dom-⊙∼ (h₂ ⊙∘ h₃) h₁)) ◃∎
         =ₛ₁⟨ 3 & 1 & ap (ap (JLA-into W Y)) (
           ap (λ p → ⊙-crd∼-to-== (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃)) ∙ p)
-            (ap (ap (_⊙∘_ h₁)) (! (!⊙-conv (jmap⊙-un-∘ A h₂ h₃))) ∙
-            ! (whisk⊙-conv-l (!-⊙∼ (jmap⊙-un-∘ A h₂ h₃)))) ∙
+            (ap (ap (_⊙∘_ h₁)) (! (!⊙-conv (jmap⊙-un-∘ h₂ h₃))) ∙
+            ! (whisk⊙-conv-l (!-⊙∼ (jmap⊙-un-∘ h₂ h₃)))) ∙
           ! (=ₛ-out (⊙∘-conv
             (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃))
             (⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ h₂ h₃)))))) ⟩
@@ -526,35 +527,35 @@ module _ {i₀ i₁ i₂ i₃ i₄} (A : Ptd i₀) {X : Ptd i₁} {Y : Ptd i₂}
       ⊙-crd∼-to-== (JLA-nat-dom-⊙∼ h₃ (h₁ ⊙∘ jmap⊙-un A h₂)) ◃∙
       ap (JLA-into W Y) (⊙-crd∼-to-==
         (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃) ∙⊙∼
-        ⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ A h₂ h₃)))) ◃∙
+        ⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ h₂ h₃)))) ◃∙
       ⊙-crd∼-to-== (!-⊙∼ (JLA-nat-dom-⊙∼ (h₂ ⊙∘ h₃) h₁)) ◃∎
-        =ₛ₁⟨ 3 & 1 & ap-crd-into-agree W Y
+        =ₛ₁⟨ 3 & 1 & ap-crd-into-agree
           (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃) ∙⊙∼
-          ⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ A h₂ h₃))) ⟩
+          ⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ h₂ h₃))) ⟩
       ⊙-crd∼-to-== (!-⊙∼ (⊙∘-assoc-crd (JLA-into X Y h₁) h₂ h₃)) ◃∙
       ⊙-crd∼-to-== (⊙∘-pre h₃ (JLA-nat-dom-⊙∼ h₂ h₁)) ◃∙
       ⊙-crd∼-to-== (JLA-nat-dom-⊙∼ h₃ (h₁ ⊙∘ jmap⊙-un A h₂)) ◃∙
-      ⊙-crd∼-to-== (ap-crd-into W Y
+      ⊙-crd∼-to-== (ap-crd-into
         (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃) ∙⊙∼
-        ⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ A h₂ h₃)))) ◃∙
+        ⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ h₂ h₃)))) ◃∙
       ⊙-crd∼-to-== (!-⊙∼ (JLA-nat-dom-⊙∼ (h₂ ⊙∘ h₃) h₁)) ◃∎
         =ₛ⟨ ⊙∘-conv-quint
               (!-⊙∼ (⊙∘-assoc-crd (JLA-into X Y h₁) h₂ h₃))
               (⊙∘-pre h₃ (JLA-nat-dom-⊙∼ h₂ h₁))
               (JLA-nat-dom-⊙∼ h₃ (h₁ ⊙∘ jmap⊙-un A h₂))
-              (ap-crd-into W Y
+              (ap-crd-into
                 (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃) ∙⊙∼
-                ⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ A h₂ h₃))))
+                ⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ h₂ h₃))))
               (!-⊙∼ (JLA-nat-dom-⊙∼ (h₂ ⊙∘ h₃) h₁)) ⟩
       ⊙-crd∼-to-==
         (!-⊙∼ (⊙∘-assoc-crd (JLA-into X Y h₁) h₂ h₃) ∙⊙∼
         ⊙∘-pre h₃ (JLA-nat-dom-⊙∼ h₂ h₁) ∙⊙∼
         JLA-nat-dom-⊙∼ h₃ (h₁ ⊙∘ jmap⊙-un A h₂) ∙⊙∼
-        ap-crd-into W Y
+        ap-crd-into
           (⊙∘-assoc-crd h₁ (jmap⊙-un A h₂) (jmap⊙-un A h₃) ∙⊙∼
-          ⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ A h₂ h₃))) ∙⊙∼
+          ⊙∘-post h₁ (!-⊙∼ (jmap⊙-un-∘ h₂ h₃))) ∙⊙∼
         !-⊙∼ (JLA-nat-dom-⊙∼ (h₂ ⊙∘ h₃) h₁)) ◃∎
-        =ₛ₁⟨ ap ⊙-crd∼-to-== (⊙→∼-to-== (2-coher-Join-cmp h₁ h₂ h₃)) ⟩
+        =ₛ₁⟨ {!!} {- ap ⊙-crd∼-to-== (⊙→∼-to-== (2-coher-Join-cmp h₁ h₂ h₃)) -} ⟩
       ⊙-crd∼-to-== (⊙∼-id ((JLA-into X Y h₁) ⊙∘ h₂ ⊙∘ h₃)) ◃∎
         =ₛ₁⟨ ⊙-crd∼-to-==-β (JLA-into X Y h₁ ⊙∘ h₂ ⊙∘ h₃) ⟩
       idp ◃∎ ∎ₛ
