@@ -469,18 +469,15 @@ fst (⊙Bool→-⊙equiv-idf {i} X) = ⊙Bool→-to-idf , idp
 snd (⊙Bool→-⊙equiv-idf {i} X) = snd (⊙Bool→-equiv-idf X)
 
 ⊙Bool→-equiv-idf-nat : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y)
-  → CommSquareEquiv
-      (F ⊙∘_)
-      (fst F)
-      ⊙Bool→-to-idf
-      ⊙Bool→-to-idf
+  → CommSquareEquiv (F ⊙∘_) (fst F) ⊙Bool→-to-idf ⊙Bool→-to-idf
 ⊙Bool→-equiv-idf-nat F = (comm-sqr λ _ → idp) ,
   snd (⊙Bool→-equiv-idf _) , snd (⊙Bool→-equiv-idf _)
-{-
+
 ⊙Bool→-⊙equiv-idf-nat : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y)
-  → {!!}
-⊙Bool→-⊙equiv-idf-nat F = {!!}
--}
+  → ⊙CommSquare (⊙hom-cod-fmap F) F (⊙–> (⊙Bool→-⊙equiv-idf X)) (⊙–> (⊙Bool→-⊙equiv-idf Y))
+fst (⊙commutes (⊙Bool→-⊙equiv-idf-nat F)) _ = idp
+snd (⊙commutes (⊙Bool→-⊙equiv-idf-nat (_ , idp))) = idp
+
 -- converting between coslice under Unit
 open import Coslice
 open import SIP-CosMap
