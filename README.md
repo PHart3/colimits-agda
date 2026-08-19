@@ -54,7 +54,7 @@
 
 We have successfully tested the following Docker container on Linux but not on other operating systems.
 
-1. Build Docker image:
+1. Build Docker image (from the root of this repository):
 
    ```bash
    docker build . -t colimit
@@ -67,7 +67,11 @@ We have successfully tested the following Docker container on Linux but not on o
    
    **Note:** Check just the final three files in the Dockerfile for the
    theorems in the paper "On Left Adjoints Preserving Colimits in Homotopy 
-   Type Theory."
+   Type Theory." Alternatively, to type check these theorems, run:
+   
+   ```bash
+   docker build -f Dockerfile.lmcs .
+   ```
 
 2. Generate HTML files:
 
