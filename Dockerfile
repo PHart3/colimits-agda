@@ -59,12 +59,13 @@ RUN /dist/agda --library-file=/dist/libraries --$S ./Stability-ord.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./Stability-cos-coc.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./Cos-pullback.agda
 
-# Just check the following two files for the theorems in the paper
-# "On Left Adjoints Preserving Colimits in HoTT":
+# Just check the following three files for the theorems in the paper
+# "On Left Adjoints Preserving Colimits in Homotopy Type Theory":
 
 WORKDIR /build/HoTT-Agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/homotopy/Acyc-colim.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/modality/Mod-colim.agda
+RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/homotopy/Join/Join-colim.agda
 
 ####################################################################################################
 # Execute shell script to create html files
