@@ -16,6 +16,34 @@ module homotopy.Join.Join-2coher where
 -- proof of 2-coherence
 module JLA-2-coher-cmp {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W : Ptd i₄} where
 
+  open JoinRec
+
+  abstract
+
+    jmap-∘-sq-rw : ∀ {a w} (f₁ : de⊙ A * de⊙ X → de⊙ Y) (f₂ : de⊙ Z → de⊙ X) (f₃ : de⊙ W → de⊙ Z) → 
+      hmtpy-nat-∙' (λ x → ap f₁ (! (fst (jmap⊙-un-∘ {X = A} {Y₁ = W} (f₂ , idp) (f₃ , idp)) x)))
+        (jglue (pt A) (pt W) ∙ ! (jglue a (pt W)) ∙ jglue a w ∙ ! (jglue (pt A) w)) ∙ idp
+        ==
+      (ap-∘-∘-∙!∙! f₁ (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃)
+        (jglue (pt A) (pt W)) (jglue a (pt W)) (jglue a w) (jglue (pt A) w) ∙
+      ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄)
+        (ap (ap f₁) (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) _ (pt A) (pt W))) ∙
+          ap (ap f₁) (glue-β jleft (jright ∘ f₂) _ (pt A) (f₃ (pt W))))
+        (ap (ap f₁) (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) _ a (pt W))) ∙
+          ap (ap f₁) (glue-β jleft (jright ∘ f₂) _ a (f₃ (pt W))))
+        (ap (ap f₁) (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) _ a w)) ∙
+          ap (ap f₁) (glue-β jleft (jright ∘ f₂) _ a (f₃ w)))
+        (ap (ap f₁) (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) _ (pt A) w)) ∙
+          ap (ap f₁) (glue-β jleft (jright ∘ f₂) _ (pt A) (f₃ w))) ∙
+      ! (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄)
+          (ap (ap f₁) (glue-β jleft (jright ∘ f₂ ∘ f₃) _ (pt A) (pt W)))
+          (ap (ap f₁) (glue-β jleft (jright ∘ f₂ ∘ f₃) _ a (pt W)))
+          (ap (ap f₁) (glue-β jleft (jright ∘ f₂ ∘ f₃) _ a w))
+          (ap (ap f₁) (glue-β jleft (jright ∘ f₂ ∘ f₃) _ (pt A) w))) ∙
+      ap-∘-∙!∙! f₁ (jmap-un (de⊙ A) (f₂ ∘ f₃))
+        (jglue (pt A) (pt W)) (jglue a (pt W)) (jglue a w) (jglue (pt A) w)) ∙ idp
+    jmap-∘-sq-rw f₁ f₂ f₃ = {!!}
+
   open JLA-into-ap
 
   {-
@@ -23,7 +51,7 @@ module JLA-2-coher-cmp {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁
     because loop spaces are strongly homogeneous and the pointed
     covariant hom preserves homogeneous types.
   -}
-
+{-
   abstract
     2-coher-Join-cmp : (h₁ : A ⊙* X ⊙→ Y) (h₂ : Z ⊙→ X) (h₃ : W ⊙→ Z) →
       !-⊙∼ (⊙∘-assoc-crd (JLA-into X Y h₁) h₂ h₃) ∙⊙∼
@@ -70,7 +98,7 @@ module JLA-2-coher-cmp {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁
           ==
         idp!})) ∙
       ⊙-crd∼-to-==-β _)
-      where open JoinRec
+      -}
 {-
 module _ {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W : Ptd i₄} where
 

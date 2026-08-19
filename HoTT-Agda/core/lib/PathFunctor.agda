@@ -234,6 +234,18 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     → ap g (ap f p ∙ ! (ap f q) ∙ ap f r ∙ ! (ap f s)) == ap (g ∘ f) (p ∙ ! q ∙ r ∙ ! s)
   ∘-ap-∙!∙∙! idp idp idp s = ! (∘-!-ap s)
 
+  ap-∘-∙!∙! : {x y z w u : A} (p₁ : x == y) (p₂ : z == y) (p₃ : z == w) (p₄ : u == w) →
+    ap g (ap f p₁) ∙ ! (ap g (ap f p₂)) ∙ ap g (ap f p₃) ∙ ! (ap g (ap f p₄))
+      ==
+    ap (g ∘ f) (p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄)
+  ap-∘-∙!∙! idp idp idp idp = idp
+
+  ap-∘-∘-∙!∙! : ∀ {l} {D : Type l} (h : D → A) {x y z w u : D} (p₁ : x == y) (p₂ : z == y) (p₃ : z == w) (p₄ : u == w) →
+    ap (g ∘ f ∘ h) (p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄)
+      ==
+    ap g (ap f (ap h p₁)) ∙ ! (ap g (ap f (ap h p₂))) ∙ ap g (ap f (ap h p₃)) ∙ ! (ap g (ap f (ap h p₄)))
+  ap-∘-∘-∙!∙! _ idp idp idp idp = idp
+
   ap-∘-∘-!-∙ : ∀ {l} {D : Type l} (h : D → A) {x y : D} (p₁ : x == y) {z : A} (p₂ : h x == z)
     → ap g (ap f (! (ap h p₁) ∙ p₂)) == ! (ap (g ∘ f ∘ h) p₁) ∙ ap g (ap f p₂)
   ap-∘-∘-!-∙ _ idp idp = idp

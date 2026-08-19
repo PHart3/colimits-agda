@@ -65,7 +65,7 @@ We have successfully tested the following Docker container on Linux but not on o
    Agda code takes about 40 minutes on our host Ubuntu with 16 GB of RAM.
    (We see a 17% speed-up by using the `--save-metas` option.)
    
-   **Note:** Check just the final three files in the Dockerfile for the
+   **Note:** Check just the final three files in the main Dockerfile for the
    theorems in the paper "On Left Adjoints Preserving Colimits in Homotopy 
    Type Theory." Alternatively, to type check these theorems, run:
    

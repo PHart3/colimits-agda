@@ -87,6 +87,10 @@ jmap-∘ f₁ f₂ g₁ g₂ = JoinMapEq (λ _ → idp) (λ _ → idp) λ a b �
 jmap-idf : ∀ {i j} {X : Type i} {Y : Type j} → jmap (idf X) (idf Y) ∼ idf (X * Y)
 jmap-idf = JoinMapEq (λ _ → idp) (λ _ → idp) λ a b → ap (λ p → ! p ∙ ap (λ z → z) (jglue a b)) (JoinRec.glue-β _ _ _ a b) ∙ inv-l-ap-idf (glue (a , b))
 
+jmap-un : ∀ {i j k} (X : Type i) {Y : Type j} {Z : Type k} (f : Y → Z)
+  → X * Y → X * Z
+jmap-un X f = jmap (idf X) f
+
 jmap⊙ : ∀ {i₁ i₂ j₁ j₂} {X₁ : Ptd i₁} {X₂ : Ptd i₂} {Y₁ : Ptd j₁} {Y₂ : Ptd j₂}
   (f : X₁ ⊙→ Y₁) (g : X₂ ⊙→ Y₂) → X₁ ⊙* X₂ ⊙→ Y₁ ⊙* Y₂
 fst (jmap⊙ f g) = jmap (fst f) (fst g)
@@ -105,7 +109,7 @@ snd jmap⊙-idf = idp
 
 jmap⊙-un : ∀ {i j k} (X : Ptd i) {Y : Ptd j} {Z : Ptd k} (f : Y ⊙→ Z)
   → X ⊙* Y ⊙→ X ⊙* Z
-jmap⊙-un X f = jmap⊙ (⊙idf X) f
+jmap⊙-un X f = jmap-un (de⊙ X) (fst f) , idp
 
 jmap⊙-un-∘ : ∀ {i j₁ j₂ j₃}
   {X : Ptd i} {Y₁ : Ptd j₁} {Y₂ : Ptd j₂} {Y₃ : Ptd j₃}
