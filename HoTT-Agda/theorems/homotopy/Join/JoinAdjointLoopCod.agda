@@ -70,25 +70,23 @@ module JoinAdjLoop-units-coh {i} (X : Ptd i) where
       → ⊙ε Y ⊙∘ jmap⊙-un X (⊙hom-cod-fmap (⊙Ω-fmap f)) == f ⊙∘ ⊙ε Z
     ε-natural {Z = Z} (f , idp) = ⊙-crd∼-to-== $
       JoinMapEq (λ _ → idp) (λ _ → idp) (λ x (p , q) →
-        ap2 _∙_
-          (ap ! (ap-∘ (fst (⊙ε _)) (fst (jmap⊙-un X (⊙hom-cod-fmap (ap f , idp)))) (jglue x (p , q)) ∙
-          ap (ap _) (JoinRec.glue-β _ _ _ x (p , q)) ∙ JoinRec.glue-β _ _ _ x _))
-        (ap-∘ f (fst (⊙ε Z)) (jglue x (p , q)) ∙ ap (ap f) (JoinRec.glue-β _ _ _ x (p , q))) ∙
-        !-inv-l (ap f (p x))) ,
+        ap-∘ (fst (⊙ε _)) (fst (jmap⊙-un X (⊙hom-cod-fmap (ap f , idp)))) (jglue x (p , q)) ∙
+        ap (ap _) (JoinRec.glue-β _ _ _ x (p , q)) ∙ JoinRec.glue-β _ _ _ x _ ∙
+        ! (ap (ap f) (JoinRec.glue-β _ _ _ x (p , q))) ∙
+        ∘-ap f (fst (⊙ε Z)) (jglue x (p , q))) ,
       idp
-
+      
     εJoin-Joinη : ∀ {j} (Y : Ptd j) → ⊙ε (X ⊙* Y) ⊙∘ jmap⊙-un X (⊙η Y) == ⊙idf _
     εJoin-Joinη Y = ⊙-crd∼-to-== $
       JoinMapEq (λ x → jglue (pt X) (pt Y) ∙ ! (jglue x (pt Y))) (λ y → jglue (pt X) y) (λ x y →
-        ap (λ r → ! r ∙ (jglue (pt X) (pt Y) ∙ ! (jglue x (pt Y))) ∙ ap (λ z → z) (jglue x y))
-          (ap-∘ (fst (⊙ε (X ⊙* Y))) (fst (jmap⊙-un X (⊙η Y))) (jglue x y) ∙
-          ap (ap _) (JoinRec.glue-β _ _ _ x y) ∙ JoinRec.glue-β _ _ _ x (fst (⊙η Y) y)) ∙
-        aux-coher (jglue (pt X) (pt Y)) (jglue x (pt Y)) (jglue x y) (jglue (pt X) y)) ,
+        ap-∘ (fst (⊙ε (X ⊙* Y))) (fst (jmap⊙-un X (⊙η Y))) (jglue x y) ∙
+        ap (ap _) (JoinRec.glue-β _ _ _ x y) ∙ JoinRec.glue-β _ _ _ x (fst (⊙η Y) y) ∙
+        aux (jglue (pt X) (pt Y)) (jglue x (pt Y)) (jglue x y)) ,
         ap (λ r → ! r ∙ idp) (!-inv-r (jglue (pt X) (pt Y)))
-      where abstract
-        aux-coher : {x y z w v : de⊙ X * de⊙ Y} (p₁ : x == y) (p₂ : z == y) (p₃ : z == w) (p₄ : v == w) →
-          ! (p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) ∙ (p₁ ∙ ! p₂) ∙ ap (λ z → z) p₃ == p₄
-        aux-coher idp idp idp idp = idp
+      where
+        aux : ∀ {ℓ} {T : Type ℓ} {x y z w u : T} (p₁ : x == y) (p₂ : z == y) (p₃ : z == u) {p₄ : w == u}
+          → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄ == (p₁ ∙ ! p₂) ∙ ap (λ z → z) p₃ ∙' ! p₄
+        aux idp idp idp = ! (∙'-unit-l (! _))
 
 -- component morphism of adjunction
 JLA-into : ∀ {i j k} {X : Ptd i} (Y : Ptd j) (U : Ptd k) → X ⊙* Y ⊙→ U → (Y ⊙→ X ⊙–→ ⊙Ω U)

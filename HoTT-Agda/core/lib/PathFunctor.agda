@@ -972,6 +972,11 @@ module _ {i₀ i₁ i₂ i₃ j} {A₀ : Type i₀} {A₁ : Type i₁} {A₂ : T
     → (x₀ == y₀) → (x₁ == y₁) → (x₂ == y₂) → (x₃ == y₃) → f x₀ x₁ x₂ x₃ == f y₀ y₁ y₂ y₃
   ap4 idp idp idp idp = idp
 
+  ap4-∙! : {x₀ y₀ z₀ : A₀} {x₁ y₁ z₁ : A₁} {x₂ y₂ z₂ : A₂} {x₃ y₃ z₃ : A₃}
+    (p₁ : x₀ == y₀) (p₂ : z₀ == y₀) (p₃ : x₁ == y₁) (p₄ : z₁ == y₁) (p₅ : x₂ == y₂) (p₆ : z₂ == y₂) (p₇ : x₃ == y₃) (p₈ : z₃ == y₃)
+    → ap4 (p₁ ∙ ! p₂) (p₃ ∙ ! p₄) (p₅ ∙ ! p₆) (p₇ ∙ ! p₈) == ap4 p₁ p₃ p₅ p₇ ∙ ! (ap4 p₂ p₄ p₆ p₈)
+  ap4-∙! idp idp idp idp idp idp idp idp = idp
+
 ap4-∙!-∙!-canc : ∀ {i} {A : Type i} {x y z : A} {p₁ p₂ : x == y} {p₃ p₄ : x == z} (q : p₁ == p₂) (r : p₃ == p₄) →
   ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) q q r r
     ==
@@ -983,6 +988,53 @@ ap4-∙!-∙!-canc-mid : ∀ {i} {A : Type i} {x y z : A} {p₁ p₂ : x == y} {
     ==
   !-inv-r-twice-mid p₁ p₃ ∙ ! (!-inv-r-twice-mid p₂ p₄) 
 ap4-∙!-∙!-canc-mid {p₁ = p₁} {p₃ = idp} idp idp = ! (!-inv-r (!-inv-r p₁))
+
+hmtpy-nat-∙'-ap∙!∙!-aux2 : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B}
+  {x₁ x₂ x₃ x₄ x₅ x₆ : A} (q₁ : x₁ == x₂) (q₂ : x₁ == x₃) (q₃ : x₁ == x₄) (q₄ : x₁ == x₅) (q₅ : x₁ == x₆) →
+  ap f (! q₁ ∙ idp ∙' ! (! q₂)) ∙
+  ! (ap f (! q₃ ∙ idp ∙' ! (! q₂))) ∙
+  ap f (! q₃ ∙ idp ∙' ! (! q₄)) ∙ ! (ap f (! q₅ ∙ idp ∙' ! (! q₄)))
+    ==
+  ap f (! q₁) ∙ idp ∙' ! (ap f (! q₅))
+hmtpy-nat-∙'-ap∙!∙!-aux2 idp idp idp idp idp = idp
+
+hmtpy-nat-∙'-ap∙!∙!-aux : ∀ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃}
+  (f : B → C) (g : A → B) {x₁ x₂ x₃ x₄ x₅ : A} {y₁ y₂ y₃ y₄ y₅ : B}
+  (p₁ : x₁ == x₂) (p₂ : x₃ == x₂) (p₃ : x₃ == x₄) (p₄ : x₅ == x₄)
+  (q₁ : g x₁ == y₁) (q₂ : g x₂ == y₂) (q₃ : g x₃ == y₃) (q₄ : g x₄ == y₄) (q₅ : g x₅ == y₅) →  
+  ap f (! q₁ ∙ ap g p₁ ∙' ! (! q₂)) ∙
+  ! (ap f (! q₃ ∙ ap g p₂ ∙' ! (! q₂))) ∙
+  ap f (! q₃ ∙ ap g p₃ ∙' ! (! q₄)) ∙
+  ! (ap f (! q₅ ∙ ap g p₄ ∙' ! (! q₄)))
+    ==
+  ap f (! q₁) ∙
+  ap (f ∘ g) (p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) ∙' ! (ap f (! q₅))
+hmtpy-nat-∙'-ap∙!∙!-aux f g idp idp idp idp q₁ q₂ q₃ q₄ q₅ = hmtpy-nat-∙'-ap∙!∙!-aux2 q₁ q₂ q₃ q₄ q₅
+
+hmtpy-nat-∙'-ap∙!∙! : ∀ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} {C : Type ℓ₃} {g₁ g₂ : C → A}
+  (H : (c : C) → g₁ c == g₂ c) {x₁ x₂ x₃ x₄ x₅ : C}
+  (p₁ : x₁ == x₂) (p₂ : x₃ == x₂) (p₃ : x₃ == x₄) (p₄ : x₅ == x₄) →
+  hmtpy-nat-∙' (λ x → ap f (! (H x))) (p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄)
+    ==
+  ! (ap-∘-∙!∙! f g₂ p₁ p₂ p₃ p₄) ∙
+  ap4 (λ q₁ q₂ q₃ q₄ → q₁ ∙ ! q₂ ∙ q₃ ∙ ! q₄)
+    (ap (ap f) (hmtpy-nat-∙' (λ x → ! (H x)) p₁))
+    (ap (ap f) (hmtpy-nat-∙' (λ x → ! (H x)) p₂))
+    (ap (ap f) (hmtpy-nat-∙' (λ x → ! (H x)) p₃))
+    (ap (ap f) (hmtpy-nat-∙' (λ x → ! (H x)) p₄)) ∙
+  hmtpy-nat-∙'-ap∙!∙!-aux f g₁ p₁ p₂ p₃ p₄ (H x₁) (H x₂) (H x₃) (H x₄) (H x₅)
+hmtpy-nat-∙'-ap∙!∙! {A = A} {f = f} H {x₁ = x₁} idp idp idp idp = lemma (H x₁)
+  where
+    lemma : {x y : A} (p : x == y) →
+      ! (!-inv-r (ap f (! p))) ∙ ap (_∙_ (ap f (! p))) (! (∙'-unit-l (! (ap f (! p)))))
+        ==
+      ap4 (λ q₁ q₂ q₃ q₄ → q₁ ∙ ! q₂ ∙ q₃ ∙ ! q₄)
+        (ap (ap f) (! (!-inv-r (! p)) ∙ ap (_∙_ (! p)) (! (∙'-unit-l (! (! p))))))
+        (ap (ap f) (! (!-inv-r (! p)) ∙ ap (_∙_ (! p)) (! (∙'-unit-l (! (! p))))))
+        (ap (ap f) (! (!-inv-r (! p)) ∙ ap (_∙_ (! p)) (! (∙'-unit-l (! (! p))))))
+        (ap (ap f) (! (!-inv-r (! p)) ∙ ap (_∙_ (! p)) (! (∙'-unit-l (! (! p)))))) ∙
+      hmtpy-nat-∙'-ap∙!∙!-aux2 p p p p p
+    lemma idp = idp
 
 module _ {i₀ i₁ i₂ i₃ i₄ j} {A₀ : Type i₀} {A₁ : Type i₁} {A₂ : Type i₂} {A₃ : Type i₃}
   {A₄ : Type i₄} {B : Type j} (f : A₀ → A₁ → A₂ → A₃ → A₄ → B) where

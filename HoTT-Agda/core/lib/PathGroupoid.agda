@@ -130,6 +130,9 @@ module _ {i} {A : Type i} where
   ∙'-∙-unit-r-!-inv-l : {x y : A} (p : x == y) → ((idp ∙' ! p) ∙ idp) ∙' p ∙ idp == idp
   ∙'-∙-unit-r-!-inv-l idp = idp
 
+  !-inv-l-∙'-!-! : {x y u z : A} (p₀ : x == y) (p₁ : u == x) (p₂ : z == y) → p₀ == ! p₁ ∙ (p₁ ∙ p₀ ∙' ! p₂) ∙' ! (! p₂)
+  !-inv-l-∙'-!-! p₀ idp idp = idp
+
   !-!-inv-∙'-∙ : {x y z u w : A} (p : x == y) (q : u == z) (r : u == y) (q' : y == w) → ((p ∙' ! r) ∙ q) ∙' ! q ∙ r ∙ q' == p ∙ q'
   !-!-inv-∙'-∙ p idp idp idp = idp
 
@@ -162,10 +165,14 @@ module _ {i} {A : Type i} where
     → p₀ == p₁ ∙ p₂  ∙' ! p₃ → p₂ == ! p₁ ∙ p₀ ∙' p₃
   ∙-∙'-!-rot p₀ idp p₂ idp e = ! e
 
-  ∙-∙'-!-rot-rev : {x y z w : A} (p₀ : x == y) {p₁ : x == z} {p₂ : z == w} (p₃ : y == w)
+  ∙to∙'-!-rot : {x y z w : A} (p₀ : x == y) {p₁ : x == z} {p₂ : z == w} (p₃ : y == w)
     → ! p₀ ∙ p₁ ∙ p₂ == p₃ → p₀ == p₁ ∙ p₂ ∙' ! p₃
-  ∙-∙'-!-rot-rev idp idp e = ! e
+  ∙to∙'-!-rot idp idp e = ! e
 
+  ∙'to∙-!-rot : {x y z w : A} (p₀ : x == y) {p₁ : x == z} {p₂ : z == w} (p₃ : y == w)
+    → p₀ == p₁ ∙ p₂ ∙' ! p₃ → ! p₀ ∙ p₁ ∙ p₂ == p₃
+  ∙'to∙-!-rot idp {p₁ = idp} {p₂ = idp} p₃ e = ap ! (e ∙ ∙'-unit-l (! p₃)) ∙ !-! p₃
+      
   !-inj-rot : {x y : A} {p₁ p₂ : x == y} (n : p₁ == p₂) {m : ! p₁ == ! p₂}
     → m == ap ! n →  ! (!-! p₁) ∙ ap ! m ∙' !-! p₂ == n
   !-inj-rot {p₁ = idp} idp idp = idp

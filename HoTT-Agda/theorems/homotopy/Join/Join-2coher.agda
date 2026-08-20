@@ -8,6 +8,7 @@ open import lib.types.LoopSpace
 open import lib.types.Homogeneous
 open import homotopy.Join.JoinAdjointLoopCod
 open import lib.wild-cats.Ladj-2-coher
+open import lib.types.Pushout
 
 -- The unary pointed join is a 2-coherent left adjoint to the covariant Loop hom functor.
 
@@ -22,27 +23,43 @@ module JLA-2-coher-cmp {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁
 
     jmap-∘-sq-rw : ∀ {a w} (f₁ : de⊙ A * de⊙ X → de⊙ Y) (f₂ : de⊙ Z → de⊙ X) (f₃ : de⊙ W → de⊙ Z) → 
       hmtpy-nat-∙' (λ x → ap f₁ (! (fst (jmap⊙-un-∘ {X = A} {Y₁ = W} (f₂ , idp) (f₃ , idp)) x)))
-        (jglue (pt A) (pt W) ∙ ! (jglue a (pt W)) ∙ jglue a w ∙ ! (jglue (pt A) w)) ∙ idp
+        (jglue (pt A) (pt W) ∙ ! (jglue a (pt W)) ∙ jglue a w ∙ ! (jglue (pt A) w))
         ==
-      (ap-∘-∘-∙!∙! f₁ (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃)
-        (jglue (pt A) (pt W)) (jglue a (pt W)) (jglue a w) (jglue (pt A) w) ∙
-      ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄)
-        (ap (ap f₁) (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) _ (pt A) (pt W))) ∙
-          ap (ap f₁) (glue-β jleft (jright ∘ f₂) _ (pt A) (f₃ (pt W))))
-        (ap (ap f₁) (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) _ a (pt W))) ∙
-          ap (ap f₁) (glue-β jleft (jright ∘ f₂) _ a (f₃ (pt W))))
-        (ap (ap f₁) (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) _ a w)) ∙
-          ap (ap f₁) (glue-β jleft (jright ∘ f₂) _ a (f₃ w)))
-        (ap (ap f₁) (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) _ (pt A) w)) ∙
-          ap (ap f₁) (glue-β jleft (jright ∘ f₂) _ (pt A) (f₃ w))) ∙
-      ! (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄)
-          (ap (ap f₁) (glue-β jleft (jright ∘ f₂ ∘ f₃) _ (pt A) (pt W)))
-          (ap (ap f₁) (glue-β jleft (jright ∘ f₂ ∘ f₃) _ a (pt W)))
-          (ap (ap f₁) (glue-β jleft (jright ∘ f₂ ∘ f₃) _ a w))
-          (ap (ap f₁) (glue-β jleft (jright ∘ f₂ ∘ f₃) _ (pt A) w))) ∙
-      ap-∘-∙!∙! f₁ (jmap-un (de⊙ A) (f₂ ∘ f₃))
-        (jglue (pt A) (pt W)) (jglue a (pt W)) (jglue a w) (jglue (pt A) w)) ∙ idp
-    jmap-∘-sq-rw f₁ f₂ f₃ = {!!}
+      ! (ap-∘-∙!∙! f₁
+          (jmap-un (de⊙ A) f₂ ∘ jmap-un (de⊙ A) f₃)
+          (jglue (pt A) (pt W)) (jglue a (pt W)) (jglue a w)
+          (jglue (pt A) w)) ∙
+      ! (ap4 (λ q₁ q₂ q₃ q₄ → q₁ ∙ ! q₂ ∙ q₃ ∙ ! q₄)
+          (ap (ap f₁)
+            (ap (λ p → ! idp ∙ p ∙' ! (! idp))
+              (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ a b → jglue a (f₂ (f₃ b))) (pt A) (pt W) ∙
+              ! (glue-β jleft (jright ∘ f₂) (λ a b → jglue a (f₂ b)) (pt A) (f₃ (pt W))) ∙
+              ! (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) (λ a b → jglue a (f₃ b)) (pt A) (pt W))) ∙
+              ∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue (pt A) (pt W)))))
+          (ap (ap f₁)
+            (ap (λ p → ! idp ∙ p ∙' ! (! idp))
+              (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ a b → jglue a (f₂ (f₃ b))) a (pt W) ∙
+              ! (glue-β jleft (jright ∘ f₂) (λ a b → jglue a (f₂ b)) a (f₃ (pt W))) ∙
+              ! (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) (λ a b → jglue a (f₃ b)) a (pt W))) ∙
+              ∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue a (pt W)))))
+          (ap (ap f₁)
+            (ap (λ p → ! idp ∙ p ∙' ! (! idp))
+              (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ a b → jglue a (f₂ (f₃ b))) a w ∙
+              ! (glue-β jleft (jright ∘ f₂) (λ a b → jglue a (f₂ b)) a (f₃ w)) ∙
+              ! (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) (λ a b → jglue a (f₃ b)) a w)) ∙
+              ∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue a w))))
+          (ap (ap f₁)
+            (ap (λ p → ! idp ∙ p ∙' ! (! idp))
+              (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ a b → jglue a (f₂ (f₃ b))) (pt A) w ∙
+              ! (glue-β jleft (jright ∘ f₂) (λ a b → jglue a (f₂ b)) (pt A) (f₃ w)) ∙
+              ! (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) (λ a b → jglue a (f₃ b)) (pt A) w)) ∙
+              ∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue (pt A) w))))) ∙
+      hmtpy-nat-∙'-ap∙!∙!-aux f₁
+        (jmap-un (de⊙ A) (f₂ ∘ f₃))
+        (jglue (pt A) (pt W)) (jglue a (pt W)) (jglue a w)
+        (jglue (pt A) w)
+        idp idp idp idp idp
+    jmap-∘-sq-rw f₁ f₂ f₃ = JoinMapEq-β-ap∙!∙! _ _ _ f₁ 
 
   open JLA-into-ap
 

@@ -54,27 +54,83 @@ module _ {i j} {A : Type i} {B : Type j} where
 
   module _ {ℓ} {D : Type ℓ} {h₁ h₂ : A * B → D}
     (p₁ : h₁ ∘ left ∼ h₂ ∘ left) (p₂ : h₁ ∘ right ∼ h₂ ∘ right)
-    (g : (a : A) (b : B) → ! (ap h₁ (jglue a b)) ∙ p₁ a ∙ ap h₂ (jglue a b) == p₂ b) where
+    (g : (a : A) (b : B) → ap h₁ (jglue a b) == p₁ a ∙ ap h₂ (jglue a b) ∙' ! (p₂ b)) where
 
     JoinMapEq : h₁ ∼ h₂
-    JoinMapEq = PushoutMapEq h₁ h₂ p₁ p₂ λ c →
-      ∙-assoc (! (ap h₁ (glue c))) (p₁ (fst c)) (ap h₂ (glue c)) ∙ uncurry g c
+    JoinMapEq = PushoutMapEq h₁ h₂ p₁ p₂ λ c@(a , b) →
+      ∙-assoc (! (ap h₁ (glue c))) (p₁ a) (ap h₂ (glue c)) ∙ ∙'to∙-!-rot  _ _ (g a b)
 
-    JoinMapEq-β : (a : A) (b : B) → hmtpy-nat-∙' JoinMapEq (jglue a b) == ∙-∙'-!-rot-rev _ _ (g a b)
-    JoinMapEq-β a b =
-      apd-to-hnat h₁ h₂ JoinMapEq (jglue a b) (∙-∙'-!-rot-rev _ _ (g a b))
-        (PushoutElim.glue-β _ _ _ (a , b) ∙ lemma {r = p₂ b} (jglue a b) (p₁ a) (g a b))
-      where
+    abstract
+      JoinMapEq-β : (a : A) (b : B) → hmtpy-nat-∙' JoinMapEq (jglue a b) == g a b
+      JoinMapEq-β a b =
+        apd-to-hnat h₁ h₂ JoinMapEq (jglue a b) (g a b) (PushoutElim.glue-β _ _ _ (a , b) ∙
+        lemma (glue (a , b)) {z = p₂ b} (p₁ a) (g a b))
+        where
 
-        lemma-aux : {d d' : D} (r : d == d') → ! (∙-unit-r r) ∙ idp == ∙-idp-!-∙'-rot r (r ∙ idp) (∙-∙'-!-rot-rev idp (r ∙ idp) idp)
-        lemma-aux idp = idp
+          lemma-aux : ∀ {ℓ} {X : Type ℓ} {x y : X} (z r : x == y) (q : idp == r ∙ idp ∙' ! z) →
+            ! (∙-unit-r r) ∙ ∙'to∙-!-rot idp z q == ∙-idp-!-∙'-rot r z q
+          lemma-aux z idp q = idp
 
-        lemma : {x y : A * B} {z r : h₁ y == h₂ y} (p : x == y) (r : h₁ x == h₂ x) (q : ! (ap h₁ p) ∙ r ∙ ap h₂ p == z) → 
-          from-transp (λ x → h₁ x == h₂ x) p
-            (transp-pth-l p r ∙ ∙-assoc (! (ap h₁ p)) r (ap h₂ p) ∙ q)
-            ==
-          from-hmtpy-nat h₁ h₂ p (∙-∙'-!-rot-rev (ap h₁ p) z q)
-        lemma idp r idp = lemma-aux r
+          lemma : {x y : A * B} (p : x == y) {z : h₁ y == h₂ y} (r : h₁ x == h₂ x) (q : ap h₁ p == r ∙ ap h₂ p ∙' ! z) →
+            from-transp (λ x → h₁ x == h₂ x) p
+              (transp-pth-l p r ∙
+              ∙-assoc (! (ap h₁ p)) r (ap h₂ p) ∙
+              ∙'to∙-!-rot (ap h₁ p) z q)
+                ==
+              from-hmtpy-nat h₁ h₂ p q
+          lemma idp {z = z} r q = lemma-aux z r q
+
+    JoinMapEq!-β : (a : A) (b : B) →
+      hmtpy-nat-∙' (λ z → ! (JoinMapEq z)) (jglue a b)
+        ==
+      !-inv-l-∙'-!-! (ap h₂ (jglue a b)) (p₁ a) (p₂ b) ∙
+      ! (ap (λ p → ! (p₁ a) ∙ p ∙' ! (! (p₂ b))) (g a b))
+    JoinMapEq!-β a b =
+      hmtpy-nat-∙'-! (jglue a b) JoinMapEq ∙
+      ap (λ q → !-inv-l-∙'-!-! (ap h₂ (jglue a b)) (p₁ a) (p₂ b) ∙ ! (ap (λ p → ! (p₁ a) ∙ p ∙' ! (! (p₂ b))) q))
+        (JoinMapEq-β a b)
+      where open import lib.SIP
+
+    abstract
+      JoinMapEq-β-ap∙!∙! : ∀ {ℓ'} {E : Type ℓ'} (f : D → E) {x₁ x₃ x₅ : A} {x₂ x₄ : B} →
+        hmtpy-nat-∙'
+          (λ x → ap f (! (JoinMapEq x))) (jglue x₁ x₂ ∙ ! (jglue x₃ x₂) ∙ jglue x₃ x₄ ∙ ! (jglue x₅ x₄))
+          ==
+        ! (ap-∘-∙!∙! f h₂ (jglue x₁ x₂) (jglue x₃ x₂) (jglue x₃ x₄) (jglue x₅ x₄)) ∙
+        (ap4 (λ q₁ q₂ q₃ q₄ → q₁ ∙ ! q₂ ∙ q₃ ∙ ! q₄)
+          (ap (ap f) (!-inv-l-∙'-!-! (ap h₂ (glue (x₁ , x₂))) (p₁ x₁) (p₂ x₂)))
+          (ap (ap f) (!-inv-l-∙'-!-! (ap h₂ (glue (x₃ , x₂))) (p₁ x₃) (p₂ x₂)))
+          (ap (ap f) (!-inv-l-∙'-!-! (ap h₂ (glue (x₃ , x₄))) (p₁ x₃) (p₂ x₄)))
+          (ap (ap f) (!-inv-l-∙'-!-! (ap h₂ (glue (x₅ , x₄))) (p₁ x₅) (p₂ x₄))) ∙
+        ! (ap4 (λ q₁ q₂ q₃ q₄ → q₁ ∙ ! q₂ ∙ q₃ ∙ ! q₄)
+            (ap (ap f) (ap (λ p → ! (p₁ x₁) ∙ p ∙' ! (! (p₂ x₂))) (g x₁ x₂)))
+            (ap (ap f) (ap (λ p → ! (p₁ x₃) ∙ p ∙' ! (! (p₂ x₂))) (g x₃ x₂)))
+            (ap (ap f) (ap (λ p → ! (p₁ x₃) ∙ p ∙' ! (! (p₂ x₄))) (g x₃ x₄)))
+            (ap (ap f) (ap (λ p → ! (p₁ x₅) ∙ p ∙' ! (! (p₂ x₄))) (g x₅ x₄))))) ∙
+        hmtpy-nat-∙'-ap∙!∙!-aux f h₁ (jglue x₁ x₂) (jglue x₃ x₂) (jglue x₃ x₄) (jglue x₅ x₄)
+          (p₁ x₁) (p₂ x₂) (p₁ x₃) (p₂ x₄) (p₁ x₅)
+      JoinMapEq-β-ap∙!∙! f {x₁} {x₃} {x₅} {x₂} {x₄} =
+        hmtpy-nat-∙'-ap∙!∙! JoinMapEq (jglue x₁ x₂) (jglue x₃ x₂) (jglue x₃ x₄) (jglue x₅ x₄) ∙
+        ap (λ p →
+            ! (ap-∘-∙!∙! f h₂ (jglue x₁ x₂) (jglue x₃ x₂) (jglue x₃ x₄) (jglue x₅ x₄)) ∙
+            p ∙
+            hmtpy-nat-∙'-ap∙!∙!-aux f h₁ (jglue x₁ x₂) (jglue x₃ x₂) (jglue x₃ x₄) (jglue x₅ x₄)
+              (p₁ x₁) (p₂ x₂) (p₁ x₃) (p₂ x₄) (p₁ x₅))
+          (ap4 (λ q₁ q₂ q₃ q₄ →
+              ap4 (λ r₁ r₂ r₃ r₄ → r₁ ∙ ! r₂ ∙ r₃ ∙ ! r₄) q₁ q₂ q₃ q₄)
+            (ap (ap (ap f)) (JoinMapEq!-β x₁ x₂) ∙
+              ! (!r-ap-∙ (ap f) (!-inv-l-∙'-!-! _ (p₁ x₁) _) _))
+            (ap (ap (ap f)) (JoinMapEq!-β x₃ x₂) ∙
+              ! (!r-ap-∙ (ap f) (!-inv-l-∙'-!-! _ (p₁ x₃) _) _))
+            (ap (ap (ap f)) (JoinMapEq!-β x₃ x₄) ∙
+              ! (!r-ap-∙ (ap f) (!-inv-l-∙'-!-! _ (p₁ x₃) _) _))
+            (ap (ap (ap f)) (JoinMapEq!-β x₅ x₄) ∙
+              ! (!r-ap-∙ (ap f) (!-inv-l-∙'-!-! _ (p₁ x₅) _) _)) ∙
+          ap4-∙! (λ q₁ q₂ q₃ q₄ → q₁ ∙ ! q₂ ∙ q₃ ∙ ! q₄)
+            (ap (ap f) (!-inv-l-∙'-!-! _ (p₁ x₁) _)) _
+            (ap (ap f) (!-inv-l-∙'-!-! _ (p₁ x₃) _)) _
+            (ap (ap f) (!-inv-l-∙'-!-! _ (p₁ x₃) _)) _
+            (ap (ap f) (!-inv-l-∙'-!-! _ (p₁ x₅) _)) _)
 
 module _ {i j} (X : Ptd i) (Y : Ptd j) where
 
@@ -95,14 +151,13 @@ jmap-∘ : ∀ {i₁ i₂ i₃ j₁ j₂ j₃}
   (f₁ : X₁ → X₂) (f₂ : X₂ → X₃) (g₁ : Y₁ → Y₂) (g₂ : Y₂ → Y₃)
   → jmap (f₂ ∘ f₁) (g₂ ∘ g₁) ∼ jmap f₂ g₂ ∘ jmap f₁ g₁
 jmap-∘ f₁ f₂ g₁ g₂ = JoinMapEq (λ _ → idp) (λ _ → idp) λ a b →
-  ap2 (λ p₁ p₂ → ! p₁ ∙ p₂) (JoinRec.glue-β _ _ _ a b)
-    (ap-∘ (jmap f₂ g₂) (jmap f₁ g₁) (jglue a b) ∙
-    ap (ap (jmap f₂ g₂)) (JoinRec.glue-β _ _ _ a b) ∙
-    JoinRec.glue-β _ _ _ (f₁ a) (g₁ b)) ∙
-    !-inv-l (uncurry (λ a b → glue ((f₂ ∘ f₁) a , (g₂ ∘ g₁) b)) (a , b))
-
+  JoinRec.glue-β _ _ _ a b ∙
+  ! (JoinRec.glue-β _ _ _ (f₁ a) (g₁ b)) ∙
+  ! (ap (ap (jmap f₂ g₂)) (JoinRec.glue-β _ _ _ a b)) ∙
+  ∘-ap (jmap f₂ g₂) (jmap f₁ g₁) (jglue a b)
+  
 jmap-idf : ∀ {i j} {X : Type i} {Y : Type j} → jmap (idf X) (idf Y) ∼ idf (X * Y)
-jmap-idf = JoinMapEq (λ _ → idp) (λ _ → idp) λ a b → ap (λ p → ! p ∙ ap (λ z → z) (jglue a b)) (JoinRec.glue-β _ _ _ a b) ∙ inv-l-ap-idf (jglue a b)
+jmap-idf = JoinMapEq (λ _ → idp) (λ _ → idp) λ a b → JoinRec.glue-β _ _ _ a b ∙ ! (ap-idf (jglue a b))
 
 jmap-un : ∀ {i j k} (X : Type i) {Y : Type j} {Z : Type k} (f : Y → Z)
   → X * Y → X * Z
