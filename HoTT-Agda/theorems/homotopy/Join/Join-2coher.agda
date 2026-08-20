@@ -31,25 +31,25 @@ module JLA-2-coher-cmp {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁
           (jglue (pt A) w)) ∙
       ! (ap4 (λ q₁ q₂ q₃ q₄ → q₁ ∙ ! q₂ ∙ q₃ ∙ ! q₄)
           (ap (ap f₁)
-            (ap (λ p → ! idp ∙ p ∙' ! (! idp))
+            (ap (λ p → p)
               (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ a b → jglue a (f₂ (f₃ b))) (pt A) (pt W) ∙
               ! (glue-β jleft (jright ∘ f₂) (λ a b → jglue a (f₂ b)) (pt A) (f₃ (pt W))) ∙
               ! (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) (λ a b → jglue a (f₃ b)) (pt A) (pt W))) ∙
               ∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue (pt A) (pt W)))))
           (ap (ap f₁)
-            (ap (λ p → ! idp ∙ p ∙' ! (! idp))
+            (ap (λ p → p)
               (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ a b → jglue a (f₂ (f₃ b))) a (pt W) ∙
               ! (glue-β jleft (jright ∘ f₂) (λ a b → jglue a (f₂ b)) a (f₃ (pt W))) ∙
               ! (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) (λ a b → jglue a (f₃ b)) a (pt W))) ∙
               ∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue a (pt W)))))
           (ap (ap f₁)
-            (ap (λ p → ! idp ∙ p ∙' ! (! idp))
+            (ap (λ p → p)
               (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ a b → jglue a (f₂ (f₃ b))) a w ∙
               ! (glue-β jleft (jright ∘ f₂) (λ a b → jglue a (f₂ b)) a (f₃ w)) ∙
               ! (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) (λ a b → jglue a (f₃ b)) a w)) ∙
               ∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue a w))))
           (ap (ap f₁)
-            (ap (λ p → ! idp ∙ p ∙' ! (! idp))
+            (ap (λ p → p)
               (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ a b → jglue a (f₂ (f₃ b))) (pt A) w ∙
               ! (glue-β jleft (jright ∘ f₂) (λ a b → jglue a (f₂ b)) (pt A) (f₃ w)) ∙
               ! (ap (ap (jmap-un (de⊙ A) f₂)) (glue-β jleft (jright ∘ f₃) (λ a b → jglue a (f₃ b)) (pt A) w)) ∙
