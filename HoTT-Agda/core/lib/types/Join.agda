@@ -52,12 +52,29 @@ module _ {i j} {A : Type i} {B : Type j} where
 
   Join-rec = JoinRec.f
 
-  JoinMapEq : ∀ {ℓ} {D : Type ℓ} {h₁ h₂ : A * B → D}
-    → (p₁ : h₁ ∘ left ∼ h₂ ∘ left) (p₂ : h₁ ∘ right ∼ h₂ ∘ right)
-    → ((a : A) (b : B) → ! (ap h₁ (jglue a b)) ∙ p₁ a ∙ ap h₂ (jglue a b) == p₂ b)
-    → h₁ ∼ h₂
-  JoinMapEq {h₁ = h₁} {h₂} p₁ p₂ g = PushoutMapEq h₁ h₂ p₁ p₂ λ c →
-    ∙-assoc (! (ap h₁ (glue c))) (p₁ (fst c)) (ap h₂ (glue c)) ∙ uncurry g c
+  module _ {ℓ} {D : Type ℓ} {h₁ h₂ : A * B → D}
+    (p₁ : h₁ ∘ left ∼ h₂ ∘ left) (p₂ : h₁ ∘ right ∼ h₂ ∘ right)
+    (g : (a : A) (b : B) → ! (ap h₁ (jglue a b)) ∙ p₁ a ∙ ap h₂ (jglue a b) == p₂ b) where
+
+    JoinMapEq : h₁ ∼ h₂
+    JoinMapEq = PushoutMapEq h₁ h₂ p₁ p₂ λ c →
+      ∙-assoc (! (ap h₁ (glue c))) (p₁ (fst c)) (ap h₂ (glue c)) ∙ uncurry g c
+
+    JoinMapEq-β : (a : A) (b : B) → hmtpy-nat-∙' JoinMapEq (jglue a b) == ∙-∙'-!-rot-rev _ _ (g a b)
+    JoinMapEq-β a b =
+      apd-to-hnat h₁ h₂ JoinMapEq (jglue a b) (∙-∙'-!-rot-rev _ _ (g a b))
+        (PushoutElim.glue-β _ _ _ (a , b) ∙ lemma {r = p₂ b} (jglue a b) (p₁ a) (g a b))
+      where
+
+        lemma-aux : {d d' : D} (r : d == d') → ! (∙-unit-r r) ∙ idp == ∙-idp-!-∙'-rot r (r ∙ idp) (∙-∙'-!-rot-rev idp (r ∙ idp) idp)
+        lemma-aux idp = idp
+
+        lemma : {x y : A * B} {z r : h₁ y == h₂ y} (p : x == y) (r : h₁ x == h₂ x) (q : ! (ap h₁ p) ∙ r ∙ ap h₂ p == z) → 
+          from-transp (λ x → h₁ x == h₂ x) p
+            (transp-pth-l p r ∙ ∙-assoc (! (ap h₁ p)) r (ap h₂ p) ∙ q)
+            ==
+          from-hmtpy-nat h₁ h₂ p (∙-∙'-!-rot-rev (ap h₁ p) z q)
+        lemma idp r idp = lemma-aux r
 
 module _ {i j} (X : Ptd i) (Y : Ptd j) where
 
@@ -85,7 +102,7 @@ jmap-∘ f₁ f₂ g₁ g₂ = JoinMapEq (λ _ → idp) (λ _ → idp) λ a b �
     !-inv-l (uncurry (λ a b → glue ((f₂ ∘ f₁) a , (g₂ ∘ g₁) b)) (a , b))
 
 jmap-idf : ∀ {i j} {X : Type i} {Y : Type j} → jmap (idf X) (idf Y) ∼ idf (X * Y)
-jmap-idf = JoinMapEq (λ _ → idp) (λ _ → idp) λ a b → ap (λ p → ! p ∙ ap (λ z → z) (jglue a b)) (JoinRec.glue-β _ _ _ a b) ∙ inv-l-ap-idf (glue (a , b))
+jmap-idf = JoinMapEq (λ _ → idp) (λ _ → idp) λ a b → ap (λ p → ! p ∙ ap (λ z → z) (jglue a b)) (JoinRec.glue-β _ _ _ a b) ∙ inv-l-ap-idf (jglue a b)
 
 jmap-un : ∀ {i j k} (X : Type i) {Y : Type j} {Z : Type k} (f : Y → Z)
   → X * Y → X * Z

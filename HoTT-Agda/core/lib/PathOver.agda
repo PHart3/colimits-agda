@@ -263,7 +263,7 @@ module _ {i j} {A : Type i} where
     {u : B a} {v : B a'}
     → (transport B p u == v)
     → (u == v [ B ↓ p ])
-  from-transp B idp idp = idp
+  from-transp B idp e = e
 
   to-transp : {B : A → Type j} {a a' : A} {p : a == a'}
     {u : B a} {v : B a'}

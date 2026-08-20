@@ -162,6 +162,10 @@ module _ {i} {A : Type i} where
     → p₀ == p₁ ∙ p₂  ∙' ! p₃ → p₂ == ! p₁ ∙ p₀ ∙' p₃
   ∙-∙'-!-rot p₀ idp p₂ idp e = ! e
 
+  ∙-∙'-!-rot-rev : {x y z w : A} (p₀ : x == y) {p₁ : x == z} {p₂ : z == w} (p₃ : y == w)
+    → ! p₀ ∙ p₁ ∙ p₂ == p₃ → p₀ == p₁ ∙ p₂ ∙' ! p₃
+  ∙-∙'-!-rot-rev idp idp e = ! e
+
   !-inj-rot : {x y : A} {p₁ p₂ : x == y} (n : p₁ == p₂) {m : ! p₁ == ! p₂}
     → m == ap ! n →  ! (!-! p₁) ∙ ap ! m ∙' !-! p₂ == n
   !-inj-rot {p₁ = idp} idp idp = idp
