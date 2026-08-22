@@ -225,9 +225,9 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
       ap-!-inv r₀ ((merid ∘ h₀) (pt X)) ∙ ! (cmp-inv-r {f = Susp-fmap h₀} {g = r₀} (glue (pt X))) 
     nat-dom-aux-l = nat-dom-aux-l2 (SuspFmap.merid-β h₀ (pt X)) 
 
-  nat-dom-cmp : (h : X ⊙→ Y) (r : ⊙Susp Y ⊙→ U)
+  nat-dom-crd : (h : X ⊙→ Y) (r : ⊙Susp Y ⊙→ U)
     → (into Y U) r ⊙∘ h ⊙-crd∼ (into X U) (r ⊙∘ ⊙Susp-fmap h)
-  fst (nat-dom-cmp (h₀ , idp) (r₀ , idp)) x = ↯ $
+  fst (nat-dom-crd (h₀ , idp) (r₀ , idp)) x = ↯ $
     ap-∙ r₀ (glue (h₀ x)) (! (glue (pt Y))) ◃∙
     ! (ap (λ p → ap r₀ (glue (h₀ x)) ∙ p) (ap (λ p → ap r₀ (! p)) (SuspFmap.merid-β h₀ (pt X)))) ◃∙
     ! (ap (λ p → ap r₀ (glue (h₀ x)) ∙ p) (ap-∘ r₀ (Susp-fmap h₀) (! (glue (pt X))) ∙
@@ -235,7 +235,7 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
     ! (ap (λ p → ap r₀ p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (SuspFmap.merid-β h₀ x)) ◃∙
     ! ((ap (λ p → p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (ap-∘ r₀ (Susp-fmap h₀) (glue x)))) ◃∙
     ! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue x) (! (glue (pt X)))) ◃∎
-  snd (nat-dom-cmp (h₀ , idp) (r₀ , idp)) =
+  snd (nat-dom-crd (h₀ , idp) (r₀ , idp)) =
     ap (λ p → ! (ap-∙ r₀ (glue (h₀ (pt X))) (! (glue (h₀ (pt X)))) ∙ p) ∙
         ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp)
       (assoc-4-∙
@@ -257,4 +257,4 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
 SuspLoopAdj-exp : ∀ {i} → Adjunction (SuspFunctor {i}) (LoopFunctor {i})
 iso SuspLoopAdj-exp = iso SuspLoopAdj
 nat-cod SuspLoopAdj-exp = nat-cod SuspLoopAdj
-nat-dom SuspLoopAdj-exp h r = ⊙-crd∼-to-== (nat-dom-cmp h r)
+nat-dom SuspLoopAdj-exp h r = ⊙-crd∼-to-== (nat-dom-crd h r)

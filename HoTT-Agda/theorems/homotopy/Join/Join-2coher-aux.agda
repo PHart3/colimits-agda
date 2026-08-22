@@ -110,3 +110,71 @@ module _ {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i�
             (∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue a (pt W)))
             (∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue a w))
             (∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue (pt A) w)))
+
+module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {X₁ : Type ℓ₁} {X₂ : Type ℓ₂} {X₃ : Type ℓ₃} {X₄ : Type ℓ₄} (f₁ : X₁ → X₂) (f₂ : X₃ → X₁) (f₃ : X₄ → X₃) (f₄ : X₄ → X₁) where
+
+  private
+  
+    module _ {y₁ y₂ y₃ y₄ y₅ : X₁} {x₁ x₂ x₃ x₄ x₅ : X₄} {t₅ : x₁ == x₂} {t₆ : x₃ == x₂} {t₇ : x₃ == x₄} {t₈ : x₅ == x₄} where
+
+      to-∙-==-∙-1 : (u₁ : y₁ == f₄ x₁) (u₂ : f₄ x₂ == y₂) (u₃ : y₃ == f₄ x₃) (u₄ : f₄ x₄ == y₄) (u₅ : y₅ == f₄ x₅) →
+        ap f₁ (ap f₄ t₅) ∙ ! (ap f₁ (ap f₄ t₆)) ∙ ap f₁ (ap f₄ t₇) ∙ ! (ap f₁ (ap f₄ t₈))
+          ==
+        ap (f₁ ∘ f₄) (t₅ ∙ ! t₆ ∙ t₇ ∙ ! t₈)
+        → 
+        ap f₁ (u₁ ∙ ap f₄ t₅ ∙' u₂) ∙ ! (ap f₁ (u₃ ∙ ap f₄ t₆ ∙' u₂)) ∙ ap f₁ (u₃ ∙ ap f₄ t₇ ∙' u₄) ∙ ! (ap f₁ (u₅ ∙ ap f₄ t₈ ∙' u₄))
+          ==
+        ap f₁ u₁ ∙ ap (f₁ ∘ f₄) (t₅ ∙ ! t₆ ∙ t₇ ∙ ! t₈) ∙' ap f₁ (! u₅)
+      to-∙-==-∙-1 idp idp idp idp idp e = e
+
+      to-∙-==-∙-2 : (u₁ : y₁ == f₄ x₁) (u₂ : f₄ x₂ == y₂) (u₃ : y₃ == f₄ x₃) (u₄ : f₄ x₄ == y₄) (u₅ : y₅ == f₄ x₅) →
+        ap f₁ (ap f₄ t₅ ∙ ! (ap f₄ t₆) ∙ ap f₄ t₇ ∙ ! (ap f₄ t₈))
+          ==
+        ap (f₁ ∘ f₄) (t₅ ∙ ! t₆ ∙ t₇ ∙ ! t₈)
+        →
+        ap f₁ ((u₁ ∙ ap f₄ t₅ ∙' u₂) ∙ ! (u₃ ∙ ap f₄ t₆ ∙' u₂) ∙ (u₃ ∙ ap f₄ t₇ ∙' u₄) ∙ ! (u₅ ∙ ap f₄ t₈ ∙' u₄))
+          ==
+        ap f₁ u₁ ∙ ap (f₁ ∘ f₄) (t₅ ∙ ! t₆ ∙ t₇ ∙ ! t₈) ∙' ap f₁ (! u₅)
+      to-∙-==-∙-2 idp idp idp idp idp e = e
+
+  -- generalized form of 2-coherence proof amenable to path induction
+  2-coher-Join-crd-gen : {x₁ x₂ x₃ x₄ x₅ : X₄} 
+    {t₁ : f₃ x₁ == f₃ x₂} {t₂ : f₃ x₃ == f₃ x₂} {t₃ : f₃ x₃ == f₃ x₄} {t₄ : f₃ x₅ == f₃ x₄}
+    (t₅ : x₁ == x₂) (t₆ : x₃ == x₂) (t₇ : x₃ == x₄) (t₈ : x₅ == x₄) →
+    ∀ {v₁ v₂ v₃ v₄} (q₁ : ap f₂ t₁ == v₁) (q₂ : ap f₂ t₂ == v₂) (q₃ : ap f₂ t₃ == v₃) (q₄ : ap f₂ t₄ == v₄)
+    (r₁ : ap f₃ t₅ == t₁) (r₂ : ap f₃ t₆ == t₂) (r₃ : ap f₃ t₇ == t₃) (r₄ : ap f₃ t₈ == t₄)
+    (u₁ : f₂ (f₃ x₁) == f₄ x₁) (u₂ : f₄ x₂ == f₂ (f₃ x₂)) (u₃ : f₂ (f₃ x₃) == f₄ x₃) (u₄ : f₄ x₄ == f₂ (f₃ x₄)) (u₅ : f₂ (f₃ x₅) == f₄ x₅)
+    (s₁ : u₁ ∙ ap f₄ t₅ ∙' u₂ == v₁) (s₂ : u₃ ∙ ap f₄ t₆ ∙' u₂ == v₂) (s₃ : u₃ ∙ ap f₄ t₇ ∙' u₄ == v₃) (s₄ : u₅ ∙ ap f₄ t₈ ∙' u₄ == v₄)
+    {Δ : ap (f₁ ∘ f₂ ∘ f₃) (t₅ ∙ ! t₆ ∙ t₇ ∙ ! t₈) == ap f₁ u₁ ∙ ap (f₁ ∘ f₄) (t₅ ∙ ! t₆ ∙ t₇ ∙ ! t₈) ∙' ap f₁ (! u₅)}
+    (ρ : Δ ==
+      ! (ap-∘-∙!∙! f₁ (f₂ ∘ f₃) t₅ t₆ t₇ t₈) ∙
+      (! (ap4 (λ p₁ p₂ p₃ p₄ → ap f₁ p₁ ∙ ! (ap f₁ p₂) ∙ ap f₁ p₃ ∙ ! (ap f₁ p₄))
+            (∘-ap f₂ f₃ t₅) (∘-ap f₂ f₃ t₆) (∘-ap f₂ f₃ t₇) (∘-ap f₂ f₃ t₈)) ∙
+       ap4 (λ p₁ p₂ p₃ p₄ → ap f₁ (ap f₂ p₁) ∙ ! (ap f₁ (ap f₂ p₂)) ∙ ap f₁ (ap f₂ p₃) ∙ ! (ap f₁ (ap f₂ p₄))) r₁ r₂ r₃ r₄ ∙
+       ap4 (λ p₁ p₂ p₃ p₄ → ap f₁ p₁ ∙ ! (ap f₁ p₂) ∙ ap f₁ p₃ ∙ ! (ap f₁ p₄)) q₁ q₂ q₃ q₄ ∙
+       ! (ap4 (λ p₁ p₂ p₃ p₄ → ap f₁ p₁ ∙ ! (ap f₁ p₂) ∙ ap f₁ p₃ ∙ ! (ap f₁ p₄)) s₁ s₂ s₃ s₄)) ∙
+       to-∙-==-∙-1 u₁ u₂ u₃ u₄ u₅ (hmtpy-nat-∙'-ap∙!∙!-aux f₁ f₄ t₅ t₆ t₇ t₈ idp idp idp idp idp)) →
+    ((! (ap (ap f₁) (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) q₁ q₂ q₃ q₄)) ∙
+      ∘-ap-∙!∙∙! f₁ f₂ t₁ t₂ t₃ t₄) ∙
+     (! (ap (ap (f₁ ∘ f₂)) (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) r₁ r₂ r₃ r₄)) ∙
+     ∘-ap-∙!∙∙! (f₁ ∘ f₂) f₃ t₅ t₆ t₇ t₈) ∙ Δ ∙ idp) ∙
+    ! (! (ap (ap f₁) (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) s₁ s₂ s₃ s₄)) ∙
+      to-∙-==-∙-2 u₁ u₂ u₃ u₄ u₅ (∘-ap-∙!∙∙! f₁ f₄ t₅ t₆ t₇ t₈))
+      ==
+    idp
+  2-coher-Join-crd-gen idp idp idp idp idp idp idp idp idp idp idp idp u₁ u₂ u₃ u₄ u₅ s₁ s₂ s₃ s₄ idp = lemma u₁ u₂ u₃ u₄ u₅ s₁ s₂ s₃ s₄
+    where abstract
+
+      lemma-aux : {x₁ x₂ x₃ x₄ x₅ : X₁} {y : X₄} (u₁ : x₁ == f₄ y) (u₂ : f₄ y == x₂) (u₃ : x₃ == f₄ y) (u₄ : f₄ y == x₄) (u₅ : x₅ == f₄ y) →
+        (to-∙-==-∙-1 u₁ u₂ u₃ u₄ u₅ idp ∙ idp) ∙ ! (to-∙-==-∙-2 u₁ u₂ u₃ u₄ u₅ idp)
+          ==
+        ! (ap-∙!∙∙! f₁ (u₁ ∙ idp ∙' u₂) (u₃ ∙ idp ∙' u₂) (u₃ ∙ idp ∙' u₄) (u₅ ∙ idp ∙' u₄))
+      lemma-aux idp idp idp idp idp = idp
+
+      lemma : {x : X₁} {y : X₄} {v₁ v₂ v₃ v₄ : x == x} (u₁ : x == f₄ y) (u₂ : f₄ y == x) (u₃ : x == f₄ y) (u₄ : f₄ y == x) (u₅ : x == f₄ y)
+        (s₁ : u₁ ∙ idp ∙' u₂ == v₁) (s₂ : u₃ ∙ idp ∙' u₂ == v₂) (s₃ : u₃ ∙ idp ∙' u₄ == v₃) (s₄ : u₅ ∙ idp ∙' u₄ == v₄) → 
+        ((! (ap4 (λ p₁ p₂ p₃ p₄ → ap f₁ p₁ ∙ ! (ap f₁ p₂) ∙ ap f₁ p₃ ∙ ! (ap f₁ p₄)) s₁ s₂ s₃ s₄) ∙ to-∙-==-∙-1 u₁ u₂ u₃ u₄ u₅ idp) ∙ idp) ∙
+        ! (! (ap (ap f₁) (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) s₁ s₂ s₃ s₄)) ∙ to-∙-==-∙-2 u₁ u₂ u₃ u₄ u₅ idp)
+          ==
+        ! (ap-∙!∙∙! f₁ v₁ v₂ v₃ v₄)
+      lemma u₁ u₂ u₃ u₄ u₅ idp idp idp idp = lemma-aux u₁ u₂ u₃ u₄ u₅

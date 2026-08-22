@@ -65,7 +65,7 @@ RUN /dist/agda --library-file=/dist/libraries --$S ./Cos-pullback.agda
 WORKDIR /build/HoTT-Agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/homotopy/Acyc-colim.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/modality/Mod-colim.agda
-RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/homotopy/Join/Join-colim.agda
+RUN /dist/agda +RTS -M5G -RTS --library-file=/dist/libraries --$S ./theorems/homotopy/Join/Join-colim.agda
 
 ####################################################################################################
 # Execute shell script to create html files

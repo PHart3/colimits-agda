@@ -54,5 +54,5 @@ RUN /dist/agda --library-file=/dist/libraries --$S \
 RUN /dist/agda --library-file=/dist/libraries --$S \
     ./theorems/modality/Mod-colim.agda
 
-RUN /dist/agda --library-file=/dist/libraries --$S \
+RUN /dist/agda +RTS -M5G -RTS --library-file=/dist/libraries --$S \
     ./theorems/homotopy/Join/Join-colim.agda
