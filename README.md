@@ -23,9 +23,7 @@
   law between the proofs of naturality in each variable respects, in a precise sense, orthogonal factorization systems. We show that 
   the colimit functor on Type-valued diagrams satisfies this law.
 
-  See `HoTT-Agda/README.md`
-  for details and for the license of the work inside this
-  directory.
+  See `HoTT-Agda/README.md` for details and for the license of the work inside this directory.
 
 - `Colimit-coslice/`
 
@@ -34,8 +32,7 @@
     - the fact that the forgetful functor creates tree-indexed colimits
 	- the coslice colimit functor preserves the left class of an OFS on Type.
 
-  See `Colimit-coslice/README.md` for details and for the
-  license of the work inside this directory.
+  See `Colimit-coslice/README.md` for details and for the license of the work inside this directory.
 
 - `Pullback-stability/`
 
@@ -46,9 +43,7 @@
   explicit construction of coslice pullbacks in terms of
   the standard pullback in a type universe.
 
-  See `Pullback-stability/README.md`
-  for details and for the license of the work inside this
-  directory.
+  See `Pullback-stability/README.md` for details and for the license of the work inside this directory.
 
 ## Type-checking with Docker
 
@@ -62,7 +57,7 @@ We have successfully tested the following Docker container on Linux but not on o
 
    The build installs Agda 2.6.4.3 and type checks our whole development.
    The entire build may take over an hour. The type checking of all our
-   Agda code takes about 40 minutes on our host Ubuntu with 16 GB of RAM.
+   Agda code takes about 45 minutes on our host Ubuntu with 16 GB of RAM.
    (We see a 17% speed-up by using the `--save-metas` option.)
    
    **Note:** Check just the final three files in the main Dockerfile for the
@@ -72,6 +67,8 @@ We have successfully tested the following Docker container on Linux but not on o
    ```bash
    docker build -f Dockerfile.lmcs .
    ```
+   
+   The type checking for this file takes about 25 minutes.
 
 2. Generate HTML files:
 

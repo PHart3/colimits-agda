@@ -150,6 +150,7 @@ module _ {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i�
         =ₛ₁⟨ ⊙-crd∼-to-==-β (JLA-into X Y h₁ ⊙∘ h₂ ⊙∘ h₃) ⟩
       idp ◃∎ ∎ₛ
 
+-- For every pointed type X, the wild functor X ⊙* (-) is a 2-coherent left adjoint.
 abstract
   Join-is-2-coher : ∀ {i j} (X : Ptd i) → ladj-is-2coher (JoinLoopCodAdj {j = j} X)
   Join-is-2-coher X = 2-coher-Join X
