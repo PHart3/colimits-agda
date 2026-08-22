@@ -2,7 +2,6 @@
 
 open import lib.Basics
 open import lib.types.Join
-open import lib.types.Pushout
 
 -- auxiliary lemmas for the Join 2-coherence proof
 
@@ -53,7 +52,7 @@ module _ {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i�
           (jglue (pt A) w)) ∙
       (! (ap4
             (λ x₁ x₂ x₃ x₄ → ap f₁ x₁ ∙ ! (ap f₁ x₂) ∙ ap f₁ x₃ ∙ ! (ap f₁ x₄))
-            (∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (glue (pt A , pt W)))
+            (∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue (pt A) (pt W)))
             (∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue a (pt W)))
             (∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue a w))
             (∘-ap (jmap-un (de⊙ A) f₂) (jmap-un (de⊙ A) f₃) (jglue (pt A) w))) ∙

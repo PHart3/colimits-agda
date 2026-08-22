@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --lossy-unification #-}
 
 open import lib.Basics
 open import lib.types.Pointed
@@ -14,6 +14,43 @@ open import homotopy.Join.Join-2coher-aux
 
 module homotopy.Join.Join-2coher where
 
+module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {X₁ : Type ℓ₁} {X₂ : Type ℓ₂} {X₃ : Type ℓ₃} {X₄ : Type ℓ₄} (f₁ : X₁ → X₂) (f₂ : X₃ → X₁) (f₃ : X₄ → X₃) (f₄ : X₄ → X₁) where
+
+  -- generalized form of 2-coherence proof amenable to path induction
+  2-coher-Join-cmp-gen : {x₁ x₂ x₃ x₄ x₅ : X₄} 
+    {t₁ : f₃ x₁ == f₃ x₂} {t₂ : f₃ x₃ == f₃ x₂} {t₃ : f₃ x₃ == f₃ x₄} {t₄ : f₃ x₅ == f₃ x₄}
+    (t₅ : x₁ == x₂) (t₆ : x₃ == x₂) (t₇ : x₃ == x₄) (t₈ : x₅ == x₄) →
+    ∀ {v₁ v₂ v₃ v₄} (q₁ : ap f₂ t₁ == v₁) (q₂ : ap f₂ t₂ == v₂) (q₃ : ap f₂ t₃ == v₃) (q₄ : ap f₂ t₄ == v₄)
+    (r₁ : ap f₃ t₅ == t₁) (r₂ : ap f₃ t₆ == t₂) (r₃ : ap f₃ t₇ == t₃) (r₄ : ap f₃ t₈ == t₄)
+    (u₁ : f₂ (f₃ x₁) == f₄ x₁) (u₂ : f₄ x₂ == f₂ (f₃ x₂)) (u₃ : f₂ (f₃ x₃) == f₄ x₃) (u₄ : f₄ x₄ == f₂ (f₃ x₄)) (u₅ : f₂ (f₃ x₅) == f₄ x₅)
+    (s₁ : u₁ ∙ ap f₄ t₅ ∙' u₂ == v₁) (s₂ : u₃ ∙ ap f₄ t₆ ∙' u₂ == v₂) (s₃ : u₃ ∙ ap f₄ t₇ ∙' u₄ == v₃) (s₄ : u₅ ∙ ap f₄ t₈ ∙' u₄ == v₄)
+    {Δ : ap (f₁ ∘ f₂ ∘ f₃) (t₅ ∙ ! t₆ ∙ t₇ ∙ ! t₈) == ap f₁ u₁ ∙ ap (f₁ ∘ f₄) (t₅ ∙ ! t₆ ∙ t₇ ∙ ! t₈) ∙' ap f₁ (! u₅)}
+    (ρ : Δ ==
+      ! (ap-∘-∙!∙! f₁ (f₂ ∘ f₃) t₅ t₆ t₇ t₈) ∙
+      (! (ap4 (λ p₁ p₂ p₃ p₄ → ap f₁ p₁ ∙ ! (ap f₁ p₂) ∙ ap f₁ p₃ ∙ ! (ap f₁ p₄))
+            (∘-ap f₂ f₃ t₅) (∘-ap f₂ f₃ t₆) (∘-ap f₂ f₃ t₇) (∘-ap f₂ f₃ t₈)) ∙
+       ap4 (λ p₁ p₂ p₃ p₄ → ap f₁ (ap f₂ p₁) ∙ ! (ap f₁ (ap f₂ p₂)) ∙ ap f₁ (ap f₂ p₃) ∙ ! (ap f₁ (ap f₂ p₄))) r₁ r₂ r₃ r₄ ∙
+       ap4 (λ p₁ p₂ p₃ p₄ → ap f₁ p₁ ∙ ! (ap f₁ p₂) ∙ ap f₁ p₃ ∙ ! (ap f₁ p₄)) q₁ q₂ q₃ q₄ ∙
+       ! (ap4 (λ p₁ p₂ p₃ p₄ → ap f₁ p₁ ∙ ! (ap f₁ p₂) ∙ ap f₁ p₃ ∙ ! (ap f₁ p₄)) s₁ s₂ s₃ s₄)) ∙
+       {!hmtpy-nat-∙'-ap∙!∙!-aux f₁ f₄ t₅ t₆ t₇ t₈ idp idp idp idp idp!}) →
+    ((! (ap (ap f₁) (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) q₁ q₂ q₃ q₄)) ∙
+      ∘-ap-∙!∙∙! f₁ f₂ t₁ t₂ t₃ t₄) ∙
+     (! (ap (ap (f₁ ∘ f₂)) (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) r₁ r₂ r₃ r₄)) ∙
+     ∘-ap-∙!∙∙! (f₁ ∘ f₂) f₃ t₅ t₆ t₇ t₈) ∙ Δ ∙ idp) ∙
+    ! (! (ap (ap f₁) (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) s₁ s₂ s₃ s₄)) ∙
+      {!∘-ap-∙!∙∙! f₁ f₄ t₅ t₆ t₇ t₈!})
+      ==
+    idp
+  2-coher-Join-cmp-gen = {!!} -- lemma s₁ s₂ s₃ s₄
+    where abstract
+      lemma : {x : X₁} {v₁ v₂ v₃ v₄ : x == x} (s₁ : idp == v₁) (s₂ : idp == v₂) (s₃ : idp == v₃) (s₄ : idp == v₄) → 
+        ((! (ap4 (λ p₁ p₂ p₃ p₄ → ap f₁ p₁ ∙ ! (ap f₁ p₂) ∙ ap f₁ p₃ ∙ ! (ap f₁ p₄)) s₁ s₂ s₃ s₄) ∙ idp) ∙ idp) ∙
+        ! (! (ap (ap f₁) (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄) s₁ s₂ s₃ s₄)) ∙ idp)
+          ==
+        ! (ap-∙!∙∙! f₁ v₁ v₂ v₃ v₄)
+      lemma idp idp idp idp = idp
+-- 
+-- 
 -- proof of 2-coherence
 module JLA-2-coher-cmp {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W : Ptd i₄} where
 
@@ -39,40 +76,23 @@ module JLA-2-coher-cmp {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁
     2-coher-Join-cmp (f₁ , idp) (f₂ , idp) (f₃ , idp) = ∼⊙homog∼ ⊙→-homog-str-⊙Ωcod _ (λ w →
       ⊙∘-conv-tri-∙! _ _ _ _ ∙
       ap ⊙-crd∼-to-== (⊙→∼-to-== (∼⊙Ωhomog∼ λ a →
-        {!-- GOAL:
-        ((! (ap (ap f₁)
-          (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄)
-            (glue-β jleft (jright ∘ f₂) (λ c b → jglue c (f₂ b)) (pt A) (f₃ (pt W)))
-            (glue-β jleft (jright ∘ f₂) (λ c b → jglue c (f₂ b)) a (f₃ (pt W)))
-            (glue-β jleft (jright ∘ f₂) (λ c b → jglue c (f₂ b)) a (f₃ w))
-            (glue-β jleft (jright ∘ f₂) (λ c b → jglue c (f₂ b)) (pt A) (f₃ w)))) ∙
-          ∘-ap-∙!∙∙! f₁
-            (jmap (λ x → x) f₂)
-            (jglue (pt A) (f₃ (pt W))) (jglue a (f₃ (pt W))) (jglue a (f₃ w)) (jglue (pt A) (f₃ w))) ∙
-         (! (ap (ap (f₁ ∘ jmap (λ x → x) f₂))
-           (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄)
-             (glue-β jleft (jright ∘ f₃) (λ c b → jglue c (f₃ b)) (pt A) (pt W))
-             (glue-β jleft (jright ∘ f₃) (λ c b → jglue c (f₃ b)) a (pt W))
-             (glue-β jleft (jright ∘ f₃) (λ c b → jglue c (f₃ b)) a w)
-             (glue-β jleft (jright ∘ f₃) (λ c b → jglue c (f₃ b)) (pt A) w))) ∙
-         ∘-ap-∙!∙∙! (f₁ ∘ jmap (λ x → x) f₂)
-           (jmap (λ x → x) f₃)
-           (jglue (pt A) (pt W)) (jglue a (pt W)) (jglue a w) (jglue (pt A) w)) ∙
-         hmtpy-nat-∙' (λ x → ap f₁ (! (fst (jmap⊙-un-∘ (f₂ , idp) (f₃ , idp)) x)))
-           (jglue (pt A) (pt W) ∙ ! (jglue a (pt W)) ∙ jglue a w ∙ ! (jglue (pt A) w)) ∙ idp) ∙
-        ! (! (ap (ap f₁)
-          (ap4 (λ p₁ p₂ p₃ p₄ → p₁ ∙ ! p₂ ∙ p₃ ∙ ! p₄)
-            (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ c b → jglue c (f₂ (f₃ b))) (pt A) (pt W))
-            (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ c b → jglue c (f₂ (f₃ b))) a (pt W))
-            (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ c b → jglue c (f₂ (f₃ b))) a w)
-            (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ c b → jglue c (f₂ (f₃ b))) (pt A) w))) ∙
-          ∘-ap-∙!∙∙! f₁
-            (jmap (λ x → x) (f₂ ∘ f₃))
-            (jglue (pt A) (pt W)) (jglue a (pt W)) (jglue a w) (jglue (pt A) w))
-          ==
-        idp!})) ∙
+        (2-coher-Join-cmp-gen f₁ (jmap (λ x → x) f₂) (jmap (λ x → x) f₃) (jmap (λ x → x) (f₂ ∘ f₃))
+          (jglue (pt A) (pt W)) (jglue a (pt W)) (jglue a w) (jglue (pt A) w)
+          (glue-β jleft (jright ∘ f₂) (λ c b → jglue c (f₂ b)) (pt A) (f₃ (pt W)))
+          (glue-β jleft (jright ∘ f₂) (λ c b → jglue c (f₂ b)) a (f₃ (pt W)))
+          (glue-β jleft (jright ∘ f₂) (λ c b → jglue c (f₂ b)) a (f₃ w))
+          (glue-β jleft (jright ∘ f₂) (λ c b → jglue c (f₂ b)) (pt A) (f₃ w))
+          (glue-β jleft (jright ∘ f₃) (λ c b → jglue c (f₃ b)) (pt A) (pt W))
+          (glue-β jleft (jright ∘ f₃) (λ c b → jglue c (f₃ b)) a (pt W))
+          (glue-β jleft (jright ∘ f₃) (λ c b → jglue c (f₃ b)) a w)
+          (glue-β jleft (jright ∘ f₃) (λ c b → jglue c (f₃ b)) (pt A) w)
+          (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ c b → jglue c (f₂ (f₃ b))) (pt A) (pt W))
+          (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ c b → jglue c (f₂ (f₃ b))) a (pt W))
+          (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ c b → jglue c (f₂ (f₃ b))) a w)
+          (glue-β jleft (jright ∘ f₂ ∘ f₃) (λ c b → jglue c (f₂ (f₃ b))) (pt A) w)
+          (jmap-∘-sq-rw A f₁ f₂ f₃)))) ∙
       ⊙-crd∼-to-==-β _)
-      -}
+-}
 {-
 module _ {i₀} (A : Ptd i₀) {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W : Ptd i₄} where
 
