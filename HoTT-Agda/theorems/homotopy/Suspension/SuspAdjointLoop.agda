@@ -9,7 +9,7 @@ open import lib.types.LoopSpace
 open import lib.types.Homogeneous
 open import lib.wild-cats.WildCats
 
-module homotopy.SuspAdjointLoop where
+module homotopy.Suspension.SuspAdjointLoop where
 
 module _ {i} (X : Ptd i) where
 
@@ -100,7 +100,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
   into : ⊙Susp X ⊙→ U → X ⊙→ ⊙Ω U
   into r = ⊙Ω-fmap r ⊙∘ ⊙η X
 
-  ap-cmp-into-coher-aux : {f g : Susp (de⊙ X) → de⊙ U} (H₀ : f ∼ g)
+  ap-crd-into-coher-aux : {f g : Susp (de⊙ X) → de⊙ U} (H₀ : f ∼ g)
     {x : Susp (de⊙ X)} (v : x == right unit)
     → ! (
         (hmtpy-nat-∙' H₀ (v ∙ ! v) ∙
@@ -113,7 +113,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
         ==
       ap (fst (⊙Ω-fmap (g , ! (H₀ x) ∙ idp))) (!-inv-r v) ∙
       snd (⊙Ω-fmap (g , ! (H₀ x) ∙ idp))
-  ap-cmp-into-coher-aux {g = g} H₀ idp = lemma (H₀ (right unit))
+  ap-crd-into-coher-aux {g = g} H₀ idp = lemma (H₀ (right unit))
     where
       lemma : {x : de⊙ U} (u : x == g (right unit))
         → ! (
@@ -128,7 +128,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
           snd (⊙Ω-fmap (g , ! u ∙ idp))
       lemma idp = idp
 
-  ap-cmp-into-coher : {f g : Susp (de⊙ X) → de⊙ U} (H₀ : f ∼ g)
+  ap-crd-into-coher : {f g : Susp (de⊙ X) → de⊙ U} (H₀ : f ∼ g)
     {gₚ : g (left unit) == f (left unit)} (H₁ : ! (H₀ (left unit)) ∙ idp == gₚ)
     → ! (
         (hmtpy-nat-∙' H₀ (glue (pt X) ∙ ! (glue (pt X))) ∙
@@ -141,10 +141,10 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
       ap (ap f) (!-inv-r (glue (pt X))) ∙ idp
         ==
       ap (Ω-fmap (g , gₚ)) (!-inv-r (glue (pt X))) ∙ snd (⊙Ω-fmap (g , gₚ))
-  ap-cmp-into-coher H₀ idp = ap-cmp-into-coher-aux H₀ (glue (pt X))
+  ap-crd-into-coher H₀ idp = ap-crd-into-coher-aux H₀ (glue (pt X))
 
-  ap-cmp-into : {f₁ f₂ : ⊙Susp X ⊙→ U} (H : f₁ ⊙-crd∼ f₂) → into f₁ ⊙-crd∼ into f₂
-  fst (ap-cmp-into {f₁ = (f , idp)} {f₂} H) x =
+  ap-crd-into : {f₁ f₂ : ⊙Susp X ⊙→ U} (H : f₁ ⊙-crd∼ f₂) → into f₁ ⊙-crd∼ into f₂
+  fst (ap-crd-into {f₁ = (f , idp)} {f₂} H) x =
     (hmtpy-nat-∙' (fst H) (glue x ∙ ! (glue (pt X))) ∙
       ap (λ p → p ∙ ap (λ z → fst f₂ z) (glue x ∙ ! (glue (pt X))) ∙' ! (fst H (left unit)))
         (! (!-! (fst H (left unit))) ∙ ! (!-∙ (! (fst H (left unit))) idp)) ∙
@@ -152,19 +152,19 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
         (! (∙-unit-r (! (fst H (left unit))))) ∙
       ∙-∙'-= (ap (fst f₂) (glue x ∙ ! (glue (pt X)))) (snd H)) ∙
     ! (Ω-fmap-β f₂ (glue x ∙ ! (glue (pt X)))) 
-  snd (ap-cmp-into {f₁ = (f , idp)} {f₂} H) = ap-cmp-into-coher (fst H) (snd H)
+  snd (ap-crd-into {f₁ = (f , idp)} {f₂} H) = ap-crd-into-coher (fst H) (snd H)
 
   {-
      This definition of ap agrees with the standard ap on the id homotopy,
      hence on all homotopies by the SIP.
   -}
 
-  ap-cmp-into-id : (f* : ⊙Susp X ⊙→ U) → ap-cmp-into (⊙∼-id f*) ⊙→∼ ⊙∼-id (into f*)
-  fst (ap-cmp-into-id (f , idp)) x = 
+  ap-crd-into-id : (f* : ⊙Susp X ⊙→ U) → ap-crd-into (⊙∼-id f*) ⊙→∼ ⊙∼-id (into f*)
+  fst (ap-crd-into-id (f , idp)) x = 
     ∙-unit-r (hmtpy-nat-∙' (λ x₁ → idp) (glue x ∙ ! (glue (pt X))) ∙ idp) ∙
     ∙-unit-r (hmtpy-nat-∙' (λ x₁ → idp) (glue x ∙ ! (glue (pt X)))) ∙
     hmtpy-nat-∙'-idp (glue x ∙ ! (glue (pt X)))
-  snd (ap-cmp-into-id (f , idp)) = lemma (glue (pt X))
+  snd (ap-crd-into-id (f , idp)) = lemma (glue (pt X))
     where
       lemma : {x : Susp (de⊙ X)} (v : x == right unit) →
         ap (λ p → ! p ∙ ap (ap f) (!-inv-r v) ∙ idp)
@@ -172,15 +172,15 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
         ∙-unit-r (hmtpy-nat-∙' (λ x₁ → idp) (v ∙ ! v)) ∙
         hmtpy-nat-∙'-idp (v ∙ ! v)) ∙ idp
           ==
-        ap-cmp-into-coher-aux (λ x → idp) v
+        ap-crd-into-coher-aux (λ x → idp) v
       lemma idp = idp
 
-  ap-cmp-into-agree : {f* g* : ⊙Susp X ⊙→ U} (H : f* ⊙-crd∼ g*)
-    → ap into (⊙-crd∼-to-== H) == ⊙-crd∼-to-== (ap-cmp-into H)
-  ap-cmp-into-agree {f*} = ⊙hom-ind f*
-    (λ g* H → ap into (⊙-crd∼-to-== H) == ⊙-crd∼-to-== (ap-cmp-into H))
+  ap-crd-into-agree : {f* g* : ⊙Susp X ⊙→ U} (H : f* ⊙-crd∼ g*)
+    → ap into (⊙-crd∼-to-== H) == ⊙-crd∼-to-== (ap-crd-into H)
+  ap-crd-into-agree {f*} = ⊙hom-ind f*
+    (λ g* H → ap into (⊙-crd∼-to-== H) == ⊙-crd∼-to-== (ap-crd-into H))
     (ap (ap into) (⊙-crd∼-to-==-β f*) ∙
-    ! (ap ⊙-crd∼-to-== (⊙→∼-to-== (ap-cmp-into-id f*)) ∙ ⊙-crd∼-to-==-β (into f*)))
+    ! (ap ⊙-crd∼-to-== (⊙→∼-to-== (ap-crd-into-id f*)) ∙ ⊙-crd∼-to-==-β (into f*)))
 
 {-
   an explicit component-based homotopy witnessing the
@@ -225,9 +225,9 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
       ap-!-inv r₀ ((merid ∘ h₀) (pt X)) ∙ ! (cmp-inv-r {f = Susp-fmap h₀} {g = r₀} (glue (pt X))) 
     nat-dom-aux-l = nat-dom-aux-l2 (SuspFmap.merid-β h₀ (pt X)) 
 
-  nat-dom-cmp : (h : X ⊙→ Y) (r : ⊙Susp Y ⊙→ U)
+  nat-dom-crd : (h : X ⊙→ Y) (r : ⊙Susp Y ⊙→ U)
     → (into Y U) r ⊙∘ h ⊙-crd∼ (into X U) (r ⊙∘ ⊙Susp-fmap h)
-  fst (nat-dom-cmp (h₀ , idp) (r₀ , idp)) x = ↯ $
+  fst (nat-dom-crd (h₀ , idp) (r₀ , idp)) x = ↯ $
     ap-∙ r₀ (glue (h₀ x)) (! (glue (pt Y))) ◃∙
     ! (ap (λ p → ap r₀ (glue (h₀ x)) ∙ p) (ap (λ p → ap r₀ (! p)) (SuspFmap.merid-β h₀ (pt X)))) ◃∙
     ! (ap (λ p → ap r₀ (glue (h₀ x)) ∙ p) (ap-∘ r₀ (Susp-fmap h₀) (! (glue (pt X))) ∙
@@ -235,7 +235,7 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
     ! (ap (λ p → ap r₀ p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (SuspFmap.merid-β h₀ x)) ◃∙
     ! ((ap (λ p → p ∙ ap (r₀ ∘ Susp-fmap h₀) (! (glue (pt X)))) (ap-∘ r₀ (Susp-fmap h₀) (glue x)))) ◃∙
     ! (ap-∙ (r₀ ∘ Susp-fmap h₀) (glue x) (! (glue (pt X)))) ◃∎
-  snd (nat-dom-cmp (h₀ , idp) (r₀ , idp)) =
+  snd (nat-dom-crd (h₀ , idp) (r₀ , idp)) =
     ap (λ p → ! (ap-∙ r₀ (glue (h₀ (pt X))) (! (glue (h₀ (pt X)))) ∙ p) ∙
         ap (ap r₀) (!-inv-r (glue (h₀ (pt X)))) ∙ idp)
       (assoc-4-∙
@@ -257,4 +257,4 @@ module _ {i i' j} {X : Ptd i} {Y : Ptd i'} {U : Ptd j} where
 SuspLoopAdj-exp : ∀ {i} → Adjunction (SuspFunctor {i}) (LoopFunctor {i})
 iso SuspLoopAdj-exp = iso SuspLoopAdj
 nat-cod SuspLoopAdj-exp = nat-cod SuspLoopAdj
-nat-dom SuspLoopAdj-exp h r = ⊙-crd∼-to-== (nat-dom-cmp h r)
+nat-dom SuspLoopAdj-exp h r = ⊙-crd∼-to-== (nat-dom-crd h r)

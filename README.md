@@ -4,6 +4,7 @@
   - the CSL 2025 paper [Coslice Colimits in Homotopy Type Theory](https://doi.org/10.4230/LIPIcs.CSL.2025.46)
   - the associated [arXiv article](https://doi.org/10.48550/arXiv.2411.15103)
   - the CSL 2026 paper [On Left Adjoints Preserving Colimits in HoTT](https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CSL.2026.20)
+  - the extended version available on [arXiv](https://doi.org/10.48550/arXiv.2608.28473).
   
   It has been checked with Agda 2.6.3 and 2.6.4.3.
 
@@ -15,16 +16,14 @@
   with many additions and local changes for general lemmas used in our development of colimits and wild adjunctions.
 
   In particular, it includes a lot of wild category theory, centered on (co)limits and adjunctions satisfying 2-coherence properties. 
-  We prove that such 2-coherent left adjoints preserve colimits (over graphs). Moreover, we prove that the suspension functor 
-  is a 2-coherent left adjoint to Loop-space, for which we develop some new properties of homogeneous types. As a result, we get 
-  a formal proof that suspension preserves colimits. We also prove that modalities, viewed as functors on coslices of Type, are 
-  2-coherent left adjoints, hence preserve colimits. Another notable result is that an adjunction satisfying a reasonable interchange
-  law between the proofs of naturality in each variable respects, in a precise sense, orthogonal factorization systems.
-  We show that the colimit functor on Type-valued diagrams satisfies this law.
+  We prove that such 2-coherent left adjoints preserve colimits (over graphs). Moreover, we prove that the suspension and unary join 
+  functors are 2-coherent left adjoints, for which we develop some new properties of homogeneous types. As a result, we get a formal 
+  proof that the suspension and join preserve colimits. We also prove that modalities, viewed as functors on coslices of Type, are
+  2-coherent left adjoints, hence preserve colimits. Another notable result is that an adjunction satisfying a reasonable interchange 
+  law between the proofs of naturality in each variable respects, in a precise sense, orthogonal factorization systems. We show that 
+  the colimit functor on Type-valued diagrams satisfies this law.
 
-  See `HoTT-Agda/README.md`
-  for details and for the license of the work inside this
-  directory.
+  See `HoTT-Agda/README.md` for details and for the license of the work inside this directory.
 
 - `Colimit-coslice/`
 
@@ -33,8 +32,7 @@
     - the fact that the forgetful functor creates tree-indexed colimits
 	- the coslice colimit functor preserves the left class of an OFS on Type.
 
-  See `Colimit-coslice/README.md` for details and for the
-  license of the work inside this directory.
+  See `Colimit-coslice/README.md` for details and for the license of the work inside this directory.
 
 - `Pullback-stability/`
 
@@ -45,27 +43,33 @@
   explicit construction of coslice pullbacks in terms of
   the standard pullback in a type universe.
 
-  See `Pullback-stability/README.md`
-  for details and for the license of the work inside this
-  directory.
+  See `Pullback-stability/README.md` for details and for the license of the work inside this directory.
 
 ## Type-checking with Docker
 
 We have successfully tested the following Docker container on Linux but not on other operating systems.
 
-1. Build Docker image:
+1. Build Docker image (from the root of this repository):
 
    ```bash
    docker build . -t colimit
    ```
 
    The build installs Agda 2.6.4.3 and type checks our whole development.
-   The entire build may take over an hour. The type checking of all our
-   Agda code takes about 40 minutes on our host Ubuntu with 16 GB of RAM.
+   The entire build should take about an hour. The type checking of all our
+   Agda code takes about 45 minutes on our host Ubuntu with 16 GB of RAM.
    (We see a 17% speed-up by using the `--save-metas` option.)
    
-   **Note:** Check just the final two files in the Dockerfile for the
-   theorems in the paper "On Left Adjoints Preserving Colimits in HoTT."
+   **Note:** Check just the final three files in the main Dockerfile for the
+   theorems in the paper "On Left Adjoints Preserving Colimits in Homotopy 
+   Type Theory." Alternatively, to type check these theorems, run:
+   
+   ```bash
+   docker build -f Dockerfile.lmcs .
+   ```
+   
+   This build should take about 35 minutes in total, with the type checking 
+   taking about 25 minutes.
 
 2. Generate HTML files:
 

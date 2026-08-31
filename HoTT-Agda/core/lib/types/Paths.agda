@@ -193,6 +193,11 @@ module _ {i} {A : Type i} where
     → (u == v [ (λ x → a == x) ↓ p ])
   ↓-cst=idf-in {p = idp} q = q
 
+  ↓-idf=idf-in : {x y : A} {p : x == y} {u : x == x} {v : y == y}
+    → u ∙ p == p ∙ v
+    → (u == v [ (λ x → x == x) ↓ p ])
+  ↓-idf=idf-in {p = idp} {u} q = ! (∙-unit-r u) ∙ q
+
   ↓-cst=idf-in' : {a : A} {x y : A} {p : x == y} {u : a == x} {v : a == y}
     → (u ∙ p) == v
     → (u == v [ (λ x → a == x) ↓ p ])

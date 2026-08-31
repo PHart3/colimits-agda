@@ -35,6 +35,22 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
           idp {a = f₁} ◃∙ ⊙-crd∼-to-== h₂ ◃∎
             =ₛ₁⟨ 0 & 1 & ! (⊙-crd∼-to-==-β f₁) ⟩
           ⊙-crd∼-to-== (⊙∼-id f₁) ◃∙ ⊙-crd∼-to-== h₂ ◃∎ ∎ₛ
+
+    !-⊙∘-conv : {f₁ f₃ f₂ : X ⊙→ Y} (h₁ : f₂ ⊙-crd∼ f₁) (h₂ : f₂ ⊙-crd∼ f₃) →
+      ! (⊙-crd∼-to-== h₁) ∙ ⊙-crd∼-to-== h₂ == ⊙-crd∼-to-== (!-⊙∼ h₁ ∙⊙∼ h₂)
+    !-⊙∘-conv {f₃ = f₃} {f₂} =
+      ⊙hom-ind f₂
+        (λ f₁ h₁ →
+          ((h₂ : f₂ ⊙-crd∼ f₃) →
+            ! (⊙-crd∼-to-== h₁) ∙ ⊙-crd∼-to-== h₂ == ⊙-crd∼-to-== (!-⊙∼ h₁ ∙⊙∼ h₂)))
+        λ h₂ → =ₛ-out $
+          ! (⊙-crd∼-to-== (⊙∼-id f₂)) ◃∙ ⊙-crd∼-to-== h₂ ◃∎
+            =ₛ₁⟨ 0 & 1 & ap ! (⊙-crd∼-to-==-β f₂) ⟩
+          idp {a = f₂} ◃∙ ⊙-crd∼-to-== h₂ ◃∎
+            =ₛ⟨ =ₛ-in (idp {a = ⊙-crd∼-to-== h₂}) ⟩
+          ⊙-crd∼-to-== h₂ ◃∎
+            =ₛ₁⟨ ! (ap ⊙-crd∼-to-== (∙⊙∼-unit-l h₂)) ⟩
+          ⊙-crd∼-to-== (!-⊙∼ (⊙∼-id f₂) ∙⊙∼ h₂) ◃∎ ∎ₛ
           
     ⊙∘-conv-tri : {f₁ f₂ f₃ f₄ : X ⊙→ Y}
       (h₁ : f₁ ⊙-crd∼ f₂) (h₂ : f₂ ⊙-crd∼ f₃) (h₃ : f₃ ⊙-crd∼ f₄) →
@@ -47,6 +63,18 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
       ⊙-crd∼-to-== h₁ ◃∙ ⊙-crd∼-to-== (h₂ ∙⊙∼ h₃) ◃∎
         =ₛ⟨ 1 & 1 & ⊙∘-conv h₂ h₃ ⟩
       ⊙-crd∼-to-== h₁ ◃∙ ⊙-crd∼-to-== h₂ ◃∙ ⊙-crd∼-to-== h₃ ◃∎ ∎ₛ
+
+    ⊙∘-conv-tri-∙! : {f₁ f₂ f₃ f₄ f₅ : X ⊙→ Y}
+      (h₁ : f₁ ⊙-crd∼ f₂) (h₂ : f₂ ⊙-crd∼ f₃) (h₃ : f₃ ⊙-crd∼ f₄) (h₄ : f₅ ⊙-crd∼ f₄) →
+      ⊙-crd∼-to-== h₁ ∙ ⊙-crd∼-to-== h₂ ∙ ⊙-crd∼-to-== h₃ ∙ ! (⊙-crd∼-to-== h₄) == ⊙-crd∼-to-== ((h₁ ∙⊙∼ h₂ ∙⊙∼ h₃) ∙⊙∼ !-⊙∼ h₄)
+    ⊙∘-conv-tri-∙! h₁ h₂ h₃ h₄ = =ₛ-out $
+      ⊙-crd∼-to-== h₁ ◃∙ ⊙-crd∼-to-== h₂ ◃∙ ⊙-crd∼-to-== h₃ ◃∙ ! (⊙-crd∼-to-== h₄) ◃∎
+        =ₛ⟨ 0 & 3 & !ₛ (⊙∘-conv-tri h₁ h₂ h₃) ⟩
+      ⊙-crd∼-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃) ◃∙ ! (⊙-crd∼-to-== h₄) ◃∎
+        =ₛ₁⟨ 1 & 1 & ! (!⊙-conv h₄) ⟩
+      ⊙-crd∼-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃) ◃∙ ⊙-crd∼-to-== (!-⊙∼ h₄) ◃∎
+        =ₛ⟨ !ₛ (⊙∘-conv (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃) (!-⊙∼ h₄)) ⟩
+      ⊙-crd∼-to-== ((h₁ ∙⊙∼ h₂ ∙⊙∼ h₃) ∙⊙∼ !-⊙∼ h₄) ◃∎ ∎ₛ
 
     ⊙∘-conv-quint : {f₁ f₂ f₃ f₄ f₅ f₆ : X ⊙→ Y}
       (h₁ : _⊙-crd∼_ f₁ f₂) (h₂ : _⊙-crd∼_ f₂ f₃)
@@ -153,3 +181,10 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
         ==
       ⊙-crd∼-to-== (!-⊙∼ (⊙∘-post f₁ (h₁ ∙⊙∼ h₂)))
     !⊙-whisk⊙-conv-l-∙ {f₁} h₁ h₂ = ap ! (⊙-whisk⊙-conv-l-∙ h₁ h₂) ∙ ! (!⊙-conv (⊙∘-post f₁ (h₁ ∙⊙∼ h₂)))
+
+    whisk⊙-conv-l-∙⊙-crd : {f₁ : Y ⊙→ Z} {f₂ f₂'' f₂' : X ⊙→ Y} (h₁ : f₂ ⊙-crd∼ f₂') (h₂ : f₁ ⊙∘ f₂' ⊙-crd∼ f₁ ⊙∘ f₂'') →
+      ⊙-crd∼-to-== (⊙∘-post f₁ h₁ ∙⊙∼ h₂)
+        ==
+      ap (λ m → f₁ ⊙∘ m) (⊙-crd∼-to-== h₁) ∙ ⊙-crd∼-to-== h₂
+    whisk⊙-conv-l-∙⊙-crd {f₁} h₁ h₂ = =ₛ-out (⊙∘-conv _ h₂) ∙ ap (λ p → p ∙ ⊙-crd∼-to-== h₂) (whisk⊙-conv-l h₁)
+

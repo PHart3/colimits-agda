@@ -115,6 +115,9 @@ module _ {i} {A : Type i} where
 
 module _ {i} {A : Type i} where
 
+  ∙'-canc-l : {x y : A} {p : x == y} {q : y == y} → p == p ∙' q → idp == q
+  ∙'-canc-l {p = idp} r = r ∙ ∙'-unit-l _
+
   ∙-assoc-!-inv-r-∙ : {x y z w : A} (q : x == y) (p : x == z) (r : z == w) → q ∙ (! q ∙ p) ∙ r == p ∙ r
   ∙-assoc-!-inv-r-∙ idp idp r = idp
 
@@ -126,6 +129,9 @@ module _ {i} {A : Type i} where
 
   ∙'-∙-unit-r-!-inv-l : {x y : A} (p : x == y) → ((idp ∙' ! p) ∙ idp) ∙' p ∙ idp == idp
   ∙'-∙-unit-r-!-inv-l idp = idp
+
+  !-inv-l-∙'-!-! : {x y u z : A} (p₀ : x == y) (p₁ : u == x) (p₂ : z == y) → p₀ == ! p₁ ∙ (p₁ ∙ p₀ ∙' ! p₂) ∙' ! (! p₂)
+  !-inv-l-∙'-!-! p₀ idp idp = idp
 
   !-!-inv-∙'-∙ : {x y z u w : A} (p : x == y) (q : u == z) (r : u == y) (q' : y == w) → ((p ∙' ! r) ∙ q) ∙' ! q ∙ r ∙ q' == p ∙ q'
   !-!-inv-∙'-∙ p idp idp idp = idp
@@ -159,6 +165,14 @@ module _ {i} {A : Type i} where
     → p₀ == p₁ ∙ p₂  ∙' ! p₃ → p₂ == ! p₁ ∙ p₀ ∙' p₃
   ∙-∙'-!-rot p₀ idp p₂ idp e = ! e
 
+  ∙to∙'-!-rot : {x y z w : A} (p₀ : x == y) {p₁ : x == z} {p₂ : z == w} (p₃ : y == w)
+    → ! p₀ ∙ p₁ ∙ p₂ == p₃ → p₀ == p₁ ∙ p₂ ∙' ! p₃
+  ∙to∙'-!-rot idp idp e = ! e
+
+  ∙'to∙-!-rot : {x y z w : A} (p₀ : x == y) {p₁ : x == z} {p₂ : z == w} (p₃ : y == w)
+    → p₀ == p₁ ∙ p₂ ∙' ! p₃ → ! p₀ ∙ p₁ ∙ p₂ == p₃
+  ∙'to∙-!-rot idp {p₁ = idp} {p₂ = idp} p₃ e = ap ! (e ∙ ∙'-unit-l (! p₃)) ∙ !-! p₃
+      
   !-inj-rot : {x y : A} {p₁ p₂ : x == y} (n : p₁ == p₂) {m : ! p₁ == ! p₂}
     → m == ap ! n →  ! (!-! p₁) ∙ ap ! m ∙' !-! p₂ == n
   !-inj-rot {p₁ = idp} idp idp = idp
@@ -200,8 +214,17 @@ module _ {i} {A : Type i} where
   !-inv-l-assoc : {x y z : A} (p : x == y) (q : y == z) → ! p ∙ p ∙ q == q
   !-inv-l-assoc idp idp = idp
 
+  !-inv-r-assoc : {x y z : A} (p : z == y) (q : x == z) → (q ∙ p) ∙ ! p == q
+  !-inv-r-assoc idp idp = idp
+
   inv-rid : {x y : A} (p : x == y) → ! p ∙ p ∙ idp == idp
   inv-rid p = !-inv-l-assoc p idp
+
+  !-∙!-∙! : {x y z w : A} (p : x == y) (q : z == y) (r : w == z) → ! (p ∙ ! q ∙ ! r) == r ∙ q ∙ ! p
+  !-∙!-∙! idp idp idp = idp
+
+  !-∙!-∙!' : {x y z w : A} (p : x == y) (q : z == y) (r : w == z) → ! (p ∙ ! q ∙ ! r) == r ∙' q ∙ ! p
+  !-∙!-∙!' idp idp idp = idp
 
   !3-∙3 : {x y z w : A} (p : x == y) (q : z == y) (r : w == y)
     → ! ((p ∙ ! q) ∙ q ∙ ! r) ∙ p == r
@@ -217,6 +240,15 @@ module _ {i} {A : Type i} where
 
   trip-inv : {x y w z : A} {p : y == x} {q : y == z} {r : z == w} → ! r ∙ ! q ∙ p == ! (! p ∙ q ∙ r)
   trip-inv {p = idp} {q = idp} {r = idp} = idp
+
+  !-inv-r-twice : {x y z : A} (p : x == y) (q : x == z) → p ∙ ! p ∙ q ∙ ! q == idp
+  !-inv-r-twice idp q = !-inv-r q
+
+  !-inv-r-twice-mid : {x y z : A} (p : x == y) (q : z == y) → p ∙ ! q ∙ q ∙ ! p == idp
+  !-inv-r-twice-mid p idp = !-inv-r p
+
+  !-inv-r-twice-coh : {x y : A} (p : x == y) → !-inv-r-twice p p == !-inv-r-twice-mid p p
+  !-inv-r-twice-coh idp = idp
 
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {f : A → B} {g : B → C} where
 

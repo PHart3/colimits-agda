@@ -152,3 +152,18 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {A : Type ℓ₁} {B : Type ℓ₂
           ==
         fun-rid-inv1 R ∙ fun-rid-inv2 R
       lemma idp = idp
+
+module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} where
+
+  hmtpy-nat-∙'-! : {x y : A} (p : x == y) {g : A → B} (H : f ∼ g) →
+    hmtpy-nat-∙' (λ z → ! (H z)) p
+        ==
+    !-inv-l-∙'-!-! (ap g p) (H x) (H y) ∙
+    ! (ap (λ p → ! (H x) ∙ p ∙' ! (! (H y))) (hmtpy-nat-∙' H p))
+  hmtpy-nat-∙'-! {x} {y} p {g} H = ∼-ind (λ g H →
+    hmtpy-nat-∙' (λ z → ! (H z)) p
+      ==
+    !-inv-l-∙'-!-! (ap g p) (H x) (H y) ∙
+    ! (ap (λ p → ! (H x) ∙ p ∙' ! (! (H y))) (hmtpy-nat-∙' H p)))
+    (hmtpy-nat-∙'-idp p ∙ ap ! (! (hmtpy-nat-∙'-idp p) ∙ ! (ap-idf _)))
+    g H

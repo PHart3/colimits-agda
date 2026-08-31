@@ -150,3 +150,6 @@ obj LoopFunctor = ⊙Ω
 arr LoopFunctor = ⊙Ω-fmap
 id LoopFunctor _ = ⊙Ω-fmap-idf
 comp LoopFunctor f g = ⊙Ω-fmap-∘ g f
+
+LoopCodFunctor : ∀ {i j} (X : Ptd i) → PtdFunctor j (lmax i j)
+LoopCodFunctor X = ⊙hom-codF X ∘WC LoopFunctor

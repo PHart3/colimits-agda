@@ -29,6 +29,9 @@ Bool-elim true* false* false = false*
 Bool-rec : ∀ {i} {A : Type i} → A → A → (Bool → A)
 Bool-rec {A = A} = Bool-elim {P = λ _ → A}
 
+Bool-flip-≃ : Bool ≃ Bool
+Bool-flip-≃ = equiv (λ {true -> false; false -> true}) (λ {true -> false; false -> true}) (λ {true -> idp; false -> idp}) λ {true -> idp; false -> idp}
+
 private
   Bool-true≠false-type : Bool → Type₀
   Bool-true≠false-type true  = Unit
@@ -40,6 +43,9 @@ abstract
 
   Bool-false≠true : false ≠ true
   Bool-false≠true p = transport Bool-true≠false-type (! p) unit
+
+  Bool-flip-≃-≠-idf : idf Bool ≠ –> Bool-flip-≃
+  Bool-flip-≃-≠-idf p = Bool-true≠false (app= p true)
 
   Bool-has-dec-eq : has-dec-eq Bool
   Bool-has-dec-eq true true = inl idp

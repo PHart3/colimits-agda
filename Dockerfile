@@ -6,6 +6,18 @@ ARG GHC_VERSION=9.4.7
 FROM fossa/haskell-static-alpine:ghc-${GHC_VERSION} AS agda
 
 WORKDIR /build/agda
+
+ARG CABAL_VERSION=3.14.2.0
+
+# Install a cabal version that knows the current Hackage trust root.
+RUN \
+  ghcup install cabal "${CABAL_VERSION}" && \
+  ghcup set cabal "${CABAL_VERSION}" && \
+  cabal --version && \
+  cabal update
+
+ENV PATH="/build/bin:${PATH}"
+
 # Agda 2.6.4.3
 ARG AGDA_VERSION=714c7d2c76c5ffda3180e95c28669259f0dc5b5c
 RUN \
@@ -18,9 +30,9 @@ RUN \
 # We explicitly use v1-install because v2-install does not support --datadir and --bindir
 # to relocate executables and data files yet.
 RUN \
-  mkdir -p /dist && \
+  mkdir -p /build/bin /dist && \
   cabal update && \
-  cabal v1-install alex happy && \
+  cabal v1-install --bindir=/build/bin alex happy && \
   cabal v1-install --bindir=/dist --datadir=/dist --datasubdir=/dist/data --enable-executable-static
 
 ####################################################################################################
@@ -59,12 +71,13 @@ RUN /dist/agda --library-file=/dist/libraries --$S ./Stability-ord.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./Stability-cos-coc.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./Cos-pullback.agda
 
-# Just check the following two files for the theorems in the paper
-# "On Left Adjoints Preserving Colimits in HoTT":
+# Just check the following three files for the theorems in the paper
+# "On Left Adjoints Preserving Colimits in Homotopy Type Theory":
 
 WORKDIR /build/HoTT-Agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/homotopy/Acyc-colim.agda
 RUN /dist/agda --library-file=/dist/libraries --$S ./theorems/modality/Mod-colim.agda
+RUN /dist/agda +RTS -M5G -RTS --library-file=/dist/libraries --$S ./theorems/homotopy/Join/Join-colim.agda
 
 ####################################################################################################
 # Execute shell script to create html files

@@ -11,8 +11,9 @@ In addition, it contributes new machinery that is noteworthy in its own right:
   expressing an interchange law preserve orthogonal factorization systems in a precise 
   sense. It also verifies that the colimit-constant adjunction on Type satisfies this 
   hexagon identity.
-- It contains a formal proof that suspension is 2-coherent as a left adjoint to loop.
-  We prove that suspension preserves graph-indexed colimits as a corollary. 
+- It contains a formal proof that the suspension and unary join are 2-coherent as left adjoints 
+  to loop and the covariant loop hom functors, respectively.
+  We prove that the suspension and join preserve graph-indexed colimits as a corollary. 
 - It contains a formal proof of the 2-coherence of modality functors on coslices of 
   Type and, as a corollary, that they preserve graph-indexed colimits. As a consequence, 
   we formally derive the construction of such colimits in the full subcategory of modal 
@@ -47,7 +48,7 @@ The main library is more or less divided into three parts.
 - The first part is exported in the module `lib.Basics` and contains essential constructions.
 - The second part is found in `lib.types` and develops type formers, including the inductive definition of colimits in
   Type (which we also call ordinary colimits).
-  It also contains new facts about homogeneous types and reformulates some of the basic theory of the suspension type.
+  It also contains new facts about homogeneous types and reformulates some of the basic theory of the suspension and join types.
 - The third part is found in `lib.wild-cats` and develops wild category theory.
   Here are some notable results found in this part:
 	- A 2-coherent left adjoint between wild categories preserves colimiting cocones (`Ladj-colim.agda`).
@@ -62,10 +63,12 @@ The main library is more or less divided into three parts.
 
 This directory contains two proofs related to higher coherence conditions on wild categorical data:
 - a proof that suspension is a 2-coherent left adjoint to loop
-    - This higher coherence lets us prove that the suspension functor preserves	colimits. 
+    - This higher coherence lets us prove that the suspension functor preserves	colimits.
 	As a corollary, we prove that pointed colimits preserve acyclic types via the 
 	construction of coslice colimits from `../Colimit-coslice/`. Note that the proof of 
 	2-coherence relies on our work on homogeneous types.
+	- We also formalize, in the `Join` subfolder, a parameterized variant of this cocontinuity proof for 
+	the unary pointed join.
 - a proof that the wild adjunction between colimit and the constant diagram functor on Type
   satisfies the interchange law and thus that colimit preserves the left class of an OFS on Type.
 

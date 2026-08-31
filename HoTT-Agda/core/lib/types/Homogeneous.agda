@@ -18,6 +18,26 @@ module _ {i} {X : Type i} where
       constructor homog
       field
         auto : (y : X) → ⊙[ X , x ] ⊙≃ ⊙[ X , y ]
+    open homogeneous
+
+    homog-⊙Ω≃ : (y : X) → homogeneous → ⊙Ω ⊙[ X , x ] ⊙≃ ⊙Ω ⊙[ X , y ]
+    homog-⊙Ω≃ y η = ⊙Ω-emap (auto η y)
+
+    homog-Ω≃ : (y : X) → homogeneous → (x == x) ≃ (y == y)
+    homog-Ω≃ y η = ⊙≃-to-≃ (homog-⊙Ω≃ y η)
+
+    -- Cavallo's trick: Two pointed maps into a homogeneous type are homotopic as soon as their underlying maps are.
+    ⊙→homog∼ : ∀ {j} {Y : Ptd j} {f g : Y ⊙→ ⊙[ X , x ]} → homogeneous → fst f ∼ fst g → f ⊙-crd∼ g
+    ⊙→homog∼ η = loop-auto-∼-to-⊙∼ (λ z → homog-Ω≃ z η)
+      where
+      loop-auto-∼-to-⊙∼ : ∀ {ℓ₁ ℓ₂} {Y : Ptd ℓ₁} {Z : Ptd ℓ₂} {f g : Y ⊙→ Z}
+        → ((z : de⊙ Z) → Ω Z ≃ (z == z)) → fst f ∼ fst g → f ⊙-crd∼ g
+      fst (loop-auto-∼-to-⊙∼ {Y = Y} {f = f} {g} e H) y = H y ∙ –> (e (fst g y)) (<– (e (fst g (pt Y))) (! (H (pt Y)) ∙ snd f ∙ ! (snd g)))
+      snd (loop-auto-∼-to-⊙∼ {Y = Y} {f = (f , idp)} {g} e H) =
+        ap (λ p → ! (H (pt Y) ∙ p) ∙ idp) (<–-inv-r (e (fst g (pt Y))) _) ∙
+        ∙-unit-r (! (H (pt Y) ∙ ! (H (pt Y)) ∙ ! (snd g))) ∙
+        !-∙!-∙!' (H (pt Y)) (H (pt Y)) (snd g) ∙
+        ap (λ p → snd g ∙' p) (!-inv-r (H (pt Y)))
 
     record str-homog : Type i where
       constructor sthomog
@@ -31,11 +51,9 @@ module _ {i} {X : Type i} where
     auto (homog-to-strhomog (homog self)) y = self y ⊙∘e (self x) ⊙⁻¹
     homog-idf (homog-to-strhomog (homog self)) = ⊙λ= (⊙<–-inv-r (self x)) 
 
-    homog-⊙Ω≃ : (y : X) → str-homog → ⊙Ω ⊙[ X , x ] ⊙≃ ⊙Ω ⊙[ X , y ]
-    homog-⊙Ω≃ y (sthomog auto _) = ⊙Ω-emap (auto y)
-
-    homog-Ω≃ : (y : X) → str-homog → (x == x) ≃ (y == y)
-    homog-Ω≃ y η = ⊙≃-to-≃ (homog-⊙Ω≃ y η)
+  -- we may always switch the basepoint
+  homog-switch : ({x} y : X) → homogeneous x → homogeneous y
+  (homog-switch y η) = homog (λ z → auto η z ⊙∘e (auto η y) ⊙⁻¹) where open homogeneous
 
   {-
     Two pointed homotopies of pointed maps valued in a strongly homogeneous
@@ -49,7 +67,7 @@ module _ {i} {X : Type i} where
     snd ⊙∼-eval = idp
 
     ⊙∼-eval-sect : str-homog (f z) → has-sect⊙ ⊙∼-eval
-    fst (has-sect⊙.r-inv (⊙∼-eval-sect η)) p = λ x₁ → –>(homog-Ω≃ (f z) (f x₁) η) p
+    fst (has-sect⊙.r-inv (⊙∼-eval-sect (sthomog auto _))) p = λ x₁ → –>(homog-Ω≃ (f z) (f x₁) (homog auto)) p
     snd (has-sect⊙.r-inv (⊙∼-eval-sect (sthomog auto _))) =
       λ= λ x → Ω-fmap-β∙ (fst (auto (f x))) idp ∙
         !-inv-l (snd (fst (auto (f x))))
@@ -174,13 +192,12 @@ module _ {i} {X : Type i} where
                  (ap λ= (λ= K)))) ⟩
          H₁ₚ ◃∎ ∎ₛ
 
--- All loop spaces are strongly homogeneous.
-
 module _ {i} {X : Type i} {x : X} where
 
-  module _ {p : x == x} where
+  open homogeneous
 
-    open homogeneous
+  -- all loop spaces are strongly homogeneous
+  module _ {p : x == x} where
     
     loop-homog : homogeneous p
     fst (fst (auto loop-homog q)) ℓ = ℓ ∙ ! p ∙ q
@@ -197,5 +214,89 @@ module _ {i} {X : Type i} {x : X} where
     {H₂ₚ : ! (H₂ (pt Z)) ∙ snd f == snd g}
     → H₁ ∼ H₂ → (H₁ , H₁ₚ) ⊙→∼ (H₂ , H₂ₚ)
   ∼⊙Ωhomog∼ {Z = Z} {p} {f} K = ∼⊙homog∼ (loop-homog-str {p = fst f (pt Z)}) p K
+
+  -- pointed function type with homogeneous codomain is homogeneous
+  
+  ⊙→-homog-cod : ∀ {j} {Y : Ptd j} → homogeneous x → homogeneous {X = Y ⊙→ ⊙[ X , x ]} ⊙cst
+  fst (auto (⊙→-homog-cod {Y = Y} η) (f , fₚ)) =
+    (λ (g , gₚ) → (λ y → fst (⊙–> (auto η (f y))) (g y)) , ap (fst (⊙–> (auto η (f (pt Y))))) gₚ ∙ snd (⊙–> (auto η (f (pt Y)))) ∙ fₚ) ,
+    ⊙-crd∼-to-== ((λ z → snd (⊙–> (auto η (f z)))) , (!-inv-l-assoc (snd (⊙–> (auto η (f (pt Y))))) fₚ))
+  snd (auto (⊙→-homog-cod {Y = Y} η) (f , fₚ)) = is-eq _
+    (λ (g , gₚ) → (λ y → fst (⊙<– (auto η (f y))) (g y)) , (ap (fst (⊙<– (auto η (f (pt Y))))) (gₚ ∙ ! fₚ) ∙ snd (⊙<– (auto η (f (pt Y))))))
+    (λ (g , gₚ) → ⊙-crd∼-to-== ((λ z → fst (⊙<–-inv-r (auto η (f z))) (g z)) , =ₛ-out (aux-r g gₚ)))
+    λ (g , gₚ) → ⊙-crd∼-to-== ((λ z → fst (⊙<–-inv-l (auto η (f z))) (g z)) , =ₛ-out (aux-l g gₚ))
+    where abstract
+    
+      aux-r : ∀ (g : de⊙ Y → X) gₚ →
+        ! (fst (⊙<–-inv-r (auto η (f (pt Y)))) (g (pt Y))) ◃∙
+        ap (fst (⊙–> (auto η (f (pt Y)))))
+          (ap (fst (⊙<– (auto η (f (pt Y))))) (gₚ ∙ ! fₚ) ∙
+          snd (⊙<– (auto η (f (pt Y))))) ◃∙
+        snd (⊙–> (auto η (f (pt Y)))) ◃∙
+        fₚ ◃∎
+          =ₛ
+        gₚ ◃∎
+      aux-r g idp = 
+        ! (fst (⊙<–-inv-r (auto η (f (pt Y)))) (g (pt Y))) ◃∙
+        ap (fst (⊙–> (auto η (f (pt Y)))))
+          (ap (fst (⊙<– (auto η (f (pt Y))))) (! fₚ) ∙
+          snd (⊙<– (auto η (f (pt Y))))) ◃∙
+        snd (⊙–> (auto η (f (pt Y)))) ◃∙
+        fₚ ◃∎
+          =ₛ⟨ 1 & 1 &
+            ap-cmp-rev-◃2 (fst (⊙–> (auto η (f (pt Y))))) (fst (⊙<– (auto η (f (pt Y)))))
+              fₚ (snd (⊙<– (auto η (f (pt Y))))) ⟩
+        ! (fst (⊙<–-inv-r (auto η (f (pt Y)))) (g (pt Y))) ◃∙
+        ! (ap (fst (⊙–> (auto η (f (pt Y)))) ∘ fst (⊙<– (auto η (f (pt Y))))) fₚ) ◃∙
+        ap (fst (⊙–> (auto η (f (pt Y))))) (snd (⊙<– (auto η (f (pt Y))))) ◃∙
+        snd (⊙–> (auto η (f (pt Y)))) ◃∙
+        fₚ ◃∎
+          =ₛ⟨ 2 & 2 & ⊙<–-inv-r-pt (auto η (f (pt Y))) ⟩
+        ! (fst (⊙<–-inv-r (auto η (f (pt Y)))) (g (pt Y))) ◃∙
+        ! (ap (fst (⊙–> (auto η (f (pt Y)))) ∘ fst (⊙<– (auto η (f (pt Y))))) fₚ) ◃∙
+        fst (⊙<–-inv-r (auto η (f (pt Y)))) (f (pt Y)) ◃∙
+        fₚ ◃∎
+          =ₛ⟨ 1 & 1 & apeq-rev-!◃ (fst (⊙<–-inv-r (auto η (f (pt Y))))) fₚ ⟩
+        ! (fst (⊙<–-inv-r (auto η (f (pt Y)))) (g (pt Y))) ◃∙
+        fst (⊙<–-inv-r (auto η (f (pt Y)))) (g (pt Y)) ◃∙
+        ! (ap (λ z → z) fₚ) ◃∙
+        ! (fst (⊙<–-inv-r (auto η (f (pt Y)))) (f (pt Y))) ◃∙
+        fst (⊙<–-inv-r (auto η (f (pt Y)))) (f (pt Y)) ◃∙
+        fₚ ◃∎
+          =ₛ⟨ 0 & 2 & !-inv-l◃ (fst (⊙<–-inv-r (auto η (f (pt Y)))) (g (pt Y))) ⟩
+        ! (ap (λ z → z) fₚ) ◃∙
+        ! (fst (⊙<–-inv-r (auto η (f (pt Y)))) (f (pt Y))) ◃∙
+        fst (⊙<–-inv-r (auto η (f (pt Y)))) (f (pt Y)) ◃∙
+        fₚ ◃∎
+          =ₛ⟨ 1 & 2 & !-inv-l◃ (fst (⊙<–-inv-r (auto η (f (pt Y)))) (f (pt Y))) ⟩
+        ! (ap (λ z → z) fₚ) ◃∙
+        fₚ ◃∎
+          =ₛ₁⟨ !-ap-idf-l fₚ ⟩
+        idp ◃∎ ∎ₛ
+
+      aux-l : ∀ (g : de⊙ Y → X) gₚ →
+        ! (fst (⊙<–-inv-l (auto η (f (pt Y)))) (g (pt Y))) ◃∙
+        ap (fst (⊙<– (auto η (f (pt Y)))))
+          ((ap (fst (⊙–> (auto η (f (pt Y))))) gₚ ∙ snd (⊙–> (auto η (f (pt Y)))) ∙ fₚ) ∙ ! fₚ) ◃∙
+        snd (⊙<– (auto η (f (pt Y)))) ◃∎
+          =ₛ
+        gₚ ◃∎
+      aux-l g idp = 
+        ! (fst (⊙<–-inv-l (auto η (f (pt Y)))) (g (pt Y))) ◃∙
+        ap (fst (⊙<– (auto η (f (pt Y)))))
+          ((snd (⊙–> (auto η (f (pt Y)))) ∙ fₚ) ∙ ! fₚ) ◃∙
+        snd (⊙<– (auto η (f (pt Y)))) ◃∎
+          =ₛ₁⟨ 1 & 1 & ap (ap (fst (⊙<– (auto η (f (pt Y)))))) (!-inv-r-assoc fₚ (snd (⊙–> (auto η (f (pt Y)))))) ⟩
+        ! (fst (⊙<–-inv-l (auto η (f (pt Y)))) (g (pt Y))) ◃∙
+        ap (fst (⊙<– (auto η (f (pt Y))))) (snd (⊙–> (auto η (f (pt Y))))) ◃∙
+        snd (⊙<– (auto η (f (pt Y)))) ◃∎
+          =ₛ⟨ ⊙<–-inv-l-pt (auto η (f (pt Y))) ⟩
+        idp ◃∎ ∎ₛ
+
+  ⊙→-homog-cod-any : ∀ {j} {Y : Ptd j} (f : Y ⊙→ ⊙[ X , x ]) → homogeneous x → homogeneous {X = Y ⊙→ ⊙[ X , x ]} f
+  ⊙→-homog-cod-any f η = homog-switch f (⊙→-homog-cod η)
+
+⊙→-homog-str-⊙Ωcod : ∀ {i j} {X : Ptd i} {Y : Ptd j} {f : Y ⊙→ ⊙Ω X} → str-homog {X = Y ⊙→ ⊙Ω X} f
+⊙→-homog-str-⊙Ωcod {f = f} = homog-to-strhomog f (⊙→-homog-cod-any f loop-homog)
 
 open str-homog public

@@ -88,7 +88,8 @@ module _ {i j} {C : WildCat {i} {j}} where
                 (λ {a} {b} f → ρD ((a , b) , f)) (λ {a} {b} f → lambD ((a , b) , f))
                 (λ {a} {b} {c} {d} h g f → αD ((a , b , c , d) , h , g , f)) ,
                 ((functor-wc F₀ (λ {a} {b} f → –> (F₁ (a , b)) f) F-id (λ {a} {b} {c} f g → F-◻ ((a , b , c) , g , f) )) ,
-                  ((λ {a} {b} f → F-ρ ((a , b) , f)) , ((λ {a} {b} f → F-λ ((a , b) , f)) , (λ {a} {b} {c} {d} h g f → F-α ((a , b , c , d) , h , g , f))))) ,
+                  ((λ {a} {b} f → F-ρ ((a , b) , f)) ,
+                  ((λ {a} {b} f → F-λ ((a , b) , f)) , (λ {a} {b} {c} {d} h g f → F-α ((a , b , c , d) , h , g , f))))) ,
                 (e₀ , (λ a b → snd (F₁ (a , b)))))
             (λ (D , (F , ρF , lambF , αF) , oe , ae) →
               (ob D , (obj F) , oe) , (((λ (a , b) → hom D a b) , λ (a , b) → (arr F) , (ae a b)) , ((id₁ D , id F) ,
