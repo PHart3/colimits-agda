@@ -49,7 +49,7 @@ module Id {ℓv ℓe ℓ} (Γ : Graph ℓv ℓe) (A : Type ℓ) where
 
     SpCos = span A (Colim (DiagForg A Γ F)) (Colim (ConsDiag Γ A)) [id] ψ
 
-    po-coscol-tip : Type (lmax ℓ ℓd)
+    po-coscol-tip : Type (lmax (lmax (lmax ℓv ℓe) ℓ) ℓd)
     po-coscol-tip = Pushout SpCos
 
     -- cocone structure on pushout

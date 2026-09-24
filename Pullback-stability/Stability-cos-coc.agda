@@ -23,8 +23,8 @@ module _ {ℓ} {A : Type ℓ} where
 
   open MapsCos A
 
-  module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} {Δ-wc : Diagram Γ (Coslice-wc A (lmax ℓd ℓ))}
-    {Y Z : Coslice (lmax ℓd ℓ) ℓ A} (f : po-CosCol (Diag-to-grhom Δ-wc) *→ Z) (h : Y *→ Z) where
+  module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} {Δ-wc : Diagram Γ (Coslice-wc A (lmax (lmax ℓv ℓe) (lmax ℓ ℓd)))}
+    {Y Z : Coslice (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd) ℓ A} (f : po-CosCol (Diag-to-grhom Δ-wc) *→ Z) (h : Y *→ Z) where
 
     private
       Δ = Diag-to-grhom (Δ-wc)
@@ -33,7 +33,7 @@ module _ {ℓ} {A : Type ℓ} where
 
     -- constructing the relevant cospans
 
-    pb-compt-cos : (i : Obj Γ) → Diag-cspan (Coslice-wc A (lmax ℓd ℓ))
+    pb-compt-cos : (i : Obj Γ) → Diag-cspan (Coslice-wc A (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd))
     D₀ (pb-compt-cos i) lft = Δ # i
     D₀ (pb-compt-cos i) mid = Z
     D₀ (pb-compt-cos i) rght = Y
@@ -42,8 +42,8 @@ module _ {ℓ} {A : Type ℓ} where
     D₁ (pb-compt-cos i) {lft} {rght} ()
     D₁ (pb-compt-cos i) {lft} {lft} ()
 
-    pb-csp-cos : Diag-cspan (Coslice-wc A (lmax ℓd ℓ))
-    D₀ pb-csp-cos lft = po-CosCol {ℓd = lmax ℓd ℓ} Δ
+    pb-csp-cos : Diag-cspan (Coslice-wc A (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd))
+    D₀ pb-csp-cos lft = po-CosCol {ℓd = lmax (lmax (lmax ℓ ℓv) ℓe) ℓd} Δ
     D₀ pb-csp-cos mid = Z
     D₀ pb-csp-cos rght = Y
     D₁ pb-csp-cos {lft} {mid} g = f
@@ -58,15 +58,15 @@ module _ {ℓ} {A : Type ℓ} where
     -}
     
     module _
-      (T : (i : Obj Γ) → Σ (Coslice (lmax ℓ ℓd) ℓ A) (λ T₀ → Cone-wc (pb-compt-cos i) T₀))
+      (T : (i : Obj Γ) → Σ (Coslice (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd) ℓ A) (λ T₀ → Cone-wc (pb-compt-cos i) T₀))
       (pb-compt : (i : Obj Γ) → is-pb-wc (snd (T i))) 
-      (τ : Coslice (lmax ℓ ℓd) ℓ A) (PbStb-cos-con : Cone-wc pb-csp-cos τ)
+      (τ : Coslice (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd) ℓ A) (PbStb-cos-con : Cone-wc pb-csp-cos τ)
       (pb : is-pb-wc PbStb-cos-con) where
 
       private
-        idd = id₁ (Coslice-wc A (lmax ℓ ℓd))
-        lunit = lamb (Coslice-wc A (lmax ℓ ℓd))
-        assoc = α (Coslice-wc A (lmax ℓ ℓd))
+        idd = id₁ (Coslice-wc A (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd))
+        lunit = lamb (Coslice-wc A (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd))
+        assoc = α (Coslice-wc A (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd))
 
       pb-compt-dmap-compt : ∀ {x} {y} (g : Hom Γ x y)
         → (t : Triple) → D₀ (pb-compt-cos x) t *→ D₀ (pb-compt-cos y) t
@@ -92,7 +92,7 @@ module _ {ℓ} {A : Type ℓ} where
       pb-compt-dmap-sq g {rght} {rght} ()
 
       -- coslice diagram formed by the comptonent pullbacks
-      diag-pbs-cos : CosDiag (lmax ℓ ℓd) ℓ A Γ
+      diag-pbs-cos : CosDiag (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd) ℓ A Γ
       diag-pbs-cos # x = fst (T x)
       _<#>_ diag-pbs-cos {x} {y} g = lim-map-wc {K₁ = snd (T x)}
         (map-diag (pb-compt-dmap-compt g) (pb-compt-dmap-sq g))
@@ -130,17 +130,17 @@ module _ {ℓ} {A : Type ℓ} where
           aux)
         where abstract
           aux :
-            map-diag {C = Coslice-wc A (lmax ℓ ℓd)} pbs-coc-dmap-compt (pbs-coc-dmap-sq {j})
+            map-diag {C = Coslice-wc A (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd)} pbs-coc-dmap-compt (pbs-coc-dmap-sq {j})
               diag-map-∘
-            map-diag {C = Coslice-wc A (lmax ℓ ℓd)} (pb-compt-dmap-compt g) (pb-compt-dmap-sq {i} {j} g)
+            map-diag {C = Coslice-wc A (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd)} (pb-compt-dmap-compt g) (pb-compt-dmap-sq {i} {j} g)
             ==
-            map-diag {C = Coslice-wc A (lmax ℓ ℓd)} pbs-coc-dmap-compt (pbs-coc-dmap-sq {i})
+            map-diag {C = Coslice-wc A (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd)} pbs-coc-dmap-compt (pbs-coc-dmap-sq {i})
           aux = dmap-to-==
                   {μ₁ =
-                    map-diag {C = Coslice-wc A (lmax ℓ ℓd)} pbs-coc-dmap-compt (pbs-coc-dmap-sq {j})
+                    map-diag {C = Coslice-wc A (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd)} pbs-coc-dmap-compt (pbs-coc-dmap-sq {j})
                       diag-map-∘
-                    map-diag {C = Coslice-wc A (lmax ℓ ℓd)} (pb-compt-dmap-compt g) (pb-compt-dmap-sq {i} {j} g)}
-                  {μ₂ = map-diag {C = Coslice-wc A (lmax ℓ ℓd)} pbs-coc-dmap-compt (pbs-coc-dmap-sq {i})}
+                    map-diag {C = Coslice-wc A (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd)} (pb-compt-dmap-compt g) (pb-compt-dmap-sq {i} {j} g)}
+                  {μ₂ = map-diag {C = Coslice-wc A (lmax (lmax (lmax ℓ ℓv) ℓe) ℓd)} pbs-coc-dmap-compt (pbs-coc-dmap-sq {i})}
                 (aux-compt , aux-sq)
             where
             

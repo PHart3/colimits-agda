@@ -16,7 +16,7 @@ module lib.types.Colim where
 private variable ℓv ℓe : ULevel
 
 postulate  -- HIT
-  Colim : ∀ {ℓd} → {Γ : Graph ℓv ℓe} (D : Diag ℓd Γ) → Type ℓd
+  Colim : ∀ {ℓd} → {Γ : Graph ℓv ℓe} (D : Diag ℓd Γ) → Type (lmax ℓd (lmax ℓv ℓe))
 
 module _ {ℓd} {Γ : Graph ℓv ℓe} {D : Diag ℓd Γ} where
 
@@ -40,7 +40,7 @@ module ColimElim {ℓd ℓ} {Γ : Graph ℓv ℓe} {D : Diag ℓd Γ} {P : Colim
 open ColimElim public
 
 -- trees
-is-tree : Graph ℓv ℓe → Type lzero
+is-tree : Graph ℓv ℓe → Type (lmax ℓv ℓe)
 is-tree Γ = is-contr (Colim (ConsDiag Γ Unit))
 
 can-coc : {Γ : Graph ℓv ℓe} {ℓd : ULevel} (F : Diag ℓd Γ) → Cocone F (Colim F)
@@ -142,7 +142,7 @@ module _ {Γ : Graph ℓv ℓe} where
         aux _ _ idp idp idp = idp
 
   -- colim as a wild functor
-  ColimFunctor : ∀ {i} → Functor-wc (Diag-ty-WC Γ i) (Type-wc i)
+  ColimFunctor : ∀ {i} → Functor-wc (Diag-ty-WC Γ i) (Type-wc (lmax (lmax ℓv ℓe) i))
   obj ColimFunctor Δ = Colim (Diag-to-grhom Δ) 
   arr ColimFunctor f = ColMap (diagmor-from-wc f)
   id ColimFunctor Δ = λ= (ColMap-id-pres (Diag-to-grhom Δ))
@@ -165,9 +165,9 @@ module _ {Γ : Graph ℓv ℓe} where
     fst ColMap-from-deqv = ColMap (diagmor (λ i → –> (es i)) λ {i} {j} g z → ap (–> (es j) ∘ F <#> g) (<–-inv-l (es i) z))
     snd ColMap-from-deqv = ColMap-deqv (λ i → snd (es i))
 
-module _ {Γ : Graph ℓv ℓe} {ℓd : ULevel}  where
+module _ {Γ : Graph ℓv ℓe}  where
 
-  can-coc-is-eqv : ∀ {ℓ₁} {F : Diag ℓd Γ} {D : Type ℓ₁} → is-equiv (PostComp (can-coc F) D)
+  can-coc-is-eqv : ∀ {ℓd ℓ₁} {F : Diag ℓd Γ} {D : Type ℓ₁} → is-equiv (PostComp (can-coc F) D)
   can-coc-is-eqv {F = F} {D} = is-eq (PostComp (can-coc F) D) (λ K → colimR (comp K) λ _ _ g → comTri K g)
     (λ K → CocEq-to-== (coceq (λ _ _ → idp) (λ g x → cglue-βr (comp K) (λ _ _ g → comTri K g) g x)))
     λ f → λ= $
@@ -175,10 +175,12 @@ module _ {Γ : Graph ℓv ℓe} {ℓd : ULevel}  where
         ap (λ p → ! p ∙ ap f (cglue g x)) (cglue-βr _ _ g x) ∙ !-inv-l (ap f (cglue g x)))
 
   abstract
-    can-coc-is-colim : {Δ : Diagram Γ (Type-wc ℓd)} → is-colim (Coc-to-wc (can-coc (Diag-to-grhom Δ)))
+    can-coc-is-colim : ∀ {ℓd} {Δ : Diagram Γ (Type-wc (lmax ℓd (lmax ℓv ℓe)))} →
+      is-colim (Coc-to-wc (can-coc (Diag-to-grhom Δ)))
     can-coc-is-colim = Col-to-wc (λ D → can-coc-is-eqv {D = D})
 
-module _ {Γ : Graph ℓv ℓe} {ℓd ℓ₁ ℓ₂ : ULevel} {F : Diag ℓd Γ} {D : Type ℓ₁} {E : Type ℓ₂} {J : Cocone F E} (ζ : is-colim-ty J) where
+module _ {Γ : Graph ℓv ℓe} {ℓd ℓ₁ ℓ₂ : ULevel} {F : Diag ℓd Γ} {D : Type ℓ₁} {E : Type ℓ₂} {J : Cocone F E}
+  (ζ : is-colim-ty J) where
 
   colim-map-is-contr : (K : Cocone F D) → is-contr (Σ (E → D) (λ f → PostComp J D f == K))
   colim-map-is-contr K = equiv-is-contr-map (ζ D) K

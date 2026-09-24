@@ -38,7 +38,7 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} (tr : is-tree Γ) {A : Type ℓ}
   open MapsCos A
   open Id.Maps Γ A
 
-  module _ {ℓd} (Δ : Diagram Γ (Coslice-wc A (lmax ℓ ℓd))) where
+  module _ {ℓd} (Δ : Diagram Γ (Coslice-wc A (lmax (lmax ℓv ℓe) (lmax ℓ ℓd)))) where
 
     private
       Δ-F = Diag-to-grhom Δ
@@ -51,22 +51,22 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} (tr : is-tree Γ) {A : Type ℓ}
     fst (snd (snd tr-coscol-col-aux)) = ! (λ= (<–-inv-l ceqv))
     snd (snd (snd tr-coscol-col-aux)) = ! (λ= (<–-inv-r ceqv))
 
-    tr-coscol-col : Coc-wc-iso (Coc-to-wc (can-coc (DiagForg A Γ Δ-F))) (F-coc (Forg-funct-cos A {ℓd}) (CosCoc-to-wc (ColCoC-cos Δ-F)))
+    tr-coscol-col : Coc-wc-iso (Coc-to-wc (can-coc (DiagForg A Γ Δ-F))) (F-coc (Forg-funct-cos A {lmax (lmax ℓv ℓe) (lmax ℓ ℓd)}) (CosCoc-to-wc (ColCoC-cos Δ-F)))
     tr-coscol-col = coe
       (ap (Coc-wc-iso (Coc-to-wc (can-coc (DiagForg A Γ Δ-F))))
-        (ap (Coc-to-wc ∘ CocForg) (! (<–-inv-l CosCoc-wc-≃ _)) ∙ CocForg-coh {i = lmax ℓ ℓd} (CosCoc-to-wc (ColCoC-cos Δ-F))))
+        (ap (Coc-to-wc ∘ CocForg) (! (<–-inv-l CosCoc-wc-≃ _)) ∙ CocForg-coh {i = lmax (lmax ℓv ℓe) (lmax ℓ ℓd)} (CosCoc-to-wc (ColCoC-cos Δ-F))))
       tr-coscol-col-aux
 
-    module FCol-iso {T : Coslice (lmax ℓ ℓd) ℓ A} (K : Cocone-wc Δ T) where
+    module FCol-iso {T : Coslice (lmax (lmax ℓv ℓe) (lmax ℓ ℓd)) ℓ A} (K : Cocone-wc Δ T) where
 
       private      
         -- colimiting cocone on pushout
-        cl-po = ColCoc-is-colim {ℓd = lmax ℓ ℓd} Δ
-        cg-PO = cogap-map-wc (ColCoc-is-colim {ℓd = lmax ℓ ℓd} Δ)
+        cl-po = ColCoc-is-colim {ℓd = lmax (lmax ℓv ℓe) (lmax ℓ ℓd)} Δ
+        cg-PO = cogap-map-wc (ColCoc-is-colim {ℓd = lmax (lmax ℓv ℓe) (lmax ℓ ℓd)} Δ)
 
-      cg-PO-eqv : is-colim K → equiv-wc (Coslice-wc A (lmax ℓ ℓd)) (cg-PO K)
-      cg-PO-eqv cl = col-wc-unq {K₁ = CosCoc-to-wc {i = lmax ℓ ℓd} (ColCoC-cos Δ-F)} {K₂ = K}
-        (pentagon-wc-Cos A {lmax ℓ ℓd}) (triangle-wc-Cos A {lmax ℓ ℓd}) cl-po cl
+      cg-PO-eqv : is-colim K → equiv-wc (Coslice-wc A (lmax (lmax ℓv ℓe) (lmax ℓ ℓd))) (cg-PO K)
+      cg-PO-eqv cl = col-wc-unq {K₁ = CosCoc-to-wc {i = lmax (lmax ℓv ℓe) (lmax ℓ ℓd)} (ColCoC-cos Δ-F)} {K₂ = K}
+        (pentagon-wc-Cos A {lmax (lmax ℓv ℓe) (lmax ℓ ℓd)}) (triangle-wc-Cos A {lmax (lmax ℓv ℓe) (lmax ℓ ℓd)}) cl-po cl
         where abstract
           aux : ∀ {ℓ₁ ℓ₂} {X : Type ℓ₁} {Y : Type ℓ₂} (k : X → Y)
             {x y : X} {z : Y} (p₁ : x == y) (p₂ : k y == z) → 
@@ -84,28 +84,28 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} (tr : is-tree Γ) {A : Type ℓ}
           aux _ idp idp = idp
 
       tr-coscol-abs-mor : 
-        Coc-wc-mor (F-coc (Forg-funct-cos A {ℓd}) (CosCoc-to-wc (ColCoC-cos Δ-F))) (F-coc (Forg-funct-cos A {ℓd}) K)
-      tr-coscol-abs-mor = forg-coc-mor-cos {i = ℓd} {K₁ = CosCoc-to-wc {i = lmax ℓ ℓd} (ColCoC-cos Δ-F)} {K₂ = K}
-        ((cg-PO K) , cogap-map-wc-β {K = CosCoc-to-wc {i = lmax ℓ ℓd} (ColCoC-cos Δ-F)} cl-po {V = K})
+        Coc-wc-mor (F-coc (Forg-funct-cos A {lmax (lmax ℓv ℓe) ℓd}) (CosCoc-to-wc (ColCoC-cos Δ-F))) (F-coc (Forg-funct-cos A {lmax (lmax ℓv ℓe) ℓd}) K)
+      tr-coscol-abs-mor = forg-coc-mor-cos {i = lmax (lmax ℓv ℓe) ℓd} {K₁ = CosCoc-to-wc {i = lmax (lmax ℓv ℓe) (lmax ℓ ℓd)} (ColCoC-cos Δ-F)} {K₂ = K}
+        ((cg-PO K) , cogap-map-wc-β {K = CosCoc-to-wc {i = lmax (lmax ℓv ℓe) (lmax ℓ ℓd)} (ColCoC-cos Δ-F)} cl-po {V = K})
 
       tr-coscol-abs-iso : is-colim K → 
-        Coc-wc-iso (F-coc (Forg-funct-cos A {ℓd}) (CosCoc-to-wc (ColCoC-cos Δ-F))) (F-coc (Forg-funct-cos A {ℓd}) K)
+        Coc-wc-iso (F-coc (Forg-funct-cos A {lmax (lmax ℓv ℓe) ℓd}) (CosCoc-to-wc (ColCoC-cos Δ-F))) (F-coc (Forg-funct-cos A {lmax (lmax ℓv ℓe) ℓd}) K)
       fst (tr-coscol-abs-iso _) = tr-coscol-abs-mor
-      snd (tr-coscol-abs-iso cl) = F-equiv-wc (Forg-funct-cos A {ℓd}) (cg-PO-eqv cl)
+      snd (tr-coscol-abs-iso cl) = F-equiv-wc (Forg-funct-cos A {lmax (lmax ℓv ℓe) ℓd}) (cg-PO-eqv cl)
 
       abstract
-        tr-forg-coscol-iso : is-colim K → Coc-wc-iso (Coc-to-wc (can-coc (DiagForg A Γ Δ-F))) (F-coc (Forg-funct-cos A {ℓd}) K)
+        tr-forg-coscol-iso : is-colim K → Coc-wc-iso (Coc-to-wc (can-coc (DiagForg A Γ Δ-F))) (F-coc (Forg-funct-cos A {lmax (lmax ℓv ℓe) ℓd}) K)
         fst (tr-forg-coscol-iso cl) = coc-wc-mor-∘ pentagon-wc-ty (fst (tr-coscol-abs-iso cl)) (fst tr-coscol-col)
-        snd (tr-forg-coscol-iso cl) = equiv-wc-∘ (Type-wc (lmax ℓ ℓd)) (snd (tr-coscol-abs-iso cl)) (snd tr-coscol-col)
+        snd (tr-forg-coscol-iso cl) = equiv-wc-∘ (Type-wc (lmax (lmax ℓv ℓe) (lmax ℓ ℓd))) (snd (tr-coscol-abs-iso cl)) (snd tr-coscol-col)
 
-    module _ {T : Coslice (lmax ℓ ℓd) ℓ A} (K : Cocone-wc Δ T) (cl : is-colim K) where
+    module _ {T : Coslice (lmax (lmax ℓv ℓe) (lmax ℓ ℓd)) ℓ A} (K : Cocone-wc Δ T) (cl : is-colim K) where
 
       open FCol-iso K
 
       abstract
-        Forg-coscol-pres : is-colim {C = Type-wc (lmax ℓ ℓd)} (F-coc (Forg-funct-cos A {ℓd}) K)
+        Forg-coscol-pres : is-colim {C = Type-wc (lmax (lmax ℓv ℓe) (lmax ℓ ℓd))} (F-coc (Forg-funct-cos A {lmax (lmax ℓv ℓe) ℓd}) K)
         Forg-coscol-pres = fst (eqv-pres-colim pentagon-wc-ty (fst (tr-forg-coscol-iso cl)) (snd (tr-forg-coscol-iso cl)))
           lemma
           where abstract
-            lemma : is-colim {C = Type-wc (lmax ℓ ℓd)} (Coc-to-wc (can-coc (DiagForg A Γ Δ-F)))
-            lemma = can-coc-is-colim {Δ = Diag-from-grhom (DiagForg A Γ Δ-F)}
+            lemma : is-colim {C = Type-wc (lmax (lmax ℓv ℓe) (lmax ℓ ℓd))} (Coc-to-wc (can-coc (DiagForg A Γ Δ-F)))
+            lemma = can-coc-is-colim {ℓd = lmax ℓ ℓd} {Δ = Diag-from-grhom (DiagForg A Γ Δ-F)}
