@@ -12,9 +12,10 @@ open import CosCol-Coc-contr
 
 module homotopy.Acyc-colim where
 
-module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} (F : Diagram Γ (Ptd-wc ℓd)) {X : Ptd ℓd} {K : Cocone-wc F X} (cK : is-colim K) where
+module _ {ℓv ℓe ℓd} {Γ : Graph ℓv ℓe} (F : Diagram Γ (Ptd-wc (lmax (lmax ℓv ℓe) ℓd))) {X : Ptd (lmax (lmax ℓv ℓe) ℓd)}
+  {K : Cocone-wc F X} (cK : is-colim K) where
 
-  open PtdColContr (F-diag SuspFunctor F) (Susp-prsrv-colim cK)
+  open PtdColContr {ℓv} {ℓe} {ℓd} (F-diag SuspFunctor F) (Susp-prsrv-colim cK)
 
   abstract
     ptdcolim-acyc : (∀ i → is-acyclic⊙ (D₀ F i)) → is-acyclic⊙ X

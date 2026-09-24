@@ -50,7 +50,7 @@ module Augmented {ℓ ℓv ℓe : ULevel} {Γ : Graph ℓv ℓe} {A : Type ℓ} 
   _<#>_ cos-wedge-augmented-diag {inl x} {inl y} g = fst (F <#> g)
   _<#>_ cos-wedge-augmented-diag {inr unit} {inl y} g = str (F # y)
 
-  cos-wedge-augmented-tip : Coslice ℓ ℓ A
+  cos-wedge-augmented-tip : Coslice (lmax (lmax ℓ ℓv) ℓe) ℓ A
   ty cos-wedge-augmented-tip = Colim cos-wedge-augmented-diag
   str cos-wedge-augmented-tip = cin (inr unit)
 

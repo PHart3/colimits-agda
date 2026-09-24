@@ -14,40 +14,39 @@ open import homotopy.ColimAdjoint-hex
 
 -- the wild colimit functor on Type preserves the left class of an OFS
 
-module homotopy.Colim-OFSLeftClass where
+module homotopy.Colim-OFSLeftClass {ℓ k₁ k₂ : ULevel} where
 
-module _ {ℓ k₁ k₂ : ULevel} (fs : ofs-wc k₁ k₂ (Type-wc ℓ)) where
+module _ {ℓv ℓe} {Γ : Graph ℓv ℓe} (fs : ofs-wc k₁ k₂ (Type-wc (lmax (lmax ℓv ℓe) ℓ))) where
 
-  module _  {ℓv ℓe} {Γ : Graph ℓv ℓe} where
+  open homotopy.ColimAdjointConst Γ
+  open CCAdj ℓ
 
-    open homotopy.ColimAdjointConst {ℓ} Γ
+  abstract
+    ColimMap-lc-OFS : {a b : Diagram Γ (Type-wc (lmax (lmax ℓv ℓe) ℓ))} {f : Map-diag-ty a b} →
+      fst (Diag-ty-lw-lclass fs f) → fst (lclass fs (ColMap (diagmor-from-wc f)))
+    ColimMap-lc-OFS fl = OFS-Rprv-Lpsv ColimConst-ty-Adj (ColimConst-ty-adj-hex {ℓ = ℓ})
+      is-univ-Diag-ty-wc triangle-wc-Dty pentagon-wc-Dty
+      Type-wc-is-univ triangle-wc-ty pentagon-wc-ty
+      (Diag-ty-lwOFS fs) fs
+      (λ {_} {_} {m} mr → λ _ → mr) fl
 
-    abstract
-      ColimMap-lc-OFS : {a b : Diagram Γ (Type-wc ℓ)} {f : Map-diag-ty a b} →
-        fst (Diag-ty-lw-lclass fs f) → fst (lclass fs (ColMap (diagmor-from-wc f)))
-      ColimMap-lc-OFS fl = OFS-Rprv-Lpsv ColimConst-ty-Adj ColimConst-ty-adj-hex
-        is-univ-Diag-ty-wc triangle-wc-Dty pentagon-wc-Dty
-        Type-wc-is-univ triangle-wc-ty pentagon-wc-ty
-        (Diag-ty-lwOFS fs) fs
-        (λ {_} {_} {m} mr → λ _ → mr) fl
+-- deducing the version for pushout maps:
 
-  -- deducing the version for pushout maps:
+open import lib.types.PO-Colim-conv
 
-  open import lib.types.PO-Colim-conv
+module _ {σ₁ σ₂ : Span {ℓ} {ℓ} {ℓ}} (sm : SpanMap-Rev σ₁ σ₂) (fs : ofs-wc k₁ k₂ (Type-wc ℓ)) where
 
-  module _ {σ₁ σ₂ : Span {ℓ} {ℓ} {ℓ}} (sm : SpanMap-Rev σ₁ σ₂) where
+  private
+    module PM = PushoutMap sm
 
-    private
-      module PM = PushoutMap sm
-
-    abstract
-      PushoutMap-lc-OFS :
-        fst (lclass fs (SpanMap-Rev.hA sm)) →
-        fst (lclass fs (SpanMap-Rev.hB sm)) →
-        fst (lclass fs (SpanMap-Rev.hC sm)) →
-        fst (lclass fs (PM.f))
-      PushoutMap-lc-OFS hAl hBl hCl = transport (λ m → fst (lclass fs m)) (! (Colim-PO-ty-≃-nat-== sm))
-        (∘-lc fs (ofcs-wc-eqv-lc {fs = fs} Type-wc-is-univ (_ , (eqv-to-biinv-wc-ty (snd ((Colim-PO-ty-≃  σ₁)⁻¹)))))
-        (∘-lc fs (ColimMap-lc-OFS (λ { lft → hAl ; rght → hBl ; mid → hCl }))
-        (ofcs-wc-eqv-lc {fs = fs} Type-wc-is-univ (_ , (eqv-to-biinv-wc-ty (snd (Colim-PO-ty-≃  σ₂)))))))
+  abstract
+    PushoutMap-lc-OFS :
+      fst (lclass fs (SpanMap-Rev.hA sm)) →
+      fst (lclass fs (SpanMap-Rev.hB sm)) →
+      fst (lclass fs (SpanMap-Rev.hC sm)) →
+      fst (lclass fs (PM.f))
+    PushoutMap-lc-OFS hAl hBl hCl = transport (λ m → fst (lclass fs m)) (! (Colim-PO-ty-≃-nat-== sm))
+      (∘-lc fs (ofcs-wc-eqv-lc {fs = fs} Type-wc-is-univ (_ , (eqv-to-biinv-wc-ty (snd ((Colim-PO-ty-≃  σ₁)⁻¹)))))
+      (∘-lc fs (ColimMap-lc-OFS fs (λ { lft → hAl ; rght → hBl ; mid → hCl }))
+      (ofcs-wc-eqv-lc {fs = fs} Type-wc-is-univ (_ , (eqv-to-biinv-wc-ty (snd (Colim-PO-ty-≃  σ₂)))))))
 

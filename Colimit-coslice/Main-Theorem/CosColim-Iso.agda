@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting  #-}
+{-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
 open import lib.wild-cats.WildCats
@@ -22,10 +22,10 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
   -- a better name for the final interface
   
-  po-CosCol-ty : ∀ {ℓd} → CosDiag ℓd ℓ A Γ → Set (lmax ℓ ℓd)
+  po-CosCol-ty : ∀ {ℓd} → CosDiag ℓd ℓ A Γ → Set (lmax (lmax (lmax ℓv ℓe) ℓ) ℓd)
   po-CosCol-ty F = Id.Maps.po-coscol-tip Γ A F
 
-  po-CosCol : ∀ {ℓd} → CosDiag ℓd ℓ A Γ → Coslice (lmax ℓ ℓd) ℓ A
+  po-CosCol : ∀ {ℓd} → CosDiag ℓd ℓ A Γ → Coslice (lmax (lmax (lmax ℓv ℓe) ℓ) ℓd) ℓ A
   po-CosCol F = Cos (po-CosCol-ty F) left
 
   open MapsCos A
@@ -45,7 +45,8 @@ module _ {ℓv ℓe ℓ} {Γ : Graph ℓv ℓe} {A : Type ℓ} where
 
     open CM-eqv
 
-    ColCoc-is-colim : ∀ {ℓd} (Δ : Diagram Γ (Coslice-wc A (lmax ℓ ℓd))) → is-colim (CosCoc-to-wc (ColCoC-cos (Diag-to-grhom Δ)))
+    ColCoc-is-colim : ∀ {ℓd} (Δ : Diagram Γ (Coslice-wc A (lmax (lmax (lmax ℓv ℓe) ℓ) ℓd))) →
+      is-colim (CosCoc-to-wc (ColCoC-cos (Diag-to-grhom Δ)))
     ColCoc-is-colim Δ = CosCol-to-wc (CanMap-cos-eqv (Diag-to-grhom Δ))
 
     CanMap-cos-contr : ∀ {ℓd ℓc} (F : CosDiag ℓd ℓ A Γ) (T : Coslice ℓc ℓ A) → is-contr-map (RWhisk-coscoc {D = T} (ColCoC-cos F))

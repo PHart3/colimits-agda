@@ -14,7 +14,8 @@ import homotopy.ColimAdjointConst
 
 module homotopy.ColimAdjoint-hex {ℓ ℓv ℓe : ULevel} {Γ : Graph ℓv ℓe} where
 
-  open homotopy.ColimAdjointConst {ℓ} Γ
+  open homotopy.ColimAdjointConst Γ
+  open CCAdj ℓ
 
   open Map-diag-ty
   open =-dmap-ops-conv
@@ -47,12 +48,12 @@ module homotopy.ColimAdjoint-hex {ℓ ℓv ℓe : ULevel} {Γ : Graph ℓv ℓe}
           (dmap-ty-assoc (arr (const-diag-ty-WF Γ) g) (–> (iso ColimConst-ty-Adj) d) f)
           (=-dmap-ty-whisk-l (arr (const-diag-ty-WF Γ) g) (dom-ext.nat-dom-ext f d))
           (cod-ext.nat-cod-ext g (d ∘ arr ColimFunctor f))) ⟩
-    α (Diag-ty-WC Γ ℓ) (arr (const-diag-ty-WF Γ) g) (–> (iso ColimConst-ty-Adj) d) f ◃∙
+    α (Diag-ty-WC Γ (lmax (lmax ℓ ℓv) ℓe)) (arr (const-diag-ty-WF Γ) g) (–> (iso ColimConst-ty-Adj) d) f ◃∙
     dmap-ty-to-== (=-dmap-ty-whisk-l (arr (const-diag-ty-WF Γ) g) (dom-ext.nat-dom-ext f d)) ◃∙
     nat-cod ColimConst-ty-Adj g (d ∘ arr ColimFunctor f) ◃∎
       =ₛ₁⟨ 1 & 1 & ! (=-dmap-ty-whisk-l-conv {m = arr (const-diag-ty-WF Γ) g}
         (dom-ext.nat-dom-ext f d)) ⟩
-    α (Diag-ty-WC Γ ℓ) (arr (const-diag-ty-WF Γ) g) (–> (iso ColimConst-ty-Adj) d) f ◃∙
+    α (Diag-ty-WC Γ (lmax (lmax ℓ ℓv) ℓe)) (arr (const-diag-ty-WF Γ) g) (–> (iso ColimConst-ty-Adj) d) f ◃∙
     ap (λ D → arr (const-diag-ty-WF Γ) g tydiag-map-∘ D) (nat-dom ColimConst-ty-Adj f d) ◃∙
     nat-cod ColimConst-ty-Adj g (d ∘ arr ColimFunctor f) ◃∎ ∎ₛ
     
